@@ -260,11 +260,11 @@ describe('HeroStickerPage', () => {
     expect(link.querySelector('.wbx-partner-sticker__fallback')?.textContent).toBe('星火集')
   })
 
-  it('turns the full desktop page and uses opacity-only fallbacks', () => {
+  it('turns the whole hero surface and uses opacity-only fallbacks', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const compactCss = css.slice(
+      css.indexOf('@media (max-width: 960px)'),
       css.indexOf('@media (max-width: 760px)'),
-      css.indexOf('@media (max-width: 420px)'),
     )
     const reducedMotionCss = css.slice(
       css.indexOf('@media (prefers-reduced-motion: reduce)'),
@@ -275,13 +275,19 @@ describe('HeroStickerPage', () => {
       /\.wbx-sticker-page\s*\{[^}]*perspective:\s*1400px;/s,
     )
     expect(css).toMatch(
-      /\.wbx-sticker-page__cover\s*\{[^}]*transform-origin:\s*left center;[^}]*backface-visibility:\s*hidden;[^}]*transform:\s*rotateY\(0deg\);[^}]*transform 280ms cubic-bezier\(0\.77,\s*0,\s*0\.175,\s*1\)/s,
+      /\.wbx-sticker-page__cover\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*1\.08fr 0\.92fr;[^}]*transform-origin:\s*left center;[^}]*backface-visibility:\s*hidden;[^}]*transform:\s*rotateY\(0deg\);[^}]*transform 280ms cubic-bezier\(0\.77,\s*0,\s*0\.175,\s*1\)/s,
     )
     expect(css).toMatch(
       /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__cover\s*\{[^}]*transform:\s*rotateY\(-180deg\);/s,
     )
     expect(css).not.toMatch(
-      /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__cover\s*\{[^}]*clip-path:/s,
+      /\.wbx-sticker-page__cover\s*\{[^}]*clip-path:/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-sticker-page__inside,\s*\.wbx-sticker-page__cover\s*\{[^}]*inset:\s*0;/s,
+    )
+    expect(css).not.toMatch(
+      /\.wbx-sticker-page__inside\s*\{[^}]*border-left:/s,
     )
     expect(css).toMatch(
       /\.wbx-sticker-page__trigger\s*\{[^}]*width:\s*72px;[^}]*height:\s*72px;/s,
@@ -293,48 +299,36 @@ describe('HeroStickerPage', () => {
       /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__cover\s*\{[^}]*opacity:\s*0;[^}]*transform:\s*none;/s,
     )
     expect(compactCss).toMatch(
-      /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__cover\s*\{[^}]*opacity:\s*0;[^}]*transform:\s*none;/s,
+      /\.wbx-sticker-page\s*\{[^}]*perspective:\s*none;/s,
+    )
+    expect(compactCss).toMatch(
+      /\.wbx-sticker-page__cover\s*\{[^}]*transform:\s*none;[^}]*transition:\s*opacity 160ms cubic-bezier\(0\.23,\s*1,\s*0\.32,\s*1\);/s,
+    )
+    expect(compactCss).toMatch(
+      /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__cover\s*\{[^}]*filter:\s*none;[^}]*opacity:\s*0;[^}]*transform:\s*none;/s,
     )
     expect(reducedMotionCss).toMatch(
       /\.wbx-partner-sticker\s*\{[^}]*transition:\s*none;/s,
     )
   })
 
-  it('keeps the 960px mobile cover coordinates while the reveal UI stays in the viewport', () => {
+  it('keeps the 960px mobile hero surface intact for the opacity fallback', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const mobileCss = css.slice(css.indexOf('@media (max-width: 420px)'))
     const artRule = mobileCss.match(/\.wbx-hero__art\s*\{[^}]*\}/s)?.[0] ?? ''
-    const mobileHomeRule =
-      mobileCss.match(/\.wbx-home\s*\{[^}]*\}/s)?.[0] ?? ''
-    const heroRule = css.match(/\.wbx-hero\s*\{[^}]*\}/s)?.[0] ?? ''
-    const stickerPageRule =
-      mobileCss.match(/\.wbx-sticker-page\s*\{[^}]*\}/s)?.[0] ?? ''
-    const pageInset = Number(
-      mobileHomeRule.match(/padding:\s*\d+px\s+0\s+0\s+(\d+)px/)?.[1],
-    )
-    const heroBorder = Number(heroRule.match(/border:\s*(\d+)px/)?.[1])
-    const revealInset = Number(
-      stickerPageRule.match(/width:\s*calc\(100vw - (\d+)px\)/)?.[1],
-    )
-
     expect(css).toMatch(
       /\.wbx-home-layout\s*\{[^}]*overflow-x:\s*clip;/s,
     )
     expect(artRule).toMatch(/min-height:\s*560px;/)
     expect(artRule).not.toMatch(/\bwidth\s*:/)
-    expect(mobileCss).toMatch(
-      /\.wbx-sticker-page\s*\{[^}]*width:\s*calc\(100vw - 30px\);[^}]*overflow:\s*hidden;/s,
-    )
-    expect(mobileCss).toMatch(
-      /\.wbx-sticker-page__cover\s*\{[^}]*width:\s*var\(--wbx-mobile-hero-width\);/s,
-    )
+    expect(mobileCss).not.toMatch(/\.wbx-sticker-page\s*\{[^}]*\bwidth\s*:/s)
+    expect(mobileCss).not.toMatch(/\.wbx-sticker-page__cover\s*\{[^}]*\bwidth\s*:/s)
     expect(mobileCss).toMatch(
       /\.wbx-sticker-page__inside\s*\{[^}]*grid-template-areas:\s*"sparkx sparkx"\s*"workbuddy zai";[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\);/s,
     )
     expect(mobileCss).toMatch(
       /\.wbx-partner-sticker\s*\{[^}]*min-width:\s*0;/s,
     )
-    expect(revealInset).toBe(pageInset + heroBorder)
   })
 
   it('keeps the visible fold clear of the workflow metrics without shrinking its hit target', () => {

@@ -45,10 +45,6 @@
 }
 
 .wbx-hero__stage {
-  display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(460px, 0.92fr);
-  min-height: 568px;
-  background: var(--wbx-accent);
 }
 
 .wbx-hero__copy {
@@ -131,7 +127,7 @@
 
 .wbx-sticker-page {
   position: relative;
-  min-height: inherit;
+  min-height: 568px;
   overflow: hidden;
   isolation: isolate;
   perspective: 1400px;
@@ -152,12 +148,13 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: center;
   padding: 58px 48px 70px;
-  border-left: 1px solid #0d100d;
   background: #fffdf5;
 }
 
 .wbx-sticker-page__cover {
   z-index: 2;
+  display: grid;
+  grid-template-columns: 1.08fr 0.92fr;
   background: var(--wbx-accent);
   transform-origin: left center;
   backface-visibility: hidden;
@@ -170,7 +167,7 @@
 }
 
 .wbx-sticker-page[data-open="true"] .wbx-sticker-page__cover {
-  filter: drop-shadow(-16px 0 0 rgb(13 16 13 / 16%));
+  filter: drop-shadow(18px 0 0 rgb(13 16 13 / 16%));
   transform: rotateY(-180deg);
   pointer-events: none;
 }
@@ -763,7 +760,7 @@
     padding-inline: 24px;
   }
 
-  .wbx-hero__stage {
+  .wbx-sticker-page__cover {
     grid-template-columns: 1.02fr 0.98fr;
   }
 
@@ -790,8 +787,20 @@
 }
 
 @media (max-width: 960px) {
-  .wbx-hero__stage {
+  .wbx-sticker-page {
+    perspective: none;
+  }
+
+  .wbx-sticker-page__cover {
     grid-template-columns: 1fr;
+    transform: none;
+    transition: opacity 160ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .wbx-sticker-page[data-open="true"] .wbx-sticker-page__cover {
+    filter: none;
+    opacity: 0;
+    transform: none;
   }
 
   .wbx-hero__copy {
@@ -874,21 +883,6 @@
 
   .wbx-hero__art {
     min-height: 380px;
-  }
-
-  .wbx-sticker-page {
-    perspective: none;
-  }
-
-  .wbx-sticker-page__cover {
-    transform: none;
-    transition: opacity 160ms cubic-bezier(0.23, 1, 0.32, 1);
-  }
-
-  .wbx-sticker-page[data-open="true"] .wbx-sticker-page__cover {
-    filter: none;
-    opacity: 0;
-    transform: none;
   }
 
   .wbx-sticker-page__inside {
@@ -1078,17 +1072,6 @@
 
   .wbx-hero__art {
     min-height: 560px;
-  }
-
-  .wbx-sticker-page {
-    width: calc(100vw - 30px);
-    height: 560px;
-    min-height: 560px;
-    overflow: hidden;
-  }
-
-  .wbx-sticker-page__cover {
-    width: var(--wbx-mobile-hero-width);
   }
 
   .wbx-sticker-page__inside {

@@ -24,6 +24,20 @@ function mountHomePage() {
 }
 
 describe('home hero icon navigation', () => {
+  it('uses the sticker page as the whole hero stage cover', () => {
+    mountHomePage()
+
+    const stage = document.querySelector('.wbx-hero__stage')
+    const cover = stage?.querySelector(':scope > .wbx-sticker-page__cover')
+
+    expect(stage?.classList.contains('wbx-sticker-page')).toBe(true)
+    expect(cover?.querySelector('.wbx-hero__copy')).not.toBeNull()
+    expect(cover?.querySelector('.wbx-hero__art')).not.toBeNull()
+    expect(
+      document.querySelector('.wbx-hero__art > .wbx-sticker-page'),
+    ).toBeNull()
+  })
+
   it('uses black icon cards with green pixel icons', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
 
