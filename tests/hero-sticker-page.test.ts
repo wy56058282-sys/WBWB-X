@@ -266,9 +266,15 @@ describe('HeroStickerPage', () => {
     expect(css).not.toMatch(/perspective:\s*1400px/)
     expect(css).not.toMatch(/rotateY\(/)
     expect(css).not.toMatch(/transform-origin:\s*left center/)
+    expect(css).not.toMatch(/backface-visibility:/)
+    expect(css).not.toMatch(/transform-style:/)
+    expect(css).not.toMatch(/drop-shadow\(/)
+    expect(css).not.toMatch(
+      /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__cover\s*\{[^}]*opacity:/s,
+    )
 
     expect(css).toMatch(
-      /\.wbx-sticker-page__inside\s*\{[^}]*z-index:\s*3;[^}]*clip-path:\s*polygon\(100% 88%,\s*100% 100%,\s*88% 100%\);[^}]*transition:\s*clip-path 280ms cubic-bezier\(0\.77,\s*0,\s*0\.175,\s*1\)/s,
+      /\.wbx-sticker-page__inside\s*\{[^}]*z-index:\s*3;[^}]*clip-path:\s*polygon\(100% 88%,\s*100% 100%,\s*88% 100%,\s*88% 100%\);[^}]*transition:\s*clip-path 280ms cubic-bezier\(0\.77,\s*0,\s*0\.175,\s*1\)/s,
     )
     expect(css).toMatch(
       /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__inside\s*\{[^}]*clip-path:\s*polygon\(0 0,\s*100% 0,\s*100% 100%,\s*0 100%\);/s,
