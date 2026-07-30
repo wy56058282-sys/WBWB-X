@@ -23,7 +23,8 @@ describe('desktop sidebar scrolling', () => {
     document.body.append(sidebar)
 
     expect(getComputedStyle(sidebar).overflowY).toBe('hidden')
-    expect(getComputedStyle(curtain).borderBottomWidth).toBe('1px')
+    expect(getComputedStyle(curtain).borderBottomWidth).toBe('0px')
     expect(getComputedStyle(nav).overflowY).toBe('auto')
+    expect(getComputedStyle(nav).scrollbarGutter).toBe('auto')
   })
 })

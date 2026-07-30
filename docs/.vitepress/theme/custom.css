@@ -133,9 +133,7 @@ body {
 
 .VPSidebar .curtain {
   z-index: 1;
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: var(--wbx-line);
+  border-bottom: 0;
   background: var(--vp-sidebar-bg-color);
 }
 
@@ -146,7 +144,43 @@ body {
   padding-bottom: 96px;
   overflow-y: auto;
   overscroll-behavior: contain;
-  scrollbar-gutter: stable;
+  scrollbar-color: rgb(92 104 94 / 28%) transparent;
+  scrollbar-gutter: auto;
+  scrollbar-width: thin;
+}
+
+.VPSidebar .nav::-webkit-scrollbar {
+  width: 8px;
+}
+
+.VPSidebar .nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.VPSidebar .nav::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: rgb(92 104 94 / 28%);
+  background-clip: content-box;
+}
+
+.VPSidebar .nav::-webkit-scrollbar-thumb:hover {
+  background: rgb(92 104 94 / 42%);
+  background-clip: content-box;
+}
+
+.dark .VPSidebar .nav {
+  scrollbar-color: rgb(220 226 216 / 26%) transparent;
+}
+
+.dark .VPSidebar .nav::-webkit-scrollbar-thumb {
+  background: rgb(220 226 216 / 26%);
+  background-clip: content-box;
+}
+
+.dark .VPSidebar .nav::-webkit-scrollbar-thumb:hover {
+  background: rgb(220 226 216 / 40%);
+  background-clip: content-box;
 }
 
 .VPSidebarItem .link:hover {
