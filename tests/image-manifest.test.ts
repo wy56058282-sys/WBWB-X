@@ -30,6 +30,18 @@ describe('required brand assets', () => {
       expect(attributionResult.status).toBe(0)
       expect(attributionResult.stdout).toContain('Approved replacement assets')
 
+      const attributionLinks = [
+        '<a href="https://workbuddy.homes/">Source attribution</a>',
+        '<a :href="\'https://workbuddy.homes/\'">Source attribution</a>',
+      ]
+      for (const attributionLink of attributionLinks) {
+        writeFileSync(fixturePath, `${attributionLink}\n`)
+        expect(checkAssets().status).toBe(0)
+      }
+
+      writeFileSync(fixturePath, '<a :href="\'https://workbuddy.homes/\'">Source</a>\n')
+      expect(checkAssets().status).toBe(1)
+
       const assetReferences = [
         '![Source attribution](https://workbuddy.homes/logo.svg)',
         '<img src="https://workbuddy.homes/logo.svg" alt="Source attribution">',
