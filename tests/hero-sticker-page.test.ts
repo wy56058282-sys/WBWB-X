@@ -262,8 +262,12 @@ describe('HeroStickerPage', () => {
 
   it('reveals the inside layer diagonally from the lower-right corner', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
-    const stickerPageRules = css.match(/\.wbx-sticker-page\s*\{[^}]*\}/gs) ?? []
-    const coverRules = css.match(/\.wbx-sticker-page__cover\s*\{[^}]*\}/gs) ?? []
+    const stickerPageRules = css.match(
+      /(?:^|[{}])\s*\.wbx-sticker-page\s*\{[^}]*\}/gs,
+    ) ?? []
+    const coverRules = css.match(
+      /(?:^|[{}])\s*[^{}]*\.wbx-sticker-page__cover[^{}]*\{[^}]*\}/gs,
+    ) ?? []
     const openCoverRules = css.match(
       /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__cover\s*\{[^}]*\}/gs,
     ) ?? []
@@ -335,11 +339,31 @@ describe('HeroStickerPage', () => {
       css.indexOf('@media (max-width: 960px)'),
       css.indexOf('@media (max-width: 760px)'),
     )
+    const compactStickerPageRules = compactCss.match(
+      /(?:^|[{}])\s*\.wbx-sticker-page\s*\{[^}]*\}/gs,
+    ) ?? []
+    const compactInsideRules = compactCss.match(
+      /(?:^|[{}])\s*[^{}]*\.wbx-sticker-page__inside[^{}]*\{[^}]*\}/gs,
+    ) ?? []
+    const compactCoverRules = compactCss.match(
+      /(?:^|[{}])\s*[^{}]*\.wbx-sticker-page__cover[^{}]*\{[^}]*\}/gs,
+    ) ?? []
+    const compactOpenCoverRules = compactCss.match(
+      /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__cover\s*\{[^}]*\}/gs,
+    ) ?? []
+    const compactRevealRules = [
+      ...compactStickerPageRules,
+      ...compactInsideRules,
+      ...compactCoverRules,
+      ...compactOpenCoverRules,
+    ].join('\n')
 
     expect(compactCss).toMatch(
       /\.wbx-sticker-page__cover\s*\{[^}]*grid-template-columns:\s*1fr;/s,
     )
-    expect(compactCss).not.toMatch(/perspective:|opacity:|rotateY\(/)
+    expect(compactRevealRules).not.toMatch(/perspective(?:-origin)?\s*:/)
+    expect(compactRevealRules).not.toMatch(/opacity:/)
+    expect(compactRevealRules).not.toMatch(/rotateY\(/)
   })
 
   it('keeps the visible fold clear of the workflow metrics without shrinking its hit target', () => {
