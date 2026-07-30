@@ -11,7 +11,7 @@ describe('site navigation', () => {
     expect(nav.map((item) => item.text)).toEqual([
       '首页',
       '阅读',
-      '案例集',
+      '查案例',
       '提需求',
       '指南',
       '交流群',

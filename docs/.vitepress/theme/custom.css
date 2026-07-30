@@ -126,7 +126,27 @@ body {
 }
 
 .VPSidebar {
+  overflow-y: hidden !important;
+  padding-bottom: 0;
   border-right: 1px solid var(--wbx-line);
+}
+
+.VPSidebar .curtain {
+  z-index: 1;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--wbx-line);
+  background: var(--vp-sidebar-bg-color);
+}
+
+.VPSidebar .nav {
+  height: calc(100dvh - var(--vp-nav-height));
+  margin-right: -32px;
+  padding-right: 32px;
+  padding-bottom: 96px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
 }
 
 .VPSidebarItem .link:hover {
