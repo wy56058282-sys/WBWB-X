@@ -124,21 +124,22 @@ describe('brand configuration', () => {
     expect(filesWithSourceAccent).toEqual([])
   })
 
-  it('clips the oversized 390px hero without enabling page scroll', () => {
+  it('keeps the 390px hero and its trigger within the viewport', () => {
     const source = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const narrowRules = source.slice(source.indexOf('@media (max-width: 420px)'))
 
     expect(source).toMatch(
       /\.wbx-home-layout\s*\{[^}]*overflow-x:\s*clip;/s,
     )
-    expect(narrowRules).toMatch(
-      /\.wbx-hero\s*\{[^}]*width:\s*var\(--wbx-mobile-hero-width\);[^}]*max-width:\s*none;/s,
+    expect(narrowRules).not.toMatch(/--wbx-mobile-hero-width/)
+    expect(narrowRules).not.toMatch(
+      /\.wbx-hero\s*\{[^}]*\b(?:width|max-width)\s*:/s,
     )
-    expect(narrowRules).toMatch(
-      /\.wbx-hero__copy h1\s*\{[^}]*font-size:\s*64px;[^}]*white-space:\s*nowrap;/s,
+    expect(narrowRules).not.toMatch(
+      /\.wbx-hero \.wbx-button\s*\{[^}]*\bwidth\s*:/s,
     )
-    expect(narrowRules).toMatch(
-      /\.wbx-hero \.wbx-button\s*\{[^}]*width:\s*472px;[^}]*min-height:\s*126px;/s,
+    expect(source).toMatch(
+      /\.wbx-sticker-page__trigger\s*\{[^}]*right:\s*0;[^}]*width:\s*72px;[^}]*height:\s*72px;/s,
     )
   })
 

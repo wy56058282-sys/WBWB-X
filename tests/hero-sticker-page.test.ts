@@ -312,17 +312,23 @@ describe('HeroStickerPage', () => {
     )
   })
 
-  it('keeps the 960px mobile hero surface intact for the opacity fallback', () => {
+  it('keeps the mobile hero turn and trigger within the viewport', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const mobileCss = css.slice(css.indexOf('@media (max-width: 420px)'))
     const artRule = mobileCss.match(/\.wbx-hero__art\s*\{[^}]*\}/s)?.[0] ?? ''
+    const heroRule = mobileCss.match(/\.wbx-hero\s*\{[^}]*\}/s)?.[0] ?? ''
+    const triggerRule =
+      css.match(/\.wbx-sticker-page__trigger\s*\{[^}]*\}/s)?.[0] ?? ''
+
     expect(css).toMatch(
       /\.wbx-home-layout\s*\{[^}]*overflow-x:\s*clip;/s,
     )
-    expect(artRule).toMatch(/min-height:\s*560px;/)
+    expect(mobileCss).not.toMatch(/--wbx-mobile-hero-width/)
+    expect(heroRule).not.toMatch(/\b(?:width|max-width)\s*:/)
     expect(artRule).not.toMatch(/\bwidth\s*:/)
     expect(mobileCss).not.toMatch(/\.wbx-sticker-page\s*\{[^}]*\bwidth\s*:/s)
     expect(mobileCss).not.toMatch(/\.wbx-sticker-page__cover\s*\{[^}]*\bwidth\s*:/s)
+    expect(triggerRule).toMatch(/right:\s*0;[^}]*width:\s*72px;[^}]*height:\s*72px;/s)
     expect(mobileCss).toMatch(
       /\.wbx-sticker-page__inside\s*\{[^}]*grid-template-areas:\s*"sparkx sparkx"\s*"workbuddy zai";[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\);/s,
     )

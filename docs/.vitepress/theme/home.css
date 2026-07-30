@@ -1032,50 +1032,6 @@
 }
 
 @media (max-width: 420px) {
-  .wbx-home {
-    --wbx-mobile-hero-width: 960px;
-
-    padding: 12px 0 0 28px;
-  }
-
-  .wbx-hero {
-    width: var(--wbx-mobile-hero-width);
-    max-width: none;
-  }
-
-  .wbx-hero__copy {
-    padding: 140px 50px 54px;
-  }
-
-  .wbx-hero__copy h1 {
-    margin: 70px 0 60px;
-    font-size: 64px;
-    white-space: nowrap;
-  }
-
-  .wbx-hero__summary {
-    max-width: 680px;
-    font-size: 30px;
-    line-height: 1.8;
-    overflow-wrap: normal;
-  }
-
-  .wbx-hero__actions {
-    width: 472px;
-    gap: 34px;
-    margin-top: 70px;
-  }
-
-  .wbx-hero .wbx-button {
-    width: 472px;
-    min-height: 126px;
-    font-size: 36px;
-  }
-
-  .wbx-hero__art {
-    min-height: 560px;
-  }
-
   .wbx-sticker-page__inside {
     grid-template-areas:
       "sparkx sparkx"
@@ -1099,36 +1055,6 @@
 
   .wbx-partner-sticker img {
     max-height: 52px;
-  }
-
-  .wbx-icon-card {
-    width: 170px;
-    height: 170px;
-  }
-
-  .wbx-icon-card .hn {
-    font-size: 110px;
-  }
-
-  .wbx-icon-card--buddy {
-    top: 34px;
-    left: 190px;
-  }
-
-  .wbx-icon-card--book {
-    top: 260px;
-    left: 45px;
-  }
-
-  .wbx-icon-card--flow {
-    top: 278px;
-    right: auto;
-    left: 455px;
-  }
-
-  .wbx-icon-card--work {
-    bottom: 54px;
-    left: 265px;
   }
 
   .wbx-reading-card {
