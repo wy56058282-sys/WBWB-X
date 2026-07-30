@@ -142,11 +142,11 @@ describe('brand configuration', () => {
     )
   })
 
-  it('keeps the QR modal on the stable replacement path', () => {
+  it('keeps the QR popover on the stable replacement path', () => {
     const source = readFileSync('docs/.vitepress/theme/CommunityQr.vue', 'utf8')
     expect(source).toContain('brand.qrPath')
     expect(source).toContain('withBase(brand.qrPath)')
-    expect(source).toContain('aria-modal="true"')
+    expect(source).not.toContain('aria-modal=')
     expect(source).toContain('按 Escape 关闭')
   })
 
@@ -161,14 +161,14 @@ describe('brand configuration', () => {
     expect(closeButton?.[0]).toContain('aria-label="关闭"')
   })
 
-  it('bounds the community QR dialog by both viewport width and height', () => {
+  it('positions the compact community QR popover inside the viewport', () => {
     const css = readFileSync('docs/.vitepress/theme/custom.css', 'utf8')
 
     expect(css).toMatch(
-      /\.wbx-community-qr\s*\{[^}]*width:\s*min\(100%, 270px\);[^}]*max-height:\s*calc\(100dvh - 48px\);[^}]*overflow-y:\s*auto;/s,
+      /\.wbx-community-qr__layer\s*\{[^}]*position:\s*fixed;[^}]*inset:\s*0;[^}]*background:\s*transparent;/s,
     )
     expect(css).toMatch(
-      /\.wbx-community-qr__image\s*\{[^}]*width:\s*min\(100%, calc\(100dvh - 220px\)\);/s,
+      /\.wbx-community-qr\s*\{[^}]*position:\s*fixed;[^}]*width:\s*min\(calc\(100vw - 24px\), 270px\);[^}]*max-height:\s*calc\(100dvh - 24px\);[^}]*overflow-y:\s*auto;/s,
     )
   })
 })

@@ -163,21 +163,20 @@ body {
   background: var(--wbx-accent-soft) !important;
 }
 
-.wbx-community-qr__backdrop {
+.wbx-community-qr__layer {
   position: fixed;
   z-index: 1000;
   inset: 0;
-  display: grid;
-  place-items: center;
-  overflow-y: auto;
-  padding: 24px 16px;
-  background: rgb(13 16 13 / 72%);
+  pointer-events: none;
+  background: transparent;
 }
 
 .wbx-community-qr {
-  width: min(100%, 270px);
-  max-height: calc(100dvh - 48px);
+  position: fixed;
+  width: min(calc(100vw - 24px), 270px);
+  max-height: calc(100dvh - 24px);
   overflow-y: auto;
+  pointer-events: auto;
   border: 1px solid var(--wbx-ink);
   border-radius: 8px;
   padding: 12px;
@@ -262,10 +261,6 @@ body {
   .VPNavBarTitle .title {
     max-width: 230px;
     font-size: 16px;
-  }
-
-  .wbx-community-qr__backdrop {
-    padding: 16px;
   }
 
   .wbx-community-qr {

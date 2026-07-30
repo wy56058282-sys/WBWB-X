@@ -61,7 +61,7 @@ afterEach(() => {
 })
 
 describe('CommunityQr', () => {
-  it('renders the labelled QR dialog and locks background scrolling when opened', async () => {
+  it('renders a labelled non-modal QR popover without locking background scrolling', async () => {
     const trigger = document.createElement('button')
     document.body.append(trigger)
     mountCommunityQr()
@@ -71,16 +71,37 @@ describe('CommunityQr', () => {
     const dialog = document.querySelector<HTMLElement>('[role="dialog"]')
     const image = dialog?.querySelector('img')
 
-    expect(dialog?.getAttribute('aria-modal')).toBe('true')
+    expect(dialog?.hasAttribute('aria-modal')).toBe(false)
     expect(dialog?.getAttribute('aria-labelledby')).toBe('wbx-community-qr-title')
     expect(dialog?.textContent).toContain('加入交流群')
     expect(image?.getAttribute('src')).toBe('/community/wechat-group.png')
     expect(image?.getAttribute('width')).toBe('800')
     expect(image?.getAttribute('height')).toBe('800')
-    expect(document.body.style.overflow).toBe('hidden')
+    expect(document.body.style.overflow).toBe('')
   })
 
-  it('restores focus to the trigger that originally opened the dialog', async () => {
+  it('anchors below the trigger with right edges aligned', async () => {
+    const trigger = document.createElement('button')
+    trigger.getBoundingClientRect = () =>
+      ({ top: 20, right: 800, bottom: 60 } as DOMRect)
+    document.body.append(trigger)
+    mountCommunityQr()
+
+    await openFrom(trigger)
+
+    const popover = document.querySelector<HTMLElement>('[role="dialog"]')
+    popover!.getBoundingClientRect = () =>
+      ({ width: 270, height: 360 } as DOMRect)
+    Object.defineProperty(window, 'innerWidth', { configurable: true, value: 837 })
+    Object.defineProperty(window, 'innerHeight', { configurable: true, value: 736 })
+    window.dispatchEvent(new Event('resize'))
+    await nextTick()
+
+    expect(popover?.style.left).toBe('530px')
+    expect(popover?.style.top).toBe('68px')
+  })
+
+  it('restores focus to the most recent trigger', async () => {
     const firstTrigger = document.createElement('button')
     const repeatedTrigger = document.createElement('button')
     document.body.append(firstTrigger, repeatedTrigger)
@@ -104,20 +125,37 @@ describe('CommunityQr', () => {
 
     expect(document.querySelector('[role="dialog"]')).toBeNull()
     expect(document.body.style.overflow).toBe('')
-    expect(document.activeElement).toBe(firstTrigger)
+    expect(document.activeElement).toBe(repeatedTrigger)
   })
 
-  it('closes when its backdrop is clicked', async () => {
+  it('closes when clicking outside but not when clicking inside', async () => {
     const trigger = document.createElement('button')
     document.body.append(trigger)
     mountCommunityQr()
 
     await openFrom(trigger)
-    document.querySelector<HTMLElement>('.wbx-community-qr__backdrop')?.click()
+    document.querySelector<HTMLElement>('.wbx-community-qr')?.click()
+    await nextTick()
+    expect(document.querySelector('[role="dialog"]')).not.toBeNull()
+
+    document.body.click()
     await nextTick()
 
     expect(document.querySelector('[role="dialog"]')).toBeNull()
     expect(document.body.style.overflow).toBe('')
+    expect(document.activeElement).toBe(trigger)
+  })
+
+  it('toggles closed when the active trigger is clicked again', async () => {
+    const trigger = document.createElement('button')
+    document.body.append(trigger)
+    mountCommunityQr()
+
+    await openFrom(trigger)
+    openCommunityQr(trigger)
+    await nextTick()
+
+    expect(document.querySelector('[role="dialog"]')).toBeNull()
     expect(document.activeElement).toBe(trigger)
   })
 
