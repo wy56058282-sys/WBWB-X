@@ -5,11 +5,22 @@ import type { HeroStickerPartner } from './heroPartners'
 defineProps<{ partners: HeroStickerPartner[] }>()
 
 const isOpen = ref(false)
+const trigger = ref<HTMLButtonElement | null>(null)
 const open = () => { isOpen.value = true }
 const close = () => { isOpen.value = false }
 const toggle = () => { isOpen.value = !isOpen.value }
+const onPointerenter = (event: PointerEvent) => {
+  if (event.pointerType === 'mouse') open()
+}
+const onClick = (event: MouseEvent & { pointerType?: string }) => {
+  if (event.pointerType === 'mouse') open()
+  else toggle()
+}
 const onKeydown = (event: KeyboardEvent) => {
-  if (event.key === 'Escape') close()
+  if (event.key === 'Escape') {
+    close()
+    trigger.value?.focus()
+  }
 }
 </script>
 
@@ -20,6 +31,17 @@ const onKeydown = (event: KeyboardEvent) => {
     @mouseleave="close"
     @keydown="onKeydown"
   >
+    <button
+      ref="trigger"
+      class="wbx-sticker-page__trigger"
+      type="button"
+      :aria-expanded="isOpen"
+      aria-label="翻开合作伙伴贴纸页"
+      @pointerenter="onPointerenter"
+      @click="onClick"
+    >
+      <span aria-hidden="true">翻开看看</span>
+    </button>
     <div class="wbx-sticker-page__inside" aria-label="合作伙伴">
       <a
         v-for="partner in partners"
@@ -29,6 +51,7 @@ const onKeydown = (event: KeyboardEvent) => {
         target="_blank"
         rel="noopener noreferrer"
         :aria-label="`访问${partner.name === '星火集' ? '' : ' '}${partner.name}`"
+        :tabindex="isOpen ? 0 : -1"
       >
         <img
           :src="partner.logo"
@@ -41,15 +64,5 @@ const onKeydown = (event: KeyboardEvent) => {
     <div class="wbx-sticker-page__cover">
       <slot />
     </div>
-    <button
-      class="wbx-sticker-page__trigger"
-      type="button"
-      :aria-expanded="isOpen"
-      aria-label="翻开合作伙伴贴纸页"
-      @mouseenter="open"
-      @click="toggle"
-    >
-      <span aria-hidden="true">翻开看看</span>
-    </button>
   </div>
 </template>
