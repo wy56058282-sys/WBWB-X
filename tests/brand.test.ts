@@ -133,6 +133,7 @@ describe('brand configuration', () => {
   it('keeps the QR modal on the stable replacement path', () => {
     const source = readFileSync('docs/.vitepress/theme/CommunityQr.vue', 'utf8')
     expect(source).toContain('brand.qrPath')
+    expect(source).toContain('withBase(brand.qrPath)')
     expect(source).toContain('aria-modal="true"')
     expect(source).toContain('按 Escape 关闭')
   })

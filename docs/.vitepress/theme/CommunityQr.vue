@@ -10,6 +10,7 @@ export function openCommunityQr(trigger: HTMLElement | null = null) {
 </script>
 
 <script setup lang="ts">
+import { withBase } from 'vitepress'
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { brand } from '../brand'
 
@@ -117,7 +118,7 @@ onBeforeUnmount(() => {
 
         <img
           class="wbx-community-qr__image"
-          :src="brand.qrPath"
+          :src="withBase(brand.qrPath)"
           alt="WorkBuddy WB-X 微信交流群二维码"
           width="800"
           height="800"
