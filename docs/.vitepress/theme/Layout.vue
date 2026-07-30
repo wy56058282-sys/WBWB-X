@@ -1,11 +1,41 @@
 <script setup lang="ts">
 import DefaultTheme from 'vitepress/theme'
 import { useRoute } from 'vitepress'
-import { computed } from 'vue'
+import { computed, onBeforeUnmount, onMounted } from 'vue'
+import CommunityQr, { openCommunityQr } from './CommunityQr.vue'
 import HomePage from './HomePage.vue'
 
 const route = useRoute()
 const isHome = computed(() => route.path === '/')
+
+function handleCommunityQrTrigger(event: MouseEvent) {
+  if (
+    event.defaultPrevented ||
+    event.button !== 0 ||
+    event.metaKey ||
+    event.ctrlKey ||
+    event.shiftKey ||
+    event.altKey ||
+    !(event.target instanceof Element)
+  ) {
+    return
+  }
+
+  const trigger = event.target.closest<HTMLAnchorElement>('a[href="#community"]')
+  if (!trigger || trigger.textContent?.trim() !== '交流群') return
+
+  event.preventDefault()
+  event.stopPropagation()
+  openCommunityQr(trigger)
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleCommunityQrTrigger, true)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleCommunityQrTrigger, true)
+})
 </script>
 
 <template>
@@ -14,6 +44,8 @@ const isHome = computed(() => route.path === '/')
       <HomePage v-if="isHome" />
     </template>
 
-    <!-- Task 6 owns the global CommunityQr mount at this layout boundary. -->
+    <template #layout-bottom>
+      <CommunityQr />
+    </template>
   </DefaultTheme.Layout>
 </template>

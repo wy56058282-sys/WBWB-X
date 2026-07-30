@@ -74,4 +74,11 @@ describe('brand configuration', () => {
       /\.wbx-hero \.wbx-button\s*\{[^}]*width:\s*472px;[^}]*min-height:\s*126px;/s,
     )
   })
+
+  it('keeps the QR modal on the stable replacement path', () => {
+    const source = readFileSync('docs/.vitepress/theme/CommunityQr.vue', 'utf8')
+    expect(source).toContain('brand.qrPath')
+    expect(source).toContain('aria-modal="true"')
+    expect(source).toContain('按 Escape 关闭')
+  })
 })
