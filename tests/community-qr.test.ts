@@ -1,6 +1,30 @@
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createApp, nextTick, type App } from 'vue'
 import CommunityQr, { openCommunityQr } from '../docs/.vitepress/theme/CommunityQr.vue'
+import Layout from '../docs/.vitepress/theme/Layout.vue'
+
+vi.mock('vitepress', () => ({
+  useRoute: () => ({ path: '/bluebook/' }),
+}))
+
+vi.mock('vitepress/theme', async () => {
+  const { defineComponent, h } = await import('vue')
+
+  return {
+    default: {
+      Layout: defineComponent({
+        name: 'VitePressLayoutShell',
+        setup(_, { slots }) {
+          return () =>
+            h('div', [
+              ...(slots['home-hero-before']?.() ?? []),
+              ...(slots['layout-bottom']?.() ?? []),
+            ])
+        },
+      }),
+    },
+  }
+})
 
 const apps: App[] = []
 
@@ -9,6 +33,15 @@ function mountCommunityQr() {
   document.body.append(host)
 
   const app = createApp(CommunityQr)
+  app.mount(host)
+  apps.push(app)
+}
+
+function mountLayout() {
+  const host = document.createElement('div')
+  document.body.append(host)
+
+  const app = createApp(Layout)
   app.mount(host)
   apps.push(app)
 }
@@ -67,6 +100,8 @@ describe('CommunityQr', () => {
     )
     await nextTick()
 
+    expect(document.querySelector('[role="dialog"]')).toBeNull()
+    expect(document.body.style.overflow).toBe('')
     expect(document.activeElement).toBe(firstTrigger)
   })
 
@@ -95,5 +130,27 @@ describe('CommunityQr', () => {
 
     expect(document.querySelector('[role="dialog"]')).toBeNull()
     expect(document.activeElement).toBe(trigger)
+  })
+})
+
+describe('Layout community triggers', () => {
+  it.each([
+    { name: 'desktop menu', className: 'VPNavBarMenuLink' },
+    { name: 'mobile menu', className: 'VPNavScreenMenuLink' },
+  ])('opens the dialog from the $name 交流群 control', async ({ className }) => {
+    mountLayout()
+
+    const trigger = document.createElement('a')
+    trigger.className = className
+    trigger.href = '#community'
+    trigger.innerHTML = '<span>交流群</span>'
+    document.body.append(trigger)
+
+    const click = new MouseEvent('click', { bubbles: true, cancelable: true, button: 0 })
+    trigger.querySelector('span')?.dispatchEvent(click)
+    await nextTick()
+
+    expect(click.defaultPrevented).toBe(true)
+    expect(document.querySelector('[role="dialog"]')).not.toBeNull()
   })
 })
