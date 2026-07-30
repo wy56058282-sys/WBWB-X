@@ -111,6 +111,7 @@ body {
 
 .VPNavBarTitle .title {
   gap: 10px;
+  border-bottom: 0;
   font-weight: 800;
 }
 
