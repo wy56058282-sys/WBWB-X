@@ -1,11 +1,11 @@
-const firstPart = '/bluebook/第一篇 使用手册：先把 WorkBuddy 用起来/'
-const secondPart = '/bluebook/第二篇 案例篇：从一项任务到一支 AI 团队/'
-const thirdPart = '/bluebook/第三篇 进阶篇：把案例变成自己的工作系统/'
-const fourthPart = '/bluebook/第四篇 岗位与行业落地/'
-const appendix = '/bluebook/附录/'
+const firstPart = '/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/'
+const secondPart = '/wb-x/第二篇 案例篇：从一项任务到一支 AI 团队/'
+const thirdPart = '/wb-x/第三篇 进阶篇：把案例变成自己的工作系统/'
+const fourthPart = '/wb-x/第四篇 岗位与行业落地/'
+const appendix = '/wb-x/附录/'
 
 export const sidebar = [
-  { text: '蓝皮书总览', link: '/bluebook/' },
+  { text: '小白书总览', link: '/wb-x/' },
   {
     text: '第一篇 · 使用手册',
     items: [

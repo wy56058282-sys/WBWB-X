@@ -15,7 +15,7 @@ const readingPaths = [
     title: '从 0 到 1：先把 WorkBuddy 用起来',
     description: '安装、界面、第一个任务、Skill、连接器、API 与自动化。',
     tags: ['新手推荐', '先完成一项任务'],
-    href: '/bluebook/第一篇 使用手册：先把 WorkBuddy 用起来/',
+    href: '/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/',
   },
   {
     icon: 'hn-briefcase',
@@ -23,7 +23,7 @@ const readingPaths = [
     title: '进入真实案例：让任务开始流动',
     description: '办公、文件、远程、资讯、知识、会议、投资和内容增长。',
     tags: ['11 个案例', '任务驱动'],
-    href: '/bluebook/第二篇 案例篇：从一项任务到一支 AI 团队/',
+    href: '/wb-x/第二篇 案例篇：从一项任务到一支 AI 团队/',
   },
   {
     icon: 'hn-sitemap',
@@ -31,7 +31,7 @@ const readingPaths = [
     title: '把案例变成可复用的工作系统',
     description: '打造 Skill、多 Agent 系统设计与可靠的自动化工作流。',
     tags: ['系统进阶', '可靠自动化'],
-    href: '/bluebook/第三篇 进阶篇：把案例变成自己的工作系统/',
+    href: '/wb-x/第三篇 进阶篇：把案例变成自己的工作系统/',
   },
   {
     icon: 'hn-users',
@@ -39,7 +39,7 @@ const readingPaths = [
     title: '落到岗位与行业，组建 AI 团队',
     description: '从通用能力出发，设计适合不同岗位和行业的工作流。',
     tags: ['团队落地', '行业路线'],
-    href: '/bluebook/第四篇 岗位与行业落地/',
+    href: '/wb-x/第四篇 岗位与行业落地/',
   },
 ]
 
@@ -48,37 +48,37 @@ const taskCategories = [
     icon: 'hn-briefcase',
     title: '办公文档',
     description: 'Word · Excel · PPT',
-    href: '/bluebook/第二篇 案例篇：从一项任务到一支 AI 团队/第 11 章 办公三件套：Word、Excel、PPT/',
+    href: '/wb-x/第二篇 案例篇：从一项任务到一支 AI 团队/第 11 章 办公三件套：Word、Excel、PPT/',
   },
   {
     icon: 'hn-folder-open',
     title: '文件与远程',
     description: '整理 · 查找 · 执行',
-    href: '/bluebook/第二篇 案例篇：从一项任务到一支 AI 团队/第 12 章 从整理桌面文件这些小事做起/',
+    href: '/wb-x/第二篇 案例篇：从一项任务到一支 AI 团队/第 12 章 从整理桌面文件这些小事做起/',
   },
   {
     icon: 'hn-newspaper',
     title: '资讯与知识',
     description: '收集 · 筛选 · 复用',
-    href: '/bluebook/第二篇 案例篇：从一项任务到一支 AI 团队/第 15 章 资讯整合：把信息流变成每日通知/',
+    href: '/wb-x/第二篇 案例篇：从一项任务到一支 AI 团队/第 15 章 资讯整合：把信息流变成每日通知/',
   },
   {
     icon: 'hn-chart-line',
     title: '专业分析',
     description: '投资 · 研究 · 诊断',
-    href: '/bluebook/第二篇 案例篇：从一项任务到一支 AI 团队/第 18 章 把投资分析变成你的日常/',
+    href: '/wb-x/第二篇 案例篇：从一项任务到一支 AI 团队/第 18 章 把投资分析变成你的日常/',
   },
   {
     icon: 'hn-video-camera',
     title: '内容生产',
     description: '视频 · 自媒体 · GEO',
-    href: '/bluebook/第二篇 案例篇：从一项任务到一支 AI 团队/第 19 章 一句话召唤 AI 视频团队/',
+    href: '/wb-x/第二篇 案例篇：从一项任务到一支 AI 团队/第 19 章 一句话召唤 AI 视频团队/',
   },
   {
     icon: 'hn-robot',
     title: 'AI 工作系统',
     description: 'Skill · Agent · 自动化',
-    href: '/bluebook/第三篇 进阶篇：把案例变成自己的工作系统/第 24 章 如何进行多 Agent 系统设计/',
+    href: '/wb-x/第三篇 进阶篇：把案例变成自己的工作系统/第 24 章 如何进行多 Agent 系统设计/',
   },
 ]
 
@@ -101,7 +101,7 @@ const workflowSteps = [
             WorkBuddy能干嘛？一套以真实工作为主线的WorkBuddy实践路径。带你从0到1先用起来，再从1到100把每次成功沉淀为可复用的工作系统，真正把AI变成生产力！
           </p>
           <div class="wbx-hero__actions">
-            <a class="wbx-button wbx-button--primary" href="/bluebook/">
+            <a class="wbx-button wbx-button--primary" href="/wb-x/">
               <span>开始阅读</span>
               <i class="hn hn-arrow-right" aria-hidden="true" />
             </a>

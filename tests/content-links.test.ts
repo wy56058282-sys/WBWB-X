@@ -69,12 +69,12 @@ describe('internal content links', () => {
 
   it('reports missing internal targets with the source file and original link', () => {
     const result = runChecker({
-      'bluebook/index.md': '[缺失章节](/bluebook/missing-page/)',
+      'wb-x/index.md': '[缺失章节](/wb-x/missing-page/)',
     })
 
     expect(result.status).toBe(1)
     expect(result.stderr).toContain(
-      'BROKEN_INTERNAL_LINK docs/bluebook/index.md -> /bluebook/missing-page/',
+      'BROKEN_INTERNAL_LINK docs/wb-x/index.md -> /wb-x/missing-page/',
     )
   })
 

@@ -1,6 +1,6 @@
 # 参与共创
 
-WorkBuddy 的能力、界面和使用方式会持续变化。这本蓝皮书希望由真实使用者共同维护：不仅纠正事实，也不断补充可复现的任务、失败经验和团队方法。
+WorkBuddy 的能力、界面和使用方式会持续变化。这本小白书希望由真实使用者共同维护：不仅纠正事实，也不断补充可复现的任务、失败经验和团队方法。
 
 ## 可以贡献什么
 
@@ -14,7 +14,7 @@ WorkBuddy 的能力、界面和使用方式会持续变化。这本蓝皮书希�
 
 如果你已经用 WorkBuddy 跑通了一项真实任务，推荐优先提交到[社区案例集](/cases/)。每个 Case 需要说明使用场景、使用的 Skills、在 WorkBuddy 中的操作、最终效果和验收标准。
 
-请先阅读[Case 投稿指南](/community/case-contributing)。PR 合并后，案例会自动显示在网站的案例集合页；经过进一步复现和编辑的经典任务，未来可能进入蓝皮书正文。
+请先阅读[Case 投稿指南](/community/case-contributing)。PR 合并后，案例会自动显示在网站的案例集合页；经过进一步复现和编辑的经典任务，未来可能进入小白书正文。
 
 ## 最轻量的方式：提交 Issue
 
@@ -28,7 +28,7 @@ WorkBuddy 的能力、界面和使用方式会持续变化。这本蓝皮书希�
 ## 直接修改内容
 
 1. Fork 或克隆仓库。
-2. 找到 `docs/bluebook/` 下对应章节的 `index.md`。
+2. 找到 `docs/wb-x/` 下对应章节的 `index.md`。
 3. 修改内容或在同目录的 `assets/` 中补充素材。
 4. 本地运行 `npm install` 和 `npm run docs:build`。
 5. 提交 Pull Request，并说明改动、原因和验证方式。
@@ -45,7 +45,7 @@ WorkBuddy 的能力、界面和使用方式会持续变化。这本蓝皮书希�
 
 ## 联系我们
 
-如果你想交流共创想法、提交案例，或者参与蓝皮书后续维护，可以扫描二维码联系我们。点击图片可查看大图。
+如果你想交流共创想法、提交案例，或者参与小白书后续维护，可以扫描二维码联系我们。点击图片可查看大图。
 
 <div class="wb-contact-grid">
   <a class="wb-contact-card" href="/article-assets/source-calibration/community/001.jpg" target="_blank" rel="noreferrer">

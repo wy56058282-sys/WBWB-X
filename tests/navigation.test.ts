@@ -26,6 +26,16 @@ describe('site navigation', () => {
     expect(serialized).toContain('附录 B')
   })
 
+  it('uses the approved content brand in the sidebar overview', () => {
+    expect(sidebar[0]).toEqual({ text: '小白书总览', link: '/wb-x/' })
+  })
+
+  it('uses /wb-x/ for every small-book sidebar route', () => {
+    const serialized = JSON.stringify(sidebar)
+    expect(serialized).toContain('/wb-x/')
+    expect(serialized).not.toContain('/bluebook/')
+  })
+
   it('uses the approved SEO title for the browser title', () => {
     expect(config.title).toBe('WorkBuddy 教程与使用指南｜WorkBuddy WB-X 实战小白书')
   })

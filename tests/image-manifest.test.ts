@@ -231,7 +231,7 @@ describe('article image replacement inventory', () => {
     const chapter23 = readFileSync(
       join(
         'docs',
-        'bluebook',
+        'wb-x',
         '第三篇 进阶篇：把案例变成自己的工作系统',
         '第 23 章 其他用法补充：WorkBuddy 实操案例集',
         'index.md',
@@ -241,7 +241,7 @@ describe('article image replacement inventory', () => {
     const chapter24 = readFileSync(
       join(
         'docs',
-        'bluebook',
+        'wb-x',
         '第三篇 进阶篇：把案例变成自己的工作系统',
         '第 24 章 如何进行多 Agent 系统设计',
         'index.md',

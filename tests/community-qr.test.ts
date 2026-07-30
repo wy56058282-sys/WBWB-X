@@ -4,7 +4,7 @@ import CommunityQr, { openCommunityQr } from '../docs/.vitepress/theme/Community
 import Layout from '../docs/.vitepress/theme/Layout.vue'
 
 vi.mock('vitepress', () => ({
-  useRoute: () => ({ path: '/bluebook/' }),
+  useRoute: () => ({ path: '/wb-x/' }),
 }))
 
 vi.mock('vitepress/theme', async () => {

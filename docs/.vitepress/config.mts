@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitepress'
 import { brand } from './brand'
+import { legacyRouteRedirectPlugin } from './legacy-routes'
 import { nav } from './navigation'
 import { sidebar } from './sidebar'
 
@@ -12,6 +13,13 @@ function canonicalPath(relativePath: string) {
 }
 
 export default defineConfig({
+  base: process.env.SITE_BASE ?? '/',
+  vite: {
+    plugins: [legacyRouteRedirectPlugin()],
+    server: {
+      allowedHosts: process.env.WB_PREVIEW_HOST ? [process.env.WB_PREVIEW_HOST] : [],
+    },
+  },
   lang: 'zh-CN',
   title: brand.seo.title,
   description: brand.seo.description,
