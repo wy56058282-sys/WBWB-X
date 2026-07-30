@@ -867,6 +867,12 @@
   }
 }
 
+@media (max-width: 780px) {
+  .wbx-icon-card--people {
+    left: 3%;
+  }
+}
+
 @media (max-width: 760px) {
   .wbx-home {
     padding: 12px 14px 0;

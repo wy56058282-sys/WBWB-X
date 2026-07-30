@@ -120,6 +120,9 @@ describe('home hero icon navigation', () => {
       /@media\s*\(max-width:\s*960px\)\s*\{[\s\S]*?\.wbx-icon-card--people\s*\{[^}]*top:\s*270px;[^}]*left:\s*5%;/,
     )
     expect(css).toMatch(
+      /@media\s*\(max-width:\s*780px\)\s*\{[\s\S]*?\.wbx-icon-card--people\s*\{[^}]*left:\s*3%;/,
+    )
+    expect(css).toMatch(
       /@media\s*\(max-width:\s*420px\)\s*\{[\s\S]*?\.wbx-icon-card--people\s*\{[^}]*top:\s*auto;[^}]*bottom:\s*50px;[^}]*left:\s*4%;/,
     )
   })
