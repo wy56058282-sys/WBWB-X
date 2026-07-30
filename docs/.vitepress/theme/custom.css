@@ -251,6 +251,29 @@ body {
   margin-top: 3px;
 }
 
+.wb-contact-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.wb-contact-card {
+  display: grid;
+  gap: 8px;
+  width: 140px;
+  color: var(--wbx-ink);
+  text-align: center;
+  text-decoration: none;
+}
+
+.wb-contact-card img {
+  display: block;
+  width: 140px;
+  height: auto;
+  margin: 0;
+}
+
 @media (max-width: 760px) {
   .VPNavBar {
     height: 64px;
