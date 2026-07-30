@@ -23,6 +23,17 @@ function mountHomePage() {
 }
 
 describe('home hero icon navigation', () => {
+  it('uses the approved homepage value labels', () => {
+    mountHomePage()
+
+    const labels = Array.from(
+      document.querySelectorAll<HTMLElement>('.wbx-value-strip__item b'),
+      (label) => label.textContent,
+    )
+
+    expect(labels).toEqual(['场景复现', '技能叠加', '社区共创', '系统沉淀'])
+  })
+
   it('offers four labelled links to distinct site sections', () => {
     mountHomePage()
 

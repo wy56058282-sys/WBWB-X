@@ -109,6 +109,10 @@ body {
   height: 28px;
 }
 
+.dark .VPNavBarTitle .logo {
+  filter: invert(1);
+}
+
 .VPNavBarTitle .title {
   gap: 10px;
   border-bottom: 0;
@@ -192,6 +196,11 @@ body {
 .VPSidebarItem.is-active > .item .link {
   color: #0d100d !important;
   background: var(--wbx-accent);
+}
+
+.VPSidebarItem.level-1.is-link.is-active > .item > .link > .text,
+.VPSidebarItem.is-active > .item > .link > .text {
+  color: #0d100d !important;
 }
 
 .VPDocFooter .pager-link {

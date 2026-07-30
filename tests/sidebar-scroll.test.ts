@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs'
 afterEach(() => {
   document.head.replaceChildren()
   document.body.replaceChildren()
+  document.documentElement.removeAttribute('class')
 })
 
 describe('desktop sidebar scrolling', () => {
@@ -36,5 +37,39 @@ describe('desktop sidebar scrolling', () => {
     expect(getComputedStyle(nav).overflowY).toBe('auto')
     expect(getComputedStyle(nav).scrollbarGutter).toBe('auto')
     expect(getComputedStyle(title).borderBottomWidth).toBe('0px')
+  })
+
+  it('keeps the logo and active sidebar label visible in dark mode', () => {
+    const vitepressDefaults = document.createElement('style')
+    vitepressDefaults.textContent =
+      '.VPSidebarItem.level-1.is-link > .item > .link > .text { color: #1d6b56 !important; }'
+    document.head.append(vitepressDefaults)
+
+    const style = document.createElement('style')
+    style.textContent = readFileSync('docs/.vitepress/theme/custom.css', 'utf8')
+    document.head.append(style)
+    document.documentElement.className = 'dark'
+
+    const navBarTitle = document.createElement('div')
+    navBarTitle.className = 'VPNavBarTitle'
+    const logo = document.createElement('img')
+    logo.className = 'logo'
+    navBarTitle.append(logo)
+
+    const activeItem = document.createElement('div')
+    activeItem.className = 'VPSidebarItem level-1 is-link is-active'
+    const item = document.createElement('div')
+    item.className = 'item'
+    const link = document.createElement('a')
+    link.className = 'link'
+    const text = document.createElement('p')
+    text.className = 'text'
+    link.append(text)
+    item.append(link)
+    activeItem.append(item)
+    document.body.append(navBarTitle, activeItem)
+
+    expect(getComputedStyle(logo).filter).toBe('invert(1)')
+    expect(getComputedStyle(text).color).toBe('rgb(13, 16, 13)')
   })
 })

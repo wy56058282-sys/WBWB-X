@@ -3,8 +3,8 @@ import { withBase } from 'vitepress'
 import { brand } from '../brand'
 
 const valueProps = [
-  { icon: 'hn-check-box', title: '真实任务', label: 'REAL TASKS' },
-  { icon: 'hn-refresh', title: '可复现', label: 'REPRODUCIBLE' },
+  { icon: 'hn-check-box', title: '场景复现', label: 'REAL TASKS' },
+  { icon: 'hn-refresh', title: '技能叠加', label: 'REPRODUCIBLE' },
   { icon: 'hn-handshake', title: '社区共创', label: 'OPEN SOURCE' },
   { icon: 'hn-grid', title: '系统沉淀', label: 'WORK SYSTEM' },
 ]
