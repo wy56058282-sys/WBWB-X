@@ -229,12 +229,15 @@ const workflowSteps = [
       <i class="hn hn-book wbx-community__icon" aria-hidden="true" />
     </section>
 
-    <footer class="wbx-home-footer">
+  </main>
+
+  <footer class="wbx-home-footer">
+    <div class="wbx-home-footer__inner">
       <p>
         以真实任务为主线的 WorkBuddy 社区实战读本 · Pixel icons by
         <a href="https://pixeliconlibrary.com/" target="_blank" rel="noreferrer">HackerNoon</a>
       </p>
       <p>Copyright © 2026 {{ brand.author }}</p>
-    </footer>
-  </main>
+    </div>
+  </footer>
 </template>

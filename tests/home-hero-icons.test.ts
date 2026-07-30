@@ -37,4 +37,16 @@ describe('home hero icon navigation', () => {
       ['查看 Part 2 案例篇', '/wb-x/第二篇 案例篇：从一项任务到一支 AI 团队/'],
     ])
   })
+
+  it('renders the footer outside the constrained home content with an aligned inner container', () => {
+    mountHomePage()
+
+    const home = document.querySelector('.wbx-home')
+    const footer = document.querySelector('.wbx-home-footer')
+    const inner = footer?.querySelector('.wbx-home-footer__inner')
+
+    expect(home?.contains(footer)).toBe(false)
+    expect(footer?.parentElement).toBe(home?.parentElement)
+    expect(inner).not.toBeNull()
+  })
 })
