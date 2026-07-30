@@ -5,15 +5,31 @@
   --wbx-surface: #ffffff;
   --wbx-muted: #656b60;
   --wbx-line: #d7dbd0;
-  --wbx-accent-soft: #d9f9f0;
+  --wbx-accent-soft: color-mix(
+    in srgb,
+    var(--wbx-accent) 18%,
+    var(--wbx-surface)
+  );
   --wbx-pixel: "Silkscreen", "SFMono-Regular", Consolas, monospace;
   --wbx-body: "Avenir Next", Avenir, "PingFang SC", "Hiragino Sans GB",
     "Microsoft YaHei", sans-serif;
   --wbx-shadow: 4px 4px 0 var(--wbx-ink);
   --vp-font-family-base: var(--wbx-body);
-  --vp-c-brand-1: #08745c;
-  --vp-c-brand-2: #0a9273;
-  --vp-c-brand-3: #075c4a;
+  --vp-c-brand-1: color-mix(
+    in srgb,
+    var(--wbx-accent) 50%,
+    var(--wbx-ink)
+  );
+  --vp-c-brand-2: color-mix(
+    in srgb,
+    var(--wbx-accent) 64%,
+    var(--wbx-ink)
+  );
+  --vp-c-brand-3: color-mix(
+    in srgb,
+    var(--wbx-accent) 38%,
+    var(--wbx-ink)
+  );
   --vp-c-brand-soft: rgb(50 230 185 / 22%);
   --vp-c-bg: var(--wbx-paper);
   --vp-c-bg-alt: #eef1e9;
@@ -28,7 +44,11 @@
   --vp-code-lang-color: var(--wbx-accent);
   --vp-code-line-highlight-color: rgb(50 230 185 / 12%);
   --vp-custom-block-tip-bg: var(--wbx-accent-soft);
-  --vp-custom-block-tip-border: #08745c;
+  --vp-custom-block-tip-border: color-mix(
+    in srgb,
+    var(--wbx-accent) 50%,
+    var(--wbx-ink)
+  );
 }
 
 .dark {
@@ -37,10 +57,22 @@
   --wbx-surface: #181b15;
   --wbx-muted: #aeb4a7;
   --wbx-line: #343a2f;
-  --wbx-accent-soft: #143b31;
+  --wbx-accent-soft: color-mix(
+    in srgb,
+    var(--wbx-accent) 18%,
+    var(--wbx-surface)
+  );
   --vp-c-brand-1: var(--wbx-accent);
-  --vp-c-brand-2: #58efc9;
-  --vp-c-brand-3: #82f5d8;
+  --vp-c-brand-2: color-mix(
+    in srgb,
+    var(--wbx-accent) 84%,
+    #ffffff
+  );
+  --vp-c-brand-3: color-mix(
+    in srgb,
+    var(--wbx-accent) 68%,
+    #ffffff
+  );
   --vp-c-brand-soft: rgb(50 230 185 / 14%);
   --vp-c-bg: var(--wbx-paper);
   --vp-c-bg-alt: #151812;
@@ -53,7 +85,7 @@
   --vp-nav-bg-color: rgb(16 18 14 / 94%);
   --vp-sidebar-bg-color: #141712;
   --vp-code-lang-color: var(--wbx-accent);
-  --vp-custom-block-tip-bg: #143b31;
+  --vp-custom-block-tip-bg: var(--wbx-accent-soft);
   --vp-custom-block-tip-border: var(--wbx-accent);
 }
 
