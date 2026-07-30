@@ -60,7 +60,7 @@ describe('HeroStickerPage', () => {
     await Promise.resolve()
     expect(root.dataset.open).toBe('true')
 
-    root.dispatchEvent(new MouseEvent('mouseleave'))
+    root.dispatchEvent(pointerEvent('pointerleave', 'mouse'))
     await Promise.resolve()
     expect(root.dataset.open).toBe('false')
   })
@@ -97,7 +97,7 @@ describe('HeroStickerPage', () => {
     await Promise.resolve()
     expect(root.dataset.open).toBe('true')
 
-    root.dispatchEvent(new MouseEvent('mouseleave'))
+    root.dispatchEvent(pointerEvent('pointerleave', 'mouse'))
     trigger.dispatchEvent(pointerEvent('pointerenter', 'touch'))
     await Promise.resolve()
     expect(root.dataset.open).toBe('false')
@@ -105,6 +105,21 @@ describe('HeroStickerPage', () => {
     trigger.dispatchEvent(pointerEvent('click', 'touch'))
     await Promise.resolve()
     expect(root.dataset.open).toBe('true')
+  })
+
+  it('ignores touch and synthesized mouse leave after touch opens', async () => {
+    mountComponent()
+    const root = document.querySelector<HTMLElement>('.wbx-sticker-page')!
+    const trigger = document.querySelector<HTMLButtonElement>('.wbx-sticker-page__trigger')!
+
+    trigger.dispatchEvent(pointerEvent('pointerenter', 'touch'))
+    trigger.dispatchEvent(pointerEvent('click', 'touch'))
+    root.dispatchEvent(pointerEvent('pointerleave', 'touch'))
+    root.dispatchEvent(new MouseEvent('mouseleave'))
+    await Promise.resolve()
+
+    expect(root.dataset.open).toBe('true')
+    expect(trigger.getAttribute('aria-expanded')).toBe('true')
   })
 
   it('returns focus to the trigger when Escape closes focused stickers', async () => {

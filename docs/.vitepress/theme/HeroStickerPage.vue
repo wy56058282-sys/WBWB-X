@@ -12,6 +12,9 @@ const toggle = () => { isOpen.value = !isOpen.value }
 const onPointerenter = (event: PointerEvent) => {
   if (event.pointerType === 'mouse') open()
 }
+const onPointerleave = (event: PointerEvent) => {
+  if (event.pointerType === 'mouse') close()
+}
 const onClick = (event: MouseEvent & { pointerType?: string }) => {
   if (event.pointerType === 'mouse') open()
   else toggle()
@@ -28,7 +31,7 @@ const onKeydown = (event: KeyboardEvent) => {
   <div
     class="wbx-sticker-page"
     :data-open="String(isOpen)"
-    @mouseleave="close"
+    @pointerleave="onPointerleave"
     @keydown="onKeydown"
   >
     <button
