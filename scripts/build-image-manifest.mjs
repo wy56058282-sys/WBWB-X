@@ -425,6 +425,18 @@ function stagedCalibrationPath(stagedCalibrationRoot, publicPath) {
   )
 }
 
+function stagedReplacementPath(stagedReplacementRoot, publicPath) {
+  assertManagedPath(
+    publicPath,
+    '/article-assets/replacements',
+    'Replacement path',
+  )
+  return join(
+    stagedReplacementRoot,
+    posix.relative('/article-assets/replacements', publicPath),
+  )
+}
+
 async function replaceCandidatesAtomically(candidates, stagingRoot) {
   const backupRoot = join(stagingRoot, 'backups')
   await mkdir(backupRoot, { recursive: true })
@@ -462,11 +474,18 @@ if (!sourceRootStats.isDirectory()) {
 const workflowState = await loadWorkflowState()
 const stagingRoot = await mkdtemp(join(repositoryRoot, '.image-manifest-staging-'))
 const stagedCalibrationRoot = join(stagingRoot, 'source-calibration')
+const stagedReplacementRoot = join(stagingRoot, 'replacements')
 const stagedJsonPath = join(stagingRoot, 'image-manifest.generated.json')
 const stagedCsvPath = join(stagingRoot, 'article-image-replacement-manifest.csv')
-await mkdir(stagedCalibrationRoot, { recursive: true })
 
 try {
+  await mkdir(stagedCalibrationRoot, { recursive: true })
+  if (await pathExists(replacementRoot)) {
+    await cp(replacementRoot, stagedReplacementRoot, { recursive: true })
+  } else {
+    await mkdir(stagedReplacementRoot, { recursive: true })
+  }
+
   const markdownFiles = (await filesUnder(contentRoot))
     .filter((filePath) => filePath.endsWith('.md'))
     .map((filePath) => ({ filePath, ...pageDetails(filePath) }))
@@ -481,6 +500,7 @@ try {
   const recordsBySourcePath = new Map()
   const mediaDependencies = []
   const markdownCandidates = []
+  const notesById = new Map()
 
   for (const { filePath: markdownPath, id: pagePrefix } of markdownFiles) {
     const currentMarkdown = await readFile(markdownPath, 'utf8')
@@ -569,23 +589,40 @@ try {
             format,
             status: 'awaiting-replacement',
             sourcePath,
+            generatedReplacementPath: replacementPath,
           }
+          const preservedState = preservedWorkflowState(
+            record,
+            replacementPath,
+            workflowState,
+          )
+          record.status = preservedState.status
+          record.replacementPath = preservedState.replacementPath
+          notesById.set(record.id, preservedState.notes)
           records.push(record)
           recordsBySourcePath.set(sourcePath, record)
         }
 
-        if (
-          currentTarget !== sourceReference.target
-          && currentTarget !== record.calibrationPath
-        ) {
+        const validCurrentTargets = new Set([
+          sourceReference.target,
+          record.calibrationPath,
+          record.generatedReplacementPath,
+          record.replacementPath,
+        ])
+        if (!validCurrentTargets.has(currentTarget)) {
           throw new Error(
             `${markdownPath} image ${referenceIndex} is out of source order: ${currentTarget}`,
           )
         }
 
-        hrefReplacements.set(currentTarget, record.calibrationPath)
-        hrefReplacements.set(sourceReference.target, record.calibrationPath)
-        return `${prefix}${record.calibrationPath}${suffix}`
+        const renderedPath =
+          record.status === 'awaiting-replacement'
+            ? record.calibrationPath
+            : record.replacementPath
+        for (const target of validCurrentTargets) {
+          hrefReplacements.set(target, renderedPath)
+        }
+        return `${prefix}${renderedPath}${suffix}`
       },
     )
 
@@ -640,7 +677,6 @@ try {
   const seenSourceUrls = new Set()
   const seenCalibrationPaths = new Set()
   const seenReplacementPaths = new Set()
-  const notesById = new Map()
 
   if (records.length === 0) {
     throw new Error('Generated image manifest must contain at least one record')
@@ -654,15 +690,6 @@ try {
     if (seenCalibrationPaths.has(record.calibrationPath)) {
       throw new Error(`Duplicate calibration path: ${record.calibrationPath}`)
     }
-
-    const defaultReplacementPath = record.replacementPath
-    const preservedState = preservedWorkflowState(
-      record,
-      defaultReplacementPath,
-      workflowState,
-    )
-    record.status = preservedState.status
-    record.replacementPath = preservedState.replacementPath
 
     assertManagedPath(
       record.calibrationPath,
@@ -688,7 +715,6 @@ try {
     seenSourceUrls.add(record.sourceUrl)
     seenCalibrationPaths.add(record.calibrationPath)
     seenReplacementPaths.add(record.replacementPath)
-    notesById.set(record.id, preservedState.notes)
 
     const calibrationFile = stagedCalibrationPath(
       stagedCalibrationRoot,
@@ -697,6 +723,7 @@ try {
     await mkdir(dirname(calibrationFile), { recursive: true })
     await cp(record.sourcePath, calibrationFile)
     delete record.sourcePath
+    delete record.generatedReplacementPath
   }
 
   const seenMediaPaths = new Set()
@@ -740,6 +767,7 @@ try {
 
   const atomicCandidates = [
     { candidate: stagedCalibrationRoot, target: calibrationRoot },
+    { candidate: stagedReplacementRoot, target: replacementRoot },
     { candidate: stagedJsonPath, target: jsonPath },
     { candidate: stagedCsvPath, target: csvPath },
   ]
@@ -757,10 +785,9 @@ try {
     atomicCandidates.push({ candidate, target: markdown.target })
   }
 
-  await mkdir(replacementRoot, { recursive: true })
   for (const record of records) {
     const replacementDirectory = dirname(
-      join(repositoryRoot, 'docs', 'public', record.replacementPath),
+      stagedReplacementPath(stagedReplacementRoot, record.replacementPath),
     )
     await mkdir(replacementDirectory, { recursive: true })
     await writeFile(join(replacementDirectory, '.gitkeep'), '', { flag: 'a' })

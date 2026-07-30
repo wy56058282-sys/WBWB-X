@@ -154,7 +154,9 @@ describe('article image replacement inventory', () => {
       )
       expect(item.sourceWidth).toBeGreaterThan(0)
       expect(item.sourceHeight).toBeGreaterThan(0)
-      expect(item.status).toBe('awaiting-replacement')
+      expect(['awaiting-replacement', 'replaced', 'approved']).toContain(
+        item.status,
+      )
       expect(existsSync(join('docs', 'public', item.calibrationPath))).toBe(true)
       expect(
         existsSync(dirname(join('docs', 'public', item.replacementPath))),
@@ -186,7 +188,13 @@ describe('article image replacement inventory', () => {
         ),
       ]
 
-      expect(imagePaths).toEqual(records.map((item) => item.calibrationPath))
+      expect(imagePaths).toEqual(
+        records.map((item) =>
+          item.status === 'awaiting-replacement'
+            ? item.calibrationPath
+            : item.replacementPath,
+        ),
+      )
       expect(records.map((item) => item.order)).toEqual(
         records.map((_, index) => index + 1),
       )

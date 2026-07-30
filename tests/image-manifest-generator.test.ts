@@ -1,4 +1,5 @@
 import {
+  chmodSync,
   cpSync,
   existsSync,
   mkdirSync,
@@ -238,7 +239,7 @@ describe('image manifest generator transactions', () => {
     ).toEqual([])
   })
 
-  it('preserves notes, advanced status, replacement metadata, and replacement files', () => {
+  it('preserves workflow state and keeps advanced Markdown on replacement paths', () => {
     const fixture = createFixture()
     expect(runGenerator(fixture).status).toBe(0)
     const manifestPath = join(
@@ -256,6 +257,8 @@ describe('image manifest generator transactions', () => {
       '/article-assets/replacements/ch01/final-approved.png'
     manifest[0].status = 'approved'
     manifest[0].replacementPath = replacementPath
+    manifest[1].status = 'replaced'
+    const defaultReplacementPath = manifest[1].replacementPath
     writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`)
 
     const csv = parseCsv(readFileSync(csvPath, 'utf8'))
@@ -271,6 +274,13 @@ describe('image manifest generator transactions', () => {
       replacementPath,
     )
     writeFile(replacementFile, 'approved replacement bytes')
+    const defaultReplacementFile = join(
+      fixture.repository,
+      'docs',
+      'public',
+      defaultReplacementPath,
+    )
+    writeFile(defaultReplacementFile, 'default replacement bytes')
 
     const result = runGenerator(fixture)
 
@@ -280,6 +290,11 @@ describe('image manifest generator transactions', () => {
       id: 'ch01-001',
       status: 'approved',
       replacementPath,
+    })
+    expect(regeneratedManifest[1]).toMatchObject({
+      id: 'ch02-001',
+      status: 'replaced',
+      replacementPath: defaultReplacementPath,
     })
     const regeneratedCsv = parseCsv(readFileSync(csvPath, 'utf8'))
     const regeneratedHeader = regeneratedCsv[0]
@@ -294,6 +309,60 @@ describe('image manifest generator transactions', () => {
     expect(readFileSync(replacementFile, 'utf8')).toBe(
       'approved replacement bytes',
     )
+    expect(readFileSync(defaultReplacementFile, 'utf8')).toBe(
+      'default replacement bytes',
+    )
+    expect(readFileSync(fixture.markdownPaths[0], 'utf8')).toContain(
+      `![demo](${replacementPath})`,
+    )
+    expect(readFileSync(fixture.markdownPaths[1], 'utf8')).toContain(
+      `![demo](${defaultReplacementPath})`,
+    )
+
+    const beforeRerun = generatedState(fixture)
+    expect(runGenerator(fixture).status).toBe(0)
+    expect(generatedState(fixture)).toEqual(beforeRerun)
+  })
+
+  it('rolls back replacement slot scaffolding when a late swap fails', () => {
+    const fixture = createFixture()
+    expect(runGenerator(fixture).status).toBe(0)
+    const manifestPath = join(
+      fixture.repository,
+      'docs',
+      '.vitepress',
+      'image-manifest.generated.json',
+    )
+    const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
+    manifest[0].status = 'approved'
+    manifest[0].replacementPath =
+      '/article-assets/replacements/ch01/late-swap/final.png'
+    writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`)
+    const replacementRoot = join(
+      fixture.repository,
+      'docs',
+      'public',
+      'article-assets',
+      'replacements',
+    )
+    const before = treeSnapshot(replacementRoot)
+    const vitepressRoot = join(fixture.repository, 'docs', '.vitepress')
+
+    let result
+    chmodSync(vitepressRoot, 0o555)
+    try {
+      result = runGenerator(fixture)
+    } finally {
+      chmodSync(vitepressRoot, 0o755)
+    }
+
+    expect(result.status).not.toBe(0)
+    expect(treeSnapshot(replacementRoot)).toEqual(before)
+    expect(
+      readdirSync(fixture.repository).filter((name) =>
+        name.startsWith('.image-manifest-staging-'),
+      ),
+    ).toEqual([])
   })
 
   it('produces identical outputs on a successful rerun', () => {
