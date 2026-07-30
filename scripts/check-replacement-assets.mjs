@@ -51,6 +51,7 @@ async function filesUnder(directory) {
 function isAssetReference(line) {
   return /!\[[^\]]*\]\(/.test(line)
     || /\b(?:src|srcset)\s*[:=]/.test(line)
+    || /<(?:link|use|image|script|source|video|audio|object|embed)\b[^>]*(?:href|xlink:href)\s*=/.test(line)
     || /\burl\(/.test(line)
     || /\bimport\b.*['"]https:\/\/workbuddy\.homes\//.test(line)
 }

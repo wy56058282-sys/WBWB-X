@@ -49,6 +49,8 @@ describe('required brand assets', () => {
         '.logo { background: url(https://workbuddy.homes/logo.svg); } /* Source attribution */',
         "import logo from 'https://workbuddy.homes/logo.svg' // Source attribution",
         '<img :src="\'https://workbuddy.homes/logo.svg\'" alt="Source attribution">',
+        '<link href="https://workbuddy.homes/styles.css" rel="stylesheet" data-note="Source attribution">',
+        '<use href="https://workbuddy.homes/sprite.svg#icon" data-note="Source attribution">',
       ]
 
       for (const assetReference of assetReferences) {
