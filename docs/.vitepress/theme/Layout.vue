@@ -12,7 +12,6 @@ const isHome = computed(() => isHomeRoute(route.path, site.value.base))
 
 function handleCommunityQrTrigger(event: MouseEvent) {
   if (
-    event.defaultPrevented ||
     event.button !== 0 ||
     event.metaKey ||
     event.ctrlKey ||

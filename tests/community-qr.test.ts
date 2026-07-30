@@ -136,6 +136,29 @@ describe('CommunityQr', () => {
 })
 
 describe('Layout community triggers', () => {
+  it('opens after VitePress has already prevented the navigation click', async () => {
+    const vitePressNavigationHandler = (event: MouseEvent) => event.preventDefault()
+    document.addEventListener('click', vitePressNavigationHandler, true)
+
+    try {
+      mountLayout()
+
+      const trigger = document.createElement('a')
+      trigger.href = '#community'
+      trigger.textContent = '交流群'
+      document.body.append(trigger)
+
+      trigger.dispatchEvent(
+        new MouseEvent('click', { bubbles: true, cancelable: true, button: 0 }),
+      )
+      await nextTick()
+
+      expect(document.querySelector('[role="dialog"]')).not.toBeNull()
+    } finally {
+      document.removeEventListener('click', vitePressNavigationHandler, true)
+    }
+  })
+
   it.each([
     { name: 'desktop menu', className: 'VPNavBarMenuLink' },
     { name: 'mobile menu', className: 'VPNavScreenMenuLink' },
