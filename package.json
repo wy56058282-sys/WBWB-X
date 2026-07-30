@@ -2,6 +2,10 @@
   "name": "workbuddy-wb-x",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@11.9.0",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "vitepress dev docs",
     "build": "vitepress build docs",
@@ -9,7 +13,7 @@
     "test": "vitest run",
     "check:links": "node scripts/check-content-links.mjs",
     "check:assets": "node scripts/check-replacement-assets.mjs",
-    "check": "pnpm test && pnpm run check:links && pnpm run check:assets && pnpm run build"
+    "check": "npm test && npm run check:links && npm run check:assets && npm run build"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
