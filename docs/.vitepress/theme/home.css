@@ -129,6 +129,128 @@
   min-height: 568px;
 }
 
+.wbx-sticker-page {
+  position: relative;
+  min-height: inherit;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.wbx-sticker-page__inside,
+.wbx-sticker-page__cover {
+  position: absolute;
+  inset: 0;
+}
+
+.wbx-sticker-page__inside {
+  display: grid;
+  grid-template-areas:
+    ". sparkx ."
+    "workbuddy . zai";
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  padding: 58px 48px 70px;
+  border-left: 1px solid #0d100d;
+  background: #fffdf5;
+}
+
+.wbx-sticker-page__cover {
+  z-index: 2;
+  background: var(--wbx-accent);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  transform-origin: 100% 100%;
+  transition:
+    clip-path 260ms cubic-bezier(0.23, 1, 0.32, 1),
+    filter 260ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.wbx-sticker-page[data-open="true"] .wbx-sticker-page__cover {
+  clip-path: polygon(0 0, 100% 0, 0 0, 0 100%);
+  filter: drop-shadow(-14px -10px 0 rgb(13 16 13 / 18%));
+  pointer-events: none;
+}
+
+.wbx-sticker-page__trigger {
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  bottom: 0;
+  width: 72px;
+  height: 72px;
+  border: 0;
+  color: #0d100d;
+  background: linear-gradient(135deg, transparent 49%, #fffdf5 50%);
+  cursor: pointer;
+}
+
+.wbx-sticker-page__trigger span {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  width: 54px;
+  font-family: var(--wbx-pixel);
+  font-size: 8px;
+  line-height: 1.25;
+  text-align: right;
+}
+
+.wbx-partner-sticker {
+  display: grid;
+  min-width: 120px;
+  min-height: 96px;
+  place-items: center;
+  padding: 18px;
+  border: 2px solid #0d100d;
+  color: #0d100d;
+  background: #ffffff;
+  box-shadow: 8px 8px 0 #0d100d;
+  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.wbx-partner-sticker:nth-child(1) {
+  grid-area: sparkx;
+  transform: rotate(-4deg);
+}
+
+.wbx-partner-sticker:nth-child(2) {
+  grid-area: workbuddy;
+  transform: rotate(3deg);
+}
+
+.wbx-partner-sticker:nth-child(3) {
+  grid-area: zai;
+  transform: rotate(-2deg);
+}
+
+.wbx-partner-sticker:hover,
+.wbx-partner-sticker:focus-visible {
+  transform: translate(-3px, -3px) rotate(0deg);
+}
+
+.wbx-partner-sticker:focus-visible {
+  outline: 3px solid var(--wbx-accent);
+  outline-offset: 4px;
+}
+
+.wbx-partner-sticker:active {
+  transform: scale(0.97);
+}
+
+.wbx-partner-sticker img {
+  max-width: 100%;
+  max-height: 72px;
+  object-fit: contain;
+}
+
+.wbx-partner-sticker img:not([hidden]) + .wbx-partner-sticker__fallback {
+  display: none;
+}
+
+.wbx-partner-sticker__fallback {
+  font-weight: 760;
+  text-align: center;
+}
+
 .wbx-hero__monogram {
   position: absolute;
   top: 62px;
@@ -225,6 +347,19 @@
 @media (prefers-reduced-motion: reduce) {
   .wbx-icon-card {
     animation: none;
+  }
+
+  .wbx-sticker-page__cover {
+    transition: opacity 1ms linear;
+  }
+
+  .wbx-sticker-page[data-open="true"] .wbx-sticker-page__cover {
+    clip-path: none;
+    opacity: 0;
+  }
+
+  .wbx-partner-sticker {
+    transition: none;
   }
 }
 
@@ -721,6 +856,10 @@
     min-height: 380px;
   }
 
+  .wbx-sticker-page__inside {
+    padding: 36px 28px 58px;
+  }
+
   .wbx-hero__monogram {
     top: 38px;
     right: 25px;
@@ -895,6 +1034,11 @@
   }
 
   .wbx-hero__art {
+    min-height: 560px;
+  }
+
+  .wbx-sticker-page {
+    height: 560px;
     min-height: 560px;
   }
 

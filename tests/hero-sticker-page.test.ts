@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import { afterEach, describe, expect, it } from 'vitest'
 import { createApp, h, type App } from 'vue'
 import HeroStickerPage from '../docs/.vitepress/theme/HeroStickerPage.vue'
@@ -132,5 +133,19 @@ describe('HeroStickerPage', () => {
     expect(link.rel).toBe('noopener noreferrer')
     expect(link.getAttribute('aria-label')).toBe('访问星火集')
     expect(link.querySelector('.wbx-partner-sticker__fallback')?.textContent).toBe('星火集')
+  })
+
+  it('defines the approved reveal timing and reduced-motion fallback', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+
+    expect(css).toMatch(
+      /\.wbx-sticker-page__cover\s*\{[^}]*260ms cubic-bezier\(0\.23,\s*1,\s*0\.32,\s*1\)/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-sticker-page__trigger\s*\{[^}]*width:\s*72px;[^}]*height:\s*72px;/s,
+    )
+    expect(css).toMatch(
+      /@media \(prefers-reduced-motion:\s*reduce\)\s*\{[\s\S]*?\.wbx-sticker-page__cover/s,
+    )
   })
 })
