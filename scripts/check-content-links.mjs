@@ -1,4 +1,4 @@
-import { existsSync, readdirSync, readFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { relative, resolve, sep } from 'node:path'
 
 const docsRoot = resolve(process.argv[2] ?? 'docs')
@@ -54,7 +54,11 @@ for (const sourcePath of markdownFiles(docsRoot)) {
 
   for (const href of internalLinks(markdown)) {
     checked += 1
-    if (!targetCandidates(href).some(existsSync)) {
+    if (
+      !targetCandidates(href).some(
+        (candidate) => existsSync(candidate) && statSync(candidate).isFile(),
+      )
+    ) {
       broken.push(
         `BROKEN_INTERNAL_LINK docs/${relative(docsRoot, sourcePath).split(sep).join('/')} -> ${href}`,
       )

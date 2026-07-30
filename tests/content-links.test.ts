@@ -86,4 +86,16 @@ describe('internal content links', () => {
 
     expect(result.status).toBe(0)
   })
+
+  it('rejects a bare public directory without a served file or index', () => {
+    const result = runChecker({
+      'index.md': '[下载目录](/downloads)',
+      'public/downloads/.gitkeep': '',
+    })
+
+    expect(result.status).toBe(1)
+    expect(result.stderr).toContain(
+      'BROKEN_INTERNAL_LINK docs/index.md -> /downloads',
+    )
+  })
 })
