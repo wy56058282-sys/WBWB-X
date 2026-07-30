@@ -7,8 +7,13 @@ defineProps<{ partners: HeroStickerPartner[] }>()
 const isOpen = ref(false)
 const page = ref<HTMLElement | null>(null)
 const inside = ref<HTMLElement | null>(null)
+const cover = ref<HTMLElement | null>(null)
 const trigger = ref<HTMLButtonElement | null>(null)
-const open = () => { isOpen.value = true }
+const open = () => {
+  const shouldMoveFocus = cover.value?.contains(document.activeElement)
+  isOpen.value = true
+  if (shouldMoveFocus) trigger.value?.focus()
+}
 const close = (restoreFocus = false) => {
   if (!isOpen.value) return
 
@@ -95,6 +100,7 @@ onBeforeUnmount(() =>
       </a>
     </div>
     <div
+      ref="cover"
       class="wbx-sticker-page__cover"
       :aria-hidden="String(isOpen)"
       :inert="isOpen ? '' : null"

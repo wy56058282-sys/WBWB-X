@@ -122,6 +122,22 @@ describe('HeroStickerPage', () => {
     expect(availableFocusables()).toEqual([trigger, ...partnerLinks])
   })
 
+  it('moves focus out of the cover when mouse hover opens the page', async () => {
+    mountComponent()
+    const root = document.querySelector<HTMLElement>('.wbx-sticker-page')!
+    const trigger = document.querySelector<HTMLButtonElement>('.wbx-sticker-page__trigger')!
+    const coverLink = document.querySelector<HTMLAnchorElement>('.cover-proof')!
+
+    coverLink.focus()
+    expect(document.activeElement).toBe(coverLink)
+
+    trigger.dispatchEvent(pointerEvent('pointerenter', 'mouse'))
+    await Promise.resolve()
+
+    expect(root.dataset.open).toBe('true')
+    expect(document.activeElement).toBe(trigger)
+  })
+
   it('keeps mouse hover open through its click and lets touch click toggle', async () => {
     mountComponent()
     const root = document.querySelector<HTMLElement>('.wbx-sticker-page')!
