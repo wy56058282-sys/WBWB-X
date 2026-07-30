@@ -5,11 +5,64 @@ import { describe, expect, it } from 'vitest'
 import manifest from '../docs/.vitepress/image-manifest.generated.json'
 
 const fixturePath = join('docs', '.asset-validation-fixture.md')
+const csvColumns = [
+  'id',
+  'page',
+  'order',
+  'purpose',
+  'sourceUrl',
+  'calibrationPath',
+  'replacementPath',
+  'sourceWidth',
+  'sourceHeight',
+  'format',
+  'status',
+  'notes',
+] as const
 
 function checkAssets() {
   return spawnSync(process.execPath, ['scripts/check-replacement-assets.mjs'], {
     encoding: 'utf8',
   })
+}
+
+function parseCsv(csv: string) {
+  const rows: string[][] = []
+  let row: string[] = []
+  let cell = ''
+  let quoted = false
+
+  for (let index = 0; index < csv.length; index += 1) {
+    const character = csv[index]
+
+    if (quoted) {
+      if (character === '"' && csv[index + 1] === '"') {
+        cell += '"'
+        index += 1
+      } else if (character === '"') {
+        quoted = false
+      } else {
+        cell += character
+      }
+    } else if (character === '"') {
+      quoted = true
+    } else if (character === ',') {
+      row.push(cell)
+      cell = ''
+    } else if (character === '\n') {
+      row.push(cell)
+      rows.push(row)
+      row = []
+      cell = ''
+    } else if (character !== '\r') {
+      cell += character
+    }
+  }
+
+  expect(quoted).toBe(false)
+  expect(row).toEqual([])
+  expect(cell).toBe('')
+  return rows
 }
 
 describe('required brand assets', () => {
@@ -141,19 +194,54 @@ describe('article image replacement inventory', () => {
   })
 
   it('publishes one CSV row per manifest record with an empty notes slot', () => {
-    const lines = readFileSync('article-image-replacement-manifest.csv', 'utf8')
-      .trimEnd()
-      .split('\n')
-
-    expect(lines[0]).toBe(
-      'id,page,order,purpose,sourceUrl,calibrationPath,replacementPath,sourceWidth,sourceHeight,format,status,notes',
+    const [header, ...rows] = parseCsv(
+      readFileSync('article-image-replacement-manifest.csv', 'utf8'),
     )
-    expect(lines).toHaveLength(manifest.length + 1)
 
-    for (const [index, item] of manifest.entries()) {
-      expect(lines[index + 1]).toMatch(new RegExp(`^${item.id},`))
-      expect(lines[index + 1]).toContain(`,${item.replacementPath},`)
-      expect(lines[index + 1]).toMatch(/,awaiting-replacement,$/)
+    expect(header).toEqual(csvColumns)
+    expect(rows).toEqual(
+      manifest.map((item) => [
+        ...csvColumns
+          .slice(0, -1)
+          .map((column) => String(item[column as keyof typeof item])),
+        '',
+      ]),
+    )
+  })
+
+  it('keeps videos local as supporting media outside the image-only manifest', () => {
+    const videoPaths = [
+      '/article-assets/source-calibration/ch23/video-001.mp4',
+      '/article-assets/source-calibration/ch24/video-001.mp4',
+    ]
+
+    expect(manifest.every((item) => item.format !== 'mp4')).toBe(true)
+    for (const videoPath of videoPaths) {
+      expect(existsSync(join('docs', 'public', videoPath))).toBe(true)
     }
+
+    const chapter23 = readFileSync(
+      join(
+        'docs',
+        'bluebook',
+        '第三篇 进阶篇：把案例变成自己的工作系统',
+        '第 23 章 其他用法补充：WorkBuddy 实操案例集',
+        'index.md',
+      ),
+      'utf8',
+    )
+    const chapter24 = readFileSync(
+      join(
+        'docs',
+        'bluebook',
+        '第三篇 进阶篇：把案例变成自己的工作系统',
+        '第 24 章 如何进行多 Agent 系统设计',
+        'index.md',
+      ),
+      'utf8',
+    )
+
+    expect(chapter23).toContain(`<video controls preload="metadata" src="${videoPaths[0]}">`)
+    expect(chapter24).toContain(`<video controls preload="metadata" src="${videoPaths[1]}">`)
   })
 })
