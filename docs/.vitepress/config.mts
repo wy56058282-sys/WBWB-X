@@ -42,6 +42,7 @@ export default defineConfig({
   },
   themeConfig: {
     logo: brand.logoPath,
+    siteTitle: brand.siteName,
     nav: nav.map((item) => ({ ...item })),
     sidebar: [...sidebar],
     search: {
@@ -55,5 +56,6 @@ export default defineConfig({
       message: '以真实任务为主线的 WorkBuddy 社区实战读本',
       copyright: `Copyright © 2026 ${brand.author}`,
     },
+    socialLinks: [{ icon: 'github', link: brand.repository }],
   },
 })

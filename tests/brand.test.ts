@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { brand } from '../docs/.vitepress/brand'
 
@@ -13,5 +14,12 @@ describe('brand configuration', () => {
     expect(brand.author).toBe('WorkBuddy WB-X Contributors')
     expect(brand.logoPath).toBe('/brand/wb-x-logo.svg')
     expect(brand.qrPath).toBe('/community/wechat-group.png')
+  })
+
+  it('renders homepage identity from the shared brand module', () => {
+    const source = readFileSync('docs/.vitepress/theme/HomePage.vue', 'utf8')
+    expect(source).toContain("import { brand } from '../brand'")
+    expect(source).not.toContain('WorkBuddy Guide')
+    expect(source).not.toContain('#d8f238')
   })
 })

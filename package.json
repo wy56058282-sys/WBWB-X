@@ -16,6 +16,7 @@
     "check": "npm test && npm run check:links && npm run check:assets && npm run build"
   },
   "devDependencies": {
+    "@hackernoon/pixel-icon-library": "1.1.0",
     "@types/node": "^22.10.0",
     "jsdom": "^25.0.1",
     "typescript": "^5.7.2",

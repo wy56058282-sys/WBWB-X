@@ -1,0 +1,156 @@
+:root {
+  --wbx-accent: #32e6b9;
+  --wbx-ink: #0d100d;
+  --wbx-paper: #f7f8f2;
+  --wbx-surface: #ffffff;
+  --wbx-muted: #656b60;
+  --wbx-line: #d7dbd0;
+  --wbx-accent-soft: #d9f9f0;
+  --wbx-pixel: "Silkscreen", "SFMono-Regular", Consolas, monospace;
+  --wbx-body: "Avenir Next", Avenir, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", sans-serif;
+  --wbx-shadow: 4px 4px 0 var(--wbx-ink);
+  --vp-font-family-base: var(--wbx-body);
+  --vp-c-brand-1: #08745c;
+  --vp-c-brand-2: #0a9273;
+  --vp-c-brand-3: #075c4a;
+  --vp-c-brand-soft: rgb(50 230 185 / 22%);
+  --vp-c-bg: var(--wbx-paper);
+  --vp-c-bg-alt: #eef1e9;
+  --vp-c-bg-elv: var(--wbx-surface);
+  --vp-c-bg-soft: #eef1e9;
+  --vp-c-divider: var(--wbx-line);
+  --vp-c-gutter: var(--wbx-line);
+  --vp-c-text-1: var(--wbx-ink);
+  --vp-c-text-2: var(--wbx-muted);
+  --vp-nav-bg-color: rgb(247 248 242 / 94%);
+  --vp-sidebar-bg-color: #f0f3eb;
+  --vp-code-lang-color: var(--wbx-accent);
+  --vp-code-line-highlight-color: rgb(50 230 185 / 12%);
+  --vp-custom-block-tip-bg: var(--wbx-accent-soft);
+  --vp-custom-block-tip-border: #08745c;
+}
+
+.dark {
+  --wbx-ink: #f3f5ed;
+  --wbx-paper: #10120e;
+  --wbx-surface: #181b15;
+  --wbx-muted: #aeb4a7;
+  --wbx-line: #343a2f;
+  --wbx-accent-soft: #143b31;
+  --vp-c-brand-1: var(--wbx-accent);
+  --vp-c-brand-2: #58efc9;
+  --vp-c-brand-3: #82f5d8;
+  --vp-c-brand-soft: rgb(50 230 185 / 14%);
+  --vp-c-bg: var(--wbx-paper);
+  --vp-c-bg-alt: #151812;
+  --vp-c-bg-elv: var(--wbx-surface);
+  --vp-c-bg-soft: #1c2019;
+  --vp-c-divider: var(--wbx-line);
+  --vp-c-gutter: var(--wbx-line);
+  --vp-c-text-1: var(--wbx-ink);
+  --vp-c-text-2: var(--wbx-muted);
+  --vp-nav-bg-color: rgb(16 18 14 / 94%);
+  --vp-sidebar-bg-color: #141712;
+  --vp-code-lang-color: var(--wbx-accent);
+  --vp-custom-block-tip-bg: #143b31;
+  --vp-custom-block-tip-border: var(--wbx-accent);
+}
+
+body {
+  font-family: var(--wbx-body);
+  font-feature-settings: "kern" 1;
+  background: var(--wbx-paper);
+}
+
+::selection {
+  color: #0c0d0a;
+  background: var(--wbx-accent);
+}
+
+.VPNav {
+  border-bottom: 1px solid var(--wbx-line);
+}
+
+.VPNavBarTitle .logo {
+  width: 28px;
+  height: 28px;
+}
+
+.VPNavBarTitle .title {
+  gap: 10px;
+  font-weight: 800;
+}
+
+.VPNavBarMenuLink.active {
+  color: var(--wbx-ink);
+}
+
+.VPNavBarSearch .DocSearch-Button,
+.VPNavBarSearch button {
+  border: 1px solid var(--wbx-line);
+  border-radius: 4px !important;
+  background: var(--wbx-surface);
+}
+
+.VPSidebar {
+  border-right: 1px solid var(--wbx-line);
+}
+
+.VPSidebarItem .link:hover {
+  color: var(--wbx-ink);
+  background: var(--wbx-accent-soft);
+}
+
+.VPSidebarItem.is-active > .item .link {
+  color: #0d100d !important;
+  background: var(--wbx-accent);
+}
+
+.VPDocFooter .pager-link {
+  border: 1px solid var(--wbx-line);
+  border-radius: 5px;
+  background: var(--wbx-surface);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.VPDocFooter .pager-link:hover {
+  border-color: var(--wbx-ink);
+  box-shadow: var(--wbx-shadow);
+  transform: translate(-2px, -2px);
+}
+
+.VPLocalSearchBox .shell {
+  border: 1px solid var(--wbx-ink) !important;
+  border-radius: 6px !important;
+  box-shadow: var(--wbx-shadow) !important;
+}
+
+.VPLocalSearchBox .result.selected {
+  border-color: var(--wbx-ink) !important;
+  background: var(--wbx-accent-soft) !important;
+}
+
+@media (max-width: 760px) {
+  .VPNavBar {
+    height: 64px;
+    background: var(--wbx-paper) !important;
+    backdrop-filter: none;
+  }
+
+  .VPNavBarTitle .title {
+    max-width: 230px;
+    font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
