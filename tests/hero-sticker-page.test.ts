@@ -331,6 +331,18 @@ describe('HeroStickerPage', () => {
     )
   })
 
+  it('lets the compact cover define the full stage height', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const compactCss = css.slice(
+      css.indexOf('@media (max-width: 960px)'),
+      css.indexOf('@media (max-width: 760px)'),
+    )
+
+    expect(compactCss).toMatch(
+      /\.wbx-sticker-page__cover\s*\{[^}]*position:\s*relative;[^}]*inset:\s*auto;[^}]*grid-template-columns:\s*1fr;/s,
+    )
+  })
+
   it('keeps the visible fold clear of the workflow metrics without shrinking its hit target', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const compactCss = css.slice(
