@@ -1,6 +1,23 @@
+// @vitest-environment node
+
 import { existsSync, readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { brand } from '../docs/.vitepress/brand'
+import vitepressConfig from '../docs/.vitepress/config'
+
+function readPngDimensions(path: string) {
+  const png = readFileSync(path)
+
+  expect(png.subarray(0, 8)).toEqual(
+    Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+  )
+  expect(png.subarray(12, 16).toString('ascii')).toBe('IHDR')
+
+  return {
+    width: png.readUInt32BE(16),
+    height: png.readUInt32BE(20),
+  }
+}
 
 describe('brand configuration', () => {
   it('contains the approved WB-X identity', () => {
@@ -14,6 +31,35 @@ describe('brand configuration', () => {
     expect(brand.author).toBe('WorkBuddy WB-X Contributors')
     expect(brand.logoPath).toBe('/brand/wb-x-logo.svg')
     expect(brand.qrPath).toBe('/community/wechat-group.png')
+  })
+
+  it('ships a social share image at the required dimensions', () => {
+    expect(readPngDimensions('docs/public/og/workbuddy-wb-x-guide.png')).toEqual(
+      {
+        width: 1280,
+        height: 720,
+      },
+    )
+  })
+
+  it('publishes absolute social image metadata with explicit dimensions', () => {
+    const meta = Object.fromEntries(
+      (vitepressConfig.head ?? [])
+        .filter(([tag]) => tag === 'meta')
+        .map(([, attributes]) => [
+          attributes.property ?? attributes.name,
+          attributes.content,
+        ]),
+    )
+
+    expect(meta).toMatchObject({
+      'og:image':
+        'https://www.wbwb-x.sparkx.zone/og/workbuddy-wb-x-guide.png',
+      'og:image:width': '1280',
+      'og:image:height': '720',
+      'twitter:image':
+        'https://www.wbwb-x.sparkx.zone/og/workbuddy-wb-x-guide.png',
+    })
   })
 
   it('renders homepage identity from the shared brand module', () => {

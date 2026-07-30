@@ -24,6 +24,8 @@ export default defineConfig({
     ['meta', { property: 'og:description', content: brand.seo.description }],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:image', content: `${brand.origin}${brand.ogImagePath}` }],
+    ['meta', { property: 'og:image:width', content: '1280' }],
+    ['meta', { property: 'og:image:height', content: '720' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:title', content: brand.seo.title }],
     ['meta', { name: 'twitter:description', content: brand.seo.description }],
