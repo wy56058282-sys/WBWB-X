@@ -13,7 +13,7 @@ function canonicalPath(relativePath: string) {
 
 export default defineConfig({
   lang: 'zh-CN',
-  title: brand.contentName,
+  title: brand.seo.title,
   description: brand.seo.description,
   cleanUrls: true,
   lastUpdated: true,
@@ -42,8 +42,8 @@ export default defineConfig({
   },
   themeConfig: {
     logo: brand.logoPath,
-    nav,
-    sidebar,
+    nav: nav.map((item) => ({ ...item })),
+    sidebar: [...sidebar],
     search: {
       provider: 'local',
     },

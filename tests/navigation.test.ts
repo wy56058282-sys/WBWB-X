@@ -1,4 +1,7 @@
+// @vitest-environment node
+
 import { describe, expect, it } from 'vitest'
+import config from '../docs/.vitepress/config.mts'
 import { nav } from '../docs/.vitepress/navigation'
 import { sidebar } from '../docs/.vitepress/sidebar'
 
@@ -21,5 +24,9 @@ describe('site navigation', () => {
     }
     expect(serialized).toContain('附录 A')
     expect(serialized).toContain('附录 B')
+  })
+
+  it('uses the approved SEO title for the browser title', () => {
+    expect(config.title).toBe('WorkBuddy 教程与使用指南｜WorkBuddy WB-X 实战小白书')
   })
 })

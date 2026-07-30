@@ -84,4 +84,4 @@ export const sidebar = [
       { text: '附录 B 场景速查表', link: `${appendix}附录 B 场景速查表/` },
     ],
   },
-] as const
+]
