@@ -3,6 +3,7 @@
 import { describe, expect, it } from 'vitest'
 import config from '../docs/.vitepress/config.mts'
 import { nav } from '../docs/.vitepress/navigation'
+import { isHomeRoute } from '../docs/.vitepress/route-state'
 import { sidebar } from '../docs/.vitepress/sidebar'
 
 describe('site navigation', () => {
@@ -38,5 +39,11 @@ describe('site navigation', () => {
 
   it('uses the approved SEO title for the browser title', () => {
     expect(config.title).toBe('WorkBuddy 教程与使用指南｜WorkBuddy WB-X 实战小白书')
+  })
+
+  it('recognizes the homepage at root and under the GitHub Pages base path', () => {
+    expect(isHomeRoute('/', '/')).toBe(true)
+    expect(isHomeRoute('/WBWB-X/', '/WBWB-X/')).toBe(true)
+    expect(isHomeRoute('/WBWB-X/wb-x/', '/WBWB-X/')).toBe(false)
   })
 })

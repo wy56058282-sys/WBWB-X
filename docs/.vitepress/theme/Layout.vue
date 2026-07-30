@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import DefaultTheme from 'vitepress/theme'
-import { useRoute } from 'vitepress'
+import { useData, useRoute } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted } from 'vue'
+import { isHomeRoute } from '../route-state'
 import CommunityQr, { openCommunityQr } from './CommunityQr.vue'
 import HomePage from './HomePage.vue'
 
 const route = useRoute()
-const isHome = computed(() => route.path === '/')
+const { site } = useData()
+const isHome = computed(() => isHomeRoute(route.path, site.value.base))
 
 function handleCommunityQrTrigger(event: MouseEvent) {
   if (
