@@ -10,10 +10,10 @@ describe('site navigation', () => {
   it('keeps the source top-level information architecture', () => {
     expect(nav.map((item) => item.text)).toEqual([
       '首页',
-      '开始阅读',
+      '阅读',
       '案例集',
       '帮你解决',
-      '阅读指南',
+      '指南',
       '交流群',
     ])
   })
