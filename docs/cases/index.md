@@ -44,7 +44,7 @@ pageClass: community-cases-page
     </ul>
   </div>
   <a class="case-co-create__qr" href="/article-assets/source-calibration/case-index/001.jpg" target="_blank" rel="noreferrer" aria-label="查看 WorkBuddy 共创联系人微信二维码大图">
-    <img src="/article-assets/source-calibration/case-index/001.jpg" alt="刘聪NLP 微信二维码，添加时备注 workbuddy共创" loading="lazy">
+    <img src="/article-assets/source-calibration/case-index/001.jpg" alt="王翊旭 Quadr-X 微信二维码，添加时备注 workbuddy共创" loading="lazy">
     <span>扫码添加微信 · 备注“workbuddy共创”</span>
   </a>
 </section>
