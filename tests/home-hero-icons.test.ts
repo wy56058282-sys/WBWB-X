@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createApp, type App } from 'vue'
+import { readFileSync } from 'node:fs'
 import HomePage from '../docs/.vitepress/theme/HomePage.vue'
 
 vi.mock('vitepress', () => ({
@@ -23,15 +24,37 @@ function mountHomePage() {
 }
 
 describe('home hero icon navigation', () => {
+  it('uses black icon cards with green pixel icons', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+
+    expect(css).not.toMatch(
+      /\.wbx-hero__art\s*\{[^}]*background:\s*#0d100d;/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-icon-card\s*\{[^}]*color:\s*var\(--wbx-accent\);[^}]*background:\s*#0d100d;/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-hero__copy\s*>\s*\.wbx-pixel-label\s*\{[^}]*color:\s*#0d100d;/s,
+    )
+  })
+
   it('uses the approved homepage value labels', () => {
     mountHomePage()
 
     const labels = Array.from(
-      document.querySelectorAll<HTMLElement>('.wbx-value-strip__item b'),
-      (label) => label.textContent,
+      document.querySelectorAll<HTMLElement>('.wbx-value-strip__item'),
+      (item) => [
+        item.querySelector('b')?.textContent,
+        item.querySelector('small')?.textContent,
+      ],
     )
 
-    expect(labels).toEqual(['场景复现', '技能叠加', '社区共创', '系统沉淀'])
+    expect(labels).toEqual([
+      ['场景实战', 'REAL-WORLD TASKS'],
+      ['技能叠加', 'SKILL STACKING'],
+      ['社区共创', 'COMMUNITY-BUILT'],
+      ['系统沉淀', 'SYSTEM BUILDING'],
+    ])
   })
 
   it('offers four labelled links to distinct site sections', () => {
