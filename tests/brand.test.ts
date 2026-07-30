@@ -165,10 +165,10 @@ describe('brand configuration', () => {
     const css = readFileSync('docs/.vitepress/theme/custom.css', 'utf8')
 
     expect(css).toMatch(
-      /\.wbx-community-qr\s*\{[^}]*width:\s*min\(100%, 568px\);[^}]*max-height:\s*calc\(100dvh - 48px\);[^}]*overflow-y:\s*auto;/s,
+      /\.wbx-community-qr\s*\{[^}]*width:\s*min\(100%, 270px\);[^}]*max-height:\s*calc\(100dvh - 48px\);[^}]*overflow-y:\s*auto;/s,
     )
     expect(css).toMatch(
-      /\.wbx-community-qr__image\s*\{[^}]*width:\s*min\(100%, 520px, calc\(100dvh - 220px\)\);/s,
+      /\.wbx-community-qr__image\s*\{[^}]*width:\s*min\(100%, calc\(100dvh - 220px\)\);/s,
     )
   })
 })
