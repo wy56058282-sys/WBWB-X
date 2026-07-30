@@ -13,7 +13,7 @@
 - Preserve the source website's page hierarchy, written content, third-party references, core interactions, black-and-white pixel style, and responsive behavior.
 - Use `WorkBuddy WB-X`, `WorkBuddy 实战小白书`, `WorkBuddy小白书`, and `WBWB-X` exactly as defined in the approved design.
 - Use `#32E6B9` for every site-wide accent that replaces the source yellow-green accent.
-- Use `https://www.wbwb-x.sparkx.zone` as the canonical production origin.
+- Use `https://wbwbx.sparkx.zone` as the canonical production origin.
 - Use `https://github.com/wy56058282-sys/WBWB-X` for repository, contribution, and edit-page links.
 - Use `WorkBuddy WB-X Contributors` as author and copyright owner.
 - Use `WB-X LOGO.svg` for both the header icon and favicon.
@@ -113,7 +113,7 @@ describe('brand configuration', () => {
     expect(brand.contentShortName).toBe('WorkBuddy小白书')
     expect(brand.shortMark).toBe('WBWB-X')
     expect(brand.accent).toBe('#32E6B9')
-    expect(brand.origin).toBe('https://www.wbwb-x.sparkx.zone')
+    expect(brand.origin).toBe('https://wbwbx.sparkx.zone')
     expect(brand.repository).toBe('https://github.com/wy56058282-sys/WBWB-X')
     expect(brand.author).toBe('WorkBuddy WB-X Contributors')
     expect(brand.logoPath).toBe('/brand/wb-x-logo.svg')
@@ -181,7 +181,7 @@ export const brand: BrandConfig = {
   contentShortName: 'WorkBuddy小白书',
   shortMark: 'WBWB-X',
   accent: '#32E6B9',
-  origin: 'https://www.wbwb-x.sparkx.zone',
+  origin: 'https://wbwbx.sparkx.zone',
   repository: 'https://github.com/wy56058282-sys/WBWB-X',
   author: 'WorkBuddy WB-X Contributors',
   logoPath: '/brand/wb-x-logo.svg',
@@ -450,7 +450,7 @@ Apply exact replacements:
 WorkBuddy Guide                 → WorkBuddy WB-X
 WorkBuddy 实战蓝皮书             → WorkBuddy 实战小白书
 WorkBuddy蓝皮书                  → WorkBuddy小白书
-https://workbuddy.homes         → https://www.wbwb-x.sparkx.zone
+https://workbuddy.homes         → https://wbwbx.sparkx.zone
 AlephAITech/WorkBuddyGuide      → wy56058282-sys/WBWB-X
 WorkBuddy Guide Contributors    → WorkBuddy WB-X Contributors
 ```

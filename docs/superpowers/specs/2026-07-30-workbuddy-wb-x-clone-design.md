@@ -17,7 +17,7 @@
 | Logo 与 favicon | `WB-X LOGO.svg` |
 | 品牌主色 | `#32E6B9` |
 | GitHub 仓库 | `https://github.com/wy56058282-sys/WBWB-X` |
-| 正式域名 | `https://www.wbwb-x.sparkx.zone` |
+| 正式域名 | `https://wbwbx.sparkx.zone` |
 | 作者与版权主体 | `WorkBuddy WB-X Contributors` |
 | 交流群二维码 | `二维码.png`，800×800 PNG |
 | 二维码固定路径 | `/community/wechat-group.png` |
@@ -180,4 +180,3 @@
 - 不新增原站不存在的页面、功能或视觉风格。
 - 不移除有必要保留的第三方资料链接和素材署名。
 - 未经用户明确要求，不部署到生产环境。
-

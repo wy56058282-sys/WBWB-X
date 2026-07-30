@@ -23,7 +23,7 @@ export const brand: BrandConfig = {
   contentShortName: 'WorkBuddy小白书',
   shortMark: 'WBWB-X',
   accent: '#32E6B9',
-  origin: 'https://www.wbwb-x.sparkx.zone',
+  origin: 'https://wbwbx.sparkx.zone',
   repository: 'https://github.com/wy56058282-sys/WBWB-X',
   author: 'WorkBuddy WB-X Contributors',
   logoPath: '/brand/wb-x-logo.svg',

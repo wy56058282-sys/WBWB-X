@@ -26,7 +26,7 @@ describe('brand configuration', () => {
     expect(brand.contentShortName).toBe('WorkBuddy小白书')
     expect(brand.shortMark).toBe('WBWB-X')
     expect(brand.accent).toBe('#32E6B9')
-    expect(brand.origin).toBe('https://www.wbwb-x.sparkx.zone')
+    expect(brand.origin).toBe('https://wbwbx.sparkx.zone')
     expect(brand.repository).toBe('https://github.com/wy56058282-sys/WBWB-X')
     expect(brand.author).toBe('WorkBuddy WB-X Contributors')
     expect(brand.logoPath).toBe('/brand/wb-x-logo.svg')
@@ -54,11 +54,11 @@ describe('brand configuration', () => {
 
     expect(meta).toMatchObject({
       'og:image':
-        'https://www.wbwb-x.sparkx.zone/og/workbuddy-wb-x-guide.png',
+        'https://wbwbx.sparkx.zone/og/workbuddy-wb-x-guide.png',
       'og:image:width': '1280',
       'og:image:height': '720',
       'twitter:image':
-        'https://www.wbwb-x.sparkx.zone/og/workbuddy-wb-x-guide.png',
+        'https://wbwbx.sparkx.zone/og/workbuddy-wb-x-guide.png',
     })
   })
 
