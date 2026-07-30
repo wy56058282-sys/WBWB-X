@@ -260,54 +260,32 @@ describe('HeroStickerPage', () => {
     expect(link.querySelector('.wbx-partner-sticker__fallback')?.textContent).toBe('星火集')
   })
 
-  it('turns the whole hero surface and uses opacity-only fallbacks', () => {
+  it('reveals the inside layer diagonally from the lower-right corner', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
-    const compactCss = css.slice(
-      css.indexOf('@media (max-width: 960px)'),
-      css.indexOf('@media (max-width: 760px)'),
-    )
-    const reducedMotionCss = css.slice(
-      css.indexOf('@media (prefers-reduced-motion: reduce)'),
-      css.indexOf('.wbx-hero__metrics'),
-    )
+
+    expect(css).not.toMatch(/perspective:\s*1400px/)
+    expect(css).not.toMatch(/rotateY\(/)
+    expect(css).not.toMatch(/transform-origin:\s*left center/)
 
     expect(css).toMatch(
-      /\.wbx-sticker-page\s*\{[^}]*perspective:\s*1400px;/s,
+      /\.wbx-sticker-page__inside\s*\{[^}]*z-index:\s*3;[^}]*clip-path:\s*polygon\(100% 88%,\s*100% 100%,\s*88% 100%\);[^}]*transition:\s*clip-path 280ms cubic-bezier\(0\.77,\s*0,\s*0\.175,\s*1\)/s,
     )
     expect(css).toMatch(
-      /\.wbx-sticker-page__cover\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*1\.08fr 0\.92fr;[^}]*transform-origin:\s*left center;[^}]*backface-visibility:\s*hidden;[^}]*transform:\s*rotateY\(0deg\);[^}]*transform 280ms cubic-bezier\(0\.77,\s*0,\s*0\.175,\s*1\)/s,
+      /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__inside\s*\{[^}]*clip-path:\s*polygon\(0 0,\s*100% 0,\s*100% 100%,\s*0 100%\);/s,
     )
     expect(css).toMatch(
-      /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__cover\s*\{[^}]*transform:\s*rotateY\(-180deg\);/s,
-    )
-    expect(css).not.toMatch(
-      /\.wbx-sticker-page__cover\s*\{[^}]*clip-path:/s,
+      /\.wbx-sticker-page__trigger\s*\{[^}]*z-index:\s*4;[^}]*width:\s*72px;[^}]*height:\s*72px;/s,
     )
     expect(css).toMatch(
-      /\.wbx-sticker-page__inside,\s*\.wbx-sticker-page__cover\s*\{[^}]*inset:\s*0;/s,
-    )
-    expect(css).not.toMatch(
-      /\.wbx-sticker-page__inside\s*\{[^}]*border-left:/s,
+      /\.wbx-sticker-page\[data-open="false"\]\s+\.wbx-sticker-page__inside\s*\{[^}]*pointer-events:\s*none;/s,
     )
     expect(css).toMatch(
-      /\.wbx-sticker-page__trigger\s*\{[^}]*width:\s*72px;[^}]*height:\s*72px;/s,
+      /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__cover\s*\{[^}]*pointer-events:\s*none;/s,
     )
-    expect(reducedMotionCss).toMatch(
-      /\.wbx-sticker-page__cover\s*\{[^}]*transition:\s*opacity 1ms linear !important;/s,
+    expect(css).toMatch(
+      /@media \(prefers-reduced-motion:\s*reduce\)\s*\{[\s\S]*?\.wbx-sticker-page__inside\s*\{[^}]*transition:\s*none !important;/s,
     )
-    expect(reducedMotionCss).toMatch(
-      /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__cover\s*\{[^}]*opacity:\s*0;[^}]*transform:\s*none;/s,
-    )
-    expect(compactCss).toMatch(
-      /\.wbx-sticker-page\s*\{[^}]*perspective:\s*none;/s,
-    )
-    expect(compactCss).toMatch(
-      /\.wbx-sticker-page__cover\s*\{[^}]*transform:\s*none;[^}]*transition:\s*opacity 160ms cubic-bezier\(0\.23,\s*1,\s*0\.32,\s*1\);/s,
-    )
-    expect(compactCss).toMatch(
-      /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__cover\s*\{[^}]*filter:\s*none;[^}]*opacity:\s*0;[^}]*transform:\s*none;/s,
-    )
-    expect(reducedMotionCss).toMatch(
+    expect(css).toMatch(
       /\.wbx-partner-sticker\s*\{[^}]*transition:\s*none;/s,
     )
   })
@@ -337,7 +315,7 @@ describe('HeroStickerPage', () => {
     )
   })
 
-  it('lets the compact cover define the full stage height', () => {
+  it('keeps the compact cover as a one-column layer for the diagonal reveal', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const compactCss = css.slice(
       css.indexOf('@media (max-width: 960px)'),
@@ -345,8 +323,9 @@ describe('HeroStickerPage', () => {
     )
 
     expect(compactCss).toMatch(
-      /\.wbx-sticker-page__cover\s*\{[^}]*position:\s*relative;[^}]*inset:\s*auto;[^}]*grid-template-columns:\s*1fr;/s,
+      /\.wbx-sticker-page__cover\s*\{[^}]*grid-template-columns:\s*1fr;/s,
     )
+    expect(compactCss).not.toMatch(/perspective:|opacity:|rotateY\(/)
   })
 
   it('keeps the visible fold clear of the workflow metrics without shrinking its hit target', () => {

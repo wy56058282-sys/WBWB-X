@@ -130,8 +130,6 @@
   min-height: 568px;
   overflow: hidden;
   isolation: isolate;
-  perspective: 1400px;
-  perspective-origin: left center;
 }
 
 .wbx-sticker-page__inside,
@@ -141,6 +139,7 @@
 }
 
 .wbx-sticker-page__inside {
+  z-index: 3;
   display: grid;
   grid-template-areas:
     ". sparkx ."
@@ -148,7 +147,10 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: center;
   padding: 58px 48px 70px;
-  background: #fffdf5;
+  background: #fff;
+  clip-path: polygon(100% 88%, 100% 100%, 88% 100%);
+  transition: clip-path 280ms cubic-bezier(0.77, 0, 0.175, 1);
+  will-change: clip-path;
 }
 
 .wbx-sticker-page__cover {
@@ -156,19 +158,17 @@
   display: grid;
   grid-template-columns: 1.08fr 0.92fr;
   background: var(--wbx-accent);
-  transform-origin: left center;
-  backface-visibility: hidden;
-  transform: rotateY(0deg);
-  transform-style: preserve-3d;
-  transition:
-    transform 280ms cubic-bezier(0.77, 0, 0.175, 1),
-    filter 280ms cubic-bezier(0.77, 0, 0.175, 1);
-  will-change: transform;
+}
+
+.wbx-sticker-page[data-open="false"] .wbx-sticker-page__inside {
+  pointer-events: none;
+}
+
+.wbx-sticker-page[data-open="true"] .wbx-sticker-page__inside {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
 
 .wbx-sticker-page[data-open="true"] .wbx-sticker-page__cover {
-  filter: drop-shadow(18px 0 0 rgb(13 16 13 / 16%));
-  transform: rotateY(-180deg);
   pointer-events: none;
 }
 
@@ -176,7 +176,7 @@
   --wbx-fold-visual-size: 40px;
 
   position: absolute;
-  z-index: 3;
+  z-index: 4;
   right: 0;
   bottom: 0;
   width: 72px;
@@ -373,14 +373,8 @@
     animation: none;
   }
 
-  .wbx-sticker-page__cover {
-    transition: opacity 1ms linear !important;
-  }
-
-  .wbx-sticker-page[data-open="true"] .wbx-sticker-page__cover {
-    filter: none;
-    opacity: 0;
-    transform: none;
+  .wbx-sticker-page__inside {
+    transition: none !important;
   }
 
   .wbx-partner-sticker {
@@ -795,22 +789,8 @@
 }
 
 @media (max-width: 960px) {
-  .wbx-sticker-page {
-    perspective: none;
-  }
-
   .wbx-sticker-page__cover {
-    position: relative;
-    inset: auto;
     grid-template-columns: 1fr;
-    transform: none;
-    transition: opacity 160ms cubic-bezier(0.23, 1, 0.32, 1);
-  }
-
-  .wbx-sticker-page[data-open="true"] .wbx-sticker-page__cover {
-    filter: none;
-    opacity: 0;
-    transform: none;
   }
 
   .wbx-hero__copy {
