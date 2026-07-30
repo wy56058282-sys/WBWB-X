@@ -260,15 +260,28 @@ describe('HeroStickerPage', () => {
     expect(link.querySelector('.wbx-partner-sticker__fallback')?.textContent).toBe('星火集')
   })
 
-  it('defines the approved reveal timing and reduced-motion fallback', () => {
+  it('turns the full desktop page and uses opacity-only fallbacks', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const compactCss = css.slice(
+      css.indexOf('@media (max-width: 760px)'),
+      css.indexOf('@media (max-width: 420px)'),
+    )
     const reducedMotionCss = css.slice(
       css.indexOf('@media (prefers-reduced-motion: reduce)'),
       css.indexOf('.wbx-hero__metrics'),
     )
 
     expect(css).toMatch(
-      /\.wbx-sticker-page__cover\s*\{[^}]*260ms cubic-bezier\(0\.23,\s*1,\s*0\.32,\s*1\)/s,
+      /\.wbx-sticker-page\s*\{[^}]*perspective:\s*1400px;/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-sticker-page__cover\s*\{[^}]*transform-origin:\s*left center;[^}]*backface-visibility:\s*hidden;[^}]*transform:\s*rotateY\(0deg\);[^}]*transform 280ms cubic-bezier\(0\.77,\s*0,\s*0\.175,\s*1\)/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__cover\s*\{[^}]*transform:\s*rotateY\(-180deg\);/s,
+    )
+    expect(css).not.toMatch(
+      /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__cover\s*\{[^}]*clip-path:/s,
     )
     expect(css).toMatch(
       /\.wbx-sticker-page__trigger\s*\{[^}]*width:\s*72px;[^}]*height:\s*72px;/s,
@@ -277,7 +290,10 @@ describe('HeroStickerPage', () => {
       /\.wbx-sticker-page__cover\s*\{[^}]*transition:\s*opacity 1ms linear !important;/s,
     )
     expect(reducedMotionCss).toMatch(
-      /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__cover\s*\{[^}]*clip-path:\s*none;[^}]*opacity:\s*0;/s,
+      /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__cover\s*\{[^}]*opacity:\s*0;[^}]*transform:\s*none;/s,
+    )
+    expect(compactCss).toMatch(
+      /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__cover\s*\{[^}]*opacity:\s*0;[^}]*transform:\s*none;/s,
     )
     expect(reducedMotionCss).toMatch(
       /\.wbx-partner-sticker\s*\{[^}]*transition:\s*none;/s,
