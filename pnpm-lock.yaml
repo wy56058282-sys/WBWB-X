@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      '@fontsource/silkscreen':
+        specifier: 5.2.7
+        version: 5.2.7
       '@hackernoon/pixel-icon-library':
         specifier: 1.1.0
         version: 1.1.0
@@ -316,6 +319,9 @@ packages:
     engines: {node: '>=12'}
     cpu: [x64]
     os: [win32]
+
+  '@fontsource/silkscreen@5.2.7':
+    resolution: {integrity: sha512-y4IeSpTqlN37a5JXxHseidITLy1dIZCdM8ng+yISe2TseVch2aMCoqwg67qTk/fFzeP/HbtgIYD83fBkBh2Lcw==}
 
   '@hackernoon/pixel-icon-library@1.1.0':
     resolution: {integrity: sha512-VEdDskTYRc37quKh3LFt65nMtriJlxuov/ifOmlomAyfK2hty4IPdL6IIXNvATOaQwZYjlfyxJTCGO+JgWbgIw==}
@@ -1475,6 +1481,8 @@ snapshots:
 
   '@esbuild/win32-x64@0.21.5':
     optional: true
+
+  '@fontsource/silkscreen@5.2.7': {}
 
   '@hackernoon/pixel-icon-library@1.1.0': {}
 

@@ -22,4 +22,32 @@ describe('brand configuration', () => {
     expect(source).not.toContain('WorkBuddy Guide')
     expect(source).not.toContain('#d8f238')
   })
+
+  it('loads the local Silkscreen weights used by pixel labels', () => {
+    const themeSource = readFileSync('docs/.vitepress/theme/index.ts', 'utf8')
+    const customCss = readFileSync('docs/.vitepress/theme/custom.css', 'utf8')
+
+    expect(themeSource).toContain("import '@fontsource/silkscreen/400.css'")
+    expect(themeSource).toContain("import '@fontsource/silkscreen/700.css'")
+    expect(customCss).toContain('--wbx-pixel: "Silkscreen"')
+  })
+
+  it('keeps the 390px homepage on the mobile single-column contract', () => {
+    const source = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const mobileRules = source.slice(source.indexOf('@media (max-width: 760px)'))
+    const narrowRules = source.slice(source.indexOf('@media (max-width: 420px)'))
+
+    expect(mobileRules).toMatch(
+      /\.wbx-hero__actions\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*1fr;/s,
+    )
+    expect(mobileRules).toMatch(
+      /\.wbx-button\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*0;/s,
+    )
+    expect(mobileRules).toMatch(
+      /\.wbx-reading-grid,\s*\.wbx-task-grid\s*\{[^}]*grid-template-columns:\s*1fr;/s,
+    )
+    expect(narrowRules).toMatch(
+      /\.wbx-hero__copy h1\s*\{[^}]*white-space:\s*normal;/s,
+    )
+  })
 })
