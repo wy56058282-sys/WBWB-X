@@ -948,6 +948,7 @@
   }
 
   .wbx-icon-card--people {
+    top: auto;
     bottom: 32px;
     left: 4%;
   }
@@ -1051,7 +1052,8 @@
 
 @media (max-width: 420px) {
   .wbx-icon-card--people {
-    bottom: 32px;
+    top: auto;
+    bottom: 50px;
     left: 4%;
   }
 

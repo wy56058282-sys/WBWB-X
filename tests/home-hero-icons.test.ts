@@ -96,17 +96,32 @@ describe('home hero icon navigation', () => {
 
     expect(links).toHaveLength(5)
 
-    const part4 = document.querySelector<HTMLAnchorElement>('.wbx-icon-card--people')
-    expect(decodeURI(part4?.getAttribute('href') ?? '')).toContain(
-      '/wb-x/第四篇 岗位与行业落地/',
-    )
-    expect(part4?.getAttribute('aria-label')).toBe('查看 Part 4 岗位与行业篇')
+    expect(
+      links.map((link) => [
+        link.getAttribute('aria-label'),
+        decodeURI(link.getAttribute('href') ?? ''),
+      ]),
+    ).toEqual([
+      ['查看 Part 1 使用手册', '/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/'],
+      ['查看阅读指南', '/reading-guide'],
+      ['查看工作系统进阶篇', '/wb-x/第三篇 进阶篇：把案例变成自己的工作系统/'],
+      ['查看 Part 2 案例篇', '/wb-x/第二篇 案例篇：从一项任务到一支 AI 团队/'],
+      ['查看 Part 4 岗位与行业篇', '/wb-x/第四篇 岗位与行业落地/'],
+    ])
   })
 
-  it('positions the Part 4 people icon with its own card rule', () => {
+  it('positions the Part 4 people icon safely at every hero breakpoint', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
 
-    expect(css).toMatch(/\.wbx-icon-card--people\s*\{[^}]*\b(?:top|bottom):/s)
+    expect(css).toMatch(
+      /\.wbx-icon-card--people\s*\{[^}]*top:\s*350px;[^}]*left:\s*16%;/s,
+    )
+    expect(css).toMatch(
+      /@media\s*\(max-width:\s*960px\)\s*\{[\s\S]*?\.wbx-icon-card--people\s*\{[^}]*top:\s*270px;[^}]*left:\s*5%;/,
+    )
+    expect(css).toMatch(
+      /@media\s*\(max-width:\s*420px\)\s*\{[\s\S]*?\.wbx-icon-card--people\s*\{[^}]*top:\s*auto;[^}]*bottom:\s*50px;[^}]*left:\s*4%;/,
+    )
   })
 
   it('renders the approved partner stickers as safe external links', () => {
