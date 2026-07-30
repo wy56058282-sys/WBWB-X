@@ -23,6 +23,92 @@ function mountHomePage() {
   apps.push(app)
 }
 
+function baseRule(css: string, selector: string) {
+  const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const declarations = css.match(
+    new RegExp(`${escapedSelector}\\s*\\{([^}]*)\\}`),
+  )?.[1]
+
+  expect(declarations, `missing base rule for ${selector}`).toBeDefined()
+  return declarations ?? ''
+}
+
+function numericDeclaration(
+  declarations: string,
+  property: string,
+  unit: 'deg' | 'px' | '%',
+) {
+  const value = optionalNumericDeclaration(declarations, property, unit)
+
+  expect(value, `missing ${property} in ${declarations}`).toBeDefined()
+  return Number(value)
+}
+
+function optionalNumericDeclaration(
+  declarations: string,
+  property: string,
+  unit: 'deg' | 'px' | '%',
+) {
+  const value = declarations.match(
+    new RegExp(`${property}:\\s*(-?[\\d.]+)${unit};`),
+  )?.[1]
+
+  return value === undefined ? undefined : Number(value)
+}
+
+function rotatedCardBounds(
+  declarations: string,
+  artWidth: number,
+  cardSize: number,
+) {
+  const angle =
+    (numericDeclaration(declarations, '--wbx-icon-rotation', 'deg') *
+      Math.PI) /
+    180
+  const paintedSize =
+    cardSize * (Math.abs(Math.cos(angle)) + Math.abs(Math.sin(angle)))
+  const rotationOverflow = (paintedSize - cardSize) / 2
+  const left =
+    (numericDeclaration(declarations, 'left', '%') / 100) * artWidth
+  const declaredTop = optionalNumericDeclaration(declarations, 'top', 'px')
+  const declaredBottom = optionalNumericDeclaration(
+    declarations,
+    'bottom',
+    'px',
+  )
+
+  expect(
+    declaredTop ?? declaredBottom,
+    `missing vertical position in ${declarations}`,
+  ).toBeDefined()
+
+  const top =
+    declaredTop ?? 568 - (declaredBottom ?? 0) - cardSize
+
+  return {
+    left: left - rotationOverflow,
+    right: left + cardSize + rotationOverflow,
+    top: top - rotationOverflow - 8,
+    bottom: top + cardSize + rotationOverflow,
+  }
+}
+
+function cardClearance(
+  first: ReturnType<typeof rotatedCardBounds>,
+  second: ReturnType<typeof rotatedCardBounds>,
+) {
+  const horizontal = Math.max(
+    second.left - first.right,
+    first.left - second.right,
+  )
+  const vertical = Math.max(
+    second.top - first.bottom,
+    first.top - second.bottom,
+  )
+
+  return Math.max(horizontal, vertical)
+}
+
 describe('home hero icon navigation', () => {
   it('uses the sticker page as the whole hero stage cover', () => {
     mountHomePage()
@@ -112,12 +198,29 @@ describe('home hero icon navigation', () => {
 
   it('positions the Part 4 people icon safely at every hero breakpoint', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const people = baseRule(css, '.wbx-icon-card--people')
+    const work = baseRule(css, '.wbx-icon-card--work')
+
+    const desktopCases = [
+      { viewport: 961, artWidth: 445, cardSize: 108 },
+      { viewport: 1080, artWidth: 504, cardSize: 108 },
+    ]
+
+    for (const { viewport, artWidth, cardSize } of desktopCases) {
+      expect(
+        cardClearance(
+          rotatedCardBounds(people, artWidth, cardSize),
+          rotatedCardBounds(work, artWidth, cardSize),
+        ),
+        `${viewport}px viewport must retain 24px between the rotated people and work cards`,
+      ).toBeGreaterThanOrEqual(24)
+    }
 
     expect(css).toMatch(
-      /\.wbx-icon-card--people\s*\{[^}]*top:\s*350px;[^}]*left:\s*16%;/s,
+      /\.wbx-icon-card--people\s*\{[^}]*bottom:\s*55px;[^}]*left:\s*5%;/s,
     )
     expect(css).toMatch(
-      /@media\s*\(max-width:\s*960px\)\s*\{[\s\S]*?\.wbx-icon-card--people\s*\{[^}]*top:\s*270px;[^}]*left:\s*1%;/,
+      /@media\s*\(max-width:\s*960px\)\s*\{[\s\S]*?\.wbx-icon-card--people\s*\{[^}]*top:\s*270px;[^}]*bottom:\s*auto;[^}]*left:\s*1%;/,
     )
     expect(css).not.toMatch(
       /@media\s*\(max-width:\s*780px\)\s*\{[\s\S]*?\.wbx-icon-card--people/,
