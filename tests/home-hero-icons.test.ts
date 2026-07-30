@@ -79,6 +79,45 @@ describe('home hero icon navigation', () => {
     ])
   })
 
+  it('renders the approved partner stickers as safe external links', () => {
+    mountHomePage()
+
+    const links = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>('.wbx-partner-sticker'),
+      (link) => ({
+        label: link.getAttribute('aria-label'),
+        href: link.href,
+        target: link.target,
+        rel: link.rel,
+        image: link.querySelector('img')?.getAttribute('src'),
+      }),
+    )
+
+    expect(links).toEqual([
+      {
+        label: '访问星火集',
+        href: 'https://www.sparkx.zone/',
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        image: '/brand/partners/sparkx.svg',
+      },
+      {
+        label: '访问 WorkBuddy',
+        href: 'https://www.workbuddy.ai/',
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        image: '/brand/partners/workbuddy.svg',
+      },
+      {
+        label: '访问 Z.ai',
+        href: 'https://z.ai/subscribe',
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        image: '/brand/partners/z-ai.svg',
+      },
+    ])
+  })
+
   it('renders the footer outside the constrained home content with an aligned inner container', () => {
     mountHomePage()
 

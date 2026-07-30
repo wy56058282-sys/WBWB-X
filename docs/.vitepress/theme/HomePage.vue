@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
 import { brand } from '../brand'
+import HeroStickerPage from './HeroStickerPage.vue'
+import { heroPartners } from './heroPartners'
 
 const valueProps = [
   { icon: 'hn-check-box', title: '场景实战', label: 'REAL-WORLD TASKS' },
@@ -111,40 +113,42 @@ const workflowSteps = [
         </div>
 
         <div class="wbx-hero__art" aria-label="WorkBuddy 像素图标组合">
-          <span class="wbx-hero__monogram">{{ brand.shortMark }}</span>
-          <a
-            class="wbx-icon-card wbx-icon-card--buddy"
-            :href="withBase('/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/')"
-            aria-label="查看 Part 1 使用手册"
-          >
-            <i class="hn hn-face-grin" aria-hidden="true" />
-          </a>
-          <a
-            class="wbx-icon-card wbx-icon-card--book"
-            :href="withBase('/reading-guide')"
-            aria-label="查看阅读指南"
-          >
-            <i class="hn hn-book" aria-hidden="true" />
-          </a>
-          <a
-            class="wbx-icon-card wbx-icon-card--flow"
-            :href="withBase('/wb-x/第三篇 进阶篇：把案例变成自己的工作系统/')"
-            aria-label="查看工作系统进阶篇"
-          >
-            <i class="hn hn-sitemap" aria-hidden="true" />
-          </a>
-          <a
-            class="wbx-icon-card wbx-icon-card--work"
-            :href="withBase('/wb-x/第二篇 案例篇：从一项任务到一支 AI 团队/')"
-            aria-label="查看 Part 2 案例篇"
-          >
-            <i class="hn hn-briefcase" aria-hidden="true" />
-          </a>
-          <div class="wbx-hero__metrics" aria-label="小白书内容规模">
-            <span><b>27</b> CHAPTERS</span>
-            <span><b>4</b> PARTS</span>
-            <span><b>∞</b> WORKFLOWS</span>
-          </div>
+          <HeroStickerPage :partners="heroPartners">
+            <span class="wbx-hero__monogram">{{ brand.shortMark }}</span>
+            <a
+              class="wbx-icon-card wbx-icon-card--buddy"
+              :href="withBase('/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/')"
+              aria-label="查看 Part 1 使用手册"
+            >
+              <i class="hn hn-face-grin" aria-hidden="true" />
+            </a>
+            <a
+              class="wbx-icon-card wbx-icon-card--book"
+              :href="withBase('/reading-guide')"
+              aria-label="查看阅读指南"
+            >
+              <i class="hn hn-book" aria-hidden="true" />
+            </a>
+            <a
+              class="wbx-icon-card wbx-icon-card--flow"
+              :href="withBase('/wb-x/第三篇 进阶篇：把案例变成自己的工作系统/')"
+              aria-label="查看工作系统进阶篇"
+            >
+              <i class="hn hn-sitemap" aria-hidden="true" />
+            </a>
+            <a
+              class="wbx-icon-card wbx-icon-card--work"
+              :href="withBase('/wb-x/第二篇 案例篇：从一项任务到一支 AI 团队/')"
+              aria-label="查看 Part 2 案例篇"
+            >
+              <i class="hn hn-briefcase" aria-hidden="true" />
+            </a>
+            <div class="wbx-hero__metrics" aria-label="小白书内容规模">
+              <span><b>27</b> CHAPTERS</span>
+              <span><b>4</b> PARTS</span>
+              <span><b>∞</b> WORKFLOWS</span>
+            </div>
+          </HeroStickerPage>
         </div>
       </div>
 
