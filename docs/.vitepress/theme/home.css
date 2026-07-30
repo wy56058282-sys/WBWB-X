@@ -839,7 +839,7 @@
 
   .wbx-icon-card--people {
     top: 270px;
-    left: 5%;
+    left: 1%;
   }
 
   .wbx-value-strip {
@@ -864,12 +864,6 @@
   .wbx-home-footer__inner {
     align-items: flex-start;
     flex-direction: column;
-  }
-}
-
-@media (max-width: 780px) {
-  .wbx-icon-card--people {
-    left: 3%;
   }
 }
 
