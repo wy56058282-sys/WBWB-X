@@ -175,7 +175,9 @@ body {
 }
 
 .wbx-community-qr {
-  width: min(100%, 856px);
+  width: min(100%, 568px);
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
   border: 1px solid var(--wbx-ink);
   border-radius: 8px;
   padding: 24px;
@@ -231,7 +233,7 @@ body {
 
 .wbx-community-qr__image {
   display: block;
-  width: min(100%, 800px);
+  width: min(100%, 520px, calc(100dvh - 220px));
   height: auto;
   aspect-ratio: 1;
   margin: 0 auto;

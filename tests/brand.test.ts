@@ -160,4 +160,15 @@ describe('brand configuration', () => {
     )
     expect(closeButton?.[0]).toContain('aria-label="关闭"')
   })
+
+  it('bounds the community QR dialog by both viewport width and height', () => {
+    const css = readFileSync('docs/.vitepress/theme/custom.css', 'utf8')
+
+    expect(css).toMatch(
+      /\.wbx-community-qr\s*\{[^}]*width:\s*min\(100%, 568px\);[^}]*max-height:\s*calc\(100dvh - 48px\);[^}]*overflow-y:\s*auto;/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-community-qr__image\s*\{[^}]*width:\s*min\(100%, 520px, calc\(100dvh - 220px\)\);/s,
+    )
+  })
 })
