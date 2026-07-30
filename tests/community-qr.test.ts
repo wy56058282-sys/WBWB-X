@@ -6,6 +6,7 @@ import Layout from '../docs/.vitepress/theme/Layout.vue'
 vi.mock('vitepress', () => ({
   useRoute: () => ({ path: '/wb-x/' }),
   useData: () => ({ site: { value: { base: '/' } } }),
+  withBase: (path: string) => path,
 }))
 
 vi.mock('vitepress/theme', async () => {

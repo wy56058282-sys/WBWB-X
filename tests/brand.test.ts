@@ -69,6 +69,15 @@ describe('brand configuration', () => {
     expect(source).not.toContain('#d8f238')
   })
 
+  it('prefixes homepage internal links with the configured site base', () => {
+    const source = readFileSync('docs/.vitepress/theme/HomePage.vue', 'utf8')
+
+    expect(source).toContain(":href=\"withBase('/wb-x/')\"")
+    expect(source).toContain(':href="withBase(path.href)"')
+    expect(source).toContain(':href="withBase(task.href)"')
+    expect(source).toContain(":href=\"withBase('/community/contributing')\"")
+  })
+
   it('loads the local Silkscreen weights used by pixel labels', () => {
     const themeSource = readFileSync('docs/.vitepress/theme/index.ts', 'utf8')
     const customCss = readFileSync('docs/.vitepress/theme/custom.css', 'utf8')

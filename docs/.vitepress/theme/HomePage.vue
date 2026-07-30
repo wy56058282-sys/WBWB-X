@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { withBase } from 'vitepress'
 import { brand } from '../brand'
 
 const valueProps = [
@@ -101,11 +102,11 @@ const workflowSteps = [
             WorkBuddy能干嘛？一套以真实工作为主线的WorkBuddy实践路径。带你从0到1先用起来，再从1到100把每次成功沉淀为可复用的工作系统，真正把AI变成生产力！
           </p>
           <div class="wbx-hero__actions">
-            <a class="wbx-button wbx-button--primary" href="/wb-x/">
+            <a class="wbx-button wbx-button--primary" :href="withBase('/wb-x/')">
               <span>开始阅读</span>
               <i class="hn hn-arrow-right" aria-hidden="true" />
             </a>
-            <a class="wbx-button wbx-button--outline" href="/reading-guide">查看阅读路线</a>
+            <a class="wbx-button wbx-button--outline" :href="withBase('/reading-guide')">查看阅读路线</a>
           </div>
         </div>
 
@@ -151,7 +152,7 @@ const workflowSteps = [
         <p>从个人上手到组织落地，循序渐进，构建你的 WorkBuddy 工作系统。</p>
       </div>
       <div class="wbx-reading-grid">
-        <a v-for="path in readingPaths" :key="path.meta" class="wbx-reading-card" :href="path.href">
+        <a v-for="path in readingPaths" :key="path.meta" class="wbx-reading-card" :href="withBase(path.href)">
           <span class="wbx-reading-card__icon">
             <i class="hn" :class="path.icon" aria-hidden="true" />
           </span>
@@ -177,7 +178,7 @@ const workflowSteps = [
         <p>不必从头读。带着问题进来，先跑通一个能验收的结果。</p>
       </div>
       <div class="wbx-task-grid">
-        <a v-for="task in taskCategories" :key="task.title" :href="task.href">
+        <a v-for="task in taskCategories" :key="task.title" :href="withBase(task.href)">
           <i class="hn" :class="task.icon" aria-hidden="true" />
           <strong>{{ task.title }}</strong>
           <span>{{ task.description }}</span>
@@ -206,7 +207,7 @@ const workflowSteps = [
         <h2 id="wbx-community-title">这本小白书，也可以由你继续写下去。</h2>
       </div>
       <div class="wbx-community__actions">
-        <a class="wbx-button wbx-button--primary" href="/community/contributing">参与共创</a>
+        <a class="wbx-button wbx-button--primary" :href="withBase('/community/contributing')">参与共创</a>
         <a class="wbx-button wbx-button--outline" :href="brand.repository">前往 GitHub</a>
       </div>
       <i class="hn hn-book wbx-community__icon" aria-hidden="true" />
