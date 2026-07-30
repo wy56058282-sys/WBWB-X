@@ -28,10 +28,9 @@ function unlockBackgroundScroll() {
 }
 
 function open(trigger: HTMLElement | null) {
-  activeTrigger = trigger ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null)
-
   if (isOpen.value) return
 
+  activeTrigger = trigger ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null)
   isOpen.value = true
   lockBackgroundScroll()
   void nextTick(() => dialog.value?.focus())
