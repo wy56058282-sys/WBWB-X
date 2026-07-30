@@ -136,6 +136,8 @@
 }
 
 .wbx-icon-card {
+  --wbx-icon-rotation: 0deg;
+
   position: absolute;
   display: grid;
   width: 126px;
@@ -145,6 +147,28 @@
   color: #0d100d;
   background: #ffffff;
   box-shadow: 0 10px 25px rgb(31 38 10 / 8%);
+  text-decoration: none;
+  transform: rotate(var(--wbx-icon-rotation));
+  scale: 1;
+  animation: wbx-icon-float 4.2s ease-in-out infinite;
+  transition:
+    box-shadow 180ms ease,
+    scale 180ms ease;
+  will-change: transform;
+}
+
+.wbx-icon-card:hover,
+.wbx-icon-card:focus-visible {
+  z-index: 2;
+  color: #0d100d;
+  box-shadow: 0 16px 34px rgb(13 16 13 / 18%);
+  scale: 1.1;
+  animation-play-state: paused;
+}
+
+.wbx-icon-card:focus-visible {
+  outline: 3px solid #0d100d;
+  outline-offset: 4px;
 }
 
 .wbx-icon-card .hn {
@@ -152,27 +176,52 @@
 }
 
 .wbx-icon-card--buddy {
+  --wbx-icon-rotation: -7deg;
+
   top: 38px;
   left: 44%;
-  transform: rotate(-7deg);
+  animation-delay: -0.4s;
 }
 
 .wbx-icon-card--book {
+  --wbx-icon-rotation: 8deg;
+
   top: 198px;
   left: 15%;
-  transform: rotate(8deg);
+  animation-delay: -1.6s;
 }
 
 .wbx-icon-card--flow {
+  --wbx-icon-rotation: 3deg;
+
   top: 220px;
   right: 19%;
-  transform: rotate(3deg);
+  animation-delay: -2.7s;
 }
 
 .wbx-icon-card--work {
+  --wbx-icon-rotation: -7deg;
+
   bottom: 68px;
   left: 42%;
-  transform: rotate(-7deg);
+  animation-delay: -3.5s;
+}
+
+@keyframes wbx-icon-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--wbx-icon-rotation));
+  }
+
+  50% {
+    transform: translateY(-8px) rotate(var(--wbx-icon-rotation));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wbx-icon-card {
+    animation: none;
+  }
 }
 
 .wbx-hero__metrics {

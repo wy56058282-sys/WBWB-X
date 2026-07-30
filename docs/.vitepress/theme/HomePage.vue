@@ -112,18 +112,34 @@ const workflowSteps = [
 
         <div class="wbx-hero__art" aria-label="WorkBuddy 像素图标组合">
           <span class="wbx-hero__monogram">{{ brand.shortMark }}</span>
-          <span class="wbx-icon-card wbx-icon-card--buddy">
+          <a
+            class="wbx-icon-card wbx-icon-card--buddy"
+            :href="withBase('/wb-x/')"
+            aria-label="查看章节总览"
+          >
             <i class="hn hn-face-grin" aria-hidden="true" />
-          </span>
-          <span class="wbx-icon-card wbx-icon-card--book">
+          </a>
+          <a
+            class="wbx-icon-card wbx-icon-card--book"
+            :href="withBase('/reading-guide')"
+            aria-label="查看阅读指南"
+          >
             <i class="hn hn-book" aria-hidden="true" />
-          </span>
-          <span class="wbx-icon-card wbx-icon-card--flow">
+          </a>
+          <a
+            class="wbx-icon-card wbx-icon-card--flow"
+            :href="withBase('/wb-x/第三篇 进阶篇：把案例变成自己的工作系统/')"
+            aria-label="查看工作系统进阶篇"
+          >
             <i class="hn hn-sitemap" aria-hidden="true" />
-          </span>
-          <span class="wbx-icon-card wbx-icon-card--work">
+          </a>
+          <a
+            class="wbx-icon-card wbx-icon-card--work"
+            :href="withBase('/cases/')"
+            aria-label="查看社区案例集"
+          >
             <i class="hn hn-briefcase" aria-hidden="true" />
-          </span>
+          </a>
           <div class="wbx-hero__metrics" aria-label="小白书内容规模">
             <span><b>27</b> CHAPTERS</span>
             <span><b>4</b> PARTS</span>
