@@ -36,6 +36,9 @@ describe('home hero icon navigation', () => {
     expect(css).toMatch(
       /\.wbx-hero__copy\s*>\s*\.wbx-pixel-label\s*\{[^}]*color:\s*#0d100d;/s,
     )
+    expect(css).toMatch(
+      /\.wbx-hero__monogram\s*\{[^}]*top:\s*62px;[^}]*right:\s*48px;/s,
+    )
   })
 
   it('uses the approved homepage value labels', () => {
