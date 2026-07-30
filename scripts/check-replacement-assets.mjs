@@ -49,13 +49,10 @@ async function filesUnder(directory) {
 }
 
 function isAssetReference(line) {
-  return /!\[[^\]]*\]\([^)]*https:\/\/workbuddy\.homes\//.test(line)
-    || /url\(\s*['"]?https:\/\/workbuddy\.homes\//.test(line)
-    || /(?:src|href)\s*[:=]\s*['"]https:\/\/workbuddy\.homes\//.test(line)
-}
-
-function isSourceAttribution(line) {
-  return /source attribution/i.test(line)
+  return /!\[[^\]]*\]\(/.test(line)
+    || /\b(?:src|srcset|href)\s*[:=]/.test(line)
+    || /\burl\(/.test(line)
+    || /\bimport\b.*['"]https:\/\/workbuddy\.homes\//.test(line)
 }
 
 for (const filePath of await filesUnder('docs')) {
@@ -64,7 +61,6 @@ for (const filePath of await filesUnder('docs')) {
     if (
       line.includes(sourceOrigin)
       && isAssetReference(line)
-      && !isSourceAttribution(line)
     ) {
       failures.push(`${filePath}:${index + 1} hotlinks a replacement asset from ${sourceOrigin}`)
     }
