@@ -21,7 +21,7 @@ export const brand: BrandConfig = {
   siteName: 'WorkBuddy WB-X',
   contentName: 'WorkBuddy 实战小白书',
   contentShortName: 'WorkBuddy小白书',
-  shortMark: 'WBWB-X',
+  shortMark: 'WB-X',
   accent: '#32E6B9',
   origin: 'https://wbwbx.sparkx.zone',
   repository: 'https://github.com/wy56058282-sys/WBWB-X',

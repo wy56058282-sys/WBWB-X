@@ -24,7 +24,7 @@ describe('brand configuration', () => {
     expect(brand.siteName).toBe('WorkBuddy WB-X')
     expect(brand.contentName).toBe('WorkBuddy 实战小白书')
     expect(brand.contentShortName).toBe('WorkBuddy小白书')
-    expect(brand.shortMark).toBe('WBWB-X')
+    expect(brand.shortMark).toBe('WB-X')
     expect(brand.accent).toBe('#32E6B9')
     expect(brand.origin).toBe('https://wbwbx.sparkx.zone')
     expect(brand.repository).toBe('https://github.com/wy56058282-sys/WBWB-X')
