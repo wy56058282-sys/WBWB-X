@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createApp, h, type App } from 'vue'
 import HeroStickerPage from '../docs/.vitepress/theme/HeroStickerPage.vue'
 
@@ -13,6 +13,7 @@ const partners = [
 afterEach(() => {
   apps.splice(0).forEach((app) => app.unmount())
   document.body.replaceChildren()
+  vi.restoreAllMocks()
 })
 
 function mountComponent() {
@@ -21,11 +22,13 @@ function mountComponent() {
   const app = createApp({
     render: () =>
       h(HeroStickerPage, { partners }, {
-        default: () => h('span', { class: 'cover-proof' }, 'cover'),
+        default: () =>
+          h('a', { class: 'cover-proof', href: '#cover' }, 'cover link'),
       }),
   })
   app.mount(host)
   apps.push(app)
+  return app
 }
 
 function pointerEvent(type: string, pointerType: string) {
@@ -87,6 +90,38 @@ describe('HeroStickerPage', () => {
     expect(links.map((link) => link.tabIndex)).toEqual([0, 0, 0])
   })
 
+  it('exposes only the active layer to focus and assistive technology', async () => {
+    mountComponent()
+    const trigger = document.querySelector<HTMLButtonElement>('.wbx-sticker-page__trigger')!
+    const inside = document.querySelector<HTMLElement>('.wbx-sticker-page__inside')!
+    const cover = document.querySelector<HTMLElement>('.wbx-sticker-page__cover')!
+    const coverLink = document.querySelector<HTMLAnchorElement>('.cover-proof')!
+    const partnerLinks = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>('.wbx-partner-sticker'),
+    )
+    const availableFocusables = () =>
+      [trigger, coverLink, ...partnerLinks].filter(
+        (element) =>
+          !element.closest('[inert]') &&
+          !element.closest('[aria-hidden="true"]'),
+      )
+
+    expect(inside.hasAttribute('inert')).toBe(true)
+    expect(inside.getAttribute('aria-hidden')).toBe('true')
+    expect(cover.hasAttribute('inert')).toBe(false)
+    expect(cover.getAttribute('aria-hidden')).toBe('false')
+    expect(availableFocusables()).toEqual([trigger, coverLink])
+
+    trigger.click()
+    await Promise.resolve()
+
+    expect(inside.hasAttribute('inert')).toBe(false)
+    expect(inside.getAttribute('aria-hidden')).toBe('false')
+    expect(cover.hasAttribute('inert')).toBe(true)
+    expect(cover.getAttribute('aria-hidden')).toBe('true')
+    expect(availableFocusables()).toEqual([trigger, ...partnerLinks])
+  })
+
   it('keeps mouse hover open through its click and lets touch click toggle', async () => {
     mountComponent()
     const root = document.querySelector<HTMLElement>('.wbx-sticker-page')!
@@ -105,6 +140,10 @@ describe('HeroStickerPage', () => {
     trigger.dispatchEvent(pointerEvent('click', 'touch'))
     await Promise.resolve()
     expect(root.dataset.open).toBe('true')
+
+    trigger.dispatchEvent(pointerEvent('click', 'touch'))
+    await Promise.resolve()
+    expect(root.dataset.open).toBe('false')
   })
 
   it('ignores touch and synthesized mouse leave after touch opens', async () => {
@@ -120,6 +159,46 @@ describe('HeroStickerPage', () => {
 
     expect(root.dataset.open).toBe('true')
     expect(trigger.getAttribute('aria-expanded')).toBe('true')
+  })
+
+  it('closes a touch-opened page on outside pointerdown and restores hidden-layer focus', async () => {
+    mountComponent()
+    const root = document.querySelector<HTMLElement>('.wbx-sticker-page')!
+    const trigger = document.querySelector<HTMLButtonElement>('.wbx-sticker-page__trigger')!
+    const link = document.querySelector<HTMLAnchorElement>('.wbx-partner-sticker')!
+
+    trigger.dispatchEvent(pointerEvent('click', 'touch'))
+    await Promise.resolve()
+    link.focus()
+    link.dispatchEvent(pointerEvent('pointerdown', 'touch'))
+    await Promise.resolve()
+    expect(root.dataset.open).toBe('true')
+
+    document.body.dispatchEvent(pointerEvent('pointerdown', 'touch'))
+    await Promise.resolve()
+
+    expect(root.dataset.open).toBe('false')
+    expect(document.activeElement).toBe(trigger)
+  })
+
+  it('removes its outside-pointer listener when unmounted', () => {
+    const addEventListener = vi.spyOn(document, 'addEventListener')
+    const removeEventListener = vi.spyOn(document, 'removeEventListener')
+    const app = mountComponent()
+    const registration = addEventListener.mock.calls.find(
+      ([type]) => type === 'pointerdown',
+    )
+
+    expect(registration).toBeDefined()
+    if (!registration) return
+
+    app.unmount()
+    apps.splice(apps.indexOf(app), 1)
+
+    expect(removeEventListener).toHaveBeenCalledWith(
+      'pointerdown',
+      registration[1],
+    )
   })
 
   it('returns focus to the trigger when Escape closes focused stickers', async () => {
@@ -140,6 +219,21 @@ describe('HeroStickerPage', () => {
     expect(document.activeElement).toBe(trigger)
   })
 
+  it('does not handle Escape or steal cover focus while already closed', async () => {
+    mountComponent()
+    const root = document.querySelector<HTMLElement>('.wbx-sticker-page')!
+    const coverLink = document.querySelector<HTMLAnchorElement>('.cover-proof')!
+
+    coverLink.focus()
+    coverLink.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
+    )
+    await Promise.resolve()
+
+    expect(root.dataset.open).toBe('false')
+    expect(document.activeElement).toBe(coverLink)
+  })
+
   it('renders safe external links and a text fallback', () => {
     mountComponent()
     const link = document.querySelector<HTMLAnchorElement>('.wbx-partner-sticker')!
@@ -152,6 +246,10 @@ describe('HeroStickerPage', () => {
 
   it('defines the approved reveal timing and reduced-motion fallback', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const reducedMotionCss = css.slice(
+      css.indexOf('@media (prefers-reduced-motion: reduce)'),
+      css.indexOf('.wbx-hero__metrics'),
+    )
 
     expect(css).toMatch(
       /\.wbx-sticker-page__cover\s*\{[^}]*260ms cubic-bezier\(0\.23,\s*1,\s*0\.32,\s*1\)/s,
@@ -159,20 +257,93 @@ describe('HeroStickerPage', () => {
     expect(css).toMatch(
       /\.wbx-sticker-page__trigger\s*\{[^}]*width:\s*72px;[^}]*height:\s*72px;/s,
     )
-    expect(css).toMatch(
-      /@media \(prefers-reduced-motion:\s*reduce\)\s*\{[\s\S]*?\.wbx-sticker-page__cover/s,
+    expect(reducedMotionCss).toMatch(
+      /\.wbx-sticker-page__cover\s*\{[^}]*transition:\s*opacity 1ms linear !important;/s,
+    )
+    expect(reducedMotionCss).toMatch(
+      /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__cover\s*\{[^}]*clip-path:\s*none;[^}]*opacity:\s*0;/s,
+    )
+    expect(reducedMotionCss).toMatch(
+      /\.wbx-partner-sticker\s*\{[^}]*transition:\s*none;/s,
     )
   })
 
-  it('keeps the mobile sticker page on the visible viewport edge', () => {
+  it('keeps the 960px mobile cover coordinates while the reveal UI stays in the viewport', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const mobileCss = css.slice(css.indexOf('@media (max-width: 420px)'))
+    const artRule = mobileCss.match(/\.wbx-hero__art\s*\{[^}]*\}/s)?.[0] ?? ''
+    const mobileHomeRule =
+      mobileCss.match(/\.wbx-home\s*\{[^}]*\}/s)?.[0] ?? ''
+    const heroRule = css.match(/\.wbx-hero\s*\{[^}]*\}/s)?.[0] ?? ''
+    const stickerPageRule =
+      mobileCss.match(/\.wbx-sticker-page\s*\{[^}]*\}/s)?.[0] ?? ''
+    const pageInset = Number(
+      mobileHomeRule.match(/padding:\s*\d+px\s+0\s+0\s+(\d+)px/)?.[1],
+    )
+    const heroBorder = Number(heroRule.match(/border:\s*(\d+)px/)?.[1])
+    const revealInset = Number(
+      stickerPageRule.match(/width:\s*calc\(100vw - (\d+)px\)/)?.[1],
+    )
 
+    expect(css).toMatch(
+      /\.wbx-home-layout\s*\{[^}]*overflow-x:\s*clip;/s,
+    )
+    expect(artRule).toMatch(/min-height:\s*560px;/)
+    expect(artRule).not.toMatch(/\bwidth\s*:/)
     expect(mobileCss).toMatch(
-      /\.wbx-hero__art\s*\{[^}]*width:\s*calc\(100vw - 28px\);/s,
+      /\.wbx-sticker-page\s*\{[^}]*width:\s*calc\(100vw - 30px\);[^}]*overflow:\s*hidden;/s,
     )
     expect(mobileCss).toMatch(
-      /\.wbx-sticker-page\s*\{[^}]*width:\s*100%;/s,
+      /\.wbx-sticker-page__cover\s*\{[^}]*width:\s*var\(--wbx-mobile-hero-width\);/s,
+    )
+    expect(mobileCss).toMatch(
+      /\.wbx-sticker-page__inside\s*\{[^}]*grid-template-areas:\s*"sparkx sparkx"\s*"workbuddy zai";[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\);/s,
+    )
+    expect(mobileCss).toMatch(
+      /\.wbx-partner-sticker\s*\{[^}]*min-width:\s*0;/s,
+    )
+    expect(revealInset).toBe(pageInset + heroBorder)
+  })
+
+  it('keeps the visible fold clear of the workflow metrics without shrinking its hit target', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const compactCss = css.slice(
+      css.indexOf('@media (max-width: 760px)'),
+      css.indexOf('@media (max-width: 420px)'),
+    )
+    const triggerRule =
+      css.match(/\.wbx-sticker-page__trigger\s*\{[^}]*\}/s)?.[0] ?? ''
+    const metricsRule =
+      css.match(/\.wbx-hero__metrics\s*\{[^}]*\}/s)?.[0] ?? ''
+    const foldSize = Number(
+      triggerRule.match(/--wbx-fold-visual-size:\s*(\d+)px/)?.[1],
+    )
+    const metricsInset = Number(metricsRule.match(/right:\s*(\d+)px/)?.[1])
+    const compactTriggerRule =
+      compactCss.match(/\.wbx-sticker-page__trigger\s*\{[^}]*\}/s)?.[0] ?? ''
+    const compactMetricsRule =
+      compactCss.match(/\.wbx-hero__metrics\s*\{[^}]*\}/s)?.[0] ?? ''
+    const compactFoldSize = Number(
+      compactTriggerRule.match(/--wbx-fold-visual-size:\s*(\d+)px/)?.[1],
+    )
+    const compactMetricsInset = Number(
+      compactMetricsRule.match(/right:\s*(\d+)px/)?.[1],
+    )
+
+    expect(triggerRule).toMatch(/width:\s*72px;[^}]*height:\s*72px;/s)
+    expect(triggerRule).toMatch(/background:\s*transparent;/)
+    expect(foldSize).toBeGreaterThan(0)
+    expect(foldSize).toBeLessThan(metricsInset)
+    expect(css).toMatch(
+      /\.wbx-sticker-page__trigger::before\s*\{[^}]*width:\s*var\(--wbx-fold-visual-size\);[^}]*height:\s*var\(--wbx-fold-visual-size\);[^}]*linear-gradient/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-sticker-page__trigger span\s*\{[^}]*width:\s*32px;/s,
+    )
+    expect(compactFoldSize).toBeGreaterThan(0)
+    expect(compactFoldSize).toBeLessThan(compactMetricsInset)
+    expect(compactCss).toMatch(
+      /\.wbx-sticker-page__trigger span\s*\{[^}]*display:\s*none;/s,
     )
   })
 })

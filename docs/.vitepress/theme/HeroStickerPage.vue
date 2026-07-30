@@ -1,14 +1,26 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import type { HeroStickerPartner } from './heroPartners'
 
 defineProps<{ partners: HeroStickerPartner[] }>()
 
 const isOpen = ref(false)
+const page = ref<HTMLElement | null>(null)
+const inside = ref<HTMLElement | null>(null)
 const trigger = ref<HTMLButtonElement | null>(null)
 const open = () => { isOpen.value = true }
-const close = () => { isOpen.value = false }
-const toggle = () => { isOpen.value = !isOpen.value }
+const close = (restoreFocus = false) => {
+  if (!isOpen.value) return
+
+  const shouldRestoreFocus =
+    restoreFocus || inside.value?.contains(document.activeElement)
+  isOpen.value = false
+  if (shouldRestoreFocus) trigger.value?.focus()
+}
+const toggle = () => {
+  if (isOpen.value) close()
+  else open()
+}
 const onPointerenter = (event: PointerEvent) => {
   if (event.pointerType === 'mouse') open()
 }
@@ -20,15 +32,27 @@ const onClick = (event: MouseEvent & { pointerType?: string }) => {
   else toggle()
 }
 const onKeydown = (event: KeyboardEvent) => {
-  if (event.key === 'Escape') {
+  if (event.key === 'Escape' && isOpen.value) close(true)
+}
+const onDocumentPointerdown = (event: PointerEvent) => {
+  if (
+    isOpen.value &&
+    event.target instanceof Node &&
+    !page.value?.contains(event.target)
+  ) {
     close()
-    trigger.value?.focus()
   }
 }
+
+onMounted(() => document.addEventListener('pointerdown', onDocumentPointerdown))
+onBeforeUnmount(() =>
+  document.removeEventListener('pointerdown', onDocumentPointerdown),
+)
 </script>
 
 <template>
   <div
+    ref="page"
     class="wbx-sticker-page"
     :data-open="String(isOpen)"
     @pointerleave="onPointerleave"
@@ -45,7 +69,13 @@ const onKeydown = (event: KeyboardEvent) => {
     >
       <span aria-hidden="true">翻开看看</span>
     </button>
-    <div class="wbx-sticker-page__inside" aria-label="合作伙伴">
+    <div
+      ref="inside"
+      class="wbx-sticker-page__inside"
+      aria-label="合作伙伴"
+      :aria-hidden="String(!isOpen)"
+      :inert="!isOpen ? '' : null"
+    >
       <a
         v-for="partner in partners"
         :key="partner.name"
@@ -64,7 +94,11 @@ const onKeydown = (event: KeyboardEvent) => {
         <span class="wbx-partner-sticker__fallback">{{ partner.name }}</span>
       </a>
     </div>
-    <div class="wbx-sticker-page__cover">
+    <div
+      class="wbx-sticker-page__cover"
+      :aria-hidden="String(isOpen)"
+      :inert="isOpen ? '' : null"
+    >
       <slot />
     </div>
   </div>
