@@ -1,6 +1,6 @@
 // @vitest-environment node
 
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { brand } from '../docs/.vitepress/brand'
 import vitepressConfig from '../docs/.vitepress/config'
@@ -110,6 +110,18 @@ describe('brand configuration', () => {
     ]
 
     expect(offBrandGreens).toEqual([])
+  })
+
+  it('does not render the source yellow-green accent anywhere in site UI sources', () => {
+    const uiRoots = ['docs/.vitepress/theme', 'docs/cases', 'docs/help']
+    const filesWithSourceAccent = uiRoots.flatMap((root) =>
+      readdirSync(root, { recursive: true })
+        .filter((entry) => /\.(?:css|md|ts|vue)$/i.test(String(entry)))
+        .map((entry) => `${root}/${String(entry)}`)
+        .filter((file) => readFileSync(file, 'utf8').toLowerCase().includes('#d8f238')),
+    )
+
+    expect(filesWithSourceAccent).toEqual([])
   })
 
   it('clips the oversized 390px hero without enabling page scroll', () => {

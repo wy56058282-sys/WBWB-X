@@ -113,7 +113,7 @@ pageClass: community-cases-page
   border: 2px solid var(--vp-c-text-1);
   border-radius: 12px;
   background: var(--vp-c-bg-soft);
-  box-shadow: 10px 10px 0 #d8f238;
+  box-shadow: 10px 10px 0 #32E6B9;
 }
 
 .case-co-create__label {
@@ -141,7 +141,7 @@ pageClass: community-cases-page
   display: inline-block;
   margin: 10px 0 14px;
   padding: 8px 12px;
-  background: #d8f238;
+  background: #32E6B9;
   color: #0c0f0a;
 }
 
@@ -185,7 +185,7 @@ pageClass: community-cases-page
 @media (max-width: 720px) {
   .case-co-create {
     padding: 24px;
-    box-shadow: 7px 7px 0 #d8f238;
+    box-shadow: 7px 7px 0 #32E6B9;
   }
 }
 </style>

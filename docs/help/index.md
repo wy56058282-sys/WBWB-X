@@ -125,7 +125,7 @@ pageClass: help-you-page
   width: 92px;
   height: 9px;
   margin-top: 24px;
-  background: #d8f238;
+  background: #32E6B9;
   content: "";
 }
 
@@ -174,7 +174,7 @@ pageClass: help-you-page
   border: 2px solid var(--vp-c-text-1);
   border-radius: 14px;
   background: var(--vp-c-bg-soft);
-  box-shadow: 12px 12px 0 #d8f238;
+  box-shadow: 12px 12px 0 #32E6B9;
 }
 
 .help-survey-card__heading {
@@ -313,7 +313,7 @@ pageClass: help-you-page
 .help-note {
   margin: 12px 0 36px;
   padding: 24px;
-  border-left: 5px solid #d8f238;
+  border-left: 5px solid #32E6B9;
   background: var(--vp-c-bg-soft);
 }
 
@@ -355,7 +355,7 @@ pageClass: help-you-page
   }
 
   .help-survey-card {
-    box-shadow: 7px 7px 0 #d8f238;
+    box-shadow: 7px 7px 0 #32E6B9;
   }
 }
 </style>
