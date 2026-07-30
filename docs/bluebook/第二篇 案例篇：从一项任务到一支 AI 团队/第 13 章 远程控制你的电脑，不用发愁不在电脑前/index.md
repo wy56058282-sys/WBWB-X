@@ -4,7 +4,7 @@
 
 ## 小程序远程控制电脑
 
-![](assets/001_26MfTlZV_KWt4b43Mbo.jpg)
+![](/article-assets/source-calibration/ch13/001.jpg)
 
 传统远程办公通常有两种方式：一种是把电脑屏幕投到手机上，自己点鼠标；另一种是把文件先传到云端，再在手机上处理。
 
@@ -25,7 +25,7 @@ WorkBuddy 的远程方式介于二者之间：用户不直接操控鼠标，而�
 
 这个判断会直接影响它能否读取电脑文件、是否需要电脑在线，以及数据是否适合进入云端环境。
 
-![](assets/002_workbuddy-local-cloud-mode_CsMMbNpDWo.jpg)
+![](/article-assets/source-calibration/ch13/002.jpg)
 
 | 判断问题 | 云端模式 | 本机模式 |
 |-|-|-|
@@ -57,7 +57,7 @@ WorkBuddy 的远程方式介于二者之间：用户不直接操控鼠标，而�
 你帮我看一下，我电脑上在我这个local long GPT里边有一个关于xx公司的一些PPT，然后你整理一下内容发给我。
 ```
 
-![](assets/003_workbuddy-remote-ppt-search_TKo1bTVF0o.jpg)
+![](/article-assets/source-calibration/ch13/003.jpg)
 
 
 
@@ -65,7 +65,7 @@ WorkBuddy 的远程方式介于二者之间：用户不直接操控鼠标，而�
 
 很多任务不是从电脑文件夹开始，而是从微信聊天里突然冒出来：客户发来一个合同 PDF，朋友发来一张票据照片，同事丢来一个 Excel，供应商转来一个压缩包。传统流程是先下载到手机，再传电脑，再找目录，再打开软件。小程序更适合把“微信上下文里的文件”直接变成 WorkBuddy 的输入。
 
-![](assets/004_p8IJTS7o_AFVJb6OkJo.jpg)
+![](/article-assets/source-calibration/ch13/004.jpg)
 
 
 
@@ -86,10 +86,10 @@ WorkBuddy 的远程方式介于二者之间：用户不直接操控鼠标，而�
 请启动这个批量处理任务，并把手机端当作进度看板。
 ```
 
-![](assets/005_workbuddy-remote-task-execute_Aw3vbvuLho.jpg)
+![](/article-assets/source-calibration/ch13/005.png)
 
 ```Plain Text
 你控制摄像头拍张照片，描述一下电脑前面的画面
 ```
 
-![](assets/006_image_GvG6bCfUyo.png)
+![](/article-assets/source-calibration/ch13/006.png)

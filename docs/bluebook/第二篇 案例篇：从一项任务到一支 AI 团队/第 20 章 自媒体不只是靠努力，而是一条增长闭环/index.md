@@ -52,13 +52,13 @@ Skill 的作用是补上其中一个环节，不是接管账号判断。下面�
 不要把阅读量高直接解释成选题一定适合我。
 ```
 
-![](assets/001_image_TBeUbtO5Uo.png)
+![](/article-assets/source-calibration/ch20/001.png)
 
 ### 执行流程与结果
 
 WorkBuddy 先生成跨平台样本表，再把评论聚成问题簇，最后把“热度、账号匹配、新增价值、证据充足度、制作成本”分别评分。交付物是一张可以人工删选的选题看板。
 
-![](assets/002_image_UsfnbdO18o.png)
+![](/article-assets/source-calibration/ch20/002.png)
 
 
 
@@ -72,15 +72,15 @@ WorkBuddy 先生成跨平台样本表，再把评论聚成问题簇，最后把�
 
 比如获取公众号最近7天的AI领域低粉爆款文章。
 
-![](assets/003_image_D9dBbor45o.png)
+![](/article-assets/source-calibration/ch20/003.png)
 
 筛选X上的低粉爆款
 
-![](assets/004_image_SgdBbN3bXo.png)
+![](/article-assets/source-calibration/ch20/004.png)
 
 以及YouTube的低粉爆款
 
-![](assets/005_image_IrhFbSsgxo.png)
+![](/article-assets/source-calibration/ch20/005.png)
 
 
 
@@ -107,7 +107,7 @@ WorkBuddy 先生成跨平台样本表，再把评论聚成问题簇，最后把�
 不要自动选择最终标题，先让我确认内容承诺。
 ```
 
-![](assets/006_image_OmoDbu7rBo.png)
+![](/article-assets/source-calibration/ch20/006.png)
 
 ### 验收方法
 
@@ -115,7 +115,7 @@ WorkBuddy 先生成跨平台样本表，再把评论聚成问题簇，最后把�
 
 workbuddy通过这几个skill，生成的标题还真有那味儿。特别是小红书的标题，很有小红书的感觉。
 
-![](assets/007_image_YCTubyoc3o.png)
+![](/article-assets/source-calibration/ch20/007.png)
 
 可以进行 A/B 测试，但一次只改变一个主要变量，例如“问题式”与“结果式”。不要同时改标题、封面、发布时间和正文开头，否则数据无法解释。
 
@@ -123,7 +123,7 @@ workbuddy通过这几个skill，生成的标题还真有那味儿。特别是小
 
 再推荐一个标题skill：[**viral-**](https://github.com/kangarooking/kangarooking-skills/tree/main/viral-title)[**title**](https://github.com/kangarooking/kangarooking-skills/tree/main/viral-title)**，很适合用来给公众号起标题**
 
-![](assets/008_image_Cezibb1uao.png)
+![](/article-assets/source-calibration/ch20/008.png)
 
 
 
@@ -150,7 +150,7 @@ workbuddy通过这几个skill，生成的标题还真有那味儿。特别是小
 
 ### 结果是否可用
 
-![](assets/009_image_YB8xbAm4Zo.png)
+![](/article-assets/source-calibration/ch20/009.png)
 
 生成的封面还不错，有汉字、封面负责表达的主题也比较贴切，如果换成更强的生图模型，效果应该会更好。
 
@@ -181,7 +181,7 @@ workbuddy通过这几个skill，生成的标题还真有那味儿。特别是小
 先返回逐页文案、视觉层级和预计字数，我确认后再调用封面与长图 Skill。
 ```
 
-![](assets/010_image_FUCAbuw08o.png)
+![](/article-assets/source-calibration/ch20/010.png)
 
 
 
@@ -205,7 +205,7 @@ workbuddy通过这几个skill，生成的标题还真有那味儿。特别是小
 同时列出必须实拍、可用产品截图、可由 AI 生成的画面，禁止伪造用户反馈。
 ```
 
-![](assets/011_image_VrCsbV8TPo.png)
+![](/article-assets/source-calibration/ch20/011.png)
 
 生成的口播文案，效果还不错哦。
 
@@ -223,11 +223,11 @@ workbuddy通过这几个skill，生成的标题还真有那味儿。特别是小
 
 发布链建议停在草稿箱：事实检查 → 引用与版权 → 品牌与合规 → 链接检查 → 手机预览 → 人工确认账号 → 发布。自动点赞、批量私信、刷评论、绕过平台风控和未经确认的群发，不属于本书推荐的效率场景。
 
-![](assets/012_image_WzaxbhMT7o.png)
+![](/article-assets/source-calibration/ch20/012.png)
 
-![](assets/013_image_KqQsbAw8Ho.png)
+![](/article-assets/source-calibration/ch20/013.png)
 
-![](assets/014_image_GUBtbiSfao.png)
+![](/article-assets/source-calibration/ch20/014.png)
 
 
 
@@ -247,9 +247,9 @@ workbuddy通过这几个skill，生成的标题还真有那味儿。特别是小
 
 把AI最开始产出的文案和终稿都丢进去，最终产出复盘报告和style-guide.md，下次AI写的东西就能离你的期望更进一步啦～
 
-![](assets/015_image_QHmHbuB4Ro.png)
+![](/article-assets/source-calibration/ch20/015.png)
 
-![](assets/016_image_NtnjbhJRHo.png)
+![](/article-assets/source-calibration/ch20/016.png)
 
 
 

@@ -48,20 +48,20 @@ WorkBuddy 的能力、界面和使用方式会持续变化。这本蓝皮书希�
 如果你想交流共创想法、提交案例，或者参与蓝皮书后续维护，可以扫描二维码联系我们。点击图片可查看大图。
 
 <div class="wb-contact-grid">
-  <a class="wb-contact-card" href="/community/contacts/liu-cong-nlp.jpg" target="_blank" rel="noreferrer">
-    <img src="/community/contacts/liu-cong-nlp.jpg" alt="刘聪NLP 微信二维码" loading="lazy">
+  <a class="wb-contact-card" href="/article-assets/source-calibration/community/001.jpg" target="_blank" rel="noreferrer">
+    <img src="/article-assets/source-calibration/community/001.jpg" alt="刘聪NLP 微信二维码" loading="lazy">
     <span>刘聪NLP</span>
   </a>
-  <a class="wb-contact-card" href="/community/contacts/dai-shu-di.jpg" target="_blank" rel="noreferrer">
-    <img src="/community/contacts/dai-shu-di.jpg" alt="袋鼠帝微信二维码" loading="lazy">
+  <a class="wb-contact-card" href="/article-assets/source-calibration/community/002.jpg" target="_blank" rel="noreferrer">
+    <img src="/article-assets/source-calibration/community/002.jpg" alt="袋鼠帝微信二维码" loading="lazy">
     <span>袋鼠帝</span>
   </a>
-  <a class="wb-contact-card" href="/community/contacts/jia-mu.jpg" target="_blank" rel="noreferrer">
-    <img src="/community/contacts/jia-mu.jpg" alt="甲木微信二维码" loading="lazy">
+  <a class="wb-contact-card" href="/article-assets/source-calibration/community/003.jpg" target="_blank" rel="noreferrer">
+    <img src="/article-assets/source-calibration/community/003.jpg" alt="甲木微信二维码" loading="lazy">
     <span>甲木</span>
   </a>
-  <a class="wb-contact-card" href="/community/contacts/joy.jpg" target="_blank" rel="noreferrer">
-    <img src="/community/contacts/joy.jpg" alt="Joy 微信二维码" loading="lazy">
+  <a class="wb-contact-card" href="/article-assets/source-calibration/community/004.jpg" target="_blank" rel="noreferrer">
+    <img src="/article-assets/source-calibration/community/004.jpg" alt="Joy 微信二维码" loading="lazy">
     <span>Joy</span>
   </a>
 </div>

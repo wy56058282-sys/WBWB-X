@@ -32,7 +32,7 @@ flowchart LR
 
 ## 可用的资讯类 Skill
 
-![](assets/001_skillhub-info-skills_IzOlb7IQbo.png)
+![](/article-assets/source-calibration/ch15/001.png)
 
 大致可以分成六类：新闻、AI 行业、开发者趋势、科研论文、内容监控、事实核查与搜索补证。
 
@@ -62,9 +62,9 @@ flowchart LR
  定时每天早上7点返回gthub热门项目，并输出项目大概简介
 ```
 
-![](assets/002_image_Y8tcbQ5zXo.png)
+![](/article-assets/source-calibration/ch15/002.png)
 
-![](assets/003_image_QIV7b3XORo.png)
+![](/article-assets/source-calibration/ch15/003.png)
 
 
 
@@ -84,7 +84,7 @@ AI 行业信息更新快，AIHOT 可以作为一个现成的信息源。它面�
 帮我安装这个 skill：https://aihot.virxact.com/aihot-skill/
 ```
 
-![](assets/004_image_CG3xbVWBlo.png)
+![](/article-assets/source-calibration/ch15/004.png)
 
 
 
@@ -92,7 +92,7 @@ AI 行业信息更新快，AIHOT 可以作为一个现成的信息源。它面�
 请看一下最近 OpenAI 发布了什么新东西
 ```
 
-![](assets/005_image_HKdRbaqczo.png)
+![](/article-assets/source-calibration/ch15/005.png)
 
 
 
@@ -100,7 +100,7 @@ AI 行业信息更新快，AIHOT 可以作为一个现成的信息源。它面�
 总结今日热点新闻，值关注AI大模型方向
 ```
 
-![](assets/006_image_ZQW0bUCBso.png)
+![](/article-assets/source-calibration/ch15/006.png)
 
 
 

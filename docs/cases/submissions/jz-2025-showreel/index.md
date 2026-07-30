@@ -154,11 +154,11 @@ WorkBuddy 自动完成了：
 
 动画效果概述：
 
-![粒子球体形成后的初始画面](./assets/showreel-sphere.png)
+![粒子球体形成后的初始画面](/article-assets/source-calibration/case-jz-2025-showreel/001.png)
 
 *300 个粒子聚拢成球体，带坐标轴、大圆参考线和粒子间虚线连接。*
 
-![场景展示效果](./assets/showreel-scene.png)
+![场景展示效果](/article-assets/source-calibration/case-jz-2025-showreel/002.png)
 
 *聚焦节点后，标题从节点浮出，Mockup 浏览器窗口沿分支线展开，右上角信息面板实时显示旋转数据。*
 

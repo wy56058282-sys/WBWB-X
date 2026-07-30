@@ -10,7 +10,7 @@ WorkBuddy 内置了多款国产大模型。每日签到领取的积分基本能�
 
 如果拿不准做什么，WorkBuddy 已经按应用场景预设了模板，选一个直接开始即可。
 
-![](assets/001_01_app_templates_To5yb29RMo.gif)
+![](/article-assets/source-calibration/ch23/001.gif)
 
 ## 短任务实战：Excel 可视化与数据清洗
 
@@ -31,7 +31,7 @@ HY3 在短任务上表现突出。PPT 生成、数据清洗、Excel 图表可视
 
 执行过程可能较慢，但最终产出的可视化效果通常超出预期——包括图表、趋势分析和文字总结。数据清洗和 PPT 生成同理。
 
-![](assets/002_image_F4BfbagcFo.png)
+![](/article-assets/source-calibration/ch23/002.png)
 
 
 
@@ -57,7 +57,7 @@ Build a full-screen hero section for a creative portfolio using React, Vite, Tai
 6. prefers-reduced-motion 下禁用所有动画。
 ```
 
-<video controls preload="metadata" src="./assets/003_asset_HE1Nb74Hfo.mp4"></video>
+<video controls preload="metadata" src="/article-assets/source-calibration/ch23/video-001.mp4"></video>
 
 
 
@@ -81,7 +81,7 @@ Build a full-screen hero landing page for a creative agency called "Mainframe" u
 
 以上两个模板全程使用 HY3 模型完成。
 
-![](assets/004_03_website_design_WX9gb8dBMo.gif)
+![](/article-assets/source-calibration/ch23/003.gif)
 
 
 
@@ -104,6 +104,6 @@ WorkBuddy 的 Skill 系统允许 Agent 连接日常使用的各类服务。这�
 4. 输出推荐理由和歌单链接。
 ```
 
-![](assets/005_04_skill_music_GxX3brlGeo.png)
+![](/article-assets/source-calibration/ch23/004.png)
 
 微信读书 Skill 的安装链接可以在官方页面获取：`https://weread.qq.com/r/weread-skills`。

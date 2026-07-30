@@ -24,4 +24,4 @@
 
 执行后仅新增台账文件，桌面原发票不移动、不改名、不删除
 
-![](assets/001_image_J9BUbk5hHo.png)
+![](/article-assets/source-calibration/ch12/001.png)

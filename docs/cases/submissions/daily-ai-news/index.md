@@ -65,7 +65,7 @@ AIHot 来自外部地址。安装前应查看来源域名和 Skill 内容，并�
 
 WorkBuddy 会先获取 Skill 内容，并调用 Skill 安全检查流程。确认来源、权限和将要执行的内容没有异常后，再继续安装。
 
-![WorkBuddy 获取 AIHot Skill 并执行安全检查](./assets/aihot-install.png)
+![WorkBuddy 获取 AIHot Skill 并执行安全检查](/article-assets/source-calibration/case-daily-ai-news/001.png)
 
 安装完成后，可以继续问：
 
@@ -98,7 +98,7 @@ WorkBuddy 会先获取 Skill 内容，并调用 Skill 安全检查流程。确�
 
 实际运行后，WorkBuddy 返回了最近 7 天的 OpenAI 相关内容，并为每条资讯保留标题、时间、摘要和 AIHot 原始链接：
 
-![AIHot 查询最近 7 天 OpenAI 动态的结果](./assets/aihot-openai-result.png)
+![AIHot 查询最近 7 天 OpenAI 动态的结果](/article-assets/source-calibration/case-daily-ai-news/002.png)
 
 ## 任务二：生成今日 AI 大模型热点总结
 
@@ -117,7 +117,7 @@ WorkBuddy 会先获取 Skill 内容，并调用 Skill 安全检查流程。确�
 
 实际结果按照热点和大模型方向进行了整理，保留了具体来源链接，并给出一句话结论：
 
-![AIHot 生成今日 AI 大模型热点总结](./assets/aihot-daily-report.png)
+![AIHot 生成今日 AI 大模型热点总结](/article-assets/source-calibration/case-daily-ai-news/003.png)
 
 ## 怎样把任务描述写得更好
 

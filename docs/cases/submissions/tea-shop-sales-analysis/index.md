@@ -19,7 +19,7 @@ tags:
 
 # 用 WorkBuddy 清洗 119 份门店 Excel 并生成可交互运营看板
 
-![案例封面：门店运营分析看板](./assets/cover.jpg)
+![案例封面：门店运营分析看板](/article-assets/source-calibration/case-tea-shop-sales-analysis/001.jpg)
 
 ## 场景描述
 
@@ -31,7 +31,7 @@ tags:
 - **金额字段有噪声**：混入 ￥/CNY/RMB/元、千分位逗号，还有「待补录」「--」等缺失标记和负数退货
 - **同一门店分散在多个文件**：例如北京三里屯店的数据散落在 6 个文件里
 
-![总部实际收到的门店 Excel：列名、格式、币种单位五花八门](./assets/mess-data.jpg)
+![总部实际收到的门店 Excel：列名、格式、币种单位五花八门](/article-assets/source-calibration/case-tea-shop-sales-analysis/002.jpg)
 
 手工合并和清洗这类数据通常需要 6-7 小时，且容易出错。这个案例演示如何把工作一次性交给 WorkBuddy，并拿到可以直接汇报的交付物。
 
@@ -130,17 +130,17 @@ tags:
 
 **Excel 分析报告**：8 个 Sheet（封面指标卡 / 区域汇总 / 城市汇总 / TOP10 门店 / 品类占比 / 月度趋势 / 洞察与策略建议 / 数据说明与假设），165 个活公式，recalc 校验 0 错误。核心发现：华南（28.8%）与华东（28.7%）双龙头合计过半；TOP10 门店占全盘 38.7%；水果/鲜果茶品类占 20.0%。
 
-![Excel 分析报告](./assets/report-xlsx.jpg)
+![Excel 分析报告](/article-assets/source-calibration/case-tea-shop-sales-analysis/003.jpg)
 
 **HTML 驾驶舱**：深绿品牌色 + 金点缀的咨询所风格，KPI 卡、5 张图表、门店明细表全部全局联动；趋势图支持拖拽选月。聚合数值经 node 脚本多场景模拟校验，与 Excel 报告完全一致。
 
-![HTML 驾驶舱：全局联动的交互看板](./assets/cover.jpg)
+![HTML 驾驶舱：全局联动的交互看板](/article-assets/source-calibration/case-tea-shop-sales-analysis/001.jpg)
 
 **执行过程**：WorkBuddy 接到任务指令后开始执行（左图）；清洗完成后，它会先汇报发现了哪些脏数据问题、做了哪些处理假设，由人确认口径后再继续（右图）。
 
-![在 WorkBuddy 中下达任务指令](./assets/workbuddy-task.jpg)
+![在 WorkBuddy 中下达任务指令](/article-assets/source-calibration/case-tea-shop-sales-analysis/004.jpg)
 
-![WorkBuddy 汇报发现的脏数据问题与处理结果](./assets/workbuddy-cleaning.jpg)
+![WorkBuddy 汇报发现的脏数据问题与处理结果](/article-assets/source-calibration/case-tea-shop-sales-analysis/005.jpg)
 
 ## 验收标准
 

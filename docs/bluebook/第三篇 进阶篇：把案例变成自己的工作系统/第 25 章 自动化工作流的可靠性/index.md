@@ -18,9 +18,9 @@ AI 内容领域更新速度快，每天需要从多个信息源中筛选当日�
 
 手动运行一次这个任务，WorkBuddy 会同时调用四个数据源，整合输出一份当日 AI 热点清单，供博主快速判断和筛选。
 
-![](assets/001_image_FGBhb1udco.png)
+![](/article-assets/source-calibration/ch25/001.png)
 
-![](assets/002_image_Yuucbmf9So.png)
+![](/article-assets/source-calibration/ch25/002.png)
 
 跑通一次后，下一步是把它设置为定时自动化任务：每天早上 9:00 自动运行，结果推送到指定位置，无需每天手动触发。
 
@@ -49,13 +49,13 @@ AI 内容领域更新速度快，每天需要从多个信息源中筛选当日�
 
 WorkBuddy 会将当前 Prompt 和数据源配置保存为定时任务，按设定时间自动执行。
 
-![](assets/003_image_RNrFb50Tqo.png)
+![](/article-assets/source-calibration/ch25/003.png)
 
-![](assets/004_image_IPtlb5D3Zo.png)
+![](/article-assets/source-calibration/ch25/004.png)
 
 设置完成后，每天早上 9:00，WorkBuddy 自动调用四个数据源，整合结果并推送。博主打开通知，直接开始筛选选题，不需要手动触发。
 
-![](assets/005_image_A6Jmbe0tao.png)
+![](/article-assets/source-calibration/ch25/005.png)
 
 ## 把自动化任务设计成状态机
 

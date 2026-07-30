@@ -44,11 +44,11 @@
 不要登录、预订、付款或代替我接受退改条款。
 ```
 
-![](assets/001_image_AmSUbvzAjo.png)
+![](/article-assets/source-calibration/ch14/001.png)
 
 WorkBuddy 在执行过程中并不是一来就直接帮你做决定，而是尽可能详尽的再向你询问一些问题，确保真的像个专属导游那样帮你规划行程。
 
-![](assets/002_image_HJNdbxfvOo.png)
+![](/article-assets/source-calibration/ch14/002.png)
 
 ### 执行链与交付物
 
@@ -56,7 +56,7 @@ WorkBuddy 在执行过程中并不是一来就直接帮你做决定，而是尽�
 
 预订前由人再次确认库存、价格、签证、证件、保险和退改政策。涉及老人、儿童、孕妇、慢性病或无障碍需求时，要把限制明确写入任务，不能由模型自行推断。
 
-![](assets/003_image_IO4lbaAS1o.png)
+![](/article-assets/source-calibration/ch14/003.png)
 
 
 
@@ -99,11 +99,11 @@ WorkBuddy 还可以在旅行后完成照片按日期地点整理、票据分类�
 只提示我联系当地医疗机构或急救服务，不继续在线推演。
 ```
 
-![](assets/004_image_JEOObotZfo.png)
+![](/article-assets/source-calibration/ch14/004.png)
 
 以上是我从网上找的一份就诊记录，当我把这份不太详尽的就诊记录同步给WorkBuddy，他会帮我分析并生成就医材料。
 
-![](assets/005_image_TCPXbvZ9Bo.png)
+![](/article-assets/source-calibration/ch14/005.png)
 
 
 
@@ -119,13 +119,13 @@ WorkBuddy 还可以在旅行后完成照片按日期地点整理、票据分类�
 改为列出需要向医生或注册营养专业人员确认的问题。
 ```
 
-![](assets/006_image_Fu9EbJOqWo.png)
+![](/article-assets/source-calibration/ch14/006.png)
 
-![](assets/007_image_CYQ7b2c1Ho.png)
+![](/article-assets/source-calibration/ch14/007.png)
 
 同样的在执行过程中会仔细询问我的饮食结构和目前厨房里可用的厨具，给出真正的属于我自己的晚餐计划，而不是一份看似精确但对我个人并不适配的医疗饮食方案。
 
-![](assets/008_image_WNlYbFucxo.png)
+![](/article-assets/source-calibration/ch14/008.png)
 
 
 
@@ -148,7 +148,7 @@ WorkBuddy 还可以在旅行后完成照片按日期地点整理、票据分类�
 
 
 
-![](assets/009_image_AS0HbQeP7o.png)
+![](/article-assets/source-calibration/ch14/009.png)
 
 
 
@@ -176,7 +176,7 @@ WorkBuddy 还可以在旅行后完成照片按日期地点整理、票据分类�
 不要代替我下单或接受服务条款。
 ```
 
-![](assets/010_image_IOAgbitrRo.png)
+![](/article-assets/source-calibration/ch14/010.png)
 
 
 
@@ -192,7 +192,7 @@ WorkBuddy 可以帮助记录情绪触发点、睡眠、事件和应对方式，�
 提示我立即联系当地紧急服务、专业机构或身边可信赖的人。
 ```
 
-![](assets/011_image_Oar6b1pIjo.png)
+![](/article-assets/source-calibration/ch14/011.png)
 
 
 

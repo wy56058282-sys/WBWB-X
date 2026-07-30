@@ -79,11 +79,11 @@ WorkBuddy 适合解决的不是“替你拍脑袋”，是把已有材料变成�
 语言简洁实用，不需要写得过于详细，重点把整体框架和关键决策项列清楚，适合直接拿去和领导确认活动方向。
 ```
 
-![](assets/001_image_PhFMbu3kTo.png)
+![](/article-assets/source-calibration/ch11/001.png)
 
 
 
-![](assets/002_image_UVm5bKLrZo.png)
+![](/article-assets/source-calibration/ch11/002.png)
 
 ### 二次修改不要重写，要说差异
 
@@ -101,9 +101,9 @@ WorkBuddy 适合解决的不是“替你拍脑袋”，是把已有材料变成�
 
 
 
-![](assets/003_image_IoOLbfEcvo.png)
+![](/article-assets/source-calibration/ch11/003.png)
 
-![](assets/004_image_V1RpbVGuno.png)
+![](/article-assets/source-calibration/ch11/004.png)
 
 ### 进阶实战：比较两版制度、合同或方案
 
@@ -114,9 +114,9 @@ WorkBuddy 适合解决的不是“替你拍脑袋”，是把已有材料变成�
 生成影响清单和待确认问题，不给法律结论，不修改原文件。
 ```
 
-![](assets/011_image_HqbtbVTw3o.png)
+![](/article-assets/source-calibration/ch11/005.png)
 
-![](assets/012_image_MhArbb6Woo.png)
+![](/article-assets/source-calibration/ch11/006.png)
 
 文档对比适合发现变化，不替代法务、财务或制度责任人的最终判断。
 
@@ -166,11 +166,11 @@ Excel 的问题通常不在“会不会做图”，而在“这个表到底能�
 要求：保留原始数据，统计过程和公式可追溯；图表标题直接表达主要结论；无法从数据中确认的原因明确标注为待核实，不要自行编造。
 ```
 
-![](assets/005_image_I118b7wyUo.png)
+![](/article-assets/source-calibration/ch11/007.png)
 
-![](assets/006_image_BWkRb60JPo.png)
+![](/article-assets/source-calibration/ch11/008.png)
 
-![](assets/007_image_XtfQbkCqio.png)
+![](/article-assets/source-calibration/ch11/009.png)
 
 ### 进阶实战：多表合并、对账与异常清单
 
@@ -184,9 +184,9 @@ Excel 的问题通常不在“会不会做图”，而在“这个表到底能�
 金额汇总必须与各源表合计对账，差异不为 0 时不生成管理结论。
 ```
 
-![](assets/009_image_UNEqbRnJfo.png)
+![](/article-assets/source-calibration/ch11/010.png)
 
-![](assets/010_image_L25tbHIUeo.png)
+![](/article-assets/source-calibration/ch11/011.png)
 
 **验收**：输入总量、清洗变化和输出总量守恒；公式可重算；异常没有被静默删除；图表使用的字段和汇总表一致。
 
@@ -239,7 +239,7 @@ PPT 标题尽量直接表达观点，不使用 AI Agent 介绍、应用场景这
 整体风格：专业、简洁、有科技感，但不要过度使用渐变、发光和装饰性元素，适合正式分享和内部汇报。
 ```
 
-![](assets/008_image_ABXObcQeeo.png)
+![](/article-assets/source-calibration/ch11/012.png)
 
 
 

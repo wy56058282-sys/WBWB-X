@@ -22,7 +22,7 @@ tags:
 
 # 用 WorkBuddy 专家团吃透十年年报：一套可复用的上市公司深度研究方法
 
-![案例封面：数字化转型叙事分析报告首页](./assets/cover.png)
+![案例封面：数字化转型叙事分析报告首页](/article-assets/source-calibration/case-annual-report-digital-transformation/001.png)
 
 ## 场景描述
 
@@ -75,19 +75,19 @@ tags:
 
 1. **下达总指令**：在 WorkBuddy 首页输入任务指令，并在输入框左侧选中「智数分析专家团」。指令只需说清公司、区间、分析维度、理论框架、交付物和技术规范（泛化模板见下一节）。
 
-![在 WorkBuddy 首页输入任务指令并选中「智数分析专家团」](./assets/primary-input.png)
+![在 WorkBuddy 首页输入任务指令并选中「智数分析专家团」](/article-assets/source-calibration/case-annual-report-digital-transformation/002.png)
 
 2. **专家团拆解任务**：专家团接到指令后自动创建协作团队（团队名按「公司-分析主题」自动命名），并生成任务清单 to-do list：下载年报 → 解析 PDF 提取文本与财务数据 → 文本语义分析 → 财务指标与数字化投入量化分析 → 引入 MBA 理论框架并整合 → 设计可视化图表 → 撰写 HTML 咨询报告 → 汇编综合交付。
 
-![专家团创建协作团队并生成任务清单](./assets/agent-swarm-todo.png)
+![专家团创建协作团队并生成任务清单](/article-assets/source-calibration/case-annual-report-digital-transformation/003.png)
 
 3. **分工并行执行**：团队负责人按阶段（Phase）调度 5 位成员——首席数据编排师、知识检索专家、数据科学工程师、洞察报告撰写师、可视化分析设计师。底部成员头像实时显示各自进度（✓ 已完成 / 转圈中为执行中），每完成一项任务，负责人会汇报关键发现，例如「叙事强度轨迹四阶段」这类中间结论。
 
-![专家团成员分工执行，实时汇报各阶段关键发现](./assets/start-agents-swarm.png)
+![专家团成员分工执行，实时汇报各阶段关键发现](/article-assets/source-calibration/case-annual-report-digital-transformation/004.png)
 
 4. **过程产物落盘**：执行过程中，年报原文、解析后的文本与结构化数据、可复现脚本、中间分析结果分别写入 `annual_reports/`、`extracted_text/`、`extracted_data/`、`scripts/` 等目录，全程可追溯。
 
-![执行产出的目录结构：年报原文、可复现脚本、中间数据与最终报告](./assets/source-files.png)
+![执行产出的目录结构：年报原文、可复现脚本、中间数据与最终报告](/article-assets/source-calibration/case-annual-report-digital-transformation/005.png)
 
 5. **交付汇总**：全部任务完成后，专家团给出交付总结（本案例耗时约 1 小时），列出每项交付物的路径和说明，人只需打开最终 HTML 报告审阅。
 
@@ -133,23 +133,23 @@ tags:
 
 **最终交付物**：一份 85 KB 自包含的 HTML 咨询报告（双击离线可打开），左侧为目录导航，正文含执行摘要、五章正文与附录 A–D，内嵌 10 张图表。报告首页即给出执行摘要与六张核心指标卡：营收十年增长 4.4 倍（CAGR 16.0%）、毛利率升至历史最高的 50.1%、数字化投入与营收强相关（Pearson r=0.919）、人均营收提升 2.2 倍、叙事强度峰值 89.1、研发强度均值 10.6%。
 
-![最终 HTML 报告首页：执行摘要与核心指标卡](./assets/cover.png)
+![最终 HTML 报告首页：执行摘要与核心指标卡](/article-assets/source-calibration/case-annual-report-digital-transformation/001.png)
 
 **核心问题分析**：第三章以「问题卡片」形式呈现五大核心问题，每张卡片标注严重程度、理论依据与实证数据。例如「平台网络效应尚未充分兑现」：以平台战略与网络效应理论（Parker et al., 2016）为依据，用「数字化转型关键词词频热力图（2015–2025）」佐证——「工业互联网」词频从 2019 年峰值持续回落，「工业 AI」于 2025 年崛起取代榜首。
 
-![报告核心问题分析：理论依据 + 实证数据 + 词频热力图](./assets/report-charts.png)
+![报告核心问题分析：理论依据 + 实证数据 + 词频热力图](/article-assets/source-calibration/case-annual-report-digital-transformation/006.png)
 
 **理论框架与数据结合**：基于 Westerman 数字化成熟度模型，从技术能力与转型管理能力两个维度给出评分（85–90 分 / 70–75 分），并配「数字化成熟度五维评估」雷达图（成长性、数字化成效、抗风险能力、创新性、盈利性），图下附评分逻辑说明，每个分值都能对应到具体财务或文本指标。
 
-![数字化成熟度评估：双维评分卡与五维雷达图](./assets/report-framework.png)
+![数字化成熟度评估：双维评分卡与五维雷达图](/article-assets/source-calibration/case-annual-report-digital-transformation/007.png)
 
 **附录的专业度**：报告末尾附缩略语表（DCS、MD&A、LDA、RBV、VRIO、TAM、CAGR、ROE 等逐一给出全称与释义），连同数据来源、脚本说明、口径说明共四个附录，符合咨询交付物规范。
 
-![报告附录：缩略语表](./assets/report-conclusion.png)
+![报告附录：缩略语表](/article-assets/source-calibration/case-annual-report-digital-transformation/008.png)
 
 **WorkBuddy 中的交付总结**：专家团完成后给出交付清单——HTML 咨询报告、10 个 ECharts 图表合并预览页、六大理论框架整合分析文档（约 1.5 万字）、11 份年报原文、4 个可复现 Python 脚本、8 个中间分析数据文件（JSON/CSV），并提炼出三大论文级亮点发现，如「叙事解耦」现象（叙事强度与研发投入相关性 r=-0.275）、某亏损年度的「战略叙事韧性」（业绩大幅亏损当年叙事强度不降反升）。
 
-![WorkBuddy 中的交付总结：交付物清单、报告结构与亮点发现](./assets/workbuddy-result.png)
+![WorkBuddy 中的交付总结：交付物清单、报告结构与亮点发现](/article-assets/source-calibration/case-annual-report-digital-transformation/009.png)
 
 > 📎 报告原文（已匿名化，可在线打开）：[company-deep-research-report.html](/cases/submissions/annual-report-digital-transformation/company-deep-research-report.html)
 

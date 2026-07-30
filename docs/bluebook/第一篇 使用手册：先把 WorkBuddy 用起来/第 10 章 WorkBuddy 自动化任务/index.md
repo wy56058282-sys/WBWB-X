@@ -82,15 +82,15 @@ WorkBuddy 的不同之处，是把“定时调度”与 Agent 的理解、工具
 
 点击“自动化”，
 
-![](assets/001_image_RklAba93No.png)
+![](/article-assets/source-calibration/ch10/001.png)
 
 “添加自动化”，就可以自定义你的任务
 
-![](assets/002_image_MhojbPRsOo.png)
+![](/article-assets/source-calibration/ch10/002.png)
 
 比如，每日AI资讯新闻推送，定时8点发送
 
-![](assets/003_image_Ff6fbYuGoo.png)
+![](/article-assets/source-calibration/ch10/003.png)
 
 
 
@@ -98,7 +98,7 @@ WorkBuddy 的不同之处，是把“定时调度”与 Agent 的理解、工具
 
 官方任务模板覆盖新闻推送、周报生成、体检预约和学习计划等常见场景。模板的价值是提供基本字段和任务结构，但它不是最终答案。选用后仍应修改数据来源、时间范围、输出位置、验收标准和禁止动作。
 
-![](assets/004_%E8%87%AA%E5%8A%A8%E5%8C%96-%E4%BB%BB%E5%8A%A1%E6%A8%A1%E6%9D%BF_FYNwbDWqbo.png)
+![](/article-assets/source-calibration/ch10/004.png)
 
 
 

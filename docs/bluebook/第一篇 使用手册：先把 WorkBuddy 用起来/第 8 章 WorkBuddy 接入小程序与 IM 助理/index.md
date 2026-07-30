@@ -2,7 +2,7 @@
 
 ## 小程序的两种模式
 
-![](assets/001_image_Vv5bbtLVBo.png)
+![](/article-assets/source-calibration/ch08/001.png)
 
 | 模式 | 任务在哪里运行 | 是否依赖电脑在线 | 适合任务 |
 |-|-|-|-|
@@ -37,19 +37,19 @@ sequenceDiagram
 
 1. 打开 WorkBuddy，在左侧“助理”栏点击齿轮，进入“助理设置”；
 
-![](assets/002_%E5%BE%AE%E4%BF%A1%E5%8A%A9%E7%90%86-%E8%BF%9B%E5%85%A5%E5%8A%A9%E7%90%86%E8%AE%BE%E7%BD%AE_NbI2b9v4fo.png)
+![](/article-assets/source-calibration/ch08/002.png)
 
 2. 找到“微信助理集成”，点击“配置”；
 
-![](assets/003_%E5%BE%AE%E4%BF%A1%E5%8A%A9%E7%90%86-%E9%80%89%E6%8B%A9%E9%9B%86%E6%88%90_S9HlbaEmdo.png)
+![](/article-assets/source-calibration/ch08/003.png)
 
 3. 等待绑定二维码生成，用手机微信扫码；
 
-![](assets/004_%E5%BE%AE%E4%BF%A1%E5%8A%A9%E7%90%86-%E6%89%AB%E7%A0%81%E7%BB%91%E5%AE%9A_TElmbNPG5o.png)
+![](/article-assets/source-calibration/ch08/004.png)
 
 4. 卡片显示“已绑定”后，先发送一条只读测试指令；
 
-![](assets/005_%E5%BE%AE%E4%BF%A1%E5%8A%A9%E7%90%86-%E5%B7%B2%E7%BB%91%E5%AE%9A_ZQtrb6jCmo.png)
+![](/article-assets/source-calibration/ch08/005.png)
 
 5. 需要切换微信账号时，先解绑当前账号，再重新扫码。
 
@@ -63,39 +63,39 @@ sequenceDiagram
 
 1. WorkBuddy → 设置 → 助理设置 → 选择飞书；
 
-![](assets/006_image_SbcEbSaoio.png)
+![](/article-assets/source-calibration/ch08/006.png)
 
 2. 在飞书开放平台创建企业自建应用；
 
-![](assets/007_%E9%A3%9E%E4%B9%A6-%E7%99%BB%E5%BD%95%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0_EUPhblavHo.png)
+![](/article-assets/source-calibration/ch08/007.png)
 
 3. 为应用添加机器人能力；
 
-![](assets/008_%E9%A3%9E%E4%B9%A6-%E6%B7%BB%E5%8A%A0%E6%9C%BA%E5%99%A8%E4%BA%BA%E8%83%BD%E5%8A%9B_XFmTb5HGQo.png)
+![](/article-assets/source-calibration/ch08/008.png)
 
 4. 按 WorkBuddy 当前页面要求开通最小权限；
 
-![](assets/009_%E9%A3%9E%E4%B9%A6-%E6%89%B9%E9%87%8F%E5%AF%BC%E5%85%A5%E6%9D%83%E9%99%90_MRdCbm3Dvo.png)
+![](/article-assets/source-calibration/ch08/009.png)
 
 5. 在“凭证与基础信息”获取 App ID 和 App Secret；
 
-![](assets/010_%E9%A3%9E%E4%B9%A6-%E5%BA%94%E7%94%A8%E5%87%AD%E8%AF%81_CnItbspOUo.png)
+![](/article-assets/source-calibration/ch08/010.png)
 
 6. 将凭证填写到 WorkBuddy，生成或复制回调信息；
 
-![](assets/011_%E9%A3%9E%E4%B9%A6-%E5%8A%A0%E5%AF%86%E4%B8%8E%E6%A0%A1%E9%AA%8C%E9%85%8D%E7%BD%AE_WiAYbwBDKo.png)
+![](/article-assets/source-calibration/ch08/011.png)
 
 7. 在飞书配置事件订阅与回调；
 
-![](assets/012_%E9%A3%9E%E4%B9%A6-%E6%B7%BB%E5%8A%A0%E6%8E%A5%E6%94%B6%E6%B6%88%E6%81%AF%E4%BA%8B%E4%BB%B6_X4z6bNPsso.png)
+![](/article-assets/source-calibration/ch08/012.png)
 
 8. 添加接收消息、卡片交互等当前指南要求的事件；
 
-![](assets/013_%E9%A3%9E%E4%B9%A6-%E5%8D%A1%E7%89%87%E5%9B%9E%E8%B0%83_AvOxbO7M9o.png)
+![](/article-assets/source-calibration/ch08/013.png)
 
 9. 创建版本并发布应用；
 
-![](assets/014_%E9%A3%9E%E4%B9%A6-%E5%8F%91%E5%B8%83%E5%BA%94%E7%94%A8_TafwbySxco.png)
+![](/article-assets/source-calibration/ch08/014.png)
 
 10. 在飞书内向机器人发送只读测试任务。
 
@@ -103,22 +103,22 @@ sequenceDiagram
 
 ## 接入钉钉
 
-![](assets/015_image_RRhMbPo5uo.png)
+![](/article-assets/source-calibration/ch08/015.png)
 
 1. 创建应用与机器人使用企业管理员账号登录钉钉开发者后台；
 
-![](assets/016_%E9%92%89%E9%92%89-%E5%88%9B%E5%BB%BA%E5%BA%94%E7%94%A8_NuNTbdscZo.png)
+![](/article-assets/source-calibration/ch08/016.png)
 
 2. 进入“应用开发”，创建应用；
 
-![](assets/017_%E9%92%89%E9%92%89-%E6%B7%BB%E5%8A%A0%E6%9C%BA%E5%99%A8%E4%BA%BA%E8%83%BD%E5%8A%9B_ORRbbZrqgo.png)
+![](/article-assets/source-calibration/ch08/017.png)
 
 3. 为应用添加机器人能力，填写机器人名称、描述和头像并确认发布；
 
-![](assets/018_%E9%92%89%E9%92%89-%E5%BC%80%E9%80%9A%E6%9D%83%E9%99%90_QG1zbPhcxo.png)
+![](/article-assets/source-calibration/ch08/018.png)
 
 4. 优先在测试组织或测试群完成验证。
 
-![](assets/019_%E9%92%89%E9%92%89-%E8%8E%B7%E5%8F%96%E5%BA%94%E7%94%A8%E5%87%AD%E8%AF%81_OI8fbW0JNo.png)
+![](/article-assets/source-calibration/ch08/019.png)
 
 ***来源：WorkBuddy 官方指南。***
