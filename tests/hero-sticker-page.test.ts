@@ -262,16 +262,24 @@ describe('HeroStickerPage', () => {
 
   it('reveals the inside layer diagonally from the lower-right corner', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const stickerPageRules = css.match(/\.wbx-sticker-page\s*\{[^}]*\}/gs) ?? []
+    const coverRules = css.match(/\.wbx-sticker-page__cover\s*\{[^}]*\}/gs) ?? []
+    const openCoverRules = css.match(
+      /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__cover\s*\{[^}]*\}/gs,
+    ) ?? []
+    const pageTurnRules = [
+      ...stickerPageRules,
+      ...coverRules,
+      ...openCoverRules,
+    ].join('\n')
 
-    expect(css).not.toMatch(/perspective:\s*1400px/)
-    expect(css).not.toMatch(/rotateY\(/)
-    expect(css).not.toMatch(/transform-origin:\s*left center/)
-    expect(css).not.toMatch(/backface-visibility:/)
-    expect(css).not.toMatch(/transform-style:/)
-    expect(css).not.toMatch(/drop-shadow\(/)
-    expect(css).not.toMatch(
-      /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__cover\s*\{[^}]*opacity:/s,
-    )
+    expect(pageTurnRules).not.toMatch(/perspective(?:-origin)?\s*:/)
+    expect(pageTurnRules).not.toMatch(/rotateY\(/)
+    expect(pageTurnRules).not.toMatch(/transform-origin:\s*left center/)
+    expect(pageTurnRules).not.toMatch(/backface-visibility:/)
+    expect(pageTurnRules).not.toMatch(/transform-style:/)
+    expect(pageTurnRules).not.toMatch(/drop-shadow\(/)
+    expect(openCoverRules.join('\n')).not.toMatch(/opacity:/)
 
     expect(css).toMatch(
       /\.wbx-sticker-page__inside\s*\{[^}]*z-index:\s*3;[^}]*clip-path:\s*polygon\(100% 88%,\s*100% 100%,\s*88% 100%,\s*88% 100%\);[^}]*transition:\s*clip-path 280ms cubic-bezier\(0\.77,\s*0,\s*0\.175,\s*1\)/s,
