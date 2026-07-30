@@ -81,4 +81,15 @@ describe('brand configuration', () => {
     expect(source).toContain('aria-modal="true"')
     expect(source).toContain('按 Escape 关闭')
   })
+
+  it('keeps the QR close control named when mobile hides its visible label', () => {
+    const component = readFileSync('docs/.vitepress/theme/CommunityQr.vue', 'utf8')
+    const css = readFileSync('docs/.vitepress/theme/custom.css', 'utf8')
+    const closeButton = component.match(/<button class="wbx-community-qr__close"[^>]*>/)
+
+    expect(css).toMatch(
+      /@media \(max-width: 760px\)\s*\{[\s\S]*\.wbx-community-qr__close-label\s*\{\s*display:\s*none;/,
+    )
+    expect(closeButton?.[0]).toContain('aria-label="关闭"')
+  })
 })

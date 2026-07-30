@@ -110,7 +110,7 @@ onBeforeUnmount(() => {
       >
         <div class="wbx-community-qr__heading">
           <h2 id="wbx-community-qr-title">加入交流群</h2>
-          <button class="wbx-community-qr__close" type="button" @click="close">
+          <button class="wbx-community-qr__close" type="button" aria-label="关闭" @click="close">
             <span aria-hidden="true">×</span>
             <span class="wbx-community-qr__close-label">关闭</span>
           </button>
