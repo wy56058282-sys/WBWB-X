@@ -44,6 +44,10 @@ describe('home hero icon navigation', () => {
   it('uses the approved homepage value labels', () => {
     mountHomePage()
 
+    expect(
+      document.querySelector('.wbx-hero__copy > .wbx-pixel-label')?.textContent,
+    ).toBe('REAL TASKS · 27 CHAPTERS · OPEN SOURCE')
+
     const labels = Array.from(
       document.querySelectorAll<HTMLElement>('.wbx-value-strip__item'),
       (item) => [

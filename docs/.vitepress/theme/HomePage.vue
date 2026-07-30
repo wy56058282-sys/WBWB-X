@@ -96,7 +96,7 @@ const workflowSteps = [
     <section class="wbx-hero" aria-labelledby="wbx-hero-title">
       <div class="wbx-hero__stage">
         <div class="wbx-hero__copy">
-          <p class="wbx-pixel-label">OPEN-SOURCE · 27 CHAPTERS · 2026</p>
+          <p class="wbx-pixel-label">REAL TASKS · 27 CHAPTERS · OPEN SOURCE</p>
           <h1 id="wbx-hero-title">{{ brand.contentShortName }}</h1>
           <p class="wbx-hero__summary">
             WorkBuddy能干嘛？一套以真实工作为主线的WorkBuddy实践路径。带你从0到1先用起来，再从1到100把每次成功沉淀为可复用的工作系统，真正把AI变成生产力！
