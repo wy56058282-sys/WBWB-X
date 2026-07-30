@@ -37,6 +37,12 @@ describe('site navigation', () => {
     expect(serialized).not.toContain('/bluebook/')
   })
 
+  it('only enables the small-book sidebar on /wb-x/ routes', () => {
+    expect(config.themeConfig?.sidebar).toEqual({
+      '/wb-x/': sidebar,
+    })
+  })
+
   it('uses the approved SEO title for the browser title', () => {
     expect(config.title).toBe('WorkBuddy 教程与使用指南｜WorkBuddy WB-X 实战小白书')
   })

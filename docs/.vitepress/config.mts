@@ -54,7 +54,9 @@ export default defineConfig({
     logo: brand.logoPath,
     siteTitle: brand.siteName,
     nav: nav.map((item) => ({ ...item })),
-    sidebar: [...sidebar],
+    sidebar: {
+      '/wb-x/': [...sidebar],
+    },
     search: {
       provider: 'local',
     },
