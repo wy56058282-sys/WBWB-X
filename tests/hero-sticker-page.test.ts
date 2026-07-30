@@ -148,4 +148,16 @@ describe('HeroStickerPage', () => {
       /@media \(prefers-reduced-motion:\s*reduce\)\s*\{[\s\S]*?\.wbx-sticker-page__cover/s,
     )
   })
+
+  it('keeps the mobile sticker page on the visible viewport edge', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const mobileCss = css.slice(css.indexOf('@media (max-width: 420px)'))
+
+    expect(mobileCss).toMatch(
+      /\.wbx-hero__art\s*\{[^}]*width:\s*calc\(100vw - 28px\);/s,
+    )
+    expect(mobileCss).toMatch(
+      /\.wbx-sticker-page\s*\{[^}]*width:\s*100%;/s,
+    )
+  })
 })

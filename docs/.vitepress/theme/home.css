@@ -1034,10 +1034,12 @@
   }
 
   .wbx-hero__art {
+    width: calc(100vw - 28px);
     min-height: 560px;
   }
 
   .wbx-sticker-page {
+    width: 100%;
     height: 560px;
     min-height: 560px;
   }
