@@ -52,16 +52,8 @@ WorkBuddy 的能力、界面和使用方式会持续变化。这本小白书希�
     <img src="/article-assets/source-calibration/community/001.jpg" alt="王翊旭 Quadr-X 微信二维码" loading="lazy">
     <span>王翊旭 Quadr-X</span>
   </a>
-  <a class="wb-contact-card" href="/article-assets/source-calibration/community/002.jpg" target="_blank" rel="noreferrer">
-    <img src="/article-assets/source-calibration/community/002.jpg" alt="袋鼠帝微信二维码" loading="lazy">
-    <span>袋鼠帝</span>
-  </a>
-  <a class="wb-contact-card" href="/article-assets/source-calibration/community/003.jpg" target="_blank" rel="noreferrer">
-    <img src="/article-assets/source-calibration/community/003.jpg" alt="甲木微信二维码" loading="lazy">
-    <span>甲木</span>
-  </a>
-  <a class="wb-contact-card" href="/article-assets/source-calibration/community/004.jpg" target="_blank" rel="noreferrer">
-    <img src="/article-assets/source-calibration/community/004.jpg" alt="Joy 微信二维码" loading="lazy">
-    <span>Joy</span>
+  <a class="wb-contact-card" href="/article-assets/replacements/community/002.jpg" target="_blank" rel="noreferrer">
+    <img src="/article-assets/replacements/community/002.jpg" alt="学铃.Celine 微信二维码" loading="lazy">
+    <span>学铃.Celine</span>
   </a>
 </div>

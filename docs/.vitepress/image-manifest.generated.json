@@ -3448,40 +3448,14 @@
     "id": "community-002",
     "page": "/community/contributing/",
     "order": 2,
-    "purpose": "袋鼠帝微信二维码",
+    "purpose": "学铃.Celine 微信二维码",
     "sourceUrl": "https://workbuddy.homes/community/contacts/dai-shu-di.jpg",
     "calibrationPath": "/article-assets/source-calibration/community/002.jpg",
     "replacementPath": "/article-assets/replacements/community/002.jpg",
     "sourceWidth": 888,
     "sourceHeight": 1131,
     "format": "jpg",
-    "status": "awaiting-replacement"
-  },
-  {
-    "id": "community-003",
-    "page": "/community/contributing/",
-    "order": 3,
-    "purpose": "甲木微信二维码",
-    "sourceUrl": "https://workbuddy.homes/community/contacts/jia-mu.jpg",
-    "calibrationPath": "/article-assets/source-calibration/community/003.jpg",
-    "replacementPath": "/article-assets/replacements/community/003.jpg",
-    "sourceWidth": 888,
-    "sourceHeight": 1137,
-    "format": "jpg",
-    "status": "awaiting-replacement"
-  },
-  {
-    "id": "community-004",
-    "page": "/community/contributing/",
-    "order": 4,
-    "purpose": "Joy 微信二维码",
-    "sourceUrl": "https://workbuddy.homes/community/contacts/joy.jpg",
-    "calibrationPath": "/article-assets/source-calibration/community/004.jpg",
-    "replacementPath": "/article-assets/replacements/community/004.jpg",
-    "sourceWidth": 888,
-    "sourceHeight": 1131,
-    "format": "jpg",
-    "status": "awaiting-replacement"
+    "status": "replaced"
   },
   {
     "id": "help-001",
