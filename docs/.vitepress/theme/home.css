@@ -349,6 +349,14 @@
   animation-delay: -3.5s;
 }
 
+.wbx-icon-card--people {
+  --wbx-icon-rotation: 5deg;
+
+  top: 350px;
+  left: 16%;
+  animation-delay: -2.1s;
+}
+
 @keyframes wbx-icon-float {
   0%,
   100% {
@@ -829,6 +837,11 @@
     right: 21%;
   }
 
+  .wbx-icon-card--people {
+    top: 270px;
+    left: 5%;
+  }
+
   .wbx-value-strip {
     grid-template-columns: repeat(2, 1fr);
     gap: 22px 0;
@@ -934,6 +947,11 @@
     left: 39%;
   }
 
+  .wbx-icon-card--people {
+    bottom: 32px;
+    left: 4%;
+  }
+
   .wbx-hero__metrics {
     right: 16px;
     bottom: 18px;
@@ -1032,6 +1050,11 @@
 }
 
 @media (max-width: 420px) {
+  .wbx-icon-card--people {
+    bottom: 32px;
+    left: 4%;
+  }
+
   .wbx-sticker-page__inside {
     grid-template-areas:
       "sparkx sparkx"

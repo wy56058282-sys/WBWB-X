@@ -78,19 +78,35 @@ describe('home hero icon navigation', () => {
     ])
   })
 
-  it('offers four labelled links to distinct site sections', () => {
+  it('uses a book icon for the first reading path', () => {
+    mountHomePage()
+
+    const readingCards = document.querySelectorAll('.wbx-reading-card')
+
+    expect(readingCards[0]?.querySelector('.hn-book')).not.toBeNull()
+    expect(readingCards[0]?.querySelector('.hn-user')).toBeNull()
+  })
+
+  it('offers five labelled links to distinct site sections', () => {
     mountHomePage()
 
     const links = Array.from(
       document.querySelectorAll<HTMLAnchorElement>('.wbx-hero__art .wbx-icon-card'),
     )
 
-    expect(links.map((link) => [link.getAttribute('aria-label'), link.getAttribute('href')])).toEqual([
-      ['查看 Part 1 使用手册', '/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/'],
-      ['查看阅读指南', '/reading-guide'],
-      ['查看工作系统进阶篇', '/wb-x/第三篇 进阶篇：把案例变成自己的工作系统/'],
-      ['查看 Part 2 案例篇', '/wb-x/第二篇 案例篇：从一项任务到一支 AI 团队/'],
-    ])
+    expect(links).toHaveLength(5)
+
+    const part4 = document.querySelector<HTMLAnchorElement>('.wbx-icon-card--people')
+    expect(decodeURI(part4?.getAttribute('href') ?? '')).toContain(
+      '/wb-x/第四篇 岗位与行业落地/',
+    )
+    expect(part4?.getAttribute('aria-label')).toBe('查看 Part 4 岗位与行业篇')
+  })
+
+  it('positions the Part 4 people icon with its own card rule', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+
+    expect(css).toMatch(/\.wbx-icon-card--people\s*\{[^}]*\b(?:top|bottom):/s)
   })
 
   it('renders the approved partner stickers as safe external links', () => {

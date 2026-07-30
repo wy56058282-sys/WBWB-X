@@ -13,7 +13,7 @@ const valueProps = [
 
 const readingPaths = [
   {
-    icon: 'hn-user',
+    icon: 'hn-book',
     meta: 'PART 01 · CH. 01—10',
     title: '从 0 到 1：先把 WorkBuddy 用起来',
     description: '安装、界面、第一个任务、Skill、连接器、API 与自动化。',
@@ -141,6 +141,13 @@ const workflowSteps = [
             aria-label="查看 Part 2 案例篇"
           >
             <i class="hn hn-briefcase" aria-hidden="true" />
+          </a>
+          <a
+            class="wbx-icon-card wbx-icon-card--people"
+            :href="withBase('/wb-x/第四篇 岗位与行业落地/')"
+            aria-label="查看 Part 4 岗位与行业篇"
+          >
+            <i class="hn hn-users" aria-hidden="true" />
           </a>
           <div class="wbx-hero__metrics" aria-label="小白书内容规模">
             <span><b>27</b> CHAPTERS</span>
