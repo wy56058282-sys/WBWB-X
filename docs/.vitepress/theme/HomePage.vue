@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
 import { brand } from '../brand'
-import HeroStickerPage from './HeroStickerPage.vue'
-import { heroPartners } from './heroPartners'
 
 const valueProps = [
   { icon: 'hn-check-box', title: '场景实战', label: 'REAL-WORLD TASKS' },
@@ -96,7 +94,7 @@ const workflowSteps = [
 <template>
   <main class="wbx-home">
     <section class="wbx-hero" aria-labelledby="wbx-hero-title">
-      <HeroStickerPage class="wbx-hero__stage" :partners="heroPartners">
+      <div class="wbx-hero__stage">
         <div class="wbx-hero__copy">
           <p class="wbx-pixel-label">REAL TASKS · 27 CHAPTERS · OPEN SOURCE</p>
           <h1 id="wbx-hero-title">{{ brand.contentShortName }}</h1>
@@ -155,7 +153,7 @@ const workflowSteps = [
             <span><b>∞</b> WORKFLOWS</span>
           </div>
         </div>
-      </HeroStickerPage>
+      </div>
 
       <div class="wbx-value-strip" aria-label="小白书价值">
         <div v-for="item in valueProps" :key="item.title" class="wbx-value-strip__item">

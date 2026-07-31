@@ -124,7 +124,7 @@ describe('brand configuration', () => {
     expect(filesWithSourceAccent).toEqual([])
   })
 
-  it('keeps the 390px hero and its trigger within the viewport', () => {
+  it('keeps the 390px hero within the viewport', () => {
     const source = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const narrowRules = source.slice(source.indexOf('@media (max-width: 420px)'))
 
@@ -137,9 +137,6 @@ describe('brand configuration', () => {
     )
     expect(narrowRules).not.toMatch(
       /\.wbx-hero \.wbx-button\s*\{[^}]*\bwidth\s*:/s,
-    )
-    expect(source).toMatch(
-      /\.wbx-sticker-page__trigger\s*\{[^}]*right:\s*0;[^}]*width:\s*72px;[^}]*height:\s*72px;/s,
     )
   })
 

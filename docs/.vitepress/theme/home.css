@@ -45,6 +45,13 @@
 }
 
 .wbx-hero__stage {
+  display: grid;
+  min-height: 568px;
+  grid-template-columns: 1.08fr 0.92fr;
+  overflow: hidden;
+  border: 2px solid #0d100d;
+  border-radius: 8px 8px 0 0;
+  background: var(--wbx-accent);
 }
 
 .wbx-hero__copy {
@@ -123,153 +130,6 @@
 .wbx-hero__art {
   position: relative;
   min-height: 568px;
-}
-
-.wbx-sticker-page {
-  --wbx-fold-visual-size: 40px;
-
-  position: relative;
-  min-height: 568px;
-  overflow: hidden;
-  isolation: isolate;
-}
-
-.wbx-sticker-page__inside,
-.wbx-sticker-page__cover {
-  position: absolute;
-  inset: 0;
-}
-
-.wbx-sticker-page__inside {
-  z-index: 3;
-  display: grid;
-  grid-template-areas:
-    ". sparkx ."
-    "workbuddy . zai";
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-items: center;
-  padding: 58px 48px 70px;
-  background: #fff;
-  clip-path: polygon(
-    100% calc(100% - var(--wbx-fold-visual-size)),
-    100% 100%,
-    calc(100% - var(--wbx-fold-visual-size)) 100%,
-    calc(100% - var(--wbx-fold-visual-size)) 100%
-  );
-  transition: clip-path 280ms cubic-bezier(0.77, 0, 0.175, 1);
-  will-change: clip-path;
-}
-
-.wbx-sticker-page__cover {
-  z-index: 2;
-  display: grid;
-  grid-template-columns: 1.08fr 0.92fr;
-  background: var(--wbx-accent);
-}
-
-.wbx-sticker-page[data-open="false"] .wbx-sticker-page__inside {
-  pointer-events: none;
-}
-
-.wbx-sticker-page[data-open="true"] .wbx-sticker-page__inside {
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-}
-
-.wbx-sticker-page[data-open="true"] .wbx-sticker-page__cover {
-  pointer-events: none;
-}
-
-.wbx-sticker-page__trigger {
-  position: absolute;
-  z-index: 4;
-  right: 0;
-  bottom: 0;
-  width: 72px;
-  height: 72px;
-  border: 0;
-  color: #0d100d;
-  background: transparent;
-  cursor: pointer;
-}
-
-.wbx-sticker-page__trigger::before {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: var(--wbx-fold-visual-size);
-  height: var(--wbx-fold-visual-size);
-  background: linear-gradient(135deg, transparent 49%, #fffdf5 50%);
-  content: "";
-  pointer-events: none;
-}
-
-.wbx-sticker-page__trigger span {
-  position: absolute;
-  right: 4px;
-  bottom: 4px;
-  width: 32px;
-  font-family: var(--wbx-pixel);
-  font-size: 6px;
-  line-height: 1.15;
-  text-align: right;
-  pointer-events: none;
-}
-
-.wbx-partner-sticker {
-  display: grid;
-  min-width: 120px;
-  min-height: 96px;
-  place-items: center;
-  padding: 18px;
-  border: 2px solid #0d100d;
-  color: #0d100d;
-  background: #ffffff;
-  box-shadow: 8px 8px 0 #0d100d;
-  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.wbx-partner-sticker:nth-child(1) {
-  grid-area: sparkx;
-  transform: rotate(-4deg);
-}
-
-.wbx-partner-sticker:nth-child(2) {
-  grid-area: workbuddy;
-  transform: rotate(3deg);
-}
-
-.wbx-partner-sticker:nth-child(3) {
-  grid-area: zai;
-  transform: rotate(-2deg);
-}
-
-.wbx-partner-sticker:hover,
-.wbx-partner-sticker:focus-visible {
-  transform: translate(-3px, -3px) rotate(0deg);
-}
-
-.wbx-partner-sticker:focus-visible {
-  outline: 3px solid var(--wbx-accent);
-  outline-offset: 4px;
-}
-
-.wbx-partner-sticker:active {
-  transform: scale(0.97);
-}
-
-.wbx-partner-sticker img {
-  max-width: 100%;
-  max-height: 72px;
-  object-fit: contain;
-}
-
-.wbx-partner-sticker img:not([hidden]) + .wbx-partner-sticker__fallback {
-  display: none;
-}
-
-.wbx-partner-sticker__fallback {
-  font-weight: 760;
-  text-align: center;
 }
 
 .wbx-hero__monogram {
@@ -376,14 +236,6 @@
 @media (prefers-reduced-motion: reduce) {
   .wbx-icon-card {
     animation: none;
-  }
-
-  .wbx-sticker-page__inside {
-    transition: none !important;
-  }
-
-  .wbx-partner-sticker {
-    transition: none;
   }
 }
 
@@ -767,7 +619,7 @@
     padding-inline: 24px;
   }
 
-  .wbx-sticker-page__cover {
+  .wbx-hero__stage {
     grid-template-columns: 1.02fr 0.98fr;
   }
 
@@ -794,9 +646,7 @@
 }
 
 @media (max-width: 960px) {
-  .wbx-sticker-page__cover {
-    position: relative;
-    inset: auto;
+  .wbx-hero__stage {
     grid-template-columns: 1fr;
   }
 
@@ -886,18 +736,6 @@
 
   .wbx-hero__art {
     min-height: 380px;
-  }
-
-  .wbx-sticker-page__inside {
-    padding: 36px 28px 58px;
-  }
-
-  .wbx-sticker-page {
-    --wbx-fold-visual-size: 14px;
-  }
-
-  .wbx-sticker-page__trigger span {
-    display: none;
   }
 
   .wbx-hero__monogram {
@@ -1047,31 +885,6 @@
 }
 
 @media (max-width: 420px) {
-  .wbx-sticker-page__inside {
-    grid-template-areas:
-      "sparkx sparkx"
-      "workbuddy zai";
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 22px 16px;
-    padding: 34px 22px 62px;
-  }
-
-  .wbx-partner-sticker {
-    min-width: 0;
-    min-height: 88px;
-    padding: 12px;
-    box-shadow: 5px 5px 0 #0d100d;
-  }
-
-  .wbx-partner-sticker:first-child {
-    width: 160px;
-    justify-self: center;
-  }
-
-  .wbx-partner-sticker img {
-    max-height: 52px;
-  }
-
   .wbx-reading-card {
     grid-template-columns: 56px minmax(0, 1fr);
     gap: 14px;

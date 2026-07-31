@@ -111,18 +111,29 @@ function cardClearance(
 }
 
 describe('home hero icon navigation', () => {
-  it('uses the sticker page as the whole hero stage cover', () => {
+  it('renders the hero copy and art directly inside a static stage', () => {
     mountHomePage()
 
     const stage = document.querySelector('.wbx-hero__stage')
-    const cover = stage?.querySelector(':scope > .wbx-sticker-page__cover')
 
-    expect(stage?.classList.contains('wbx-sticker-page')).toBe(true)
-    expect(cover?.querySelector('.wbx-hero__copy')).not.toBeNull()
-    expect(cover?.querySelector('.wbx-hero__art')).not.toBeNull()
-    expect(
-      document.querySelector('.wbx-hero__art > .wbx-sticker-page'),
-    ).toBeNull()
+    expect(stage?.querySelector(':scope > .wbx-hero__copy')).not.toBeNull()
+    expect(stage?.querySelector(':scope > .wbx-hero__art')).not.toBeNull()
+    expect(stage?.classList.contains('wbx-sticker-page')).toBe(false)
+    expect(document.querySelector('.wbx-sticker-page__inside')).toBeNull()
+    expect(document.querySelector('.wbx-sticker-page__trigger')).toBeNull()
+  })
+
+  it('does not import or style the retired partner reveal', () => {
+    const homeSource = readFileSync(
+      'docs/.vitepress/theme/HomePage.vue',
+      'utf8',
+    )
+    const homeCss = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+
+    expect(homeSource).not.toContain('HeroStickerPage')
+    expect(homeSource).not.toContain('heroPartners')
+    expect(homeCss).not.toContain('.wbx-sticker-page')
+    expect(homeCss).not.toContain('.wbx-partner-sticker')
   })
 
   it('uses black icon cards with green pixel icons', () => {
@@ -262,45 +273,6 @@ describe('home hero icon navigation', () => {
         `${viewport}px viewport must keep the painted people card above the metrics band`,
       ).toBeLessThanOrEqual(340)
     }
-  })
-
-  it('renders the approved partner stickers as safe external links', () => {
-    mountHomePage()
-
-    const links = Array.from(
-      document.querySelectorAll<HTMLAnchorElement>('.wbx-partner-sticker'),
-      (link) => ({
-        label: link.getAttribute('aria-label'),
-        href: link.href,
-        target: link.target,
-        rel: link.rel,
-        image: link.querySelector('img')?.getAttribute('src'),
-      }),
-    )
-
-    expect(links).toEqual([
-      {
-        label: '访问星火集',
-        href: 'https://www.sparkx.zone/',
-        target: '_blank',
-        rel: 'noopener noreferrer',
-        image: '/brand/partners/sparkx.svg',
-      },
-      {
-        label: '访问 WorkBuddy',
-        href: 'https://www.workbuddy.ai/',
-        target: '_blank',
-        rel: 'noopener noreferrer',
-        image: '/brand/partners/workbuddy.svg',
-      },
-      {
-        label: '访问 Z.ai',
-        href: 'https://z.ai/subscribe',
-        target: '_blank',
-        rel: 'noopener noreferrer',
-        image: '/brand/partners/z-ai.svg',
-      },
-    ])
   })
 
   it('renders the footer outside the constrained home content with an aligned inner container', () => {
