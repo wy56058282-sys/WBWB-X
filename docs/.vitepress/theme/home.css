@@ -452,7 +452,7 @@
 .wbx-task-grid a:hover,
 .wbx-task-grid a:focus-visible {
   outline: none;
-  background: var(--wbx-accent-soft);
+  background: var(--wbx-hover-surface);
 }
 
 .wbx-task-grid .hn {

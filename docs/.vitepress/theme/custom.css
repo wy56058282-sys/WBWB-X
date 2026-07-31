@@ -5,6 +5,7 @@
   --wbx-surface: #ffffff;
   --wbx-muted: #656b60;
   --wbx-line: #d7dbd0;
+  --wbx-hover-surface: #eceee9;
   --wbx-accent-soft: color-mix(
     in srgb,
     var(--wbx-accent) 18%,
@@ -57,6 +58,7 @@
   --wbx-surface: #181b15;
   --wbx-muted: #aeb4a7;
   --wbx-line: #343a2f;
+  --wbx-hover-surface: #252922;
   --wbx-accent-soft: color-mix(
     in srgb,
     var(--wbx-accent) 18%,
@@ -127,7 +129,7 @@ body {
 .vp-doc .wbx-book-index__entry > a:hover,
 .vp-doc .wbx-book-index__entry > a:focus-visible {
   color: var(--wbx-ink);
-  background: var(--wbx-accent-soft);
+  background: var(--wbx-hover-surface);
   transform: translateX(4px);
 }
 
@@ -306,7 +308,7 @@ body {
 .VPSidebarItem .link:hover,
 .VPSidebarItem .link:focus-visible {
   color: var(--wbx-ink);
-  background: var(--wbx-accent-soft);
+  background: var(--wbx-hover-surface);
 }
 
 .VPSidebarItem .link:focus-visible {
@@ -402,7 +404,7 @@ body {
 }
 
 .wbx-community-qr__close:hover {
-  background: var(--wbx-accent);
+  background: var(--wbx-hover-surface);
 }
 
 .wbx-community-qr__close:focus-visible {
