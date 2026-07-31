@@ -703,6 +703,23 @@
   }
 }
 
+@media (min-width: 761px) and (max-width: 900px) {
+  .wbx-section__heading {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .wbx-section__heading h2 {
+    white-space: nowrap;
+  }
+
+  .wbx-section__heading > p {
+    max-width: none;
+    white-space: nowrap;
+  }
+}
+
 @media (max-width: 760px) {
   .wbx-home {
     padding: 12px 14px 0;
