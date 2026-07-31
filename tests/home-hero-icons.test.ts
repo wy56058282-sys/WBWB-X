@@ -176,6 +176,31 @@ describe('home hero icon navigation', () => {
     ])
   })
 
+  it('keeps the value strip green with black icons and text in both themes', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+
+    expect(css).toMatch(
+      /\.wbx-value-strip\s*\{[^}]*color:\s*#0d100d;[^}]*background:\s*var\(--wbx-accent\);/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-value-strip__item\s*>\s*\.hn\s*\{[^}]*color:\s*#0d100d;/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-value-strip__item small\s*\{[^}]*color:\s*#0d100d;/s,
+    )
+  })
+
+  it('uses only the outer hero border', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+
+    expect(css).toMatch(
+      /\.wbx-hero\s*\{[^}]*border:\s*2px solid #0d100d;/s,
+    )
+    expect(css).not.toMatch(
+      /\.wbx-hero__stage\s*\{[^}]*border:\s*2px solid #0d100d;/s,
+    )
+  })
+
   it('uses a book icon for the first reading path', () => {
     mountHomePage()
 

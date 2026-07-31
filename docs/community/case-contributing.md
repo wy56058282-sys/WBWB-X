@@ -1,12 +1,12 @@
 ---
-title: 提交 WorkBuddy 社区案例
+title: 提交 WorkBuddy WB-X 案例
 description: 按统一格式提交真实、可复现的 WorkBuddy Case，合并后自动显示在社区案例集中。
 breadcrumbTitle: Case 投稿指南
 aside: false
 outline: false
 ---
 
-# 提交 WorkBuddy 社区案例
+# 提交 WorkBuddy WB-X 案例
 
 社区案例集用于收录大家已经在 WorkBuddy 中实际跑通过的任务。案例合并后会自动出现在[社区案例集](/cases/)；经过进一步复现和编辑的经典任务，未来可能进入小白书正文。
 

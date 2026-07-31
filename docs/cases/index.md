@@ -1,5 +1,5 @@
 ---
-title: WorkBuddy 社区案例集
+title: WorkBuddy WB-X 案例集
 description: 汇集 WorkBuddy 用户提交的真实案例，了解不同场景使用了哪些 Skills、如何执行以及最终呈现了什么效果。
 breadcrumbTitle: 社区案例集
 aside: false
@@ -7,7 +7,7 @@ outline: false
 pageClass: community-cases-page
 ---
 
-# WorkBuddy 社区案例集
+# WorkBuddy WB-X 案例集
 
 这里收录由 WorkBuddy 用户提交的真实实践。每个案例都会说明它解决了什么场景、使用了哪些 Skills、在 WorkBuddy 中怎样执行，以及最终交付了什么结果。
 

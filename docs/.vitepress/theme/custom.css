@@ -100,6 +100,104 @@ body {
   background: var(--wbx-accent);
 }
 
+.vp-doc .wbx-book-index {
+  margin: 28px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vp-doc .wbx-book-index__entry {
+  margin: 0;
+}
+
+.vp-doc .wbx-book-index__entry > a {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+  margin: 0;
+  padding: 18px 16px;
+  color: var(--wbx-ink);
+  text-decoration: none;
+  transition:
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.vp-doc .wbx-book-index__entry > a:hover,
+.vp-doc .wbx-book-index__entry > a:focus-visible {
+  color: var(--wbx-ink);
+  background: var(--wbx-accent-soft);
+  transform: translateX(4px);
+}
+
+.vp-doc .wbx-book-index__entry > a:focus-visible {
+  outline: 2px solid var(--wbx-accent);
+  outline-offset: 2px;
+}
+
+.vp-doc .wbx-book-index__number {
+  color: var(--wbx-accent);
+  font-family: var(--wbx-pixel);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.08em;
+}
+
+.vp-doc .wbx-book-index__content,
+.vp-doc .wbx-book-index__content > * {
+  display: block;
+  min-width: 0;
+}
+
+.vp-doc .wbx-book-index__title {
+  color: var(--wbx-ink);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: text-decoration-color 160ms ease;
+}
+
+.vp-doc .wbx-book-index__entry > a:hover .wbx-book-index__title,
+.vp-doc .wbx-book-index__entry > a:focus-visible .wbx-book-index__title {
+  text-decoration-color: currentColor;
+}
+
+.vp-doc .wbx-book-index__description {
+  margin-top: 4px;
+  color: var(--wbx-muted);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.vp-doc .wbx-book-index__entry--appendix {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--wbx-line);
+}
+
+@media (max-width: 640px) {
+  .vp-doc .wbx-book-index__entry > a {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 12px;
+    padding: 14px 10px;
+  }
+
+  .vp-doc .wbx-book-index__title {
+    font-size: 17px;
+  }
+
+  .vp-doc .wbx-book-index__description {
+    font-size: 14px;
+  }
+}
+
 .VPNav {
   border-bottom: 1px solid var(--wbx-line);
 }
