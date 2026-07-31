@@ -140,15 +140,15 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  color: #0d100d;
+  width: 50px;
+  height: 50px;
+  color: var(--wbx-accent);
   font-family: var(--wbx-pixel);
   font-size: 17px;
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0;
-  background: var(--wbx-accent);
+  background: #0d100d;
 }
 
 .vp-doc .wbx-book-index__content,
