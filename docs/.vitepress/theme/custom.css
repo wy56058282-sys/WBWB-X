@@ -286,9 +286,26 @@ body {
   background-clip: content-box;
 }
 
-.VPSidebarItem .link:hover {
+.VPSidebarItem .link {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 2px 0;
+  padding: 7px 10px;
+  border-radius: 6px;
+  transition:
+    color 140ms ease,
+    background-color 140ms ease;
+}
+
+.VPSidebarItem .link:hover,
+.VPSidebarItem .link:focus-visible {
   color: var(--wbx-ink);
   background: var(--wbx-accent-soft);
+}
+
+.VPSidebarItem .link:focus-visible {
+  outline: 2px solid var(--wbx-accent);
+  outline-offset: 2px;
 }
 
 .VPSidebarItem.is-active > .item .link {
