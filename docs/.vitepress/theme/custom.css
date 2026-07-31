@@ -137,12 +137,18 @@ body {
 }
 
 .vp-doc .wbx-book-index__number {
-  color: var(--wbx-accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: #0d100d;
   font-family: var(--wbx-pixel);
   font-size: 17px;
   font-weight: 700;
   line-height: 1;
-  letter-spacing: 0.08em;
+  letter-spacing: 0;
+  background: var(--wbx-accent);
 }
 
 .vp-doc .wbx-book-index__content,
