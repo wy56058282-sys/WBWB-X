@@ -60,6 +60,7 @@ function rotatedCardBounds(
   declarations: string,
   artWidth: number,
   cardSize: number,
+  artHeight = 568,
 ) {
   const angle =
     (numericDeclaration(declarations, '--wbx-icon-rotation', 'deg') *
@@ -83,7 +84,7 @@ function rotatedCardBounds(
   ).toBeDefined()
 
   const top =
-    declaredTop ?? 568 - (declaredBottom ?? 0) - cardSize
+    declaredTop ?? artHeight - (declaredBottom ?? 0) - cardSize
 
   return {
     left: left - rotationOverflow,
@@ -200,6 +201,25 @@ describe('home hero icon navigation', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const people = baseRule(css, '.wbx-icon-card--people')
     const work = baseRule(css, '.wbx-icon-card--work')
+    const boundaryStart = css.indexOf('@media (max-width: 444px)')
+    const mobileStart = css.indexOf('@media (max-width: 420px)')
+
+    expect(boundaryStart, 'missing the 444px collision boundary').toBeGreaterThan(
+      -1,
+    )
+    expect(mobileStart, 'missing the 420px mobile layout boundary').toBeGreaterThan(
+      boundaryStart,
+    )
+
+    const boundaryCss = css.slice(boundaryStart, mobileStart)
+    const boundaryPeople = boundaryCss.match(
+      /\.wbx-icon-card--people\s*\{([^}]*)\}/s,
+    )?.[1]
+
+    expect(
+      boundaryPeople,
+      'missing the people-card override at the 444px boundary',
+    ).toBeDefined()
 
     const desktopCases = [
       { viewport: 961, artWidth: 445, cardSize: 108 },
@@ -225,9 +245,23 @@ describe('home hero icon navigation', () => {
     expect(css).not.toMatch(
       /@media\s*\(max-width:\s*780px\)\s*\{[\s\S]*?\.wbx-icon-card--people/,
     )
-    expect(css).toMatch(
-      /@media\s*\(max-width:\s*420px\)\s*\{[\s\S]*?\.wbx-icon-card--people\s*\{[^}]*top:\s*auto;[^}]*bottom:\s*50px;[^}]*left:\s*4%;/,
+    expect(boundaryPeople).toMatch(
+      /top:\s*auto;[^}]*bottom:\s*50px;[^}]*left:\s*4%;/s,
     )
+
+    for (const viewport of [421, 444]) {
+      const paintedPeople = rotatedCardBounds(
+        `${boundaryPeople}\n${people}`,
+        viewport - 28,
+        90,
+        380,
+      )
+
+      expect(
+        paintedPeople.bottom,
+        `${viewport}px viewport must keep the painted people card above the metrics band`,
+      ).toBeLessThanOrEqual(340)
+    }
   })
 
   it('renders the approved partner stickers as safe external links', () => {

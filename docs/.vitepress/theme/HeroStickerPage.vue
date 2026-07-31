@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { withBase } from 'vitepress'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import type { HeroStickerPartner } from './heroPartners'
 
@@ -36,8 +37,8 @@ const onClick = (event: MouseEvent & { pointerType?: string }) => {
   if (event.pointerType === 'mouse') open()
   else toggle()
 }
-const onKeydown = (event: KeyboardEvent) => {
-  if (event.key === 'Escape' && isOpen.value) close(true)
+const onDocumentKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Escape' && isOpen.value) close()
 }
 const onDocumentPointerdown = (event: PointerEvent) => {
   if (
@@ -49,10 +50,14 @@ const onDocumentPointerdown = (event: PointerEvent) => {
   }
 }
 
-onMounted(() => document.addEventListener('pointerdown', onDocumentPointerdown))
-onBeforeUnmount(() =>
-  document.removeEventListener('pointerdown', onDocumentPointerdown),
-)
+onMounted(() => {
+  document.addEventListener('pointerdown', onDocumentPointerdown)
+  document.addEventListener('keydown', onDocumentKeydown)
+})
+onBeforeUnmount(() => {
+  document.removeEventListener('pointerdown', onDocumentPointerdown)
+  document.removeEventListener('keydown', onDocumentKeydown)
+})
 </script>
 
 <template>
@@ -61,18 +66,17 @@ onBeforeUnmount(() =>
     class="wbx-sticker-page"
     :data-open="String(isOpen)"
     @pointerleave="onPointerleave"
-    @keydown="onKeydown"
   >
     <button
       ref="trigger"
       class="wbx-sticker-page__trigger"
       type="button"
       :aria-expanded="isOpen"
-      aria-label="翻开合作伙伴贴纸页"
+      :aria-label="isOpen ? '关闭合作伙伴贴纸页' : '翻开合作伙伴贴纸页'"
       @pointerenter="onPointerenter"
       @click="onClick"
     >
-      <span aria-hidden="true">翻开看看</span>
+      <span aria-hidden="true">{{ isOpen ? '关闭贴纸' : '翻开看看' }}</span>
     </button>
     <div
       ref="inside"
@@ -88,11 +92,11 @@ onBeforeUnmount(() =>
         :href="partner.href"
         target="_blank"
         rel="noopener noreferrer"
-        :aria-label="`访问${partner.name === '星火集' ? '' : ' '}${partner.name}`"
+        :aria-label="partner.ariaLabel"
         :tabindex="isOpen ? 0 : -1"
       >
         <img
-          :src="partner.logo"
+          :src="withBase(partner.logo)"
           :alt="partner.name"
           @error="($event.currentTarget as HTMLImageElement).hidden = true"
         />

@@ -3,11 +3,30 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createApp, h, type App } from 'vue'
 import HeroStickerPage from '../docs/.vitepress/theme/HeroStickerPage.vue'
 
+vi.mock('vitepress', () => ({
+  withBase: (path: string) => `/WBWB-X${path}`,
+}))
+
 const apps: App[] = []
 const partners = [
-  { name: '星火集', logo: '/sparkx.svg', href: 'https://www.sparkx.zone/' },
-  { name: 'WorkBuddy', logo: '/workbuddy.svg', href: 'https://www.workbuddy.ai/' },
-  { name: 'Z.ai', logo: '/z-ai.svg', href: 'https://z.ai/subscribe' },
+  {
+    name: '星火集',
+    ariaLabel: '访问星火集',
+    logo: '/sparkx.svg',
+    href: 'https://www.sparkx.zone/',
+  },
+  {
+    name: 'WorkBuddy',
+    ariaLabel: '访问 WorkBuddy',
+    logo: '/workbuddy.svg',
+    href: 'https://www.workbuddy.ai/',
+  },
+  {
+    name: 'Z.ai',
+    ariaLabel: '访问 Z.ai',
+    logo: '/z-ai.svg',
+    href: 'https://z.ai/subscribe',
+  },
 ]
 
 afterEach(() => {
@@ -16,12 +35,12 @@ afterEach(() => {
   vi.restoreAllMocks()
 })
 
-function mountComponent() {
+function mountComponent(componentPartners = partners) {
   const host = document.createElement('div')
   document.body.append(host)
   const app = createApp({
     render: () =>
-      h(HeroStickerPage, { partners }, {
+      h(HeroStickerPage, { partners: componentPartners }, {
         default: () =>
           h('a', { class: 'cover-proof', href: '#cover' }, 'cover link'),
       }),
@@ -38,20 +57,27 @@ function pointerEvent(type: string, pointerType: string) {
 }
 
 describe('HeroStickerPage', () => {
-  it('opens with the trigger and closes with Escape', async () => {
+  it('closes a hover-open reveal when Escape starts outside the hero', async () => {
     mountComponent()
     const root = document.querySelector<HTMLElement>('.wbx-sticker-page')!
     const trigger = document.querySelector<HTMLButtonElement>('.wbx-sticker-page__trigger')!
+    const outside = document.createElement('button')
+    document.body.append(outside)
+    outside.focus()
 
     expect(root.dataset.open).toBe('false')
-    trigger.click()
+    trigger.dispatchEvent(pointerEvent('pointerenter', 'mouse'))
     await Promise.resolve()
     expect(root.dataset.open).toBe('true')
     expect(trigger.getAttribute('aria-expanded')).toBe('true')
 
-    root.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
+    expect(document.activeElement).toBe(outside)
+    document.body.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
+    )
     await Promise.resolve()
     expect(root.dataset.open).toBe('false')
+    expect(document.activeElement).toBe(outside)
   })
 
   it('opens on lower-right pointer entry and closes when leaving the region', async () => {
@@ -88,6 +114,28 @@ describe('HeroStickerPage', () => {
     await Promise.resolve()
     expect(document.activeElement).toBe(trigger)
     expect(links.map((link) => link.tabIndex)).toEqual([0, 0, 0])
+  })
+
+  it('describes the trigger action for both closed and open states', async () => {
+    mountComponent()
+    const trigger = document.querySelector<HTMLButtonElement>(
+      '.wbx-sticker-page__trigger',
+    )!
+
+    expect(trigger.getAttribute('aria-label')).toBe('翻开合作伙伴贴纸页')
+    expect(trigger.textContent?.trim()).toBe('翻开看看')
+
+    trigger.click()
+    await Promise.resolve()
+
+    expect(trigger.getAttribute('aria-label')).toBe('关闭合作伙伴贴纸页')
+    expect(trigger.textContent?.trim()).toBe('关闭贴纸')
+
+    trigger.click()
+    await Promise.resolve()
+
+    expect(trigger.getAttribute('aria-label')).toBe('翻开合作伙伴贴纸页')
+    expect(trigger.textContent?.trim()).toBe('翻开看看')
   })
 
   it('exposes only the active layer to focus and assistive technology', async () => {
@@ -197,23 +245,31 @@ describe('HeroStickerPage', () => {
     expect(document.activeElement).toBe(trigger)
   })
 
-  it('removes its outside-pointer listener when unmounted', () => {
+  it('removes its document listeners when unmounted', () => {
     const addEventListener = vi.spyOn(document, 'addEventListener')
     const removeEventListener = vi.spyOn(document, 'removeEventListener')
     const app = mountComponent()
-    const registration = addEventListener.mock.calls.find(
+    const pointerRegistration = addEventListener.mock.calls.find(
       ([type]) => type === 'pointerdown',
     )
+    const keyRegistration = addEventListener.mock.calls.find(
+      ([type]) => type === 'keydown',
+    )
 
-    expect(registration).toBeDefined()
-    if (!registration) return
+    expect(pointerRegistration).toBeDefined()
+    expect(keyRegistration).toBeDefined()
+    if (!pointerRegistration || !keyRegistration) return
 
     app.unmount()
     apps.splice(apps.indexOf(app), 1)
 
     expect(removeEventListener).toHaveBeenCalledWith(
       'pointerdown',
-      registration[1],
+      pointerRegistration[1],
+    )
+    expect(removeEventListener).toHaveBeenCalledWith(
+      'keydown',
+      keyRegistration[1],
     )
   })
 
@@ -260,6 +316,31 @@ describe('HeroStickerPage', () => {
     expect(link.querySelector('.wbx-partner-sticker__fallback')?.textContent).toBe('星火集')
   })
 
+  it('uses partner-provided accessible labels for generic sticker data', () => {
+    mountComponent([
+      {
+        name: 'Example Partner',
+        ariaLabel: '前往 Example Partner 官网',
+        logo: '/example.svg',
+        href: 'https://example.com/',
+      },
+    ])
+    const link = document.querySelector<HTMLAnchorElement>(
+      '.wbx-partner-sticker',
+    )
+
+    expect(link?.getAttribute('aria-label')).toBe('前往 Example Partner 官网')
+  })
+
+  it('resolves partner logos through a non-root VitePress base', () => {
+    mountComponent()
+    const image = document.querySelector<HTMLImageElement>(
+      '.wbx-partner-sticker img',
+    )
+
+    expect(image?.getAttribute('src')).toBe('/WBWB-X/sparkx.svg')
+  })
+
   it('reveals the inside layer diagonally from the lower-right corner', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const stickerPageRules = css.match(
@@ -286,7 +367,10 @@ describe('HeroStickerPage', () => {
     expect(openCoverRules.join('\n')).not.toMatch(/opacity:/)
 
     expect(css).toMatch(
-      /\.wbx-sticker-page__inside\s*\{[^}]*z-index:\s*3;[^}]*clip-path:\s*polygon\(100% 88%,\s*100% 100%,\s*88% 100%,\s*88% 100%\);[^}]*transition:\s*clip-path 280ms cubic-bezier\(0\.77,\s*0,\s*0\.175,\s*1\)/s,
+      /\.wbx-sticker-page\s*\{[^}]*--wbx-fold-visual-size:\s*40px;/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-sticker-page__inside\s*\{[^}]*z-index:\s*3;[^}]*clip-path:\s*polygon\(\s*100% calc\(100% - var\(--wbx-fold-visual-size\)\),\s*100% 100%,\s*calc\(100% - var\(--wbx-fold-visual-size\)\) 100%,\s*calc\(100% - var\(--wbx-fold-visual-size\)\) 100%\s*\);[^}]*transition:\s*clip-path 280ms cubic-bezier\(0\.77,\s*0,\s*0\.175,\s*1\)/s,
     )
     expect(css).toMatch(
       /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__inside\s*\{[^}]*clip-path:\s*polygon\(0 0,\s*100% 0,\s*100% 100%,\s*0 100%\);/s,
@@ -311,19 +395,33 @@ describe('HeroStickerPage', () => {
   it('keeps the mobile hero turn and trigger within the viewport', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const mobileCss = css.slice(css.indexOf('@media (max-width: 420px)'))
-    const artRule = mobileCss.match(/\.wbx-hero__art\s*\{[^}]*\}/s)?.[0] ?? ''
-    const heroRule = mobileCss.match(/\.wbx-hero\s*\{[^}]*\}/s)?.[0] ?? ''
+    const heroRules =
+      css.match(/(?:^|})\s*\.wbx-hero\s*\{[^}]*\}/gs) ?? []
+    const artRules =
+      css.match(/(?:^|})\s*\.wbx-hero__art\s*\{[^}]*\}/gs) ?? []
+    const pageRules =
+      css.match(/(?:^|})\s*\.wbx-sticker-page\s*\{[^}]*\}/gs) ?? []
+    const coverRules =
+      css.match(/(?:^|})\s*\.wbx-sticker-page__cover\s*\{[^}]*\}/gs) ?? []
     const triggerRule =
       css.match(/\.wbx-sticker-page__trigger\s*\{[^}]*\}/s)?.[0] ?? ''
 
+    expect(heroRules.length, 'missing hero width contracts').toBeGreaterThan(0)
+    expect(artRules.length, 'missing hero-art width contracts').toBeGreaterThan(
+      0,
+    )
+    expect(pageRules.length, 'missing sticker-page width contracts').toBeGreaterThan(
+      0,
+    )
+    expect(coverRules.length, 'missing cover width contracts').toBeGreaterThan(0)
     expect(css).toMatch(
       /\.wbx-home-layout\s*\{[^}]*overflow-x:\s*clip;/s,
     )
     expect(mobileCss).not.toMatch(/--wbx-mobile-hero-width/)
-    expect(heroRule).not.toMatch(/\b(?:width|max-width)\s*:/)
-    expect(artRule).not.toMatch(/\bwidth\s*:/)
-    expect(mobileCss).not.toMatch(/\.wbx-sticker-page\s*\{[^}]*\bwidth\s*:/s)
-    expect(mobileCss).not.toMatch(/\.wbx-sticker-page__cover\s*\{[^}]*\bwidth\s*:/s)
+    expect(heroRules.join('\n')).not.toMatch(/\b(?:width|max-width)\s*:/)
+    expect(artRules.join('\n')).not.toMatch(/\bwidth\s*:/)
+    expect(pageRules.join('\n')).not.toMatch(/\bwidth\s*:/)
+    expect(coverRules.join('\n')).not.toMatch(/\bwidth\s*:/)
     expect(triggerRule).toMatch(/right:\s*0;[^}]*width:\s*72px;[^}]*height:\s*72px;/s)
     expect(mobileCss).toMatch(
       /\.wbx-sticker-page__inside\s*\{[^}]*grid-template-areas:\s*"sparkx sparkx"\s*"workbuddy zai";[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\);/s,
@@ -333,37 +431,36 @@ describe('HeroStickerPage', () => {
     )
   })
 
-  it('keeps the compact cover as a one-column layer for the diagonal reveal', () => {
+  it('lets the compact cover define the full stage height for the diagonal reveal', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const compactCss = css.slice(
       css.indexOf('@media (max-width: 960px)'),
       css.indexOf('@media (max-width: 760px)'),
     )
-    const compactStickerPageRules = compactCss.match(
-      /(?:^|[{}])\s*\.wbx-sticker-page\s*\{[^}]*\}/gs,
-    ) ?? []
-    const compactInsideRules = compactCss.match(
-      /(?:^|[{}])\s*[^{}]*\.wbx-sticker-page__inside[^{}]*\{[^}]*\}/gs,
-    ) ?? []
-    const compactCoverRules = compactCss.match(
-      /(?:^|[{}])\s*[^{}]*\.wbx-sticker-page__cover[^{}]*\{[^}]*\}/gs,
-    ) ?? []
-    const compactOpenCoverRules = compactCss.match(
-      /\.wbx-sticker-page\[data-open="true"\]\s+\.wbx-sticker-page__cover\s*\{[^}]*\}/gs,
-    ) ?? []
-    const compactRevealRules = [
-      ...compactStickerPageRules,
-      ...compactInsideRules,
-      ...compactCoverRules,
-      ...compactOpenCoverRules,
-    ].join('\n')
+    const positionedLayersRule = css.match(
+      /\.wbx-sticker-page__inside,\s*\.wbx-sticker-page__cover\s*\{[^}]*\}/s,
+    )?.[0]
+    const compactCoverRule = compactCss.match(
+      /\.wbx-sticker-page__cover\s*\{[^}]*\}/s,
+    )?.[0]
 
-    expect(compactCss).toMatch(
-      /\.wbx-sticker-page__cover\s*\{[^}]*grid-template-columns:\s*1fr;/s,
+    expect(
+      positionedLayersRule,
+      'missing the shared absolute layer-positioning rule',
+    ).toBeDefined()
+    expect(positionedLayersRule).toMatch(
+      /position:\s*absolute;[^}]*inset:\s*0;/s,
     )
-    expect(compactRevealRules).not.toMatch(/perspective(?:-origin)?\s*:/)
-    expect(compactRevealRules).not.toMatch(/opacity:/)
-    expect(compactRevealRules).not.toMatch(/rotateY\(/)
+    expect(
+      compactCoverRule,
+      'missing the compact cover override in the 960px breakpoint',
+    ).toBeDefined()
+    expect(compactCoverRule).toMatch(
+      /position:\s*relative;[^}]*inset:\s*auto;[^}]*grid-template-columns:\s*1fr;/s,
+    )
+    expect(compactCss).not.toMatch(/perspective(?:-origin)?\s*:/)
+    expect(compactCss).not.toMatch(/opacity:/)
+    expect(compactCss).not.toMatch(/rotateY\(/)
   })
 
   it('keeps the visible fold clear of the workflow metrics without shrinking its hit target', () => {
@@ -372,20 +469,24 @@ describe('HeroStickerPage', () => {
       css.indexOf('@media (max-width: 760px)'),
       css.indexOf('@media (max-width: 420px)'),
     )
+    const pageRule =
+      css.match(/\.wbx-sticker-page\s*\{[^}]*\}/s)?.[0] ?? ''
+    const insideRule =
+      css.match(/\.wbx-sticker-page__inside\s*\{[^}]*\}/s)?.[0] ?? ''
     const triggerRule =
       css.match(/\.wbx-sticker-page__trigger\s*\{[^}]*\}/s)?.[0] ?? ''
     const metricsRule =
       css.match(/\.wbx-hero__metrics\s*\{[^}]*\}/s)?.[0] ?? ''
     const foldSize = Number(
-      triggerRule.match(/--wbx-fold-visual-size:\s*(\d+)px/)?.[1],
+      pageRule.match(/--wbx-fold-visual-size:\s*(\d+)px/)?.[1],
     )
     const metricsInset = Number(metricsRule.match(/right:\s*(\d+)px/)?.[1])
-    const compactTriggerRule =
-      compactCss.match(/\.wbx-sticker-page__trigger\s*\{[^}]*\}/s)?.[0] ?? ''
+    const compactPageRule =
+      compactCss.match(/\.wbx-sticker-page\s*\{[^}]*\}/s)?.[0] ?? ''
     const compactMetricsRule =
       compactCss.match(/\.wbx-hero__metrics\s*\{[^}]*\}/s)?.[0] ?? ''
     const compactFoldSize = Number(
-      compactTriggerRule.match(/--wbx-fold-visual-size:\s*(\d+)px/)?.[1],
+      compactPageRule.match(/--wbx-fold-visual-size:\s*(\d+)px/)?.[1],
     )
     const compactMetricsInset = Number(
       compactMetricsRule.match(/right:\s*(\d+)px/)?.[1],
@@ -393,6 +494,10 @@ describe('HeroStickerPage', () => {
 
     expect(triggerRule).toMatch(/width:\s*72px;[^}]*height:\s*72px;/s)
     expect(triggerRule).toMatch(/background:\s*transparent;/)
+    expect(triggerRule).not.toMatch(/--wbx-fold-visual-size:/)
+    expect(insideRule).toMatch(
+      /clip-path:\s*polygon\([^;]*var\(--wbx-fold-visual-size\)[^;]*var\(--wbx-fold-visual-size\)/s,
+    )
     expect(foldSize).toBeGreaterThan(0)
     expect(foldSize).toBeLessThan(metricsInset)
     expect(css).toMatch(
@@ -400,6 +505,9 @@ describe('HeroStickerPage', () => {
     )
     expect(css).toMatch(
       /\.wbx-sticker-page__trigger span\s*\{[^}]*width:\s*32px;/s,
+    )
+    expect(compactPageRule).toMatch(
+      /--wbx-fold-visual-size:\s*14px;/,
     )
     expect(compactFoldSize).toBeGreaterThan(0)
     expect(compactFoldSize).toBeLessThan(compactMetricsInset)

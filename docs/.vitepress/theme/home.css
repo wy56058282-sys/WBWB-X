@@ -126,6 +126,8 @@
 }
 
 .wbx-sticker-page {
+  --wbx-fold-visual-size: 40px;
+
   position: relative;
   min-height: 568px;
   overflow: hidden;
@@ -148,7 +150,12 @@
   align-items: center;
   padding: 58px 48px 70px;
   background: #fff;
-  clip-path: polygon(100% 88%, 100% 100%, 88% 100%, 88% 100%);
+  clip-path: polygon(
+    100% calc(100% - var(--wbx-fold-visual-size)),
+    100% 100%,
+    calc(100% - var(--wbx-fold-visual-size)) 100%,
+    calc(100% - var(--wbx-fold-visual-size)) 100%
+  );
   transition: clip-path 280ms cubic-bezier(0.77, 0, 0.175, 1);
   will-change: clip-path;
 }
@@ -173,8 +180,6 @@
 }
 
 .wbx-sticker-page__trigger {
-  --wbx-fold-visual-size: 40px;
-
   position: absolute;
   z-index: 4;
   right: 0;
@@ -790,6 +795,8 @@
 
 @media (max-width: 960px) {
   .wbx-sticker-page__cover {
+    position: relative;
+    inset: auto;
     grid-template-columns: 1fr;
   }
 
@@ -885,7 +892,7 @@
     padding: 36px 28px 58px;
   }
 
-  .wbx-sticker-page__trigger {
+  .wbx-sticker-page {
     --wbx-fold-visual-size: 14px;
   }
 
@@ -1031,13 +1038,15 @@
   }
 }
 
-@media (max-width: 420px) {
+@media (max-width: 444px) {
   .wbx-icon-card--people {
     top: auto;
     bottom: 50px;
     left: 4%;
   }
+}
 
+@media (max-width: 420px) {
   .wbx-sticker-page__inside {
     grid-template-areas:
       "sparkx sparkx"
