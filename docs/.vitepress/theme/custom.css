@@ -139,7 +139,7 @@ body {
 .vp-doc .wbx-book-index__number {
   color: var(--wbx-accent);
   font-family: var(--wbx-pixel);
-  font-size: 13px;
+  font-size: 17px;
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.08em;
