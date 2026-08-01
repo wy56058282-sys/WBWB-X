@@ -90,6 +90,46 @@
   border-top: 1px solid var(--wbx-line);
 }
 
+.wbx-reading-layout .vp-doc h2 {
+  margin-top: var(--wbx-reading-section-gap);
+  padding-top: 24px;
+  border-top: 1px solid var(--wbx-line);
+}
+
+.wbx-reading-layout .vp-doc div[class*="language-"],
+.wbx-reading-layout .vp-doc .custom-block,
+.wbx-reading-layout .vp-doc table,
+.wbx-reading-layout .vp-doc .language-mermaid {
+  border: 1px solid var(--wbx-line);
+  border-radius: var(--wbx-reading-radius);
+  background: var(--wbx-surface);
+  box-shadow: none;
+}
+
+.wbx-reading-layout .vp-doc div[class*="language-"] > span.lang,
+.wbx-reading-layout .vp-doc .custom-block-title {
+  color: var(--wbx-accent);
+}
+
+.wbx-reading-layout .vp-doc table {
+  display: table;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+}
+
+.wbx-reading-layout .vp-doc thead,
+.wbx-reading-layout .vp-doc tbody tr:hover {
+  background: var(--wbx-hover-surface);
+}
+
+.wbx-reading-layout .vp-doc .language-mermaid pre,
+.wbx-reading-layout .vp-doc .language-mermaid svg {
+  border: 0;
+  box-shadow: none;
+}
+
 @media (max-width: 640px) {
   .wbx-reading-layout .wbx-book-index__entry > a {
     grid-template-columns: 50px minmax(0, 1fr);
@@ -99,5 +139,12 @@
 
   .wbx-reading-layout .wbx-book-index__description {
     white-space: normal;
+  }
+
+  .wbx-reading-layout .vp-doc div[class*="language-"],
+  .wbx-reading-layout .vp-doc .table-container,
+  .wbx-reading-layout .vp-doc .language-mermaid {
+    max-width: 100%;
+    overflow-x: auto;
   }
 }
