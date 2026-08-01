@@ -37,11 +37,12 @@ describe('site navigation', () => {
     expect(serialized).not.toContain('/bluebook/')
   })
 
-  it('enables dedicated sidebars for the small book and cases', () => {
-    expect(config.themeConfig?.sidebar).toEqual({
-      '/wb-x/': sidebar,
-      '/cases/': expect.any(Array),
-    })
+  it('enables dedicated sidebars for the small book, cases, and case contribution page', () => {
+    const configuredSidebars = config.themeConfig?.sidebar as Record<string, unknown>
+
+    expect(configuredSidebars['/wb-x/']).toEqual(sidebar)
+    expect(configuredSidebars['/cases/']).toEqual(expect.any(Array))
+    expect(configuredSidebars['/community/case-contributing']).toBe(configuredSidebars['/cases/'])
   })
 
   it('uses the approved SEO title for the browser title', () => {

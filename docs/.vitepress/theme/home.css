@@ -356,15 +356,15 @@
   color: var(--wbx-ink) !important;
   background: var(--wbx-surface);
   text-decoration: none !important;
-  transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .wbx-reading-card:hover,
 .wbx-reading-card:focus-visible {
-  border-color: var(--wbx-ink);
+  border-color: var(--wbx-line);
   outline: none;
-  box-shadow: var(--wbx-shadow);
-  transform: translate(-3px, -3px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  transform: translateY(-4px);
 }
 
 .wbx-reading-card__icon {

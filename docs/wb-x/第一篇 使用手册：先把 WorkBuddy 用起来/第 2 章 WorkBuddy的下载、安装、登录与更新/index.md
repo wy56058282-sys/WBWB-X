@@ -2,7 +2,12 @@
 
 ## WorkBuddy下载
 
-下载WorkBuddy，点击官方地址（https://www.codebuddy.cn/work/），选择WorkBuddy，点击“下载WorkBuddy”即可下载。
+下载 WorkBuddy，请选择以下官方入口：
+
+- [WorkBuddy 官网](https://www.workbuddy.ai/)
+- [CodeBuddy 工作台](https://www.codebuddy.cn/work/)
+
+进入页面后选择 WorkBuddy，点击“下载 WorkBuddy”即可。
 
 ![](/article-assets/source-calibration/ch02/001.png)
 

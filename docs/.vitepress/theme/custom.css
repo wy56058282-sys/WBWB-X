@@ -6,6 +6,7 @@
   --wbx-muted: #656b60;
   --wbx-line: #d7dbd0;
   --wbx-hover-surface: #eceee9;
+  --wbx-sidebar-hover-surface: #e4ece5;
   --wbx-accent-soft: color-mix(
     in srgb,
     var(--wbx-accent) 18%,
@@ -59,6 +60,7 @@
   --wbx-muted: #aeb4a7;
   --wbx-line: #343a2f;
   --wbx-hover-surface: #252922;
+  --wbx-sidebar-hover-surface: #202a24;
   --wbx-accent-soft: color-mix(
     in srgb,
     var(--wbx-accent) 18%,
@@ -331,10 +333,17 @@ body {
     background-color 140ms ease;
 }
 
+@media (min-width: 960px) {
+  .VPSidebarItem .link {
+    margin: 0;
+    padding: 2px 6px;
+  }
+}
+
 .VPSidebarItem .link:hover,
 .VPSidebarItem .link:focus-visible {
   color: var(--wbx-ink);
-  background: var(--wbx-hover-surface);
+  background: var(--wbx-sidebar-hover-surface);
 }
 
 .VPSidebarItem .link:focus-visible {
