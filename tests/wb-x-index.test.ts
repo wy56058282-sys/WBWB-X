@@ -7,6 +7,10 @@ import { createMarkdownRenderer } from 'vitepress'
 import { beforeAll, describe, expect, it } from 'vitest'
 
 const indexPath = resolve('docs/wb-x/index.md')
+const readingCss = readFileSync(
+  resolve('docs/.vitepress/theme/reading.css'),
+  'utf8',
+)
 
 let document: Document
 
@@ -67,5 +71,26 @@ describe('small-book reading index', () => {
     ].map((link) => link.getAttribute('href'))
 
     expect(links).toEqual(expectedPaths)
+  })
+
+  it('uses one neutral reading surface per entry', () => {
+    expect(readingCss).toMatch(
+      /\.wbx-reading-layout \.wbx-book-index__entry > a\s*{[\s\S]*?background:\s*var\(--wbx-surface\)/,
+    )
+    expect(readingCss).toMatch(
+      /\.wbx-reading-layout \.wbx-book-index__entry > a\s*{[\s\S]*?border:\s*1px solid var\(--wbx-line\)/,
+    )
+    expect(readingCss).toMatch(
+      /\.wbx-reading-layout \.wbx-book-index__entry > a\s*{[\s\S]*?border-radius:\s*var\(--wbx-reading-radius\)/,
+    )
+  })
+
+  it('keeps the 50 pixel index badge and a single appendix separator', () => {
+    expect(readingCss).toMatch(
+      /\.wbx-reading-layout \.wbx-book-index__number[\s\S]*?width:\s*50px[\s\S]*?height:\s*50px/,
+    )
+    expect(readingCss).toMatch(
+      /\.wbx-reading-layout \.wbx-book-index__entry--appendix[\s\S]*?border-top:\s*1px solid var\(--wbx-line\)/,
+    )
   })
 })
