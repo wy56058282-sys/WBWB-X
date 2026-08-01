@@ -5,6 +5,7 @@ import DefaultTheme from 'vitepress/theme'
 import Layout from './Layout.vue'
 import { legacyRouteTarget } from '../legacy-routes'
 import './custom.css'
+import './reading.css'
 import './home.css'
 
 export default {

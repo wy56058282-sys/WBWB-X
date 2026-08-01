@@ -2,13 +2,14 @@
 import DefaultTheme from 'vitepress/theme'
 import { useData, useRoute } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted } from 'vue'
-import { isHomeRoute } from '../route-state'
+import { isHomeRoute, isReadingRoute } from '../route-state'
 import CommunityQr, { openCommunityQr } from './CommunityQr.vue'
 import HomePage from './HomePage.vue'
 
 const route = useRoute()
 const { site } = useData()
 const isHome = computed(() => isHomeRoute(route.path, site.value.base))
+const isReading = computed(() => isReadingRoute(route.path, site.value.base))
 
 function handleCommunityQrTrigger(event: MouseEvent) {
   if (
@@ -40,7 +41,12 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <DefaultTheme.Layout :class="{ 'wbx-home-layout': isHome }">
+  <DefaultTheme.Layout
+    :class="{
+      'wbx-home-layout': isHome,
+      'wbx-reading-layout': isReading,
+    }"
+  >
     <template #home-hero-before>
       <HomePage v-if="isHome" />
     </template>

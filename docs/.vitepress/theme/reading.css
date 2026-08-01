@@ -1,0 +1,5 @@
+.wbx-reading-layout {
+  --wbx-reading-radius: 8px;
+  --wbx-reading-space: 8px;
+  --wbx-reading-section-gap: 48px;
+}
