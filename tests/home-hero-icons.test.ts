@@ -210,6 +210,25 @@ describe('home hero icon navigation', () => {
     expect(readingCards[0]?.querySelector('.hn-user')).toBeNull()
   })
 
+  it('uses the WorkBuddy Team lift and shadow on reading-path cards', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const card = baseRule(css, '.wbx-reading-card')
+    const interaction = css.match(
+      /\.wbx-reading-card:hover,\s*\.wbx-reading-card:focus-visible\s*\{([^}]*)\}/s,
+    )?.[1]
+
+    expect(card).toMatch(
+      /transition:\s*border-color 0\.3s ease, box-shadow 0\.3s ease, transform 0\.3s ease;/,
+    )
+    expect(interaction).toBeDefined()
+    expect(interaction).toMatch(/border-color:\s*var\(--wbx-line\);/)
+    expect(interaction).toMatch(
+      /box-shadow:\s*0 12px 32px rgba\(0, 0, 0, 0\.08\);/,
+    )
+    expect(interaction).toMatch(/transform:\s*translateY\(-4px\);/)
+    expect(interaction).not.toMatch(/translate\(/)
+  })
+
   it('offers five labelled links to distinct site sections', () => {
     mountHomePage()
 
