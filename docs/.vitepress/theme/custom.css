@@ -331,6 +331,13 @@ body {
     background-color 140ms ease;
 }
 
+@media (min-width: 960px) {
+  .VPSidebarItem .link {
+    margin: 0;
+    padding: 2px 6px;
+  }
+}
+
 .VPSidebarItem .link:hover,
 .VPSidebarItem .link:focus-visible {
   color: var(--wbx-ink);
