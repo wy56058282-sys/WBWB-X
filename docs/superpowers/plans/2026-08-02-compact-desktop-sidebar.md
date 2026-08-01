@@ -121,4 +121,3 @@ In the browser, inspect both `/wb-x/` and `/cases/` at a viewport width of at le
 git add tests/sidebar-density.test.ts docs/.vitepress/theme/custom.css
 git commit -m "style: tighten desktop sidebar spacing"
 ```
-

@@ -130,4 +130,3 @@ Open chapter 2 at desktop width and at 390px. Confirm the introduction, two sepa
 git add tests/download-links.test.ts 'docs/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 2 章 WorkBuddy的下载、安装、登录与更新/index.md'
 git commit -m "docs: add official WorkBuddy download links"
 ```
-
