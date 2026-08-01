@@ -16,13 +16,20 @@
     "check": "npm test && npm run check:links && npm run check:assets && npm run build"
   },
   "devDependencies": {
+    "@braintree/sanitize-url": "^7.1.2",
     "@fontsource/silkscreen": "5.2.7",
     "@hackernoon/pixel-icon-library": "1.1.0",
     "@types/node": "^22.10.0",
     "@vitejs/plugin-vue": "5.2.4",
+    "cytoscape": "^3.34.0",
+    "cytoscape-cose-bilkent": "^4.1.0",
+    "dayjs": "^1.11.21",
+    "debug": "^4.4.3",
     "jsdom": "^25.0.1",
+    "mermaid": "^11.16.0",
     "typescript": "^5.7.2",
     "vitepress": "1.6.4",
+    "vitepress-plugin-mermaid": "^2.0.17",
     "vitest": "^2.1.8",
     "vue": "^3.5.13"
   }

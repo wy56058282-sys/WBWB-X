@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress'
+import { withMermaid } from 'vitepress-plugin-mermaid'
 import { brand } from './brand'
 import { legacyRouteRedirectPlugin } from './legacy-routes'
 import { nav } from './navigation'
@@ -12,7 +13,7 @@ function canonicalPath(relativePath: string) {
   return `/${normalized.replace(/\.md$/, '')}`
 }
 
-export default defineConfig({
+export default withMermaid(defineConfig({
   base: process.env.SITE_BASE ?? '/',
   vite: {
     plugins: [legacyRouteRedirectPlugin()],
@@ -70,4 +71,4 @@ export default defineConfig({
     },
     socialLinks: [{ icon: 'github', link: brand.repository }],
   },
-})
+}))
