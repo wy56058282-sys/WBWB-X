@@ -13,6 +13,10 @@ const themeSource = readFileSync(
   resolve('docs/.vitepress/theme/index.ts'),
   'utf8',
 )
+const readingCss = readFileSync(
+  resolve('docs/.vitepress/theme/reading.css'),
+  'utf8',
+)
 
 describe('WB-X reading visual scope', () => {
   it('recognizes reading routes at root and GitHub Pages base paths', () => {
@@ -37,5 +41,17 @@ describe('WB-X reading visual scope', () => {
   it('adds a route-scoped layout class and imports its stylesheet', () => {
     expect(layoutSource).toContain("'wbx-reading-layout': isReading")
     expect(themeSource).toContain("import './reading.css'")
+  })
+
+  it('scopes neutral sidebar interactions to reading pages', () => {
+    expect(readingCss).toMatch(
+      /\.wbx-reading-layout \.VPSidebarItem \.link:hover[\s\S]*?background:\s*var\(--wbx-hover-surface\)/,
+    )
+    expect(readingCss).toMatch(
+      /\.wbx-reading-layout \.VPSidebarItem\.is-active[\s\S]*?background:\s*var\(--wbx-accent\)/,
+    )
+    expect(readingCss).toContain(
+      'border-radius: var(--wbx-reading-radius)',
+    )
   })
 })

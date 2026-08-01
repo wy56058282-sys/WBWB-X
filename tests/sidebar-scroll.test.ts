@@ -72,4 +72,37 @@ describe('desktop sidebar scrolling', () => {
     expect(getComputedStyle(logo).filter).toBe('invert(1)')
     expect(getComputedStyle(text).color).toBe('rgb(13, 16, 13)')
   })
+
+  it('keeps reading sidebar links touchable while the nav remains scrollable', () => {
+    const style = document.createElement('style')
+    style.textContent = `${readFileSync('docs/.vitepress/theme/custom.css', 'utf8')}\n${readFileSync('docs/.vitepress/theme/reading.css', 'utf8')}`
+    document.head.append(style)
+
+    const layout = document.createElement('div')
+    layout.className = 'wbx-reading-layout'
+    const sidebar = document.createElement('aside')
+    sidebar.className = 'VPSidebar'
+    const nav = document.createElement('nav')
+    nav.className = 'nav'
+    const sidebarItem = document.createElement('div')
+    sidebarItem.className = 'VPSidebarItem'
+    const link = document.createElement('a')
+    link.className = 'link'
+    sidebarItem.append(link)
+    nav.append(sidebarItem)
+    sidebar.append(nav)
+    layout.append(sidebar)
+    document.body.append(layout)
+
+    expect(getComputedStyle(nav).overflowY).toBe('auto')
+    expect(getComputedStyle(link).minHeight).toBe('44px')
+    expect(
+      getComputedStyle(layout)
+        .getPropertyValue('--wbx-reading-radius')
+        .trim(),
+    ).toBe('8px')
+    expect(getComputedStyle(link).borderRadius).toBe(
+      'var(--wbx-reading-radius)',
+    )
+  })
 })

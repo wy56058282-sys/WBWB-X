@@ -3,3 +3,53 @@
   --wbx-reading-space: 8px;
   --wbx-reading-section-gap: 48px;
 }
+
+.wbx-reading-layout .VPSidebar {
+  border-right: 1px solid var(--wbx-line);
+  background: var(--wbx-paper);
+}
+
+.wbx-reading-layout .VPSidebar .curtain {
+  border: 0;
+  box-shadow: none;
+}
+
+.wbx-reading-layout .VPSidebarItem .link {
+  min-height: 44px;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: var(--wbx-reading-radius);
+  background: transparent;
+}
+
+.wbx-reading-layout .VPSidebarItem .link:hover {
+  color: var(--wbx-ink);
+  background: var(--wbx-hover-surface);
+}
+
+.wbx-reading-layout .VPSidebarItem .link:focus-visible {
+  outline: 2px solid var(--wbx-accent);
+  outline-offset: 2px;
+}
+
+.wbx-reading-layout .VPSidebarItem.is-active > .item .link {
+  color: var(--wbx-ink);
+  background: var(--wbx-accent);
+}
+
+.wbx-reading-layout .VPSidebarItem.level-0 + .VPSidebarItem.level-0 {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--wbx-line);
+}
+
+.wbx-reading-layout .VPSidebar .nav {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--wbx-muted) 45%, transparent)
+    transparent;
+}
+
+.wbx-reading-layout .VPSidebar .nav::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--wbx-muted) 45%, transparent);
+}
