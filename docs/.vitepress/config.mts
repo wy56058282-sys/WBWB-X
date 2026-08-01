@@ -62,6 +62,7 @@ export default withMermaid(defineConfig({
     sidebar: {
       '/wb-x/': [...sidebar],
       '/cases/': casesSidebar,
+      '/community/case-contributing': casesSidebar,
     },
     search: {
       provider: 'local',
