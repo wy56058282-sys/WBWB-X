@@ -219,7 +219,7 @@ pageClass: help-you-page
 .help-survey-card img {
   display: block;
   width: 100%;
-  max-height: 560px;
+  height: auto;
   margin: 0;
   object-fit: contain;
 }
