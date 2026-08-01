@@ -225,7 +225,7 @@ describe('home hero icon navigation', () => {
         decodeURI(link.getAttribute('href') ?? ''),
       ]),
     ).toEqual([
-      ['查看 Part 1 使用手册', '/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/'],
+      ['前往提需求', '/help/'],
       ['查看阅读指南', '/reading-guide'],
       ['查看工作系统进阶篇', '/wb-x/第三篇 进阶篇：把案例变成自己的工作系统/'],
       ['查看 Part 2 案例篇', '/wb-x/第二篇 案例篇：从一项任务到一支 AI 团队/'],
