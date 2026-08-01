@@ -47,7 +47,7 @@ Replace the existing `enables dedicated sidebars for the small book and cases` t
   it('enables dedicated sidebars for the small book, cases, and case contribution page', () => {
     const configuredSidebars = config.themeConfig?.sidebar as Record<string, unknown>
 
-    expect(configuredSidebars['/wb-x/']).toBe(sidebar)
+    expect(configuredSidebars['/wb-x/']).toEqual(sidebar)
     expect(configuredSidebars['/cases/']).toEqual(expect.any(Array))
     expect(configuredSidebars['/community/case-contributing']).toBe(configuredSidebars['/cases/'])
   })
