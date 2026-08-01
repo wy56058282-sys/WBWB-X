@@ -99,7 +99,8 @@
 .wbx-reading-layout .vp-doc div[class*="language-"],
 .wbx-reading-layout .vp-doc .custom-block,
 .wbx-reading-layout .vp-doc table,
-.wbx-reading-layout .vp-doc .language-mermaid {
+.wbx-reading-layout .vp-doc .language-mermaid,
+.wbx-reading-layout .vp-doc .mermaid {
   border: 1px solid var(--wbx-line);
   border-radius: var(--wbx-reading-radius);
   background: var(--wbx-surface);
@@ -125,7 +126,8 @@
 }
 
 .wbx-reading-layout .vp-doc .language-mermaid pre,
-.wbx-reading-layout .vp-doc .language-mermaid svg {
+.wbx-reading-layout .vp-doc .language-mermaid svg,
+.wbx-reading-layout .vp-doc .mermaid svg {
   border: 0;
   box-shadow: none;
 }
@@ -171,7 +173,8 @@
 
   .wbx-reading-layout .vp-doc div[class*="language-"],
   .wbx-reading-layout .vp-doc .table-container,
-  .wbx-reading-layout .vp-doc .language-mermaid {
+  .wbx-reading-layout .vp-doc .language-mermaid,
+  .wbx-reading-layout .vp-doc .mermaid {
     max-width: 100%;
     overflow-x: auto;
   }

@@ -15,6 +15,7 @@ describe('WB-X reading surfaces', () => {
     '.vp-doc .custom-block',
     '.vp-doc table',
     '.vp-doc .language-mermaid',
+    '.vp-doc .mermaid',
   ])('gives %s one shared surface treatment', (selector) => {
     expect(css).toContain(selector)
   })
