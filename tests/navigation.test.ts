@@ -37,9 +37,10 @@ describe('site navigation', () => {
     expect(serialized).not.toContain('/bluebook/')
   })
 
-  it('only enables the small-book sidebar on /wb-x/ routes', () => {
+  it('enables dedicated sidebars for the small book and cases', () => {
     expect(config.themeConfig?.sidebar).toEqual({
       '/wb-x/': sidebar,
+      '/cases/': expect.any(Array),
     })
   })
 
