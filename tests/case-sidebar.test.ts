@@ -33,9 +33,10 @@ describe('discoverCaseSidebar', () => {
     writeCase(root, 'newer', '---\ntitle: 较新案例\ndate: 2026-07-25\n---\n')
 
     expect(discoverCaseSidebar(root)).toEqual([
-      { text: '案例集总览', link: '/cases/' },
+      { text: '案例集首页', link: '/cases/' },
+      { text: '如何提交 Case', link: '/community/case-contributing' },
       {
-        text: '社区案例',
+        text: '社区 Case',
         items: [
           { text: '较新案例', link: '/cases/submissions/newer/' },
           { text: '较早案例', link: '/cases/submissions/older/' },

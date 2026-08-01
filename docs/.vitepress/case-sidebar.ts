@@ -64,9 +64,10 @@ export function discoverCaseSidebar(casesRoot: string): DefaultTheme.SidebarItem
     .sort((left, right) => right.date.localeCompare(left.date) || left.route.localeCompare(right.route))
 
   return [
-    { text: '案例集总览', link: '/cases/' },
+    { text: '案例集首页', link: '/cases/' },
+    { text: '如何提交 Case', link: '/community/case-contributing' },
     {
-      text: '社区案例',
+      text: '社区 Case',
       items: cases.map(({ route, title }) => ({ text: title, link: route })),
     },
   ]

@@ -66,10 +66,6 @@ export default withMermaid(defineConfig({
     search: {
       provider: 'local',
     },
-    editLink: {
-      pattern: `${brand.repository}/edit/main/docs/:path`,
-      text: '在 GitHub 上改进此页',
-    },
     footer: {
       message: '以真实任务为主线的 WorkBuddy 社区实战读本',
       copyright: `Copyright © 2026 ${brand.author}`,

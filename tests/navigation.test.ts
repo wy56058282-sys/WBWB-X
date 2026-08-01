@@ -48,6 +48,11 @@ describe('site navigation', () => {
     expect(config.title).toBe('WorkBuddy 教程与使用指南｜WorkBuddy WB-X 实战小白书')
   })
 
+  it('keeps Git-derived update times without exposing page edit links', () => {
+    expect(config.lastUpdated).toBe(true)
+    expect(config.themeConfig?.editLink).toBeUndefined()
+  })
+
   it('recognizes the homepage at root and under the GitHub Pages base path', () => {
     expect(isHomeRoute('/', '/')).toBe(true)
     expect(isHomeRoute('/WBWB-X/', '/WBWB-X/')).toBe(true)
