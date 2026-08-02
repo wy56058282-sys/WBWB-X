@@ -164,11 +164,6 @@ const workflowSteps = [
               alt=""
             >
           </a>
-          <div class="wbx-hero__metrics" aria-label="小白书内容规模">
-            <span><b>27</b> CHAPTERS</span>
-            <span><b>4</b> PARTS</span>
-            <span><b>∞</b> WORKFLOWS</span>
-          </div>
         </div>
       </div>
 

@@ -173,6 +173,7 @@ describe('home hero icon navigation', () => {
     expect(
       document.querySelector('.wbx-hero__copy > .wbx-pixel-label')?.textContent,
     ).toBe('27 CHAPTERS / 4 PARTS / ∞ WORKFLOWS')
+    expect(document.querySelector('.wbx-hero__metrics')).toBeNull()
 
     const labels = Array.from(
       document.querySelectorAll<HTMLElement>('.wbx-value-strip__item'),
@@ -320,12 +321,11 @@ describe('home hero icon navigation', () => {
     expect(image?.getAttribute('alt')).toBe('')
   })
 
-  it('positions the official-site IP link without covering hero metrics', () => {
+  it('positions the official-site IP link without duplicate hero metrics', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const official = baseRule(css, '.wbx-hero__official')
     const label = baseRule(css, '.wbx-hero__official-label')
     const image = baseRule(css, '.wbx-hero__official-ip')
-    const metrics = baseRule(css, '.wbx-hero__metrics')
     const officialInteraction = css.match(
       /\.wbx-hero__official:hover,\s*\.wbx-hero__official:focus-visible\s*\{([^}]*)\}/s,
     )?.[1]
@@ -337,7 +337,7 @@ describe('home hero icon navigation', () => {
     expect(label).toMatch(/background:\s*#0d100d;/)
     expect(label).toMatch(/color:\s*#fff;/)
     expect(image).toMatch(/width:\s*145px;/)
-    expect(metrics).toMatch(/right:\s*210px;/)
+    expect(css).not.toContain('.wbx-hero__metrics')
     expect(official).not.toMatch(/transition:/)
     expect(officialInteraction).toBeDefined()
     expect(officialInteraction).toMatch(/transform:\s*none;/)
