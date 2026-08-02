@@ -1,4 +1,10 @@
-import { existsSync, mkdirSync, mkdtempSync, writeFileSync } from 'node:fs'
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  writeFileSync,
+} from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { spawnSync } from 'node:child_process'
@@ -53,6 +59,16 @@ describe('content inventory', () => {
     for (const route of flattenLinks(sidebar)) {
       expect(existsSync(routeToMarkdownPath(route)), route).toBe(true)
     }
+  })
+
+  it('uses the approved contribution guidance in the reading guide', () => {
+    const readingGuide = readFileSync('docs/reading-guide.md', 'utf8')
+
+    expect(readingGuide).toContain(
+      '欢迎阅读[参与共创](/community/contributing)，添加发起人的企业微信或微信，提出问题，或直接提交修改错误页面。',
+    )
+    expect(readingGuide).not.toContain('通过 Issue 提出问题')
+    expect(readingGuide).not.toContain('Pull Request 修改对应 Markdown 页面')
   })
 })
 
