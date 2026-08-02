@@ -4,7 +4,7 @@
 
 **Goal:** Replace the homepage download banner's animated pixel book with the supplied static WorkBuddy IP, animate only its heart, rename the Quark action to `教学资料`, and remove the visible extraction-code copy.
 
-**Architecture:** Keep `HomePage.vue` responsible for semantic banner markup and `home.css` responsible for layout and motion. Store two optimized transparent WebP assets under `docs/public/brand/`: a heart-free IP base and an isolated heart overlay. The Quark URL remains unchanged so its `pwd=WPc9` parameter continues to unlock the share.
+**Architecture:** Keep `HomePage.vue` responsible for semantic banner markup and `home.css` responsible for layout and motion. Store the supplied transparent PNG unchanged under `docs/public/brand/`; use a CSS clip path for the static character layer and a positioned sprite crop of the same image for the independently animated heart. The Quark URL remains unchanged so its `pwd=WPc9` parameter continues to unlock the share.
 
 **Tech Stack:** Vue 3, VitePress 1.6, CSS keyframes, Vitest/jsdom, transparent WebP assets.
 
@@ -24,33 +24,28 @@
 
 **Files:**
 - Source: `/Users/wangyi/Desktop/image 12.png`
-- Create: `docs/public/brand/workbuddy-ip.webp`
-- Create: `docs/public/brand/workbuddy-heart.webp`
+- Create: `docs/public/brand/workbuddy-ip.png`
 
 **Interfaces:**
-- Consumes: the supplied 660×538 transparent PNG containing the IP and heart.
-- Produces: a heart-free transparent IP image and an isolated transparent heart image, both preserving the source visual style.
+- Consumes: the supplied 660×544 transparent PNG containing the IP and heart.
+- Produces: an unchanged project-local copy of the transparent source image.
 
 - [ ] **Step 1: Inspect the source asset**
 
 Verify that the source has transparency, that the heart is spatially separated from the character, and that the character is not cropped at its visible right, top, or bottom edges.
 
-- [ ] **Step 2: Create the heart-free base**
+- [ ] **Step 2: Copy the source without raster editing**
 
-Use the image-editing workflow with `/Users/wangyi/Desktop/image 12.png` as the edit target. Remove only the detached red heart from the upper-left transparent area. Preserve every character pixel, the transparent background, dimensions, color, and sharpness. Save the final project asset as `docs/public/brand/workbuddy-ip.webp`.
-
-- [ ] **Step 3: Create the isolated heart**
-
-Extract the detached red heart from the source into a tightly bounded transparent canvas, preserving its pixel-art edges. Save it as `docs/public/brand/workbuddy-heart.webp`.
+Copy `/Users/wangyi/Desktop/image 12.png` byte-for-byte to `docs/public/brand/workbuddy-ip.png`. Do not regenerate, crop, resize, or recompress it.
 
 - [ ] **Step 4: Validate the assets**
 
-Confirm both outputs have alpha, transparent corners, no residual heart pixels in the IP base, and no character pixels in the heart overlay. Confirm the IP remains recognizable at approximately 420px desktop width and 280px mobile width.
+Confirm the copied output has alpha, transparent corners, dimensions `660×544`, and the same checksum as the supplied source.
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add docs/public/brand/workbuddy-ip.webp docs/public/brand/workbuddy-heart.webp
+git add docs/public/brand/workbuddy-ip.png
 git commit -m "assets: add homepage WorkBuddy IP layers"
 ```
 
@@ -61,7 +56,7 @@ git commit -m "assets: add homepage WorkBuddy IP layers"
 - Modify: `docs/.vitepress/theme/HomePage.vue`
 
 **Interfaces:**
-- Consumes: `/brand/workbuddy-ip.webp` and `/brand/workbuddy-heart.webp` from Task 1.
+- Consumes: `/brand/workbuddy-ip.png` from Task 1.
 - Produces: `.wbx-community__ip` and `.wbx-community__heart` decorative image hooks used by Task 3.
 
 - [ ] **Step 1: Write failing component assertions**
@@ -76,9 +71,8 @@ expect(download?.getAttribute('href')).toBe(
 expect(document.querySelector('.wbx-community__code')).toBeNull()
 expect(document.body.textContent).not.toContain('提取码：WPc9')
 expect(document.querySelector<HTMLImageElement>('.wbx-community__ip')?.getAttribute('src'))
-  .toBe('/brand/workbuddy-ip.webp')
-expect(document.querySelector<HTMLImageElement>('.wbx-community__heart')?.getAttribute('src'))
-  .toBe('/brand/workbuddy-heart.webp')
+  .toBe('/brand/workbuddy-ip.png')
+expect(document.querySelector('.wbx-community__heart')).not.toBeNull()
 expect(document.querySelector('.wbx-community__icon')).toBeNull()
 ```
 
@@ -95,8 +89,8 @@ In `HomePage.vue`, change the link label to `教学资料`, delete `.wbx-communi
 ```vue
 <div class="wbx-community__art" aria-hidden="true">
   <div class="wbx-community__ip-stage">
-    <img class="wbx-community__ip" src="/brand/workbuddy-ip.webp" alt="">
-    <img class="wbx-community__heart" src="/brand/workbuddy-heart.webp" alt="">
+    <img class="wbx-community__ip" src="/brand/workbuddy-ip.png" alt="">
+    <img class="wbx-community__heart" :src="withBase('/brand/workbuddy-ip.png')" alt="">
   </div>
 </div>
 ```
@@ -172,6 +166,10 @@ Keep `.wbx-community__art` as the right-hand grid cell. Add a bounded relative s
   left: 1%;
   width: 14%;
   height: auto;
+  inset: 0;
+  width: 100%;
+  height: auto;
+  clip-path: polygon(0 0, 18.5% 0, 18.5% 29%, 0 29%);
   transform-origin: 50% 70%;
   animation: wbx-community-heart-pulse 2.4s ease-in-out infinite;
 }

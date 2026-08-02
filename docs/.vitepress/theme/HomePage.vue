@@ -238,16 +238,18 @@ const workflowSteps = [
             href="https://pan.quark.cn/s/ca7b76d97d59?pwd=WPc9"
             target="_blank"
             rel="noopener noreferrer"
-          >夸克网盘链接</a>
+          >教学资料</a>
           <a
             class="wbx-button wbx-button--outline"
             :href="withBase('/community/contributing')"
           >参与共创</a>
         </div>
-        <p class="wbx-community__code">提取码：WPc9</p>
       </div>
       <div class="wbx-community__art" aria-hidden="true">
-        <i class="hn hn-book wbx-community__icon" />
+        <div class="wbx-community__ip-stage">
+          <img class="wbx-community__ip" :src="withBase('/brand/workbuddy-ip.png')" alt="">
+          <img class="wbx-community__heart" :src="withBase('/brand/workbuddy-ip.png')" alt="">
+        </div>
       </div>
     </section>
 

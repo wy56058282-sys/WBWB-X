@@ -451,9 +451,8 @@ describe('home hero icon navigation', () => {
     expect(document.querySelector('.wbx-community__description')?.textContent).toBe(
       '下载完整读本、案例资料与后续更新内容。',
     )
-    expect(document.querySelector('.wbx-community__code')?.textContent).toBe(
-      '提取码：WPc9',
-    )
+    expect(document.querySelector('.wbx-community__code')).toBeNull()
+    expect(document.body.textContent).not.toContain('提取码：WPc9')
   })
 
   it('links to Quark and contribution without a GitHub action', () => {
@@ -466,23 +465,28 @@ describe('home hero icon navigation', () => {
       document.querySelectorAll<HTMLAnchorElement>('.wbx-community__actions a'),
     ).find((link) => link.textContent === '参与共创')
 
-    expect(download?.textContent).toBe('夸克网盘链接')
+    expect(download?.textContent).toBe('教学资料')
     expect(download?.getAttribute('href')).toBe(
       'https://pan.quark.cn/s/ca7b76d97d59?pwd=WPc9',
     )
     expect(download?.getAttribute('target')).toBe('_blank')
     expect(download?.getAttribute('rel')).toBe('noopener noreferrer')
     expect(contribution?.getAttribute('href')).toBe('/community/contributing')
+    expect(document.querySelector<HTMLImageElement>('.wbx-community__ip')?.getAttribute('src'))
+      .toBe('/brand/workbuddy-ip.png')
+    expect(document.querySelector('.wbx-community__heart')).not.toBeNull()
+    expect(document.querySelector('.wbx-community__icon')).toBeNull()
     expect(document.body.textContent).not.toContain('前往 GitHub')
   })
 
-  it('lays out the download callout with safe responsive book motion', () => {
+  it('keeps the IP static and animates only its heart', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const community = baseRule(css, '.wbx-community')
     const copy = baseRule(css, '.wbx-community__copy')
     const actions = baseRule(css, '.wbx-community__actions')
     const art = baseRule(css, '.wbx-community__art')
-    const icon = baseRule(css, '.wbx-community__icon')
+    const download = baseRule(css, '.wbx-community__download')
+    const ip = baseRule(css, '.wbx-community__ip')
     const tablet = css.slice(
       css.indexOf('@media (max-width: 960px)'),
       css.indexOf('@media (min-width: 761px)'),
@@ -496,10 +500,15 @@ describe('home hero icon navigation', () => {
     expect(copy).toMatch(/max-width:\s*680px;/)
     expect(actions).toMatch(/flex-direction:\s*row;/)
     expect(art).toMatch(/overflow:\s*hidden;/)
-    expect(icon).toMatch(
-      /animation:\s*wbx-community-book-float 4\.8s ease-in-out infinite;/,
+    expect(download).toMatch(/background:\s*var\(--wbx-accent\);/)
+    expect(download).toMatch(/color:\s*#0d100d;/)
+    expect(ip).toMatch(/width:\s*min\(100%, 460px\);/)
+    expect(ip).not.toMatch(/animation:/)
+    expect(css).toMatch(
+      /\.wbx-community__heart\s*\{[^}]*animation:\s*wbx-community-heart-pulse 2\.4s ease-in-out infinite;/s,
     )
-    expect(css).toMatch(/@keyframes wbx-community-book-float\s*\{/)
+    expect(css).toMatch(/@keyframes wbx-community-heart-pulse\s*\{/)
+    expect(css).not.toContain('wbx-community-book-float')
     expect(tablet).not.toContain('.wbx-community')
     expect(mobile).toMatch(
       /\.wbx-community\s*\{[^}]*grid-template-columns:\s*1fr;/s,
@@ -507,8 +516,11 @@ describe('home hero icon navigation', () => {
     expect(mobile).toMatch(
       /\.wbx-community__actions\s*\{[^}]*flex-direction:\s*column;/s,
     )
+    expect(mobile).toMatch(
+      /\.wbx-community__ip-stage\s*\{[^}]*max-width:\s*300px;/s,
+    )
     expect(css).toMatch(
-      /@media\s*\(prefers-reduced-motion:\s*reduce\)\s*\{[\s\S]*?\.wbx-community__icon\s*\{[^}]*animation:\s*none;/,
+      /@media\s*\(prefers-reduced-motion:\s*reduce\)\s*\{[\s\S]*?\.wbx-community__heart\s*\{[^}]*animation:\s*none;/,
     )
   })
 })

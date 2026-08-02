@@ -692,11 +692,9 @@
   font-size: 15px;
 }
 
-.wbx-community__code {
-  margin: 12px 0 0;
-  color: #4f5752;
-  font-size: 13px;
-  user-select: text;
+.wbx-community__download {
+  color: #0d100d;
+  background: var(--wbx-accent);
 }
 
 .wbx-community__art {
@@ -710,21 +708,49 @@
     #e7ece9;
 }
 
-.wbx-community__icon {
-  color: color-mix(in srgb, var(--wbx-accent) 64%, #0d100d);
-  font-size: clamp(150px, 17vw, 230px);
-  filter: drop-shadow(0 20px 24px rgb(13 16 13 / 16%));
-  animation: wbx-community-book-float 4.8s ease-in-out infinite;
+.wbx-community__ip-stage {
+  position: relative;
+  width: min(92%, 460px);
 }
 
-@keyframes wbx-community-book-float {
+.wbx-community__ip,
+.wbx-community__heart {
+  display: block;
+  width: min(100%, 460px);
+  height: auto;
+}
+
+.wbx-community__ip {
+  width: min(100%, 460px);
+  clip-path: polygon(18.5% 0, 100% 0, 100% 100%, 0 100%, 0 29%, 18.5% 29%);
+  filter: drop-shadow(0 20px 24px rgb(13 16 13 / 16%));
+}
+
+.wbx-community__heart {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(0 0, 18.5% 0, 18.5% 29%, 0 29%);
+  transform-origin: 9% 18%;
+  animation: wbx-community-heart-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes wbx-community-heart-pulse {
   0%,
+  18%,
   100% {
-    transform: translateY(8px) rotate(-7deg);
+    opacity: 0;
+    transform: scale(0.72);
   }
 
-  50% {
-    transform: translateY(-10px) rotate(-2deg);
+  32%,
+  68% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  82% {
+    opacity: 0;
+    transform: scale(1.08);
   }
 }
 
@@ -1024,8 +1050,9 @@
     min-height: 180px;
   }
 
-  .wbx-community__icon {
-    font-size: 150px;
+  .wbx-community__ip-stage {
+    max-width: 300px;
+    margin: 0 auto;
   }
 
   .wbx-home-footer__inner {
@@ -1077,8 +1104,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .wbx-community__icon {
+  .wbx-community__heart {
+    opacity: 1;
+    transform: scale(1);
     animation: none;
-    transform: rotate(-4deg);
   }
 }
