@@ -410,3 +410,40 @@ git log --oneline --decorate -5
 ```
 
 Expected: only the intended plan/spec history and implementation commits are present, with no uncommitted changes.
+
+---
+
+### Task 4: Restore the borderless homepage product footer
+
+**Files:**
+- Modify: `docs/.vitepress/theme/HomePage.vue`
+- Modify: `docs/.vitepress/theme/home.css`
+- Test: `tests/home-hero-icons.test.ts`
+
+**Interfaces:**
+- Consumes: the homepage root and existing global color/link tokens.
+- Produces: `.wbx-home-footer`, `.wbx-home-footer__inner`, `.wbx-home-footer__product`, and `.wbx-home-footer__copyright` hooks.
+
+- [ ] **Step 1: Replace the retired-footer test with failing product-footer tests**
+
+Replace `omits the retired homepage footer container and its styling` with assertions that mount the real homepage and verify the exact product copy, copyright, attribution URL, and borderless responsive rules.
+
+- [ ] **Step 2: Run the focused test and verify it fails**
+
+Run `pnpm vitest run tests/home-hero-icons.test.ts` and expect failure because `.wbx-home-footer` is absent.
+
+- [ ] **Step 3: Add the semantic footer**
+
+Append a `footer.wbx-home-footer` after `main.wbx-home`. Use a product paragraph containing `以真实场景为主线的 WB-X 实战读本` and a HackerNoon link to `https://hackernoon.com/pixel-icon-library`, plus a copyright paragraph containing `Copyright © 2026 WB-X.SparkX`.
+
+- [ ] **Step 4: Add borderless responsive styling**
+
+Use the page background with `background: transparent`, `border: 0`, and a desktop flex row. At `max-width: 760px`, change the inner wrapper to a centered column so each information group appears on its own line.
+
+- [ ] **Step 5: Run focused and full verification**
+
+Run `pnpm vitest run tests/home-hero-icons.test.ts`, `pnpm test`, `pnpm build`, and `git diff --check`. All must pass.
+
+- [ ] **Step 6: Commit and refresh the preview**
+
+Commit `HomePage.vue`, `home.css`, and the test as `feat: restore homepage product footer`, push the existing branch, and refresh the retained local preview tab.
