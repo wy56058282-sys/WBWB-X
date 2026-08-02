@@ -150,6 +150,20 @@ const workflowSteps = [
           >
             <i class="hn hn-users" aria-hidden="true" />
           </a>
+          <a
+            class="wbx-hero__official"
+            href="https://www.workbuddy.ai/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="访问 WorkBuddy 官网"
+          >
+            <span class="wbx-hero__official-label">workbuddy.ai</span>
+            <img
+              class="wbx-hero__official-ip"
+              :src="withBase('/brand/workbuddy-official-ip.png')"
+              alt=""
+            >
+          </a>
           <div class="wbx-hero__metrics" aria-label="小白书内容规模">
             <span><b>27</b> CHAPTERS</span>
             <span><b>4</b> PARTS</span>

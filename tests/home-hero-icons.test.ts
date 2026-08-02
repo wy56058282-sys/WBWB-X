@@ -289,6 +289,46 @@ describe('home hero icon navigation', () => {
     ])
   })
 
+  it('adds a labelled WorkBuddy official-site IP link to the hero', () => {
+    mountHomePage()
+
+    const official = document.querySelector<HTMLAnchorElement>('.wbx-hero__official')
+    const image = official?.querySelector<HTMLImageElement>('.wbx-hero__official-ip')
+
+    expect(official?.getAttribute('href')).toBe('https://www.workbuddy.ai/')
+    expect(official?.getAttribute('target')).toBe('_blank')
+    expect(official?.getAttribute('rel')).toBe('noopener noreferrer')
+    expect(official?.getAttribute('aria-label')).toBe('访问 WorkBuddy 官网')
+    expect(official?.querySelector('.wbx-hero__official-label')?.textContent).toBe(
+      'workbuddy.ai',
+    )
+    expect(image?.getAttribute('src')).toBe('/brand/workbuddy-official-ip.png')
+    expect(image?.getAttribute('alt')).toBe('')
+  })
+
+  it('positions the official-site IP link without covering hero metrics', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const official = baseRule(css, '.wbx-hero__official')
+    const label = baseRule(css, '.wbx-hero__official-label')
+    const image = baseRule(css, '.wbx-hero__official-ip')
+    const metrics = baseRule(css, '.wbx-hero__metrics')
+    const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
+
+    expect(official).toMatch(/right:\s*24px;/)
+    expect(official).toMatch(/bottom:\s*46px;/)
+    expect(official).toMatch(/width:\s*154px;/)
+    expect(label).toMatch(/background:\s*#0d100d;/)
+    expect(label).toMatch(/color:\s*#fff;/)
+    expect(image).toMatch(/width:\s*145px;/)
+    expect(metrics).toMatch(/right:\s*210px;/)
+    expect(mobile).toMatch(
+      /\.wbx-hero__official\s*\{[^}]*right:\s*12px;[^}]*bottom:\s*54px;[^}]*width:\s*108px;/s,
+    )
+    expect(mobile).toMatch(
+      /\.wbx-hero__official-ip\s*\{[^}]*width:\s*100px;/s,
+    )
+  })
+
   it('positions the Part 4 people icon safely at every hero breakpoint', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const people = baseRule(css, '.wbx-icon-card--people')
