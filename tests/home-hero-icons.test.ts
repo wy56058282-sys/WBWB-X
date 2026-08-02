@@ -375,6 +375,7 @@ describe('home hero icon navigation', () => {
     expect(footerRule).toMatch(/border:\s*0;/)
     expect(footerRule).toMatch(/background:\s*transparent;/)
     expect(innerRule).toMatch(/display:\s*flex;/)
+    expect(innerRule).toMatch(/box-sizing:\s*border-box;/)
     expect(innerRule).toMatch(/justify-content:\s*space-between;/)
     expect(mobile).toMatch(
       /\.wbx-home-footer__inner\s*\{[^}]*align-items:\s*center;[^}]*flex-direction:\s*column;[^}]*text-align:\s*center;/s,
