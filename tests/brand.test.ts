@@ -142,10 +142,15 @@ describe('brand configuration', () => {
 
   it('keeps the QR popover on the stable replacement path', () => {
     const source = readFileSync('docs/.vitepress/theme/CommunityQr.vue', 'utf8')
+    const css = readFileSync('docs/.vitepress/theme/custom.css', 'utf8')
     expect(source).toContain('brand.qrPath')
     expect(source).toContain('withBase(brand.qrPath)')
     expect(source).not.toContain('aria-modal=')
-    expect(source).toContain('按 Escape 关闭')
+    expect(source).toContain('欢迎创客一起共创')
+    expect(source).not.toContain('二维码过期后')
+    expect(source).toContain('aria-describedby="wbx-community-qr-help"')
+    expect(source).not.toContain('wbx-community-qr-maintenance')
+    expect(css).not.toContain('.wbx-community-qr__maintenance')
   })
 
   it('keeps the QR close control named when mobile hides its visible label', () => {

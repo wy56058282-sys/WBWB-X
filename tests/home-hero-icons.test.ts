@@ -211,6 +211,9 @@ describe('home hero icon navigation', () => {
     expect(css).toMatch(
       /\.wbx-hero\s*\{[^}]*border:\s*2px solid #0d100d;/s,
     )
+    expect(css).toMatch(
+      /\.wbx-hero\s*\{[^}]*border-radius:\s*20px;/s,
+    )
     expect(css).not.toMatch(
       /\.wbx-hero__stage\s*\{[^}]*border:\s*2px solid #0d100d;/s,
     )
@@ -297,7 +300,7 @@ describe('home hero icon navigation', () => {
       ]),
     ).toEqual([
       ['前往提需求', '/help/'],
-      ['查看阅读指南', '/reading-guide'],
+      ['查看第一篇目录', '/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/'],
       ['查看工作系统进阶篇', '/wb-x/第三篇 进阶篇：把案例变成自己的工作系统/'],
       ['查看 Part 2 案例篇', '/wb-x/第二篇 案例篇：从一项任务到一支 AI 团队/'],
       ['查看 Part 4 岗位与行业篇', '/wb-x/第四篇 岗位与行业落地/'],
@@ -329,6 +332,9 @@ describe('home hero icon navigation', () => {
     const officialInteraction = css.match(
       /\.wbx-hero__official:hover,\s*\.wbx-hero__official:focus-visible\s*\{([^}]*)\}/s,
     )?.[1]
+    const labelInteraction = css.match(
+      /\.wbx-hero__official:hover \.wbx-hero__official-label,\s*\.wbx-hero__official:focus-visible \.wbx-hero__official-label\s*\{([^}]*)\}/s,
+    )?.[1]
     const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
 
     expect(official).toMatch(/right:\s*24px;/)
@@ -338,6 +344,8 @@ describe('home hero icon navigation', () => {
     expect(label).toMatch(/color:\s*#fff;/)
     expect(label).toMatch(/box-shadow:\s*0 10px 25px rgb\(0 0 0 \/ 28%\);/)
     expect(label).toMatch(/animation:\s*wbx-official-label-float 4\.2s ease-in-out infinite;/)
+    expect(label).toMatch(/transition:\s*color 180ms ease, scale 180ms ease;/)
+    expect(label).toMatch(/scale:\s*1;/)
     expect(image).toMatch(/width:\s*145px;/)
     expect(image).not.toMatch(/animation:/)
     expect(css).not.toContain('.wbx-hero__metrics')
@@ -345,6 +353,9 @@ describe('home hero icon navigation', () => {
     expect(officialInteraction).toBeDefined()
     expect(officialInteraction).toMatch(/transform:\s*none;/)
     expect(officialInteraction).not.toMatch(/translate/)
+    expect(labelInteraction).toBeDefined()
+    expect(labelInteraction).toMatch(/color:\s*var\(--wbx-accent\);/)
+    expect(labelInteraction).toMatch(/scale:\s*1\.08;/)
     expect(css).toMatch(
       /\.wbx-hero__official:(?:hover|focus-visible) \.wbx-hero__official-label\s*\{[^}]*animation-play-state:\s*paused;/s,
     )
@@ -585,7 +596,12 @@ describe('home hero icon navigation', () => {
     expect(compactDesktop).toMatch(
       /\.wbx-community__copy\s*\{[^}]*padding-left:\s*132px;/s,
     )
-    expect(actions).toMatch(/flex-direction:\s*row;/)
+    expect(actions).toMatch(/display:\s*grid;/)
+    expect(actions).toMatch(
+      /grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/,
+    )
+    expect(actions).toMatch(/width:\s*min\(100%, 370px\);/)
+    expect(baseRule(css, '.wbx-community .wbx-button')).toMatch(/min-width:\s*0;/)
     expect(community).toMatch(/overflow:\s*visible;/)
     expect(art).toMatch(/overflow:\s*visible;/)
     expect(art).toMatch(/min-height:\s*270px;/)
@@ -605,6 +621,7 @@ describe('home hero icon navigation', () => {
     expect(ip).toMatch(/width:\s*min\(100%, 424px\);/)
     expect(ip).not.toMatch(/animation:/)
     expect(ip).not.toMatch(/clip-path:/)
+    expect(ip).not.toMatch(/filter:/)
     expect(css).not.toContain('.wbx-community__heart')
     expect(css).not.toContain('wbx-community-heart-pulse')
     expect(css).not.toContain('wbx-community-book-float')
@@ -613,7 +630,7 @@ describe('home hero icon navigation', () => {
       /\.wbx-community\s*\{[^}]*grid-template-columns:\s*1fr;/s,
     )
     expect(mobile).toMatch(
-      /\.wbx-community__actions\s*\{[^}]*flex-direction:\s*column;/s,
+      /\.wbx-community__actions\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/s,
     )
     expect(mobile).toMatch(
       /\.wbx-community__copy\s*\{[^}]*padding:\s*32px 24px;/s,

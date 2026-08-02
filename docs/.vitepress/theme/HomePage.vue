@@ -124,8 +124,8 @@ const workflowSteps = [
           </a>
           <a
             class="wbx-icon-card wbx-icon-card--book"
-            :href="withBase('/reading-guide')"
-            aria-label="查看阅读指南"
+            :href="withBase('/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/')"
+            aria-label="查看第一篇目录"
           >
             <i class="hn hn-book" aria-hidden="true" />
           </a>

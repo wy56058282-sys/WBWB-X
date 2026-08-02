@@ -461,16 +461,11 @@ body {
   image-rendering: auto;
 }
 
-.wbx-community-qr__help,
-.wbx-community-qr__maintenance {
+.wbx-community-qr__help {
   margin: 8px 0 0;
   color: var(--wbx-muted);
   font-size: 11px;
   line-height: 1.6;
-}
-
-.wbx-community-qr__maintenance {
-  margin-top: 3px;
 }
 
 .wb-contact-grid {
