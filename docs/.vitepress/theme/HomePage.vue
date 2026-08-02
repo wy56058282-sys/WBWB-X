@@ -252,4 +252,19 @@ const workflowSteps = [
     </section>
 
   </main>
+
+  <footer class="wbx-home-footer">
+    <div class="wbx-home-footer__inner">
+      <p class="wbx-home-footer__product">
+        <span>以真实场景为主线的 WB-X 实战读本</span>
+        <span aria-hidden="true"> · </span>
+        <a
+          href="https://hackernoon.com/pixel-icon-library"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Pixel icons by HackerNoon</a>
+      </p>
+      <p class="wbx-home-footer__copyright">Copyright © 2026 WB-X.SparkX</p>
+    </div>
+  </footer>
 </template>

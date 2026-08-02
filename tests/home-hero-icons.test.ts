@@ -356,15 +356,29 @@ describe('home hero icon navigation', () => {
     }
   })
 
-  it('omits the retired homepage footer container and its styling', () => {
+  it('renders the approved borderless homepage product footer', () => {
     mountHomePage()
 
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const footer = document.querySelector('.wbx-home-footer')
+    const attribution = footer?.querySelector<HTMLAnchorElement>('a')
+    const footerRule = baseRule(css, '.wbx-home-footer')
+    const innerRule = baseRule(css, '.wbx-home-footer__inner')
+    const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
 
-    expect(document.querySelector('.wbx-home-footer')).toBeNull()
-    expect(document.body.textContent).not.toContain('Pixel icons by')
-    expect(document.body.textContent).not.toContain('Copyright © 2026')
-    expect(css).not.toContain('.wbx-home-footer')
+    expect(footer?.textContent).toContain('以真实场景为主线的 WB-X 实战读本')
+    expect(footer?.textContent).toContain('Pixel icons by HackerNoon')
+    expect(footer?.textContent).toContain('Copyright © 2026 WB-X.SparkX')
+    expect(attribution?.getAttribute('href')).toBe(
+      'https://hackernoon.com/pixel-icon-library',
+    )
+    expect(footerRule).toMatch(/border:\s*0;/)
+    expect(footerRule).toMatch(/background:\s*transparent;/)
+    expect(innerRule).toMatch(/display:\s*flex;/)
+    expect(innerRule).toMatch(/justify-content:\s*space-between;/)
+    expect(mobile).toMatch(
+      /\.wbx-home-footer__inner\s*\{[^}]*align-items:\s*center;[^}]*flex-direction:\s*column;[^}]*text-align:\s*center;/s,
+    )
   })
 
   it('runs the community callout full-width at desktop and mobile sizes', () => {
