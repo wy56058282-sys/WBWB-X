@@ -356,15 +356,14 @@ describe('home hero icon navigation', () => {
     }
   })
 
-  it('renders the footer outside the constrained home content with an aligned inner container', () => {
+  it('omits the retired homepage footer container and its styling', () => {
     mountHomePage()
 
-    const home = document.querySelector('.wbx-home')
-    const footer = document.querySelector('.wbx-home-footer')
-    const inner = footer?.querySelector('.wbx-home-footer__inner')
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
 
-    expect(home?.contains(footer)).toBe(false)
-    expect(footer?.parentElement).toBe(home?.parentElement)
-    expect(inner).not.toBeNull()
+    expect(document.querySelector('.wbx-home-footer')).toBeNull()
+    expect(document.body.textContent).not.toContain('Pixel icons by')
+    expect(document.body.textContent).not.toContain('Copyright © 2026')
+    expect(css).not.toContain('.wbx-home-footer')
   })
 })
