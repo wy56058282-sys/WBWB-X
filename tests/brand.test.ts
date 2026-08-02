@@ -1,5 +1,6 @@
 // @vitest-environment node
 
+import { createHash } from 'node:crypto'
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { brand } from '../docs/.vitepress/brand'
@@ -31,6 +32,16 @@ describe('brand configuration', () => {
     expect(brand.author).toBe('WorkBuddy WB-X Contributors')
     expect(brand.logoPath).toBe('/brand/wb-x-logo.svg')
     expect(brand.qrPath).toBe('/community/wechat-group.png')
+  })
+
+  it('ships the approved community QR image', () => {
+    const path = 'docs/public/community/wechat-group.png'
+    const qr = readFileSync(path)
+
+    expect(readPngDimensions(path)).toEqual({ width: 490, height: 490 })
+    expect(createHash('sha256').update(qr).digest('hex')).toBe(
+      'd6c7aaf330525adbc842ddea331542504de0bfa001cbdc1ccf9ea7d02cd96ad3',
+    )
   })
 
   it('ships a social share image at the required dimensions', () => {

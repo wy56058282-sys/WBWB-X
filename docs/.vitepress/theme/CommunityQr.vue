@@ -149,8 +149,8 @@ onBeforeUnmount(() => {
           class="wbx-community-qr__image"
           :src="withBase(brand.qrPath)"
           alt="WorkBuddy WB-X 微信交流群二维码"
-          width="800"
-          height="800"
+          width="490"
+          height="490"
         />
 
         <p id="wbx-community-qr-help" class="wbx-community-qr__help">欢迎创客一起共创</p>
