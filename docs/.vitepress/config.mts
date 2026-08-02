@@ -68,8 +68,9 @@ export default withMermaid(defineConfig({
       provider: 'local',
     },
     footer: {
-      message: '以真实任务为主线的 WorkBuddy 社区实战读本',
-      copyright: `Copyright © 2026 ${brand.author}`,
+      message:
+        '以真实场景为主线的 WB-X 实战读本 · <a href="https://hackernoon.com/pixel-icon-library" target="_blank" rel="noopener noreferrer">Pixel icons by HackerNoon</a>',
+      copyright: 'Copyright © 2026 WB-X.SparkX',
     },
     socialLinks: [{ icon: 'github', link: brand.repository }],
   },

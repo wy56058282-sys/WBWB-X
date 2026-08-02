@@ -34,6 +34,14 @@ describe('brand configuration', () => {
     expect(brand.qrPath).toBe('/community/wechat-group.png')
   })
 
+  it('uses the approved product and attribution copy in document footers', () => {
+    expect(vitepressConfig.themeConfig?.footer).toEqual({
+      message:
+        '以真实场景为主线的 WB-X 实战读本 · <a href="https://hackernoon.com/pixel-icon-library" target="_blank" rel="noopener noreferrer">Pixel icons by HackerNoon</a>',
+      copyright: 'Copyright © 2026 WB-X.SparkX',
+    })
+  })
+
   it('ships the approved community QR image', () => {
     const path = 'docs/public/community/wechat-group.png'
     const qr = readFileSync(path)
