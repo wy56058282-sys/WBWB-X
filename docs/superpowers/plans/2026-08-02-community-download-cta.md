@@ -4,7 +4,7 @@
 
 **Goal:** Replace the homepage download banner's animated pixel book with the supplied static WorkBuddy IP, animate only its heart, rename the Quark action to `教学资料`, and remove the visible extraction-code copy.
 
-**Architecture:** Keep `HomePage.vue` responsible for semantic banner markup and `home.css` responsible for layout and motion. Store the supplied transparent PNG unchanged under `docs/public/brand/`; use a CSS clip path for the static character layer and a positioned sprite crop of the same image for the independently animated heart. The Quark URL remains unchanged so its `pwd=WPc9` parameter continues to unlock the share.
+**Architecture:** Keep `HomePage.vue` responsible for semantic banner markup and `home.css` responsible for layout. Store and render the supplied transparent PNG unchanged as one static image with its original heart included. The Quark URL remains unchanged so its `pwd=WPc9` parameter continues to unlock the share.
 
 **Tech Stack:** Vue 3, VitePress 1.6, CSS keyframes, Vitest/jsdom, transparent WebP assets.
 
@@ -12,8 +12,7 @@
 
 - The IP character must remain completely static; no translate, float, or rotation animation.
 - On desktop, position the whole static IP stage `24px` below its contained position and allow bottom overflow; add `24px` footer top clearance. Reset the stage translation and contain overflow on mobile.
-- Only the heart may animate, using a `2.4s` appear, slight-scale, hold, and disappear cycle.
-- Under `prefers-reduced-motion: reduce`, stop the cycle and show the heart statically.
+- Do not animate, clip, or duplicate any part of the IP image.
 - Preserve the full-bleed `100vw` banner, removed border, desktop `48px` top gap, and mobile `38px` top gap.
 - Reduce desktop banner and artwork minimum height from `300px` to `270px`, desktop copy vertical padding from `46px` to `31px`, and desktop IP maximum width from `460px` to `424px`; retain the mobile height rules.
 - Set the final desktop banner height to `319px`, absolutely position the unchanged `424px` IP stage with `24px` bottom overflow, and remove the artwork gradient so both columns share `#f3f4f2`.

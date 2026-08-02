@@ -248,7 +248,6 @@ const workflowSteps = [
       <div class="wbx-community__art" aria-hidden="true">
         <div class="wbx-community__ip-stage">
           <img class="wbx-community__ip" :src="withBase('/brand/workbuddy-ip.png')" alt="">
-          <img class="wbx-community__heart" :src="withBase('/brand/workbuddy-ip.png')" alt="">
         </div>
       </div>
     </section>

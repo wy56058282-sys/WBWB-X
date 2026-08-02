@@ -474,12 +474,12 @@ describe('home hero icon navigation', () => {
     expect(contribution?.getAttribute('href')).toBe('/community/contributing')
     expect(document.querySelector<HTMLImageElement>('.wbx-community__ip')?.getAttribute('src'))
       .toBe('/brand/workbuddy-ip.png')
-    expect(document.querySelector('.wbx-community__heart')).not.toBeNull()
+    expect(document.querySelector('.wbx-community__heart')).toBeNull()
     expect(document.querySelector('.wbx-community__icon')).toBeNull()
     expect(document.body.textContent).not.toContain('前往 GitHub')
   })
 
-  it('keeps the IP static and animates only its heart', () => {
+  it('renders the complete IP as one static image', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const community = baseRule(css, '.wbx-community')
     const copy = baseRule(css, '.wbx-community__copy')
@@ -522,10 +522,9 @@ describe('home hero icon navigation', () => {
     )
     expect(ip).toMatch(/width:\s*min\(100%, 424px\);/)
     expect(ip).not.toMatch(/animation:/)
-    expect(css).toMatch(
-      /\.wbx-community__heart\s*\{[^}]*animation:\s*wbx-community-heart-pulse 2\.4s ease-in-out infinite;/s,
-    )
-    expect(css).toMatch(/@keyframes wbx-community-heart-pulse\s*\{/)
+    expect(ip).not.toMatch(/clip-path:/)
+    expect(css).not.toContain('.wbx-community__heart')
+    expect(css).not.toContain('wbx-community-heart-pulse')
     expect(css).not.toContain('wbx-community-book-float')
     expect(tablet).not.toContain('.wbx-community')
     expect(mobile).toMatch(
@@ -542,9 +541,6 @@ describe('home hero icon navigation', () => {
     )
     expect(mobile).toMatch(
       /\.wbx-community__ip-stage\s*\{[^}]*position:\s*relative;[^}]*transform:\s*none;/s,
-    )
-    expect(css).toMatch(
-      /@media\s*\(prefers-reduced-motion:\s*reduce\)\s*\{[\s\S]*?\.wbx-community__heart\s*\{[^}]*animation:\s*none;/,
     )
   })
 })
