@@ -183,7 +183,7 @@
 .wbx-hero-cta__arrow--in {
   color: #0d100d;
   opacity: 0;
-  transform: translate(-100%, 100%) rotate(-45deg);
+  transform: translate(-56px, 56px) rotate(-45deg);
 }
 
 .wbx-hero-cta:is(:hover, :focus-visible) {
@@ -200,7 +200,7 @@
 }
 
 .wbx-hero-cta:is(:hover, :focus-visible) .wbx-hero-cta__arrow--out {
-  transform: translate(100%, -100%) rotate(-45deg);
+  transform: translate(56px, -56px) rotate(-45deg);
 }
 
 .wbx-hero-cta:is(:hover, :focus-visible) .wbx-hero-cta__arrow--in {
