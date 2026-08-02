@@ -219,7 +219,13 @@ describe('home hero icon navigation', () => {
       /\.wbx-hero-cta:is\(:hover, :focus-visible\) \.wbx-hero-cta__arrow::before\s*\{[^}]*transform:\s*scale\(1\);/s,
     )
     expect(css).toMatch(
-      /\.wbx-hero-cta:is\(:hover, :focus-visible\) \.wbx-hero-cta__arrow--out\s*\{[^}]*transform:\s*translate\(100%, -100%\) rotate\(-45deg\);/s,
+      /\.wbx-hero-cta__arrow\s*>\s*\.hn\s*\{[^}]*font-size:\s*28px;/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-hero-cta__arrow--in\s*\{[^}]*transform:\s*translate\(-56px, 56px\) rotate\(-45deg\);/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-hero-cta:is\(:hover, :focus-visible\) \.wbx-hero-cta__arrow--out\s*\{[^}]*transform:\s*translate\(56px, -56px\) rotate\(-45deg\);/s,
     )
     expect(css).toMatch(
       /\.wbx-hero-cta:is\(:hover, :focus-visible\) \.wbx-hero-cta__arrow--in\s*\{[^}]*opacity:\s*1;[^}]*transform:\s*translate\(0, 0\) rotate\(-45deg\);/s,
@@ -350,15 +356,40 @@ describe('home hero icon navigation', () => {
     }
   })
 
-  it('renders the footer outside the constrained home content with an aligned inner container', () => {
+  it('omits the retired homepage footer container and its styling', () => {
     mountHomePage()
 
-    const home = document.querySelector('.wbx-home')
-    const footer = document.querySelector('.wbx-home-footer')
-    const inner = footer?.querySelector('.wbx-home-footer__inner')
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
 
-    expect(home?.contains(footer)).toBe(false)
-    expect(footer?.parentElement).toBe(home?.parentElement)
-    expect(inner).not.toBeNull()
+    expect(document.querySelector('.wbx-home-footer')).toBeNull()
+    expect(document.body.textContent).not.toContain('Pixel icons by')
+    expect(document.body.textContent).not.toContain('Copyright © 2026')
+    expect(css).not.toContain('.wbx-home-footer')
+  })
+
+  it('runs the community callout full-width at desktop and mobile sizes', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const community = baseRule(css, '.wbx-community')
+    const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
+
+    expect(community).toMatch(/margin:\s*28px 0 0;/)
+    expect(css).not.toMatch(
+      /@media\s*\(max-width:\s*1200px\)\s*\{[\s\S]*?\.wbx-community\s*\{[^}]*margin-inline:/,
+    )
+    expect(mobile).toMatch(
+      /\.wbx-community\s*\{[^}]*margin:\s*18px 0 0;/s,
+    )
+  })
+
+  it('aligns the system panel with the reading cards and rounds it by 20px', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const system = baseRule(css, '.wbx-system')
+    const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
+
+    expect(system).toMatch(/margin:\s*72px 52px 0;/)
+    expect(system).toMatch(/border-radius:\s*20px;/)
+    expect(mobile).toMatch(
+      /\.wbx-system\s*\{[^}]*margin:\s*52px 4px 0;/s,
+    )
   })
 })
