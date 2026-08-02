@@ -646,6 +646,7 @@
   align-items: stretch;
   gap: 28px;
   width: 100vw;
+  height: 319px;
   min-height: 270px;
   margin-top: 48px;
   margin-right: calc(50% - 50vw);
@@ -711,15 +712,15 @@
   min-height: 270px;
   place-items: center;
   overflow: visible;
-  background:
-    linear-gradient(135deg, rgb(50 230 185 / 18%), transparent 58%),
-    #e7ece9;
+  background: #f3f4f2;
 }
 
 .wbx-community__ip-stage {
-  position: relative;
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
   width: min(92%, 424px);
-  transform: translateY(24px);
+  transform: translateX(-50%);
 }
 
 .wbx-community__ip,
@@ -1039,6 +1040,7 @@
   .wbx-community {
     grid-template-columns: 1fr;
     gap: 0;
+    height: auto;
     min-height: 0;
     margin-top: 38px;
     overflow: hidden;
@@ -1062,6 +1064,10 @@
   }
 
   .wbx-community__ip-stage {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    left: auto;
     max-width: 300px;
     margin: 0 auto;
     transform: none;

@@ -500,13 +500,19 @@ describe('home hero icon navigation', () => {
     )
     expect(community).toMatch(/margin-top:\s*48px;/)
     expect(community).toMatch(/min-height:\s*270px;/)
+    expect(community).toMatch(/height:\s*319px;/)
     expect(copy).toMatch(/max-width:\s*680px;/)
     expect(copy).toMatch(/padding:\s*31px 0 31px 52px;/)
     expect(actions).toMatch(/flex-direction:\s*row;/)
     expect(community).toMatch(/overflow:\s*visible;/)
     expect(art).toMatch(/overflow:\s*visible;/)
     expect(art).toMatch(/min-height:\s*270px;/)
-    expect(stage).toMatch(/transform:\s*translateY\(24px\);/)
+    expect(art).toMatch(/background:\s*#f3f4f2;/)
+    expect(art).not.toMatch(/linear-gradient/)
+    expect(stage).toMatch(/position:\s*absolute;/)
+    expect(stage).toMatch(/bottom:\s*-24px;/)
+    expect(stage).toMatch(/left:\s*50%;/)
+    expect(stage).toMatch(/transform:\s*translateX\(-50%\);/)
     expect(footer).toMatch(/padding-top:\s*24px;/)
     expect(download).toMatch(/background:\s*var\(--wbx-accent\);/)
     expect(download).toMatch(/color:\s*#0d100d !important;/)
@@ -532,10 +538,10 @@ describe('home hero icon navigation', () => {
       /\.wbx-community__ip-stage\s*\{[^}]*max-width:\s*300px;/s,
     )
     expect(mobile).toMatch(
-      /\.wbx-community\s*\{[^}]*overflow:\s*hidden;/s,
+      /\.wbx-community\s*\{[^}]*height:\s*auto;[^}]*overflow:\s*hidden;/s,
     )
     expect(mobile).toMatch(
-      /\.wbx-community__ip-stage\s*\{[^}]*transform:\s*none;/s,
+      /\.wbx-community__ip-stage\s*\{[^}]*position:\s*relative;[^}]*transform:\s*none;/s,
     )
     expect(css).toMatch(
       /@media\s*\(prefers-reduced-motion:\s*reduce\)\s*\{[\s\S]*?\.wbx-community__heart\s*\{[^}]*animation:\s*none;/,
