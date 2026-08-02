@@ -351,13 +351,12 @@
   width: 154px;
   color: #fff;
   text-decoration: none;
-  transition: transform 180ms ease;
 }
 
 .wbx-hero__official:hover,
 .wbx-hero__official:focus-visible {
   color: #fff;
-  transform: translateY(-3px);
+  transform: none;
 }
 
 .wbx-hero__official:focus-visible {

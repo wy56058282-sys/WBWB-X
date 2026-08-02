@@ -326,6 +326,9 @@ describe('home hero icon navigation', () => {
     const label = baseRule(css, '.wbx-hero__official-label')
     const image = baseRule(css, '.wbx-hero__official-ip')
     const metrics = baseRule(css, '.wbx-hero__metrics')
+    const officialInteraction = css.match(
+      /\.wbx-hero__official:hover,\s*\.wbx-hero__official:focus-visible\s*\{([^}]*)\}/s,
+    )?.[1]
     const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
 
     expect(official).toMatch(/right:\s*24px;/)
@@ -335,6 +338,10 @@ describe('home hero icon navigation', () => {
     expect(label).toMatch(/color:\s*#fff;/)
     expect(image).toMatch(/width:\s*145px;/)
     expect(metrics).toMatch(/right:\s*210px;/)
+    expect(official).not.toMatch(/transition:/)
+    expect(officialInteraction).toBeDefined()
+    expect(officialInteraction).toMatch(/transform:\s*none;/)
+    expect(officialInteraction).not.toMatch(/translate/)
     expect(mobile).toMatch(
       /\.wbx-hero__official\s*\{[^}]*right:\s*12px;[^}]*bottom:\s*54px;[^}]*width:\s*108px;/s,
     )
