@@ -11,6 +11,7 @@
 ## Global Constraints
 
 - The IP character must remain completely static; no translate, float, or rotation animation.
+- On desktop, position the whole static IP stage `24px` below its contained position and allow bottom overflow; add `24px` footer top clearance. Reset the stage translation and contain overflow on mobile.
 - Only the heart may animate, using a `2.4s` appear, slight-scale, hold, and disappear cycle.
 - Under `prefers-reduced-motion: reduce`, stop the cycle and show the heart statically.
 - Preserve the full-bleed `100vw` banner, removed border, desktop `48px` top gap, and mobile `38px` top gap.

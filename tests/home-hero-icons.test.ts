@@ -485,6 +485,8 @@ describe('home hero icon navigation', () => {
     const copy = baseRule(css, '.wbx-community__copy')
     const actions = baseRule(css, '.wbx-community__actions')
     const art = baseRule(css, '.wbx-community__art')
+    const stage = baseRule(css, '.wbx-community__ip-stage')
+    const footer = baseRule(css, '.wbx-home-footer')
     const download = baseRule(css, '.wbx-community .wbx-button.wbx-community__download')
     const ip = baseRule(css, '.wbx-community__ip')
     const tablet = css.slice(
@@ -501,8 +503,11 @@ describe('home hero icon navigation', () => {
     expect(copy).toMatch(/max-width:\s*680px;/)
     expect(copy).toMatch(/padding:\s*31px 0 31px 52px;/)
     expect(actions).toMatch(/flex-direction:\s*row;/)
-    expect(art).toMatch(/overflow:\s*hidden;/)
+    expect(community).toMatch(/overflow:\s*visible;/)
+    expect(art).toMatch(/overflow:\s*visible;/)
     expect(art).toMatch(/min-height:\s*270px;/)
+    expect(stage).toMatch(/transform:\s*translateY\(24px\);/)
+    expect(footer).toMatch(/padding-top:\s*24px;/)
     expect(download).toMatch(/background:\s*var\(--wbx-accent\);/)
     expect(download).toMatch(/color:\s*#0d100d !important;/)
     expect(download).toMatch(/border-color:\s*var\(--wbx-accent\);/)
@@ -525,6 +530,12 @@ describe('home hero icon navigation', () => {
     )
     expect(mobile).toMatch(
       /\.wbx-community__ip-stage\s*\{[^}]*max-width:\s*300px;/s,
+    )
+    expect(mobile).toMatch(
+      /\.wbx-community\s*\{[^}]*overflow:\s*hidden;/s,
+    )
+    expect(mobile).toMatch(
+      /\.wbx-community__ip-stage\s*\{[^}]*transform:\s*none;/s,
     )
     expect(css).toMatch(
       /@media\s*\(prefers-reduced-motion:\s*reduce\)\s*\{[\s\S]*?\.wbx-community__heart\s*\{[^}]*animation:\s*none;/,
