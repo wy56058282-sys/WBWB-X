@@ -493,6 +493,10 @@ describe('home hero icon navigation', () => {
       css.indexOf('@media (max-width: 960px)'),
       css.indexOf('@media (min-width: 761px)'),
     )
+    const compactDesktop = css.slice(
+      css.indexOf('@media (max-width: 1200px)'),
+      css.indexOf('@media (max-width: 960px)'),
+    )
     const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
 
     expect(community).toMatch(
@@ -502,7 +506,12 @@ describe('home hero icon navigation', () => {
     expect(community).toMatch(/min-height:\s*270px;/)
     expect(community).toMatch(/height:\s*299px;/)
     expect(copy).toMatch(/max-width:\s*680px;/)
-    expect(copy).toMatch(/padding:\s*31px 0 31px 52px;/)
+    expect(copy).toMatch(
+      /padding:\s*31px 0 31px calc\(max\(\(100vw - 1480px\) \/ 2, 0px\) \+ 140px\);/,
+    )
+    expect(compactDesktop).toMatch(
+      /\.wbx-community__copy\s*\{[^}]*padding-left:\s*132px;/s,
+    )
     expect(actions).toMatch(/flex-direction:\s*row;/)
     expect(community).toMatch(/overflow:\s*visible;/)
     expect(art).toMatch(/overflow:\s*visible;/)
@@ -532,6 +541,9 @@ describe('home hero icon navigation', () => {
     )
     expect(mobile).toMatch(
       /\.wbx-community__actions\s*\{[^}]*flex-direction:\s*column;/s,
+    )
+    expect(mobile).toMatch(
+      /\.wbx-community__copy\s*\{[^}]*padding:\s*32px 24px;/s,
     )
     expect(mobile).toMatch(
       /\.wbx-community__ip-stage\s*\{[^}]*max-width:\s*300px;/s,

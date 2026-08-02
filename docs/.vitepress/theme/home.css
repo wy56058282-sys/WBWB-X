@@ -660,7 +660,7 @@
 .wbx-community__copy {
   align-self: center;
   max-width: 680px;
-  padding: 31px 0 31px 52px;
+  padding: 31px 0 31px calc(max((100vw - 1480px) / 2, 0px) + 140px);
 }
 
 .wbx-community .wbx-pixel-label {
@@ -785,6 +785,10 @@
 
   .wbx-icon-card .hn {
     font-size: 68px;
+  }
+
+  .wbx-community__copy {
+    padding-left: 132px;
   }
 
 }
