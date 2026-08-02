@@ -618,6 +618,7 @@ describe('home hero icon navigation', () => {
     expect(ip).toMatch(/width:\s*min\(100%, 424px\);/)
     expect(ip).not.toMatch(/animation:/)
     expect(ip).not.toMatch(/clip-path:/)
+    expect(ip).not.toMatch(/filter:/)
     expect(css).not.toContain('.wbx-community__heart')
     expect(css).not.toContain('wbx-community-heart-pulse')
     expect(css).not.toContain('wbx-community-book-float')

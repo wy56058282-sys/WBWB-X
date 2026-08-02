@@ -783,7 +783,6 @@
   display: block;
   width: min(100%, 424px);
   height: auto;
-  filter: drop-shadow(0 20px 24px rgb(13 16 13 / 16%));
 }
 
 .wbx-home-footer {
