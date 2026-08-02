@@ -593,7 +593,12 @@ describe('home hero icon navigation', () => {
     expect(compactDesktop).toMatch(
       /\.wbx-community__copy\s*\{[^}]*padding-left:\s*132px;/s,
     )
-    expect(actions).toMatch(/flex-direction:\s*row;/)
+    expect(actions).toMatch(/display:\s*grid;/)
+    expect(actions).toMatch(
+      /grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/,
+    )
+    expect(actions).toMatch(/width:\s*min\(100%, 370px\);/)
+    expect(baseRule(css, '.wbx-community .wbx-button')).toMatch(/min-width:\s*0;/)
     expect(community).toMatch(/overflow:\s*visible;/)
     expect(art).toMatch(/overflow:\s*visible;/)
     expect(art).toMatch(/min-height:\s*270px;/)
@@ -621,7 +626,7 @@ describe('home hero icon navigation', () => {
       /\.wbx-community\s*\{[^}]*grid-template-columns:\s*1fr;/s,
     )
     expect(mobile).toMatch(
-      /\.wbx-community__actions\s*\{[^}]*flex-direction:\s*column;/s,
+      /\.wbx-community__actions\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/s,
     )
     expect(mobile).toMatch(
       /\.wbx-community__copy\s*\{[^}]*padding:\s*32px 24px;/s,
