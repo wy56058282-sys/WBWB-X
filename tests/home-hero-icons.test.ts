@@ -158,7 +158,7 @@ describe('home hero icon navigation', () => {
 
     expect(
       document.querySelector('.wbx-hero__copy > .wbx-pixel-label')?.textContent,
-    ).toBe('REAL TASKS · 27 CHAPTERS · OPEN SOURCE')
+    ).toBe('27 CHAPTERS / 4 PARTS / ∞ WORKFLOWS')
 
     const labels = Array.from(
       document.querySelectorAll<HTMLElement>('.wbx-value-strip__item'),
