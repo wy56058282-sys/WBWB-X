@@ -578,8 +578,9 @@
   display: grid;
   grid-template-columns: 0.86fr 1.14fr;
   gap: 60px;
-  margin-top: 72px;
+  margin: 72px 52px 0;
   padding: 56px;
+  border-radius: 20px;
   color: #ffffff;
   background: #0d100d;
 }
@@ -921,7 +922,7 @@
 
   .wbx-system {
     gap: 36px;
-    margin-top: 52px;
+    margin: 52px 4px 0;
     padding: 36px 24px;
   }
 

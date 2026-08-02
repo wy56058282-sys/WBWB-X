@@ -380,4 +380,16 @@ describe('home hero icon navigation', () => {
       /\.wbx-community\s*\{[^}]*margin:\s*18px 0 0;/s,
     )
   })
+
+  it('aligns the system panel with the reading cards and rounds it by 20px', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const system = baseRule(css, '.wbx-system')
+    const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
+
+    expect(system).toMatch(/margin:\s*72px 52px 0;/)
+    expect(system).toMatch(/border-radius:\s*20px;/)
+    expect(mobile).toMatch(
+      /\.wbx-system\s*\{[^}]*margin:\s*52px 4px 0;/s,
+    )
+  })
 })
