@@ -14,6 +14,8 @@
 - Only the heart may animate, using a `2.4s` appear, slight-scale, hold, and disappear cycle.
 - Under `prefers-reduced-motion: reduce`, stop the cycle and show the heart statically.
 - Preserve the full-bleed `100vw` banner, removed border, desktop `48px` top gap, and mobile `38px` top gap.
+- Reduce desktop banner and artwork minimum height from `300px` to `270px`, desktop copy vertical padding from `46px` to `31px`, and desktop IP maximum width from `460px` to `424px`; retain the mobile height rules.
+- Render `教学资料` with `var(--wbx-accent)` background and border plus `#0d100d` text, including hover and focus-visible states.
 - Keep `https://pan.quark.cn/s/ca7b76d97d59?pwd=WPc9`, `target="_blank"`, and `rel="noopener noreferrer"`.
 - Do not render `提取码：WPc9` anywhere on the page.
 - Keep the `参与共创` link and the restored product footer unchanged.

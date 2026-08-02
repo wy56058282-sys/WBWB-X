@@ -485,7 +485,7 @@ describe('home hero icon navigation', () => {
     const copy = baseRule(css, '.wbx-community__copy')
     const actions = baseRule(css, '.wbx-community__actions')
     const art = baseRule(css, '.wbx-community__art')
-    const download = baseRule(css, '.wbx-community__download')
+    const download = baseRule(css, '.wbx-community .wbx-button.wbx-community__download')
     const ip = baseRule(css, '.wbx-community__ip')
     const tablet = css.slice(
       css.indexOf('@media (max-width: 960px)'),
@@ -497,12 +497,19 @@ describe('home hero icon navigation', () => {
       /grid-template-columns:\s*minmax\(0, 1fr\) minmax\(240px, 0\.72fr\);/,
     )
     expect(community).toMatch(/margin-top:\s*48px;/)
+    expect(community).toMatch(/min-height:\s*270px;/)
     expect(copy).toMatch(/max-width:\s*680px;/)
+    expect(copy).toMatch(/padding:\s*31px 0 31px 52px;/)
     expect(actions).toMatch(/flex-direction:\s*row;/)
     expect(art).toMatch(/overflow:\s*hidden;/)
+    expect(art).toMatch(/min-height:\s*270px;/)
     expect(download).toMatch(/background:\s*var\(--wbx-accent\);/)
-    expect(download).toMatch(/color:\s*#0d100d;/)
-    expect(ip).toMatch(/width:\s*min\(100%, 460px\);/)
+    expect(download).toMatch(/color:\s*#0d100d !important;/)
+    expect(download).toMatch(/border-color:\s*var\(--wbx-accent\);/)
+    expect(css).toMatch(
+      /\.wbx-community \.wbx-button\.wbx-community__download:(?:hover|focus-visible)[^{]*\{[^}]*color:\s*#0d100d !important;[^}]*border-color:\s*var\(--wbx-accent\);/s,
+    )
+    expect(ip).toMatch(/width:\s*min\(100%, 424px\);/)
     expect(ip).not.toMatch(/animation:/)
     expect(css).toMatch(
       /\.wbx-community__heart\s*\{[^}]*animation:\s*wbx-community-heart-pulse 2\.4s ease-in-out infinite;/s,

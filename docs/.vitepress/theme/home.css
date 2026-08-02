@@ -646,7 +646,7 @@
   align-items: stretch;
   gap: 28px;
   width: 100vw;
-  min-height: 300px;
+  min-height: 270px;
   margin-top: 48px;
   margin-right: calc(50% - 50vw);
   margin-left: calc(50% - 50vw);
@@ -659,7 +659,7 @@
 .wbx-community__copy {
   align-self: center;
   max-width: 680px;
-  padding: 46px 0 46px 52px;
+  padding: 31px 0 31px 52px;
 }
 
 .wbx-community .wbx-pixel-label {
@@ -692,15 +692,23 @@
   font-size: 15px;
 }
 
-.wbx-community__download {
-  color: #0d100d;
+.wbx-community .wbx-button.wbx-community__download {
+  color: #0d100d !important;
+  border-color: var(--wbx-accent);
+  background: var(--wbx-accent);
+}
+
+.wbx-community .wbx-button.wbx-community__download:hover,
+.wbx-community .wbx-button.wbx-community__download:focus-visible {
+  color: #0d100d !important;
+  border-color: var(--wbx-accent);
   background: var(--wbx-accent);
 }
 
 .wbx-community__art {
   position: relative;
   display: grid;
-  min-height: 300px;
+  min-height: 270px;
   place-items: center;
   overflow: hidden;
   background:
@@ -710,18 +718,18 @@
 
 .wbx-community__ip-stage {
   position: relative;
-  width: min(92%, 460px);
+  width: min(92%, 424px);
 }
 
 .wbx-community__ip,
 .wbx-community__heart {
   display: block;
-  width: min(100%, 460px);
+  width: min(100%, 424px);
   height: auto;
 }
 
 .wbx-community__ip {
-  width: min(100%, 460px);
+  width: min(100%, 424px);
   clip-path: polygon(18.5% 0, 100% 0, 100% 100%, 0 100%, 0 29%, 18.5% 29%);
   filter: drop-shadow(0 20px 24px rgb(13 16 13 / 16%));
 }
