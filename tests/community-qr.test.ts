@@ -78,8 +78,8 @@ describe('CommunityQr', () => {
     expect(dialog?.textContent).toContain('欢迎创客一起共创')
     expect(dialog?.textContent).not.toContain('二维码过期后')
     expect(image?.getAttribute('src')).toBe('/community/wechat-group.png')
-    expect(image?.getAttribute('width')).toBe('800')
-    expect(image?.getAttribute('height')).toBe('800')
+    expect(image?.getAttribute('width')).toBe('490')
+    expect(image?.getAttribute('height')).toBe('490')
     expect(document.body.style.overflow).toBe('')
   })
 
