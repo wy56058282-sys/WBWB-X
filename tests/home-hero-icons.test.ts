@@ -392,4 +392,33 @@ describe('home hero icon navigation', () => {
       /\.wbx-system\s*\{[^}]*margin:\s*52px 4px 0;/s,
     )
   })
+
+  it('uses the approved light-gray system panel palette', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const system = baseRule(css, '.wbx-system')
+    const introLabel = baseRule(css, '.wbx-system__intro .wbx-pixel-label')
+    const introCopy = baseRule(css, '.wbx-system__intro > p:last-child')
+    const steps = baseRule(css, '.wbx-system__steps')
+    const step = baseRule(css, '.wbx-system__steps li')
+    const number = baseRule(css, '.wbx-system__steps b')
+    const title = baseRule(css, '.wbx-system__steps strong')
+    const copy = baseRule(css, '.wbx-system__steps span')
+
+    expect(system).toMatch(/color:\s*#0d100d;/)
+    expect(system).toMatch(/--wbx-ink:\s*#0d100d;/)
+    expect(system).toMatch(/background:\s*#f3f4f2;/)
+    expect(introLabel).toMatch(
+      /color:\s*color-mix\(in srgb, var\(--wbx-accent\) 50%, var\(--wbx-ink\)\);/,
+    )
+    expect(introCopy).toMatch(/color:\s*#0d100d;/)
+    expect(steps).toMatch(/background:\s*#d9e0dc;/)
+    expect(step).toMatch(/background:\s*#ffffff;/)
+    expect(number).toMatch(
+      /color:\s*color-mix\(in srgb, var\(--wbx-accent\) 50%, var\(--wbx-ink\)\);/,
+    )
+    expect(title).toMatch(
+      /color:\s*color-mix\(in srgb, var\(--wbx-accent\) 50%, var\(--wbx-ink\)\);/,
+    )
+    expect(copy).toMatch(/color:\s*#0d100d;/)
+  })
 })
