@@ -374,7 +374,9 @@
   font-size: 14px;
   font-weight: 760;
   line-height: 1;
+  scale: 1;
   animation: wbx-official-label-float 4.2s ease-in-out infinite;
+  transition: color 180ms ease, scale 180ms ease;
 }
 
 @keyframes wbx-official-label-float {
@@ -390,6 +392,8 @@
 
 .wbx-hero__official:hover .wbx-hero__official-label,
 .wbx-hero__official:focus-visible .wbx-hero__official-label {
+  color: var(--wbx-accent);
+  scale: 1.08;
   animation-play-state: paused;
 }
 
