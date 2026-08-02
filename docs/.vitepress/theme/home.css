@@ -1073,7 +1073,7 @@
     height: auto;
     min-height: 0;
     margin-top: 38px;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .wbx-community__copy {
@@ -1096,7 +1096,8 @@
   }
 
   .wbx-community__art {
-    min-height: 180px;
+    min-height: 170px;
+    overflow: visible;
   }
 
   .wbx-community__ip-stage {
@@ -1105,7 +1106,7 @@
     bottom: auto;
     left: auto;
     max-width: 300px;
-    margin: 0 auto;
+    margin: 0 auto -10px;
     transform: none;
   }
 
