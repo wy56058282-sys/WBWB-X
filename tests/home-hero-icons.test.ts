@@ -123,6 +123,20 @@ describe('home hero icon navigation', () => {
     expect(document.querySelector('.wbx-sticker-page__trigger')).toBeNull()
   })
 
+  it('keeps the desktop hero copy boundary on the card centerline', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const stage = baseRule(css, '.wbx-hero__stage')
+    const compactDesktop = css.slice(
+      css.indexOf('@media (max-width: 1200px)'),
+      css.indexOf('@media (max-width: 960px)'),
+    )
+
+    expect(stage).toMatch(/grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/)
+    expect(compactDesktop).toMatch(
+      /\.wbx-hero__stage\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/s,
+    )
+  })
+
   it('does not import or style the retired partner reveal', () => {
     const homeSource = readFileSync(
       'docs/.vitepress/theme/HomePage.vue',
@@ -158,7 +172,8 @@ describe('home hero icon navigation', () => {
 
     expect(
       document.querySelector('.wbx-hero__copy > .wbx-pixel-label')?.textContent,
-    ).toBe('REAL TASKS · 27 CHAPTERS · OPEN SOURCE')
+    ).toBe('27 CHAPTERS / 4 PARTS / ∞ WORKFLOWS')
+    expect(document.querySelector('.wbx-hero__metrics')).toBeNull()
 
     const labels = Array.from(
       document.querySelectorAll<HTMLElement>('.wbx-value-strip__item'),
@@ -289,6 +304,61 @@ describe('home hero icon navigation', () => {
     ])
   })
 
+  it('adds a labelled WorkBuddy official-site IP link to the hero', () => {
+    mountHomePage()
+
+    const official = document.querySelector<HTMLAnchorElement>('.wbx-hero__official')
+    const image = official?.querySelector<HTMLImageElement>('.wbx-hero__official-ip')
+
+    expect(official?.getAttribute('href')).toBe('https://www.workbuddy.ai/')
+    expect(official?.getAttribute('target')).toBe('_blank')
+    expect(official?.getAttribute('rel')).toBe('noopener noreferrer')
+    expect(official?.getAttribute('aria-label')).toBe('访问 WorkBuddy 官网')
+    expect(official?.querySelector('.wbx-hero__official-label')?.textContent).toBe(
+      'workbuddy.ai',
+    )
+    expect(image?.getAttribute('src')).toBe('/brand/workbuddy-official-ip.png')
+    expect(image?.getAttribute('alt')).toBe('')
+  })
+
+  it('positions the official-site IP link without duplicate hero metrics', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const official = baseRule(css, '.wbx-hero__official')
+    const label = baseRule(css, '.wbx-hero__official-label')
+    const image = baseRule(css, '.wbx-hero__official-ip')
+    const officialInteraction = css.match(
+      /\.wbx-hero__official:hover,\s*\.wbx-hero__official:focus-visible\s*\{([^}]*)\}/s,
+    )?.[1]
+    const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
+
+    expect(official).toMatch(/right:\s*24px;/)
+    expect(official).toMatch(/bottom:\s*0;/)
+    expect(official).toMatch(/width:\s*154px;/)
+    expect(label).toMatch(/background:\s*#0d100d;/)
+    expect(label).toMatch(/color:\s*#fff;/)
+    expect(label).toMatch(/box-shadow:\s*0 10px 25px rgb\(0 0 0 \/ 28%\);/)
+    expect(label).toMatch(/animation:\s*wbx-official-label-float 4\.2s ease-in-out infinite;/)
+    expect(image).toMatch(/width:\s*145px;/)
+    expect(image).not.toMatch(/animation:/)
+    expect(css).not.toContain('.wbx-hero__metrics')
+    expect(official).not.toMatch(/transition:/)
+    expect(officialInteraction).toBeDefined()
+    expect(officialInteraction).toMatch(/transform:\s*none;/)
+    expect(officialInteraction).not.toMatch(/translate/)
+    expect(css).toMatch(
+      /\.wbx-hero__official:(?:hover|focus-visible) \.wbx-hero__official-label\s*\{[^}]*animation-play-state:\s*paused;/s,
+    )
+    expect(css).toMatch(
+      /@media \(prefers-reduced-motion: reduce\)\s*\{[\s\S]*?\.wbx-hero__official-label\s*\{[^}]*animation:\s*none;/s,
+    )
+    expect(mobile).toMatch(
+      /\.wbx-hero__official\s*\{[^}]*right:\s*12px;[^}]*bottom:\s*54px;[^}]*width:\s*108px;/s,
+    )
+    expect(mobile).toMatch(
+      /\.wbx-hero__official-ip\s*\{[^}]*width:\s*100px;/s,
+    )
+  })
+
   it('positions the Part 4 people icon safely at every hero breakpoint', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const people = baseRule(css, '.wbx-icon-card--people')
@@ -356,28 +426,44 @@ describe('home hero icon navigation', () => {
     }
   })
 
-  it('omits the retired homepage footer container and its styling', () => {
+  it('renders the approved borderless homepage product footer', () => {
     mountHomePage()
 
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const footer = document.querySelector('.wbx-home-footer')
+    const attribution = footer?.querySelector<HTMLAnchorElement>('a')
+    const footerRule = baseRule(css, '.wbx-home-footer')
+    const innerRule = baseRule(css, '.wbx-home-footer__inner')
+    const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
 
-    expect(document.querySelector('.wbx-home-footer')).toBeNull()
-    expect(document.body.textContent).not.toContain('Pixel icons by')
-    expect(document.body.textContent).not.toContain('Copyright © 2026')
-    expect(css).not.toContain('.wbx-home-footer')
+    expect(footer?.textContent).toContain('以真实场景为主线的 WB-X 实战读本')
+    expect(footer?.textContent).toContain('Pixel icons by HackerNoon')
+    expect(footer?.textContent).toContain('Copyright © 2026 WB-X.SparkX')
+    expect(attribution?.getAttribute('href')).toBe(
+      'https://hackernoon.com/pixel-icon-library',
+    )
+    expect(footerRule).toMatch(/border:\s*0;/)
+    expect(footerRule).toMatch(/background:\s*transparent;/)
+    expect(innerRule).toMatch(/display:\s*flex;/)
+    expect(innerRule).toMatch(/box-sizing:\s*border-box;/)
+    expect(innerRule).toMatch(/justify-content:\s*space-between;/)
+    expect(mobile).toMatch(
+      /\.wbx-home-footer__inner\s*\{[^}]*align-items:\s*center;[^}]*flex-direction:\s*column;[^}]*text-align:\s*center;/s,
+    )
   })
 
-  it('runs the community callout full-width at desktop and mobile sizes', () => {
+  it('runs the community callout viewport-wide without an outer border', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const community = baseRule(css, '.wbx-community')
     const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
 
-    expect(community).toMatch(/margin:\s*28px 0 0;/)
-    expect(css).not.toMatch(
-      /@media\s*\(max-width:\s*1200px\)\s*\{[\s\S]*?\.wbx-community\s*\{[^}]*margin-inline:/,
-    )
+    expect(community).toMatch(/width:\s*100vw;/)
+    expect(community).toMatch(/margin-top:\s*48px;/)
+    expect(community).toMatch(/margin-right:\s*calc\(50% - 50vw\);/)
+    expect(community).toMatch(/margin-left:\s*calc\(50% - 50vw\);/)
+    expect(community).toMatch(/border:\s*0;/)
     expect(mobile).toMatch(
-      /\.wbx-community\s*\{[^}]*margin:\s*18px 0 0;/s,
+      /\.wbx-community\s*\{[^}]*margin-top:\s*38px;/s,
     )
   })
 
@@ -420,5 +506,129 @@ describe('home hero icon navigation', () => {
       /color:\s*color-mix\(in srgb, var\(--wbx-accent\) 50%, var\(--wbx-ink\)\);/,
     )
     expect(copy).toMatch(/color:\s*#0d100d;/)
+  })
+
+  it('uses the approved system heading and community download copy', () => {
+    mountHomePage()
+
+    expect(document.querySelector('#wbx-system-title')?.textContent).toBe(
+      'AI 时代，一起象限跃迁',
+    )
+    expect(document.body.textContent).not.toContain('一次成功，不该只发生一次。')
+    expect(document.querySelector('#wbx-community-title')?.textContent).toBe(
+      '获取 WorkBuddy 小白书与配套资料',
+    )
+    expect(document.querySelector('.wbx-community__description')?.textContent).toBe(
+      '下载完整读本、案例资料与后续更新内容。',
+    )
+    expect(document.querySelector('.wbx-community__code')).toBeNull()
+    expect(document.body.textContent).not.toContain('提取码：WPc9')
+  })
+
+  it('links to Quark and contribution without a GitHub action', () => {
+    mountHomePage()
+
+    const download = document.querySelector<HTMLAnchorElement>(
+      '.wbx-community__download',
+    )
+    const contribution = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>('.wbx-community__actions a'),
+    ).find((link) => link.textContent === '参与共创')
+
+    expect(download?.textContent).toBe('教学资料')
+    expect(download?.getAttribute('href')).toBe(
+      'https://pan.quark.cn/s/ca7b76d97d59?pwd=WPc9',
+    )
+    expect(download?.getAttribute('target')).toBe('_blank')
+    expect(download?.getAttribute('rel')).toBe('noopener noreferrer')
+    expect(contribution?.getAttribute('href')).toBe('/community/contributing')
+    expect(document.querySelector<HTMLImageElement>('.wbx-community__ip')?.getAttribute('src'))
+      .toBe('/brand/workbuddy-ip.png')
+    expect(document.querySelector('.wbx-community__heart')).toBeNull()
+    expect(document.querySelector('.wbx-community__icon')).toBeNull()
+    expect(document.body.textContent).not.toContain('前往 GitHub')
+  })
+
+  it('renders the complete IP as one static image', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const community = baseRule(css, '.wbx-community')
+    const copy = baseRule(css, '.wbx-community__copy')
+    const communityTitle = baseRule(css, '.wbx-community h2')
+    const actions = baseRule(css, '.wbx-community__actions')
+    const art = baseRule(css, '.wbx-community__art')
+    const stage = baseRule(css, '.wbx-community__ip-stage')
+    const footer = baseRule(css, '.wbx-home-footer')
+    const download = baseRule(css, '.wbx-community .wbx-button.wbx-community__download')
+    const ip = baseRule(css, '.wbx-community__ip')
+    const tablet = css.slice(
+      css.indexOf('@media (max-width: 960px)'),
+      css.indexOf('@media (min-width: 761px)'),
+    )
+    const compactDesktop = css.slice(
+      css.indexOf('@media (max-width: 1200px)'),
+      css.indexOf('@media (max-width: 960px)'),
+    )
+    const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
+
+    expect(community).toMatch(
+      /grid-template-columns:\s*minmax\(0, 1fr\) minmax\(240px, 0\.72fr\);/,
+    )
+    expect(community).toMatch(/margin-top:\s*48px;/)
+    expect(community).toMatch(/min-height:\s*270px;/)
+    expect(community).toMatch(/height:\s*299px;/)
+    expect(copy).toMatch(/max-width:\s*680px;/)
+    expect(communityTitle).toMatch(/font-size:\s*36px;/)
+    expect(communityTitle).toMatch(/white-space:\s*nowrap;/)
+    expect(copy).toMatch(
+      /padding:\s*31px 0 31px calc\(max\(\(100vw - 1480px\) \/ 2, 0px\) \+ 140px\);/,
+    )
+    expect(compactDesktop).toMatch(
+      /\.wbx-community__copy\s*\{[^}]*padding-left:\s*132px;/s,
+    )
+    expect(actions).toMatch(/flex-direction:\s*row;/)
+    expect(community).toMatch(/overflow:\s*visible;/)
+    expect(art).toMatch(/overflow:\s*visible;/)
+    expect(art).toMatch(/min-height:\s*270px;/)
+    expect(art).toMatch(/background:\s*#f3f4f2;/)
+    expect(art).not.toMatch(/linear-gradient/)
+    expect(stage).toMatch(/position:\s*absolute;/)
+    expect(stage).toMatch(/bottom:\s*-24px;/)
+    expect(stage).toMatch(/left:\s*50%;/)
+    expect(stage).toMatch(/transform:\s*translateX\(-50%\);/)
+    expect(footer).toMatch(/padding-top:\s*24px;/)
+    expect(download).toMatch(/background:\s*var\(--wbx-accent\);/)
+    expect(download).toMatch(/color:\s*#0d100d !important;/)
+    expect(download).toMatch(/border-color:\s*var\(--wbx-accent\);/)
+    expect(css).toMatch(
+      /\.wbx-community \.wbx-button\.wbx-community__download:(?:hover|focus-visible)[^{]*\{[^}]*color:\s*#0d100d !important;[^}]*border-color:\s*var\(--wbx-accent\);/s,
+    )
+    expect(ip).toMatch(/width:\s*min\(100%, 424px\);/)
+    expect(ip).not.toMatch(/animation:/)
+    expect(ip).not.toMatch(/clip-path:/)
+    expect(css).not.toContain('.wbx-community__heart')
+    expect(css).not.toContain('wbx-community-heart-pulse')
+    expect(css).not.toContain('wbx-community-book-float')
+    expect(tablet).not.toContain('.wbx-community')
+    expect(mobile).toMatch(
+      /\.wbx-community\s*\{[^}]*grid-template-columns:\s*1fr;/s,
+    )
+    expect(mobile).toMatch(
+      /\.wbx-community__actions\s*\{[^}]*flex-direction:\s*column;/s,
+    )
+    expect(mobile).toMatch(
+      /\.wbx-community__copy\s*\{[^}]*padding:\s*32px 24px;/s,
+    )
+    expect(mobile).toMatch(
+      /\.wbx-community h2\s*\{[^}]*font-size:\s*30px;[^}]*white-space:\s*normal;/s,
+    )
+    expect(mobile).toMatch(
+      /\.wbx-community__ip-stage\s*\{[^}]*max-width:\s*300px;/s,
+    )
+    expect(mobile).toMatch(
+      /\.wbx-community\s*\{[^}]*height:\s*auto;[^}]*overflow:\s*hidden;/s,
+    )
+    expect(mobile).toMatch(
+      /\.wbx-community__ip-stage\s*\{[^}]*position:\s*relative;[^}]*transform:\s*none;/s,
+    )
   })
 })
