@@ -73,7 +73,10 @@ describe('CommunityQr', () => {
 
     expect(dialog?.hasAttribute('aria-modal')).toBe(false)
     expect(dialog?.getAttribute('aria-labelledby')).toBe('wbx-community-qr-title')
+    expect(dialog?.getAttribute('aria-describedby')).toBe('wbx-community-qr-help')
     expect(dialog?.textContent).toContain('加入交流群')
+    expect(dialog?.textContent).toContain('欢迎创客一起共创')
+    expect(dialog?.textContent).not.toContain('二维码过期后')
     expect(image?.getAttribute('src')).toBe('/community/wechat-group.png')
     expect(image?.getAttribute('width')).toBe('800')
     expect(image?.getAttribute('height')).toBe('800')
