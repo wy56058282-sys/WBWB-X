@@ -641,32 +641,46 @@
 
 .wbx-community {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 34px;
-  min-height: 220px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 0.72fr);
+  align-items: stretch;
+  gap: 28px;
+  min-height: 300px;
   margin: 28px 0 0;
-  padding: 42px 190px 42px 46px;
+  padding: 0;
   overflow: hidden;
-  border: 2px solid var(--wbx-ink);
-  background: var(--wbx-accent);
+  border: 1px solid var(--wbx-line);
+  background: #f3f4f2;
+}
+
+.wbx-community__copy {
+  align-self: center;
+  max-width: 680px;
+  padding: 46px 0 46px 52px;
 }
 
 .wbx-community .wbx-pixel-label {
   margin-bottom: 13px;
-  color: color-mix(in srgb, var(--wbx-accent) 42%, #0d100d);
+  color: color-mix(in srgb, var(--wbx-accent) 50%, #0d100d);
 }
 
 .wbx-community h2 {
-  max-width: 630px;
   color: #0d100d;
+}
+
+.wbx-community__description {
+  max-width: 620px;
+  margin: 16px 0 0;
+  color: #4f5752;
+  line-height: 1.75;
 }
 
 .wbx-community__actions {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 10px;
+  margin-top: 24px;
 }
 
 .wbx-community .wbx-button {
@@ -675,13 +689,40 @@
   font-size: 15px;
 }
 
+.wbx-community__code {
+  margin: 12px 0 0;
+  color: #4f5752;
+  font-size: 13px;
+  user-select: text;
+}
+
+.wbx-community__art {
+  position: relative;
+  display: grid;
+  min-height: 300px;
+  place-items: center;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgb(50 230 185 / 18%), transparent 58%),
+    #e7ece9;
+}
+
 .wbx-community__icon {
-  position: absolute;
-  right: 26px;
-  bottom: -25px;
-  color: rgb(13 16 13 / 12%);
-  font-size: 160px;
-  transform: rotate(-8deg);
+  color: color-mix(in srgb, var(--wbx-accent) 64%, #0d100d);
+  font-size: clamp(150px, 17vw, 230px);
+  filter: drop-shadow(0 20px 24px rgb(13 16 13 / 16%));
+  animation: wbx-community-book-float 4.8s ease-in-out infinite;
+}
+
+@keyframes wbx-community-book-float {
+  0%,
+  100% {
+    transform: translateY(8px) rotate(-7deg);
+  }
+
+  50% {
+    transform: translateY(-10px) rotate(-2deg);
+  }
 }
 
 @media (max-width: 1200px) {
@@ -754,12 +795,6 @@
 
   .wbx-system {
     grid-template-columns: 1fr;
-  }
-
-  .wbx-community {
-    align-items: flex-start;
-    flex-direction: column;
-    padding-right: 170px;
   }
 
 }
@@ -929,18 +964,31 @@
   }
 
   .wbx-community {
+    grid-template-columns: 1fr;
+    gap: 0;
     min-height: 0;
     margin: 18px 0 0;
-    padding: 36px 24px 130px;
+  }
+
+  .wbx-community__copy {
+    padding: 32px 24px;
   }
 
   .wbx-community__actions {
+    flex-direction: column;
     width: 100%;
   }
 
+  .wbx-community .wbx-button {
+    width: 100%;
+  }
+
+  .wbx-community__art {
+    min-height: 180px;
+  }
+
   .wbx-community__icon {
-    right: 10px;
-    font-size: 130px;
+    font-size: 150px;
   }
 
 }
@@ -971,5 +1019,12 @@
 
   .wbx-reading-card__content strong {
     font-size: 17px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wbx-community__icon {
+    animation: none;
+    transform: rotate(-4deg);
   }
 }

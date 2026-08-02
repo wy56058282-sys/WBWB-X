@@ -459,4 +459,40 @@ describe('home hero icon navigation', () => {
     expect(contribution?.getAttribute('href')).toBe('/community/contributing')
     expect(document.body.textContent).not.toContain('前往 GitHub')
   })
+
+  it('lays out the download callout with safe responsive book motion', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const community = baseRule(css, '.wbx-community')
+    const copy = baseRule(css, '.wbx-community__copy')
+    const actions = baseRule(css, '.wbx-community__actions')
+    const art = baseRule(css, '.wbx-community__art')
+    const icon = baseRule(css, '.wbx-community__icon')
+    const tablet = css.slice(
+      css.indexOf('@media (max-width: 960px)'),
+      css.indexOf('@media (min-width: 761px)'),
+    )
+    const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
+
+    expect(community).toMatch(
+      /grid-template-columns:\s*minmax\(0, 1fr\) minmax\(240px, 0\.72fr\);/,
+    )
+    expect(community).toMatch(/margin:\s*28px 0 0;/)
+    expect(copy).toMatch(/max-width:\s*680px;/)
+    expect(actions).toMatch(/flex-direction:\s*row;/)
+    expect(art).toMatch(/overflow:\s*hidden;/)
+    expect(icon).toMatch(
+      /animation:\s*wbx-community-book-float 4\.8s ease-in-out infinite;/,
+    )
+    expect(css).toMatch(/@keyframes wbx-community-book-float\s*\{/)
+    expect(tablet).not.toContain('.wbx-community')
+    expect(mobile).toMatch(
+      /\.wbx-community\s*\{[^}]*grid-template-columns:\s*1fr;/s,
+    )
+    expect(mobile).toMatch(
+      /\.wbx-community__actions\s*\{[^}]*flex-direction:\s*column;/s,
+    )
+    expect(css).toMatch(
+      /@media\s*\(prefers-reduced-motion:\s*reduce\)\s*\{[\s\S]*?\.wbx-community__icon\s*\{[^}]*animation:\s*none;/,
+    )
+  })
 })
