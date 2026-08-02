@@ -363,10 +363,43 @@ describe('home hero icon navigation', () => {
       /@media \(prefers-reduced-motion: reduce\)\s*\{[\s\S]*?\.wbx-hero__official-label\s*\{[^}]*animation:\s*none;/s,
     )
     expect(mobile).toMatch(
-      /\.wbx-hero__official\s*\{[^}]*right:\s*12px;[^}]*bottom:\s*54px;[^}]*width:\s*108px;/s,
+      /\.wbx-hero__official\s*\{[^}]*right:\s*12px;[^}]*bottom:\s*0;[^}]*width:\s*108px;/s,
     )
     expect(mobile).toMatch(
-      /\.wbx-hero__official-ip\s*\{[^}]*width:\s*100px;/s,
+      /\.wbx-hero__official-ip\s*\{[^}]*width:\s*106px;/s,
+    )
+  })
+
+  it('uses the approved mobile hero card placement', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const mobile = css.slice(
+      css.indexOf('@media (max-width: 760px)'),
+      css.indexOf('@media (max-width: 444px)'),
+    )
+
+    expect(mobile).toMatch(
+      /\.wbx-icon-card--book\s*\{[^}]*--wbx-icon-rotation:\s*-30deg;/s,
+    )
+    expect(mobile).toMatch(
+      /\.wbx-icon-card--flow\s*\{[^}]*right:\s*calc\(8% \+ 10px\);/s,
+    )
+  })
+
+  it('keeps mobile reading arrows in a right-aligned third column', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const mobileStart = css.indexOf('@media (max-width: 760px)')
+    const narrowStart = css.indexOf('@media (max-width: 420px)')
+    const mobile = css.slice(mobileStart, css.indexOf('@media (max-width: 444px)'))
+    const narrow = css.slice(narrowStart)
+
+    expect(mobile).toMatch(
+      /\.wbx-reading-card\s*\{[^}]*grid-template-columns:\s*70px minmax\(0, 1fr\) auto;/s,
+    )
+    expect(mobile).toMatch(
+      /\.wbx-reading-card__arrow\s*\{[^}]*display:\s*block;[^}]*align-self:\s*center;[^}]*justify-self:\s*end;/s,
+    )
+    expect(narrow).toMatch(
+      /\.wbx-reading-card\s*\{[^}]*grid-template-columns:\s*56px minmax\(0, 1fr\) auto;/s,
     )
   })
 
@@ -639,10 +672,13 @@ describe('home hero icon navigation', () => {
       /\.wbx-community h2\s*\{[^}]*font-size:\s*30px;[^}]*white-space:\s*normal;/s,
     )
     expect(mobile).toMatch(
-      /\.wbx-community__ip-stage\s*\{[^}]*max-width:\s*300px;/s,
+      /\.wbx-community\s*\{[^}]*overflow:\s*visible;/s,
     )
     expect(mobile).toMatch(
-      /\.wbx-community\s*\{[^}]*height:\s*auto;[^}]*overflow:\s*hidden;/s,
+      /\.wbx-community__art\s*\{[^}]*min-height:\s*170px;[^}]*overflow:\s*visible;/s,
+    )
+    expect(mobile).toMatch(
+      /\.wbx-community__ip-stage\s*\{[^}]*max-width:\s*300px;[^}]*margin:\s*0 auto -10px;/s,
     )
     expect(mobile).toMatch(
       /\.wbx-community__ip-stage\s*\{[^}]*position:\s*relative;[^}]*transform:\s*none;/s,
