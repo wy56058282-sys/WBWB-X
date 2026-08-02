@@ -159,7 +159,7 @@ pageClass: community-cases-page
   display: grid;
   gap: 12px;
   width: min(100%, 520px);
-  margin: 0 auto;
+  margin: 0;
   padding: 14px;
   border: 1px solid var(--vp-c-divider);
   border-radius: 10px;
