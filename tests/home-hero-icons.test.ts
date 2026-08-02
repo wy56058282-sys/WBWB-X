@@ -483,6 +483,7 @@ describe('home hero icon navigation', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const community = baseRule(css, '.wbx-community')
     const copy = baseRule(css, '.wbx-community__copy')
+    const communityTitle = baseRule(css, '.wbx-community h2')
     const actions = baseRule(css, '.wbx-community__actions')
     const art = baseRule(css, '.wbx-community__art')
     const stage = baseRule(css, '.wbx-community__ip-stage')
@@ -506,6 +507,8 @@ describe('home hero icon navigation', () => {
     expect(community).toMatch(/min-height:\s*270px;/)
     expect(community).toMatch(/height:\s*299px;/)
     expect(copy).toMatch(/max-width:\s*680px;/)
+    expect(communityTitle).toMatch(/font-size:\s*36px;/)
+    expect(communityTitle).toMatch(/white-space:\s*nowrap;/)
     expect(copy).toMatch(
       /padding:\s*31px 0 31px calc\(max\(\(100vw - 1480px\) \/ 2, 0px\) \+ 140px\);/,
     )
@@ -544,6 +547,9 @@ describe('home hero icon navigation', () => {
     )
     expect(mobile).toMatch(
       /\.wbx-community__copy\s*\{[^}]*padding:\s*32px 24px;/s,
+    )
+    expect(mobile).toMatch(
+      /\.wbx-community h2\s*\{[^}]*font-size:\s*30px;[^}]*white-space:\s*normal;/s,
     )
     expect(mobile).toMatch(
       /\.wbx-community__ip-stage\s*\{[^}]*max-width:\s*300px;/s,

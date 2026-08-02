@@ -1,5 +1,11 @@
 # Homepage IP Download Banner Implementation Plan
 
+## Supplement: single-line download title
+
+- Use `36px` and `white-space: nowrap` for `.wbx-community h2` on desktop.
+- Restore `30px` and `white-space: normal` below `760px`.
+- Add CSS regression coverage and verify desktop plus 390px layouts have no horizontal overflow.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Replace the homepage download banner's animated pixel book with the supplied static WorkBuddy IP, animate only its heart, rename the Quark action to `教学资料`, and remove the visible extraction-code copy.
