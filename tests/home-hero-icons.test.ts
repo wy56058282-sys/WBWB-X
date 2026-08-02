@@ -219,6 +219,9 @@ describe('home hero icon navigation', () => {
       /\.wbx-hero-cta:is\(:hover, :focus-visible\) \.wbx-hero-cta__arrow::before\s*\{[^}]*transform:\s*scale\(1\);/s,
     )
     expect(css).toMatch(
+      /\.wbx-hero-cta__arrow\s*>\s*\.hn\s*\{[^}]*font-size:\s*28px;/s,
+    )
+    expect(css).toMatch(
       /\.wbx-hero-cta__arrow--in\s*\{[^}]*transform:\s*translate\(-56px, 56px\) rotate\(-45deg\);/s,
     )
     expect(css).toMatch(
