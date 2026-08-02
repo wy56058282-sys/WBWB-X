@@ -123,6 +123,20 @@ describe('home hero icon navigation', () => {
     expect(document.querySelector('.wbx-sticker-page__trigger')).toBeNull()
   })
 
+  it('keeps the desktop hero copy boundary on the card centerline', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const stage = baseRule(css, '.wbx-hero__stage')
+    const compactDesktop = css.slice(
+      css.indexOf('@media (max-width: 1200px)'),
+      css.indexOf('@media (max-width: 960px)'),
+    )
+
+    expect(stage).toMatch(/grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/)
+    expect(compactDesktop).toMatch(
+      /\.wbx-hero__stage\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/s,
+    )
+  })
+
   it('does not import or style the retired partner reveal', () => {
     const homeSource = readFileSync(
       'docs/.vitepress/theme/HomePage.vue',
