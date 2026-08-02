@@ -4,6 +4,8 @@
 
 **Goal:** Make the `/help/` survey poster fill its card width at its natural `1560 × 1936` aspect ratio without cropping or stretching.
 
+**Approved asset replacement:** Replace `docs/public/article-assets/source-calibration/help/001.png` with the user-provided `/Users/wangyi/Desktop/场景收集二维码.png`. Both files are `1560 × 1936` PNG images, so the existing layout and click-to-open behavior remain unchanged. Add a SHA-256 regression assertion for `80816579e797eb39697857397d68a71972f178324408f54f8a7e00f9e716a15b` to prevent the previous poster from being restored accidentally.
+
 **Architecture:** Keep the existing help-page markup and card geometry. Change only the poster image sizing contract by removing the fixed maximum height while preserving full-width rendering and `object-fit: contain`.
 
 **Tech Stack:** VitePress 1.6, scoped page CSS, Vitest.
