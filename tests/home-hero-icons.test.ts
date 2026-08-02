@@ -366,4 +366,18 @@ describe('home hero icon navigation', () => {
     expect(document.body.textContent).not.toContain('Copyright © 2026')
     expect(css).not.toContain('.wbx-home-footer')
   })
+
+  it('runs the community callout full-width at desktop and mobile sizes', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const community = baseRule(css, '.wbx-community')
+    const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
+
+    expect(community).toMatch(/margin:\s*28px 0 0;/)
+    expect(css).not.toMatch(
+      /@media\s*\(max-width:\s*1200px\)\s*\{[\s\S]*?\.wbx-community\s*\{[^}]*margin-inline:/,
+    )
+    expect(mobile).toMatch(
+      /\.wbx-community\s*\{[^}]*margin:\s*18px 0 0;/s,
+    )
+  })
 })
