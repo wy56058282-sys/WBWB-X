@@ -14,7 +14,8 @@
 - 主文字必须为 `#0D100D`。
 - 右侧四格背景必须为 `#FFFFFF`。
 - 分隔线必须为 `#D9E0DC`。
-- 像素标签和编号必须为 `#087A61`。
+- `.wbx-system` 必须局部固定 `--wbx-ink: #0D100D`，使深色主题不会改变浅色面板的混合基色。
+- 像素标签、编号和步骤标题必须为 `color-mix(in srgb, var(--wbx-accent) 50%, var(--wbx-ink))`。
 - 保留 `20px` 圆角、桌面端 `52px` 左右缩进和移动端 `4px` 左右缩进。
 - 绿色共创区域保持不变。
 
@@ -47,13 +48,14 @@ it('uses the approved light-gray system panel palette', () => {
   const copy = baseRule(css, '.wbx-system__steps span')
 
   expect(system).toMatch(/color:\s*#0d100d;/)
+  expect(system).toMatch(/--wbx-ink:\s*#0d100d;/)
   expect(system).toMatch(/background:\s*#f3f4f2;/)
-  expect(introLabel).toMatch(/color:\s*#087a61;/)
+  expect(introLabel).toMatch(/color:\s*color-mix\(in srgb, var\(--wbx-accent\) 50%, var\(--wbx-ink\)\);/)
   expect(introCopy).toMatch(/color:\s*#0d100d;/)
   expect(steps).toMatch(/background:\s*#d9e0dc;/)
   expect(step).toMatch(/background:\s*#ffffff;/)
-  expect(number).toMatch(/color:\s*#087a61;/)
-  expect(title).toMatch(/color:\s*#087a61;/)
+  expect(number).toMatch(/color:\s*color-mix\(in srgb, var\(--wbx-accent\) 50%, var\(--wbx-ink\)\);/)
+  expect(title).toMatch(/color:\s*color-mix\(in srgb, var\(--wbx-accent\) 50%, var\(--wbx-ink\)\);/)
   expect(copy).toMatch(/color:\s*#0d100d;/)
 })
 ```
@@ -74,6 +76,7 @@ Expected: FAIL，实际样式仍包含 `#0d100d` 背景、白色文字和深色�
 
 ```css
 .wbx-system {
+  --wbx-ink: #0d100d;
   color: #0d100d;
   background: #f3f4f2;
 }
@@ -81,7 +84,7 @@ Expected: FAIL，实际样式仍包含 `#0d100d` 背景、白色文字和深色�
 .wbx-system__intro .wbx-pixel-label,
 .wbx-system__steps b,
 .wbx-system__steps strong {
-  color: #087a61;
+  color: color-mix(in srgb, var(--wbx-accent) 50%, var(--wbx-ink));
 }
 
 .wbx-system__intro > p:last-child,

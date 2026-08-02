@@ -581,6 +581,7 @@
   margin: 72px 52px 0;
   padding: 56px;
   border-radius: 20px;
+  --wbx-ink: #0d100d;
   color: #0d100d;
   background: #f3f4f2;
 }

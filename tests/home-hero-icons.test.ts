@@ -405,6 +405,7 @@ describe('home hero icon navigation', () => {
     const copy = baseRule(css, '.wbx-system__steps span')
 
     expect(system).toMatch(/color:\s*#0d100d;/)
+    expect(system).toMatch(/--wbx-ink:\s*#0d100d;/)
     expect(system).toMatch(/background:\s*#f3f4f2;/)
     expect(introLabel).toMatch(
       /color:\s*color-mix\(in srgb, var\(--wbx-accent\) 50%, var\(--wbx-ink\)\);/,
