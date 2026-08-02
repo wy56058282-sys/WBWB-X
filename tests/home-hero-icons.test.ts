@@ -382,17 +382,18 @@ describe('home hero icon navigation', () => {
     )
   })
 
-  it('runs the community callout full-width at desktop and mobile sizes', () => {
+  it('runs the community callout viewport-wide without an outer border', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const community = baseRule(css, '.wbx-community')
     const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
 
-    expect(community).toMatch(/margin:\s*28px 0 0;/)
-    expect(css).not.toMatch(
-      /@media\s*\(max-width:\s*1200px\)\s*\{[\s\S]*?\.wbx-community\s*\{[^}]*margin-inline:/,
-    )
+    expect(community).toMatch(/width:\s*100vw;/)
+    expect(community).toMatch(/margin-top:\s*48px;/)
+    expect(community).toMatch(/margin-right:\s*calc\(50% - 50vw\);/)
+    expect(community).toMatch(/margin-left:\s*calc\(50% - 50vw\);/)
+    expect(community).toMatch(/border:\s*0;/)
     expect(mobile).toMatch(
-      /\.wbx-community\s*\{[^}]*margin:\s*18px 0 0;/s,
+      /\.wbx-community\s*\{[^}]*margin-top:\s*38px;/s,
     )
   })
 
@@ -491,7 +492,7 @@ describe('home hero icon navigation', () => {
     expect(community).toMatch(
       /grid-template-columns:\s*minmax\(0, 1fr\) minmax\(240px, 0\.72fr\);/,
     )
-    expect(community).toMatch(/margin:\s*28px 0 0;/)
+    expect(community).toMatch(/margin-top:\s*48px;/)
     expect(copy).toMatch(/max-width:\s*680px;/)
     expect(actions).toMatch(/flex-direction:\s*row;/)
     expect(art).toMatch(/overflow:\s*hidden;/)

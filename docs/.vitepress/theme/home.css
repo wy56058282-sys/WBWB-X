@@ -645,11 +645,14 @@
   grid-template-columns: minmax(0, 1fr) minmax(240px, 0.72fr);
   align-items: stretch;
   gap: 28px;
+  width: 100vw;
   min-height: 300px;
-  margin: 28px 0 0;
+  margin-top: 48px;
+  margin-right: calc(50% - 50vw);
+  margin-left: calc(50% - 50vw);
   padding: 0;
   overflow: hidden;
-  border: 1px solid var(--wbx-line);
+  border: 0;
   background: #f3f4f2;
 }
 
@@ -1001,7 +1004,7 @@
     grid-template-columns: 1fr;
     gap: 0;
     min-height: 0;
-    margin: 18px 0 0;
+    margin-top: 38px;
   }
 
   .wbx-community__copy {
