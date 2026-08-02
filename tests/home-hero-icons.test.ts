@@ -421,4 +421,42 @@ describe('home hero icon navigation', () => {
     )
     expect(copy).toMatch(/color:\s*#0d100d;/)
   })
+
+  it('uses the approved system heading and community download copy', () => {
+    mountHomePage()
+
+    expect(document.querySelector('#wbx-system-title')?.textContent).toBe(
+      'AI 时代，一起象限跃迁',
+    )
+    expect(document.body.textContent).not.toContain('一次成功，不该只发生一次。')
+    expect(document.querySelector('#wbx-community-title')?.textContent).toBe(
+      '获取 WorkBuddy 小白书与配套资料',
+    )
+    expect(document.querySelector('.wbx-community__description')?.textContent).toBe(
+      '下载完整读本、案例资料与后续更新内容。',
+    )
+    expect(document.querySelector('.wbx-community__code')?.textContent).toBe(
+      '提取码：WPc9',
+    )
+  })
+
+  it('links to Quark and contribution without a GitHub action', () => {
+    mountHomePage()
+
+    const download = document.querySelector<HTMLAnchorElement>(
+      '.wbx-community__download',
+    )
+    const contribution = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>('.wbx-community__actions a'),
+    ).find((link) => link.textContent === '参与共创')
+
+    expect(download?.textContent).toBe('夸克网盘链接')
+    expect(download?.getAttribute('href')).toBe(
+      'https://pan.quark.cn/s/ca7b76d97d59?pwd=WPc9',
+    )
+    expect(download?.getAttribute('target')).toBe('_blank')
+    expect(download?.getAttribute('rel')).toBe('noopener noreferrer')
+    expect(contribution?.getAttribute('href')).toBe('/community/contributing')
+    expect(document.body.textContent).not.toContain('前往 GitHub')
+  })
 })
