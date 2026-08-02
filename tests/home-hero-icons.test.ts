@@ -211,6 +211,9 @@ describe('home hero icon navigation', () => {
     expect(css).toMatch(
       /\.wbx-hero\s*\{[^}]*border:\s*2px solid #0d100d;/s,
     )
+    expect(css).toMatch(
+      /\.wbx-hero\s*\{[^}]*border-radius:\s*20px;/s,
+    )
     expect(css).not.toMatch(
       /\.wbx-hero__stage\s*\{[^}]*border:\s*2px solid #0d100d;/s,
     )
