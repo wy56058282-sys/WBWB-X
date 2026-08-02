@@ -201,6 +201,37 @@ describe('home hero icon navigation', () => {
     )
   })
 
+  it('gives only the homepage primary CTA the approved arrow handoff motion', () => {
+    mountHomePage()
+
+    const cta = document.querySelector<HTMLAnchorElement>('.wbx-hero-cta')
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+
+    expect(cta?.getAttribute('href')).toBe('/wb-x/')
+    expect(cta?.textContent).toContain('开始阅读')
+    expect(cta?.querySelectorAll('[aria-hidden="true"]')).toHaveLength(2)
+    expect(document.querySelector('.wbx-button--outline .wbx-hero-cta__arrow')).toBeNull()
+
+    expect(css).toMatch(
+      /\.wbx-hero-cta::before\s*\{[^}]*linear-gradient\(90deg, transparent, rgba\(255, 255, 255, 0\.2\), transparent\);[^}]*transition:\s*left 0\.5s ease;/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-hero-cta:is\(:hover, :focus-visible\) \.wbx-hero-cta__arrow::before\s*\{[^}]*transform:\s*scale\(1\);/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-hero-cta:is\(:hover, :focus-visible\) \.wbx-hero-cta__arrow--out\s*\{[^}]*transform:\s*translate\(100%, -100%\) rotate\(-45deg\);/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-hero-cta:is\(:hover, :focus-visible\) \.wbx-hero-cta__arrow--in\s*\{[^}]*opacity:\s*1;[^}]*transform:\s*translate\(0, 0\) rotate\(-45deg\);/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-hero-cta:active\s*\{[^}]*box-shadow:\s*0 4px 12px rgba\(50, 230, 185, 0\.28\);/s,
+    )
+    expect(css).toMatch(
+      /@media\s*\(prefers-reduced-motion:\s*reduce\)\s*\{[\s\S]*?\.wbx-hero-cta::before[\s\S]*?\.wbx-hero-cta__arrow/s,
+    )
+  })
+
   it('uses a book icon for the first reading path', () => {
     mountHomePage()
 

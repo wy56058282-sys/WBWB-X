@@ -102,9 +102,12 @@ const workflowSteps = [
             WorkBuddy能干嘛？一套以真实工作为主线的WorkBuddy实践路径。带你从0到1先用起来，再从1到100把每次成功沉淀为可复用的工作系统，真正把AI变成生产力！
           </p>
           <div class="wbx-hero__actions">
-            <a class="wbx-button wbx-button--primary" :href="withBase('/wb-x/')">
-              <span>开始阅读</span>
-              <i class="hn hn-arrow-right" aria-hidden="true" />
+            <a class="wbx-button wbx-button--primary wbx-hero-cta" :href="withBase('/wb-x/')">
+              <span class="wbx-hero-cta__label">开始阅读</span>
+              <span class="wbx-hero-cta__arrow">
+                <i class="hn hn-arrow-right wbx-hero-cta__arrow--out" aria-hidden="true" />
+                <i class="hn hn-arrow-right wbx-hero-cta__arrow--in" aria-hidden="true" />
+              </span>
             </a>
             <a class="wbx-button wbx-button--outline" :href="withBase('/reading-guide')">查看阅读路线</a>
           </div>
