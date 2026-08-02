@@ -500,7 +500,7 @@ describe('home hero icon navigation', () => {
     )
     expect(community).toMatch(/margin-top:\s*48px;/)
     expect(community).toMatch(/min-height:\s*270px;/)
-    expect(community).toMatch(/height:\s*319px;/)
+    expect(community).toMatch(/height:\s*299px;/)
     expect(copy).toMatch(/max-width:\s*680px;/)
     expect(copy).toMatch(/padding:\s*31px 0 31px 52px;/)
     expect(actions).toMatch(/flex-direction:\s*row;/)
