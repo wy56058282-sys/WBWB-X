@@ -406,12 +406,18 @@ describe('home hero icon navigation', () => {
 
     expect(system).toMatch(/color:\s*#0d100d;/)
     expect(system).toMatch(/background:\s*#f3f4f2;/)
-    expect(introLabel).toMatch(/color:\s*#087a61;/)
+    expect(introLabel).toMatch(
+      /color:\s*color-mix\(in srgb, var\(--wbx-accent\) 50%, var\(--wbx-ink\)\);/,
+    )
     expect(introCopy).toMatch(/color:\s*#0d100d;/)
     expect(steps).toMatch(/background:\s*#d9e0dc;/)
     expect(step).toMatch(/background:\s*#ffffff;/)
-    expect(number).toMatch(/color:\s*#087a61;/)
-    expect(title).toMatch(/color:\s*#087a61;/)
+    expect(number).toMatch(
+      /color:\s*color-mix\(in srgb, var\(--wbx-accent\) 50%, var\(--wbx-ink\)\);/,
+    )
+    expect(title).toMatch(
+      /color:\s*color-mix\(in srgb, var\(--wbx-accent\) 50%, var\(--wbx-ink\)\);/,
+    )
     expect(copy).toMatch(/color:\s*#0d100d;/)
   })
 })

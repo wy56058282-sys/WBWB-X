@@ -587,7 +587,7 @@
 
 .wbx-system__intro .wbx-pixel-label {
   margin-bottom: 18px;
-  color: #087a61;
+  color: color-mix(in srgb, var(--wbx-accent) 50%, var(--wbx-ink));
 }
 
 .wbx-system__intro > p:last-child {
@@ -618,7 +618,7 @@
   position: absolute;
   top: 18px;
   right: 18px;
-  color: #087a61;
+  color: color-mix(in srgb, var(--wbx-accent) 50%, var(--wbx-ink));
   font-family: var(--wbx-pixel);
   font-size: 11px;
   font-weight: 400;
@@ -627,7 +627,7 @@
 .wbx-system__steps strong {
   display: block;
   margin: 10px 0 12px;
-  color: #087a61;
+  color: color-mix(in srgb, var(--wbx-accent) 50%, var(--wbx-ink));
   font-family: var(--wbx-pixel);
   font-size: 14px;
 }
