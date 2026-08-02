@@ -401,6 +401,9 @@ describe('home hero icon navigation', () => {
     expect(narrow).toMatch(
       /\.wbx-reading-card\s*\{[^}]*grid-template-columns:\s*56px minmax\(0, 1fr\) auto;/s,
     )
+    expect(narrow).toMatch(
+      /\.wbx-reading-card__arrow\s*\{[^}]*display:\s*block;[^}]*align-self:\s*center;[^}]*justify-self:\s*end;/s,
+    )
   })
 
   it('positions the Part 4 people icon safely at every hero breakpoint', () => {
