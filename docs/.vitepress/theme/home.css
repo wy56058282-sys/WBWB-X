@@ -343,7 +343,7 @@
 .wbx-hero__official {
   position: absolute;
   right: 24px;
-  bottom: 46px;
+  bottom: 0;
   z-index: 1;
   display: flex;
   align-items: center;

@@ -315,7 +315,7 @@ describe('home hero icon navigation', () => {
     const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
 
     expect(official).toMatch(/right:\s*24px;/)
-    expect(official).toMatch(/bottom:\s*46px;/)
+    expect(official).toMatch(/bottom:\s*0;/)
     expect(official).toMatch(/width:\s*154px;/)
     expect(label).toMatch(/background:\s*#0d100d;/)
     expect(label).toMatch(/color:\s*#fff;/)

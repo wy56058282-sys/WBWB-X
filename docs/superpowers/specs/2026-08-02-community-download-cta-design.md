@@ -65,6 +65,7 @@
 - IP 上方显示黑底白字 `workbuddy.ai` 标签，标签与 IP 组成一个完整点击区域。
 - 点击后在新标签页打开 `https://www.workbuddy.ai/`，并设置 `rel="noopener noreferrer"`。
 - 桌面端将内容规模文字向左收，官网入口停靠右下角；移动端缩小入口，避免遮挡五张功能卡片和内容规模文字。
+- 桌面端 IP 图片底边与下方绿色价值条贴合，垂直间距为 `0px`；移动端继续保留安全间距，避免覆盖内容规模文字。
 - Hero 主标题上方的像素标签显示 `27 CHAPTERS / 4 PARTS / ∞ WORKFLOWS`，替换原有 `REAL TASKS · 27 CHAPTERS · OPEN SOURCE`。
 
 ## 验证
