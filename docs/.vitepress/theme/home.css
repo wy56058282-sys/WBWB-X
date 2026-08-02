@@ -971,11 +971,12 @@
   .wbx-icon-card--book {
     top: 140px;
     left: 8%;
+    --wbx-icon-rotation: -30deg;
   }
 
   .wbx-icon-card--flow {
     top: 135px;
-    right: 8%;
+    right: calc(8% + 10px);
   }
 
   .wbx-icon-card--work {
@@ -991,7 +992,7 @@
 
   .wbx-hero__official {
     right: 12px;
-    bottom: 54px;
+    bottom: 0;
     width: 108px;
   }
 
@@ -1001,7 +1002,7 @@
   }
 
   .wbx-hero__official-ip {
-    width: 100px;
+    width: 106px;
   }
 
   .wbx-value-strip {
@@ -1036,7 +1037,7 @@
   }
 
   .wbx-reading-card {
-    grid-template-columns: 70px minmax(0, 1fr);
+    grid-template-columns: 70px minmax(0, 1fr) auto;
     gap: 18px;
     padding: 18px;
   }
@@ -1051,7 +1052,9 @@
   }
 
   .wbx-reading-card__arrow {
-    display: none;
+    display: block;
+    align-self: center;
+    justify-self: end;
   }
 
   .wbx-system {
@@ -1139,9 +1142,15 @@
 
 @media (max-width: 420px) {
   .wbx-reading-card {
-    grid-template-columns: 56px minmax(0, 1fr);
+    grid-template-columns: 56px minmax(0, 1fr) auto;
     gap: 14px;
     padding: 16px;
+  }
+
+  .wbx-reading-card__arrow {
+    display: block;
+    align-self: center;
+    justify-self: end;
   }
 
   .wbx-reading-card__icon {
