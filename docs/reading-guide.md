@@ -47,4 +47,4 @@ breadcrumbTitle: 阅读指南
 
 ## 发现内容可以改进
 
-欢迎阅读[参与共创](/community/contributing)，通过 Issue 提出问题，或直接提交 Pull Request 修改对应 Markdown 页面。
+欢迎阅读[参与共创](/community/contributing)，添加发起人的企业微信或微信，提出问题，或直接提交修改错误页面。
