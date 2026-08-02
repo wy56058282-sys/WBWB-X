@@ -370,9 +370,33 @@
   border: 1px solid #0d100d;
   color: #fff;
   background: #0d100d;
+  box-shadow: 0 10px 25px rgb(0 0 0 / 28%);
   font-size: 14px;
   font-weight: 760;
   line-height: 1;
+  animation: wbx-official-label-float 4.2s ease-in-out infinite;
+}
+
+@keyframes wbx-official-label-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.wbx-hero__official:hover .wbx-hero__official-label,
+.wbx-hero__official:focus-visible .wbx-hero__official-label {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wbx-hero__official-label {
+    animation: none;
+  }
 }
 
 .wbx-hero__official-ip {

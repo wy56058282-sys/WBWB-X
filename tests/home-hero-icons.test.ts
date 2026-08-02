@@ -336,12 +336,21 @@ describe('home hero icon navigation', () => {
     expect(official).toMatch(/width:\s*154px;/)
     expect(label).toMatch(/background:\s*#0d100d;/)
     expect(label).toMatch(/color:\s*#fff;/)
+    expect(label).toMatch(/box-shadow:\s*0 10px 25px rgb\(0 0 0 \/ 28%\);/)
+    expect(label).toMatch(/animation:\s*wbx-official-label-float 4\.2s ease-in-out infinite;/)
     expect(image).toMatch(/width:\s*145px;/)
+    expect(image).not.toMatch(/animation:/)
     expect(css).not.toContain('.wbx-hero__metrics')
     expect(official).not.toMatch(/transition:/)
     expect(officialInteraction).toBeDefined()
     expect(officialInteraction).toMatch(/transform:\s*none;/)
     expect(officialInteraction).not.toMatch(/translate/)
+    expect(css).toMatch(
+      /\.wbx-hero__official:(?:hover|focus-visible) \.wbx-hero__official-label\s*\{[^}]*animation-play-state:\s*paused;/s,
+    )
+    expect(css).toMatch(
+      /@media \(prefers-reduced-motion: reduce\)\s*\{[\s\S]*?\.wbx-hero__official-label\s*\{[^}]*animation:\s*none;/s,
+    )
     expect(mobile).toMatch(
       /\.wbx-hero__official\s*\{[^}]*right:\s*12px;[^}]*bottom:\s*54px;[^}]*width:\s*108px;/s,
     )
