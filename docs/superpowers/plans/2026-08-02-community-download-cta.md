@@ -447,3 +447,35 @@ Run `pnpm vitest run tests/home-hero-icons.test.ts`, `pnpm test`, `pnpm build`, 
 - [ ] **Step 6: Commit and refresh the preview**
 
 Commit `HomePage.vue`, `home.css`, and the test as `feat: restore homepage product footer`, push the existing branch, and refresh the retained local preview tab.
+
+---
+
+### Task 5: Make the download banner viewport-wide and increase separation
+
+**Files:**
+- Modify: `docs/.vitepress/theme/home.css`
+- Test: `tests/home-hero-icons.test.ts`
+
+**Interfaces:**
+- Consumes: the existing `.wbx-community` banner.
+- Produces: a viewport-wide, borderless banner with `48px` desktop and `38px` mobile top spacing.
+
+- [ ] **Step 1: Write the failing style test**
+
+Assert that the base `.wbx-community` rule uses `width: 100vw`, centers itself with `margin-left/right: calc(50% - 50vw)`, has `border: 0`, and uses `margin-top: 48px`. Assert that the `max-width: 760px` rule uses `margin-top: 38px`.
+
+- [ ] **Step 2: Run the focused test and verify it fails**
+
+Run `pnpm vitest run tests/home-hero-icons.test.ts`. Expect failure against the current content-width bordered banner.
+
+- [ ] **Step 3: Implement the full-bleed styles**
+
+Update only `.wbx-community` and its mobile override. Preserve the existing internal two-column/stacked layout, backgrounds, animation, and safe content padding.
+
+- [ ] **Step 4: Run focused and full verification**
+
+Run `pnpm vitest run tests/home-hero-icons.test.ts`, `pnpm test`, `pnpm build`, and `git diff --check`.
+
+- [ ] **Step 5: Commit, push, and refresh preview**
+
+Commit the CSS and test as `style: make homepage download banner full bleed`, push the existing PR branch, then verify 1144px and 390px previews have no horizontal overflow.
