@@ -687,4 +687,14 @@ describe('home hero icon navigation', () => {
       /\.wbx-community__ip-stage\s*\{[^}]*position:\s*relative;[^}]*transform:\s*none;/s,
     )
   })
+
+  it('removes the task heading divider while keeping the task-grid border', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const heading = baseRule(css, '.wbx-section__heading--compact')
+    const taskGrid = baseRule(css, '.wbx-task-grid')
+
+    expect(heading).toMatch(/padding-top:\s*18px;/)
+    expect(heading).not.toMatch(/border-top:/)
+    expect(taskGrid).toMatch(/border-top:\s*1px solid var\(--wbx-line\);/)
+  })
 })
