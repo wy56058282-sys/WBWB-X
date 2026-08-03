@@ -45,13 +45,19 @@ describe('WB-X reading visual scope', () => {
 
   it('scopes neutral sidebar interactions to reading pages', () => {
     expect(readingCss).toMatch(
-      /\.wbx-reading-layout \.VPSidebarItem \.link:hover[\s\S]*?background:\s*var\(--wbx-hover-surface\)/,
+      /\.wbx-reading-layout \.VPSidebarItem \.link:hover\s*{[^}]*background:\s*var\(--wbx-sidebar-hover-surface\)/,
     )
     expect(readingCss).toMatch(
       /\.wbx-reading-layout \.VPSidebarItem\.is-active[\s\S]*?background:\s*var\(--wbx-accent\)/,
     )
-    expect(readingCss).toContain(
-      'border-radius: var(--wbx-reading-radius)',
+    expect(readingCss).not.toMatch(
+      /\.wbx-reading-layout \.VPSidebarItem \.link\s*{[^}]*min-height:/,
+    )
+    expect(readingCss).not.toMatch(
+      /\.wbx-reading-layout \.VPSidebarItem \.link\s*{[^}]*padding:/,
+    )
+    expect(readingCss).not.toMatch(
+      /\.wbx-reading-layout \.VPSidebarItem \.link\s*{[^}]*border-radius:/,
     )
   })
 })

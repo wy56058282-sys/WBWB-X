@@ -15,10 +15,7 @@
 }
 
 .wbx-reading-layout .VPSidebarItem .link {
-  min-height: 44px;
-  padding: 4px 12px;
   border: 0;
-  border-radius: var(--wbx-reading-radius);
   background: transparent;
 }
 

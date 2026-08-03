@@ -10,10 +10,16 @@ const mobileBaseRule =
 
 describe('responsive sidebar density', () => {
   it('uses compact spacing only at the desktop breakpoint', () => {
+    expect(css).toMatch(
+      /\.VPSidebarItem \.link\s*{[^}]*border-radius:\s*6px/,
+    )
     expect(css).toMatch(desktopCompactRule)
   })
 
   it('retains the larger base spacing used by mobile navigation', () => {
+    expect(css).toMatch(
+      /\.VPSidebarItem \.link\s*{[^}]*border-radius:\s*6px/,
+    )
     expect(css).toMatch(mobileBaseRule)
   })
 
