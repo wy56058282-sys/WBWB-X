@@ -6,6 +6,8 @@
 
 - [WorkBuddy 官网](https://www.workbuddy.ai/)
 
+  进入页面后点击“立即下载”即可。
+
   ![WorkBuddy 官网首页](/article-assets/source-calibration/ch02/018.png)
 
 - [CodeBuddy 工作台](https://www.codebuddy.cn/work/)
