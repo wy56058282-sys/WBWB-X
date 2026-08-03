@@ -48,6 +48,9 @@ describe('WB-X reading visual scope', () => {
       /\.wbx-reading-layout \.VPSidebarItem \.link:hover\s*{[^}]*background:\s*var\(--wbx-sidebar-hover-surface\)/,
     )
     expect(readingCss).toMatch(
+      /\.wbx-reading-layout \.VPSidebarItem \.link:focus-visible\s*{[^}]*background:\s*var\(--wbx-sidebar-hover-surface\)/,
+    )
+    expect(readingCss).toMatch(
       /\.wbx-reading-layout \.VPSidebarItem\.is-active[\s\S]*?background:\s*var\(--wbx-accent\)/,
     )
     expect(readingCss).not.toMatch(
