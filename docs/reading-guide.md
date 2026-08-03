@@ -23,7 +23,7 @@ breadcrumbTitle: 阅读指南
 
 ## 按真实任务选择 WorkBuddy 教程
 
-直接进入[第二篇：案例篇](/wb-x/%E7%AC%AC%E4%BA%8C%E7%AF%87%20%E6%A1%88%E4%BE%8B%E7%AF%87%EF%BC%9A%E4%BB%8E%E4%B8%80%E9%A1%B9%E4%BB%BB%E5%8A%A1%E5%88%B0%E4%B8%80%E6%94%AF%20AI%20%E5%9B%A2%E9%98%9F/)，按问题选择章节：
+直接进入[第二篇：案例篇《从一项任务到一支 AI 团队》](/wb-x/%E7%AC%AC%E4%BA%8C%E7%AF%87%20%E6%A1%88%E4%BE%8B%E7%AF%87%EF%BC%9A%E4%BB%8E%E4%B8%80%E9%A1%B9%E4%BB%BB%E5%8A%A1%E5%88%B0%E4%B8%80%E6%94%AF%20AI%20%E5%9B%A2%E9%98%9F/)，按问题选择章节：
 
 - 处理 Word、Excel、PPT：第 11 章。
 - 整理电脑文件：第 12 章。
