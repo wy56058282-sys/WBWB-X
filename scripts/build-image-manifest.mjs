@@ -59,6 +59,8 @@ const allowedStatuses = new Set([
   'replaced',
   'approved',
 ])
+const userProvidedSourcePattern =
+  /^user-provided:\/\/[A-Za-z0-9][A-Za-z0-9._-]*\.(?:png|jpg|gif)$/
 
 const pageImagePattern =
   /(!\[([^\]]*)\]\()([^)\s]+)([^)]*\))|(<img\b[^>]*?\bsrc\s*=\s*["'])([^"']+)(["'][^>]*>)/gi
@@ -319,6 +321,79 @@ function assertManagedPath(path, prefix, label) {
   }
 }
 
+function localPublicAssetPath(publicPath, prefix, label) {
+  assertManagedPath(publicPath, prefix, label)
+  return join(contentRoot, 'public', posix.relative('/', publicPath))
+}
+
+function supplementalRecordsForPage(
+  page,
+  pagePrefix,
+  { manifestById, csvById },
+) {
+  return [...manifestById.values()]
+    .filter(
+      (record) =>
+        record.page === page
+        && userProvidedSourcePattern.test(record.sourceUrl ?? ''),
+    )
+    .map((record) => {
+      if (!new RegExp(`^${pagePrefix}-\\d{3}$`).test(record.id)) {
+        throw new Error(`Invalid user-provided image ID for ${page}: ${record.id}`)
+      }
+
+      const existingCsv = csvById.get(record.id)
+      if (existingCsv && existingCsv.sourceUrl !== record.sourceUrl) {
+        throw new Error(
+          `Conflicting user-provided provenance for ${record.id}: ${existingCsv.sourceUrl}`,
+        )
+      }
+
+      const sourcePath = localPublicAssetPath(
+        record.calibrationPath,
+        '/article-assets/source-calibration',
+        `User-provided calibration path for ${record.id}`,
+      )
+      const sourceBuffer = readFileSync(sourcePath)
+      const format = imageFormat(sourceBuffer, sourcePath)
+      const [sourceWidth, sourceHeight] = imageDimensions(
+        sourceBuffer,
+        format,
+        sourcePath,
+      )
+      if (
+        record.format !== format
+        || record.sourceWidth !== sourceWidth
+        || record.sourceHeight !== sourceHeight
+      ) {
+        throw new Error(`User-provided image metadata mismatch for ${record.id}`)
+      }
+      const stableOrder = record.id.slice(pagePrefix.length + 1)
+      const expectedCalibrationPath =
+        `/article-assets/source-calibration/${pagePrefix}/${stableOrder}.${format}`
+      if (record.calibrationPath !== expectedCalibrationPath) {
+        throw new Error(`User-provided calibration format/path mismatch for ${record.id}`)
+      }
+      if (!record.sourceUrl.endsWith(`.${format}`)) {
+        throw new Error(`User-provided provenance format mismatch for ${record.id}`)
+      }
+
+      const preservedState = preservedWorkflowState(
+        record,
+        record.replacementPath,
+        { manifestById, csvById },
+      )
+      return {
+        ...record,
+        status: preservedState.status,
+        replacementPath: preservedState.replacementPath,
+        sourcePath,
+        generatedReplacementPath: record.replacementPath,
+        notes: preservedState.notes,
+      }
+    })
+}
+
 async function loadWorkflowState() {
   const manifestById = new Map()
   const csvById = new Map()
@@ -496,7 +571,8 @@ try {
     )
 
   const records = []
-  const prefixCounters = new Map()
+  const sourcePrefixCounters = new Map()
+  const pageOrderCounters = new Map()
   const recordsBySourcePath = new Map()
   const mediaDependencies = []
   const markdownCandidates = []
@@ -515,17 +591,28 @@ try {
     const sourceMarkdown = await readFile(sourceMarkdownPath, 'utf8')
     const sourceReferences = imageReferences(sourceMarkdown)
 
-    if (currentReferences.length !== sourceReferences.length) {
-      throw new Error(
-        `${markdownPath} has ${currentReferences.length} images; source has ${sourceReferences.length}`,
-      )
-    }
-
     const pageTitle =
       currentMarkdown.match(/^#\s+(.+)$/m)?.[1].trim()
       ?? pagePrefix
+    const page = publicPage(markdownPath)
+    const supplementalRecords = supplementalRecordsForPage(
+      page,
+      pagePrefix,
+      workflowState,
+    )
+    const supplementalByTarget = new Map()
+    for (const record of supplementalRecords) {
+      for (const target of [record.calibrationPath, record.replacementPath]) {
+        if (supplementalByTarget.has(target)) {
+          throw new Error(`Duplicate user-provided image target: ${target}`)
+        }
+        supplementalByTarget.set(target, record)
+      }
+    }
+    const usedSupplementalIds = new Set()
     let rewrittenMarkdown = currentMarkdown
     let referenceIndex = 0
+    let sourceReferenceIndex = 0
     const hrefReplacements = new Map()
 
     rewrittenMarkdown = rewrittenMarkdown.replace(
@@ -541,11 +628,39 @@ try {
         htmlSuffix,
       ) => {
         const currentReference = currentReferences[referenceIndex]
-        const sourceReference = sourceReferences[referenceIndex]
         referenceIndex += 1
         const currentTarget = markdownTarget ?? htmlTarget
         const prefix = markdownPrefix ?? htmlPrefix
         const suffix = markdownSuffix ?? htmlSuffix
+        const supplementalRecord = supplementalByTarget.get(currentTarget)
+
+        if (supplementalRecord) {
+          if (!usedSupplementalIds.has(supplementalRecord.id)) {
+            const order = (pageOrderCounters.get(pagePrefix) ?? 0) + 1
+            pageOrderCounters.set(pagePrefix, order)
+            const record = { ...supplementalRecord, order }
+            notesById.set(record.id, record.notes)
+            delete record.notes
+            records.push(record)
+            usedSupplementalIds.add(record.id)
+          }
+
+          const renderedPath =
+            supplementalRecord.status === 'awaiting-replacement'
+              ? supplementalRecord.calibrationPath
+              : supplementalRecord.replacementPath
+          hrefReplacements.set(supplementalRecord.calibrationPath, renderedPath)
+          hrefReplacements.set(supplementalRecord.replacementPath, renderedPath)
+          return `${prefix}${renderedPath}${suffix}`
+        }
+
+        const sourceReference = sourceReferences[sourceReferenceIndex]
+        sourceReferenceIndex += 1
+        if (!sourceReference) {
+          throw new Error(
+            `${markdownPath} image ${referenceIndex} is not an authorized source or preserved user-provided image: ${currentTarget}`,
+          )
+        }
 
         if (
           currentReference.type !== sourceReference.type
@@ -560,9 +675,11 @@ try {
         let record = recordsBySourcePath.get(sourcePath)
 
         if (!record) {
-          const order = (prefixCounters.get(pagePrefix) ?? 0) + 1
-          prefixCounters.set(pagePrefix, order)
-          const stableOrder = String(order).padStart(3, '0')
+          const sourceOrder = (sourcePrefixCounters.get(pagePrefix) ?? 0) + 1
+          sourcePrefixCounters.set(pagePrefix, sourceOrder)
+          const order = (pageOrderCounters.get(pagePrefix) ?? 0) + 1
+          pageOrderCounters.set(pagePrefix, order)
+          const stableOrder = String(sourceOrder).padStart(3, '0')
           const sourceBuffer = readFileSync(sourcePath)
           const format = imageFormat(sourceBuffer, sourcePath)
           const [sourceWidth, sourceHeight] = imageDimensions(
@@ -578,9 +695,9 @@ try {
 
           record = {
             id: `${pagePrefix}-${stableOrder}`,
-            page: publicPage(markdownPath),
+            page,
             order,
-            purpose: purposeFor(pageTitle, sourceReference.alt, order),
+            purpose: purposeFor(pageTitle, sourceReference.alt, sourceOrder),
             sourceUrl: sourceAssetUrl(sourcePath),
             calibrationPath,
             replacementPath,
@@ -625,6 +742,20 @@ try {
         return `${prefix}${renderedPath}${suffix}`
       },
     )
+
+    if (sourceReferenceIndex !== sourceReferences.length) {
+      throw new Error(
+        `${markdownPath} has ${sourceReferenceIndex} authorized images; source has ${sourceReferences.length}`,
+      )
+    }
+    if (usedSupplementalIds.size !== supplementalRecords.length) {
+      const missingIds = supplementalRecords
+        .filter((record) => !usedSupplementalIds.has(record.id))
+        .map((record) => record.id)
+      throw new Error(
+        `${markdownPath} is missing preserved user-provided images: ${missingIds.join(', ')}`,
+      )
+    }
 
     rewrittenMarkdown = rewrittenMarkdown.replace(
       /(<a\b[^>]*?\bhref\s*=\s*)(["'])([^"']+)(\2)/gi,
