@@ -133,8 +133,8 @@ describe('article image replacement inventory', () => {
       'status',
     ]
 
-    expect(manifest).toHaveLength(267)
-    expect(manifest.filter((item) => item.id.startsWith('ch'))).toHaveLength(235)
+    expect(manifest).toHaveLength(268)
+    expect(manifest.filter((item) => item.id.startsWith('ch'))).toHaveLength(236)
     expect(manifest.filter((item) => item.id.startsWith('case-'))).toHaveLength(29)
     expect(manifest.filter((item) => item.id.startsWith('community-'))).toHaveLength(2)
     expect(manifest.filter((item) => item.id.startsWith('help-'))).toHaveLength(1)

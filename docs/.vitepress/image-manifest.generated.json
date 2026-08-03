@@ -13,9 +13,22 @@
     "status": "awaiting-replacement"
   },
   {
-    "id": "ch01-002",
+    "id": "ch01-004",
     "page": "/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 1 章 初识 WorkBuddy/",
     "order": 2,
+    "purpose": "第 1 章 初识 WorkBuddy — image 4",
+    "sourceUrl": "https://workbuddy.homes/article-assets/source-calibration/ch01/004.jpg",
+    "calibrationPath": "/article-assets/source-calibration/ch01/004.jpg",
+    "replacementPath": "/article-assets/replacements/ch01/004.jpg",
+    "sourceWidth": 1448,
+    "sourceHeight": 1086,
+    "format": "jpg",
+    "status": "awaiting-replacement"
+  },
+  {
+    "id": "ch01-002",
+    "page": "/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 1 章 初识 WorkBuddy/",
+    "order": 3,
     "purpose": "第 1 章 初识 WorkBuddy — image 2",
     "sourceUrl": "https://workbuddy.homes/bluebook/%E7%AC%AC%E4%B8%80%E7%AF%87%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C%EF%BC%9A%E5%85%88%E6%8A%8A%20WorkBuddy%20%E7%94%A8%E8%B5%B7%E6%9D%A5/%E7%AC%AC%201%20%E7%AB%A0%20%E5%88%9D%E8%AF%86%20WorkBuddy/assets/002_image_IaB9bqqj6o.png",
     "calibrationPath": "/article-assets/source-calibration/ch01/002.png",
@@ -28,7 +41,7 @@
   {
     "id": "ch01-003",
     "page": "/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 1 章 初识 WorkBuddy/",
-    "order": 3,
+    "order": 4,
     "purpose": "第 1 章 初识 WorkBuddy — image 3",
     "sourceUrl": "https://workbuddy.homes/bluebook/%E7%AC%AC%E4%B8%80%E7%AF%87%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C%EF%BC%9A%E5%85%88%E6%8A%8A%20WorkBuddy%20%E7%94%A8%E8%B5%B7%E6%9D%A5/%E7%AC%AC%201%20%E7%AB%A0%20%E5%88%9D%E8%AF%86%20WorkBuddy/assets/003_image_Idhdsahdl.png",
     "calibrationPath": "/article-assets/source-calibration/ch01/003.png",
