@@ -4,6 +4,7 @@ import { useData, useRoute } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted } from 'vue'
 import { isHomeRoute, isReadingRoute } from '../route-state'
 import CommunityQr, { openCommunityQr } from './CommunityQr.vue'
+import DocImageLightbox from './DocImageLightbox.vue'
 import HomePage from './HomePage.vue'
 
 const route = useRoute()
@@ -53,6 +54,7 @@ onBeforeUnmount(() => {
 
     <template #layout-bottom>
       <CommunityQr />
+      <DocImageLightbox />
     </template>
   </DefaultTheme.Layout>
 </template>

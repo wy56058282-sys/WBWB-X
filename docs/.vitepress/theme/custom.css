@@ -530,3 +530,76 @@ body {
     animation-iteration-count: 1 !important;
   }
 }
+
+.wbx-doc-image--zoomable {
+  cursor: zoom-in;
+}
+
+.wbx-doc-image--zoomable:focus-visible {
+  outline: 3px solid var(--wbx-accent);
+  outline-offset: 4px;
+}
+
+.wbx-doc-lightbox {
+  position: fixed;
+  z-index: 10000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 5vh 2vw;
+  background: rgb(0 0 0 / 88%);
+  cursor: zoom-out;
+}
+
+.wbx-doc-lightbox__figure {
+  display: grid;
+  gap: 12px;
+  max-width: 96vw;
+  max-height: 90vh;
+  margin: 0;
+  cursor: default;
+}
+
+.wbx-doc-lightbox__figure img {
+  display: block;
+  max-width: 96vw;
+  max-height: calc(90vh - 40px);
+  width: auto;
+  height: auto;
+  margin: auto;
+  object-fit: contain;
+}
+
+.wbx-doc-lightbox__figure figcaption {
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.wbx-doc-lightbox__close {
+  position: fixed;
+  z-index: 1;
+  top: 18px;
+  right: 18px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgb(255 255 255 / 70%);
+  border-radius: 50%;
+  color: #fff;
+  font: 32px/1 sans-serif;
+  background: rgb(0 0 0 / 45%);
+  cursor: pointer;
+}
+
+.wbx-doc-lightbox-enter-active,
+.wbx-doc-lightbox-leave-active {
+  transition: opacity 160ms ease;
+}
+
+.wbx-doc-lightbox-enter-from,
+.wbx-doc-lightbox-leave-to {
+  opacity: 0;
+}
