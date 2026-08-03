@@ -53,7 +53,9 @@ describe('brand configuration', () => {
   })
 
   it('ships a social share image at the required dimensions', () => {
-    expect(readPngDimensions('docs/public/og/workbuddy-wb-x-guide.png')).toEqual(
+    expect(
+      readPngDimensions('docs/public/og/workbuddy-wb-x-guide-20260803.png'),
+    ).toEqual(
       {
         width: 1280,
         height: 720,
@@ -73,11 +75,11 @@ describe('brand configuration', () => {
 
     expect(meta).toMatchObject({
       'og:image':
-        'https://wbx.sparkx.zone/og/workbuddy-wb-x-guide.png',
+        'https://wbx.sparkx.zone/og/workbuddy-wb-x-guide-20260803.png',
       'og:image:width': '1280',
       'og:image:height': '720',
       'twitter:image':
-        'https://wbx.sparkx.zone/og/workbuddy-wb-x-guide.png',
+        'https://wbx.sparkx.zone/og/workbuddy-wb-x-guide-20260803.png',
     })
   })
 

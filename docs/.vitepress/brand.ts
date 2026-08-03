@@ -28,7 +28,7 @@ export const brand: BrandConfig = {
   author: 'WorkBuddy WB-X Contributors',
   logoPath: '/brand/wb-x-logo.svg',
   qrPath: '/community/wechat-group.png',
-  ogImagePath: '/og/workbuddy-wb-x-guide.png',
+  ogImagePath: '/og/workbuddy-wb-x-guide-20260803.png',
   seo: {
     title: 'WorkBuddy 教程与使用指南｜WorkBuddy WB-X 实战小白书',
     description:
