@@ -100,9 +100,7 @@ onBeforeUnmount(() => {
         aria-label="图片放大预览"
         @click.self="close"
       >
-        <button class="wbx-doc-lightbox__close" type="button" aria-label="关闭图片预览" @click="close">
-          <span aria-hidden="true">×</span>
-        </button>
+        <button class="wbx-doc-lightbox__close" type="button" aria-label="关闭图片预览" @click="close" />
         <figure class="wbx-doc-lightbox__figure">
           <img :src="activeSrc" :alt="activeCaption" @error="close">
           <figcaption v-if="activeCaption">{{ activeCaption }}</figcaption>

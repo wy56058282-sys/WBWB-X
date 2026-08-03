@@ -594,6 +594,22 @@ body {
   cursor: pointer;
 }
 
+.wbx-doc-lightbox__close::before,
+.wbx-doc-lightbox__close::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 2px;
+  content: '';
+  background: currentColor;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.wbx-doc-lightbox__close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
 .wbx-doc-lightbox-enter-active,
 .wbx-doc-lightbox-leave-active {
   transition: opacity 160ms ease;

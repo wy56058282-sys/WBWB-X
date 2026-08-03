@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it } from 'vitest'
+import { readFileSync } from 'node:fs'
 import { createApp, nextTick, type App } from 'vue'
 import DocImageLightbox from '../docs/.vitepress/theme/DocImageLightbox.vue'
 import { isZoomableDocImage } from '../docs/.vitepress/theme/doc-image-lightbox'
@@ -46,6 +47,17 @@ describe('document image eligibility', () => {
 })
 
 describe('document image lightbox interaction', () => {
+  it('centers the close icon geometrically inside its circular button', () => {
+    const css = readFileSync(
+      `${process.cwd()}/docs/.vitepress/theme/custom.css`,
+      'utf8',
+    )
+
+    expect(css).toMatch(
+      /\.wbx-doc-lightbox__close::(?:before|after)\s*{[^}]*top:\s*50%;[^}]*left:\s*50%;[^}]*transform:\s*translate\(-50%,\s*-50%\)\s*rotate\((?:45|-45)deg\)/s,
+    )
+  })
+
   it('opens by click and shows the image caption', async () => {
     mountLightbox('<img src="/diagram.png" alt="能力架构图">')
     await nextTick()
