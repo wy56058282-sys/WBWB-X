@@ -632,6 +632,10 @@ describe('home hero icon navigation', () => {
     expect(compactDesktop).toMatch(
       /\.wbx-community__copy\s*\{[^}]*padding-left:\s*132px;/s,
     )
+    expect(compactDesktop).toMatch(
+      /\.wbx-community h2\s*\{[^}]*white-space:\s*normal;/s,
+    )
+    expect(compactDesktop).not.toMatch(/\.wbx-community h2\s*\{[^}]*font-size:/s)
     expect(actions).toMatch(/display:\s*grid;/)
     expect(actions).toMatch(
       /grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/,

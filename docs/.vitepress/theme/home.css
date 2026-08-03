@@ -845,6 +845,9 @@
     padding-left: 132px;
   }
 
+  .wbx-community h2 {
+    white-space: normal;
+  }
 }
 
 @media (max-width: 960px) {
