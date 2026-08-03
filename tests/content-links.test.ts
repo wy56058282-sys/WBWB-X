@@ -70,6 +70,19 @@ describe('content inventory', () => {
     expect(readingGuide).not.toContain('通过 Issue 提出问题')
     expect(readingGuide).not.toContain('Pull Request 修改对应 Markdown 页面')
   })
+
+  it('places the complete capability image immediately after the chapter-one Mermaid flowchart', () => {
+    const chapter = readFileSync(
+      'docs/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 1 章 初识 WorkBuddy/index.md',
+      'utf8',
+    )
+    const mermaidEnd = chapter.indexOf('```', chapter.indexOf('```mermaid') + 3) + 3
+    const image = '![WorkBuddy 完整能力架构图](/article-assets/source-calibration/ch01/004.jpg)'
+    const exampleIndex = chapter.indexOf('例如，用户可以直接告诉 WorkBuddy')
+
+    expect(existsSync('docs/public/article-assets/source-calibration/ch01/004.jpg')).toBe(true)
+    expect(chapter.slice(mermaidEnd, exampleIndex).trim()).toBe(image)
+  })
 })
 
 describe('internal content links', () => {
