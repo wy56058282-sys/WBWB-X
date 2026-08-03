@@ -96,6 +96,8 @@ describe('desktop sidebar scrolling', () => {
 
     expect(getComputedStyle(nav).overflowY).toBe('auto')
     expect(getComputedStyle(link).minHeight).toBe('44px')
+    expect(getComputedStyle(link).paddingTop).toBe('4px')
+    expect(getComputedStyle(link).paddingBottom).toBe('4px')
     expect(
       getComputedStyle(layout)
         .getPropertyValue('--wbx-reading-radius')

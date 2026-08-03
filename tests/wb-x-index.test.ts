@@ -11,6 +11,10 @@ const readingCss = readFileSync(
   resolve('docs/.vitepress/theme/reading.css'),
   'utf8',
 )
+const customCss = readFileSync(
+  resolve('docs/.vitepress/theme/custom.css'),
+  'utf8',
+)
 
 let document: Document
 
@@ -73,15 +77,28 @@ describe('small-book reading index', () => {
     expect(links).toEqual(expectedPaths)
   })
 
-  it('uses one neutral reading surface per entry', () => {
+  it('renders each reading entry as a naked list row instead of a white card', () => {
     expect(readingCss).toMatch(
-      /\.wbx-reading-layout \.wbx-book-index__entry > a\s*{[\s\S]*?background:\s*var\(--wbx-surface\)/,
+      /\.wbx-reading-layout \.wbx-book-index__entry > a\s*{[^}]*min-height:\s*74px/,
     )
     expect(readingCss).toMatch(
-      /\.wbx-reading-layout \.wbx-book-index__entry > a\s*{[\s\S]*?border:\s*1px solid var\(--wbx-line\)/,
+      /\.wbx-reading-layout \.wbx-book-index__entry > a\s*{[^}]*background:\s*transparent/,
     )
     expect(readingCss).toMatch(
-      /\.wbx-reading-layout \.wbx-book-index__entry > a\s*{[\s\S]*?border-radius:\s*var\(--wbx-reading-radius\)/,
+      /\.wbx-reading-layout \.wbx-book-index__entry > a\s*{[^}]*border:\s*0/,
+    )
+    expect(readingCss).toMatch(
+      /\.wbx-reading-layout \.wbx-book-index__entry > a\s*{[^}]*border-radius:\s*0/,
+    )
+    expect(readingCss).toMatch(
+      /\.wbx-reading-layout \.wbx-book-index__entry > a:hover\s*{[^}]*transform:\s*none/,
+    )
+  })
+
+  it('keeps the approved green-tinted sidebar hover surface', () => {
+    expect(customCss).toMatch(/--wbx-sidebar-hover-surface:\s*#e4ece5/)
+    expect(readingCss).toMatch(
+      /\.wbx-reading-layout \.VPSidebarItem \.link:hover\s*{[^}]*background:\s*var\(--wbx-sidebar-hover-surface\)/,
     )
   })
 
