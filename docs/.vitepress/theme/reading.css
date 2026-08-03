@@ -175,8 +175,7 @@
     overflow-x: auto;
   }
 
-  .wbx-reading-layout .VPDocFooter .pager-link,
-  .wbx-reading-layout .VPSidebarItem .link {
+  .wbx-reading-layout .VPDocFooter .pager-link {
     min-height: 44px;
   }
 
