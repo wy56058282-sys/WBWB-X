@@ -1,5 +1,6 @@
 // @vitest-environment node
 
+import { createHash } from 'node:crypto'
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { brand } from '../docs/.vitepress/brand'
@@ -26,11 +27,29 @@ describe('brand configuration', () => {
     expect(brand.contentShortName).toBe('WorkBuddy小白书')
     expect(brand.shortMark).toBe('WB-X')
     expect(brand.accent).toBe('#32E6B9')
-    expect(brand.origin).toBe('https://wbwbx.sparkx.zone')
+    expect(brand.origin).toBe('https://wbx.sparkx.zone')
     expect(brand.repository).toBe('https://github.com/wy56058282-sys/WBWB-X')
     expect(brand.author).toBe('WorkBuddy WB-X Contributors')
     expect(brand.logoPath).toBe('/brand/wb-x-logo.svg')
     expect(brand.qrPath).toBe('/community/wechat-group.png')
+  })
+
+  it('uses the approved product and attribution copy in document footers', () => {
+    expect(vitepressConfig.themeConfig?.footer).toEqual({
+      message:
+        '以真实场景为主线的 WB-X 实战读本 · <a href="https://hackernoon.com/pixel-icon-library" target="_blank" rel="noopener noreferrer">Pixel icons by HackerNoon</a>',
+      copyright: 'Copyright © 2026 WB-X.SparkX',
+    })
+  })
+
+  it('ships the approved community QR image', () => {
+    const path = 'docs/public/community/wechat-group.png'
+    const qr = readFileSync(path)
+
+    expect(readPngDimensions(path)).toEqual({ width: 490, height: 490 })
+    expect(createHash('sha256').update(qr).digest('hex')).toBe(
+      'd6c7aaf330525adbc842ddea331542504de0bfa001cbdc1ccf9ea7d02cd96ad3',
+    )
   })
 
   it('ships a social share image at the required dimensions', () => {
@@ -54,11 +73,11 @@ describe('brand configuration', () => {
 
     expect(meta).toMatchObject({
       'og:image':
-        'https://wbwbx.sparkx.zone/og/workbuddy-wb-x-guide.png',
+        'https://wbx.sparkx.zone/og/workbuddy-wb-x-guide.png',
       'og:image:width': '1280',
       'og:image:height': '720',
       'twitter:image':
-        'https://wbwbx.sparkx.zone/og/workbuddy-wb-x-guide.png',
+        'https://wbx.sparkx.zone/og/workbuddy-wb-x-guide.png',
     })
   })
 
@@ -142,10 +161,15 @@ describe('brand configuration', () => {
 
   it('keeps the QR popover on the stable replacement path', () => {
     const source = readFileSync('docs/.vitepress/theme/CommunityQr.vue', 'utf8')
+    const css = readFileSync('docs/.vitepress/theme/custom.css', 'utf8')
     expect(source).toContain('brand.qrPath')
     expect(source).toContain('withBase(brand.qrPath)')
     expect(source).not.toContain('aria-modal=')
-    expect(source).toContain('按 Escape 关闭')
+    expect(source).toContain('欢迎创客一起共创')
+    expect(source).not.toContain('二维码过期后')
+    expect(source).toContain('aria-describedby="wbx-community-qr-help"')
+    expect(source).not.toContain('wbx-community-qr-maintenance')
+    expect(css).not.toContain('.wbx-community-qr__maintenance')
   })
 
   it('keeps the QR close control named when mobile hides its visible label', () => {

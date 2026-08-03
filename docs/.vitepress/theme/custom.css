@@ -6,6 +6,7 @@
   --wbx-muted: #656b60;
   --wbx-line: #d7dbd0;
   --wbx-hover-surface: #eceee9;
+  --wbx-sidebar-hover-surface: #e4ece5;
   --wbx-accent-soft: color-mix(
     in srgb,
     var(--wbx-accent) 18%,
@@ -59,6 +60,7 @@
   --wbx-muted: #aeb4a7;
   --wbx-line: #343a2f;
   --wbx-hover-surface: #252922;
+  --wbx-sidebar-hover-surface: #202a24;
   --wbx-accent-soft: color-mix(
     in srgb,
     var(--wbx-accent) 18%,
@@ -95,6 +97,32 @@ body {
   font-family: var(--wbx-body);
   font-feature-settings: "kern" 1;
   background: var(--wbx-paper);
+}
+
+.VPDoc .vp-doc > div > h1 {
+  margin: 0 0 34px;
+  font-family: var(--wbx-body);
+  font-size: 51.2px;
+  font-weight: 850;
+  line-height: 58.88px;
+  letter-spacing: -2.816px;
+}
+
+@media (max-width: 959px) {
+  .VPDoc .vp-doc > div > h1 {
+    font-size: 44px;
+    line-height: 52.8px;
+    letter-spacing: -2.2px;
+  }
+}
+
+@media (max-width: 640px) {
+  .VPDoc .vp-doc > div > h1 {
+    margin-bottom: 26px;
+    font-size: 36px;
+    line-height: 43.2px;
+    letter-spacing: -1.44px;
+  }
 }
 
 ::selection {
@@ -305,10 +333,17 @@ body {
     background-color 140ms ease;
 }
 
+@media (min-width: 960px) {
+  .VPSidebarItem .link {
+    margin: 0;
+    padding: 2px 6px;
+  }
+}
+
 .VPSidebarItem .link:hover,
 .VPSidebarItem .link:focus-visible {
   color: var(--wbx-ink);
-  background: var(--wbx-hover-surface);
+  background: var(--wbx-sidebar-hover-surface);
 }
 
 .VPSidebarItem .link:focus-visible {
@@ -426,16 +461,11 @@ body {
   image-rendering: auto;
 }
 
-.wbx-community-qr__help,
-.wbx-community-qr__maintenance {
+.wbx-community-qr__help {
   margin: 8px 0 0;
   color: var(--wbx-muted);
   font-size: 11px;
   line-height: 1.6;
-}
-
-.wbx-community-qr__maintenance {
-  margin-top: 3px;
 }
 
 .wb-contact-grid {

@@ -27,6 +27,8 @@ flowchart LR
     E -->|通过| G[归档或发布]
 ```
 
+![WorkBuddy 完整能力架构图](/article-assets/source-calibration/ch01/004.jpg)
+
 例如，用户可以直接告诉 WorkBuddy，分析这个文件夹中的销售数据，并生成一份汇报 PPT。
 
 ![](/article-assets/source-calibration/ch01/002.png)

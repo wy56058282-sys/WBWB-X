@@ -131,7 +131,7 @@ onBeforeUnmount(() => {
         class="wbx-community-qr"
         role="dialog"
         aria-labelledby="wbx-community-qr-title"
-        aria-describedby="wbx-community-qr-help wbx-community-qr-maintenance"
+        aria-describedby="wbx-community-qr-help"
         tabindex="-1"
         :data-placement="position.placement"
         :style="{ left: `${position.left}px`, top: `${position.top}px` }"
@@ -149,14 +149,11 @@ onBeforeUnmount(() => {
           class="wbx-community-qr__image"
           :src="withBase(brand.qrPath)"
           alt="WorkBuddy WB-X 微信交流群二维码"
-          width="800"
-          height="800"
+          width="490"
+          height="490"
         />
 
-        <p id="wbx-community-qr-help" class="wbx-community-qr__help">按 Escape 关闭</p>
-        <p id="wbx-community-qr-maintenance" class="wbx-community-qr__maintenance">
-          二维码过期后，在 GitHub 中覆盖同名文件即可更新。
-        </p>
+        <p id="wbx-community-qr-help" class="wbx-community-qr__help">欢迎创客一起共创</p>
       </section>
     </div>
   </Teleport>

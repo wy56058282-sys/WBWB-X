@@ -96,15 +96,18 @@ const workflowSteps = [
     <section class="wbx-hero" aria-labelledby="wbx-hero-title">
       <div class="wbx-hero__stage">
         <div class="wbx-hero__copy">
-          <p class="wbx-pixel-label">REAL TASKS · 27 CHAPTERS · OPEN SOURCE</p>
+          <p class="wbx-pixel-label">27 CHAPTERS / 4 PARTS / ∞ WORKFLOWS</p>
           <h1 id="wbx-hero-title">{{ brand.contentShortName }}</h1>
           <p class="wbx-hero__summary">
             WorkBuddy能干嘛？一套以真实工作为主线的WorkBuddy实践路径。带你从0到1先用起来，再从1到100把每次成功沉淀为可复用的工作系统，真正把AI变成生产力！
           </p>
           <div class="wbx-hero__actions">
-            <a class="wbx-button wbx-button--primary" :href="withBase('/wb-x/')">
-              <span>开始阅读</span>
-              <i class="hn hn-arrow-right" aria-hidden="true" />
+            <a class="wbx-button wbx-button--primary wbx-hero-cta" :href="withBase('/wb-x/')">
+              <span class="wbx-hero-cta__label">开始阅读</span>
+              <span class="wbx-hero-cta__arrow">
+                <i class="hn hn-arrow-right wbx-hero-cta__arrow--out" aria-hidden="true" />
+                <i class="hn hn-arrow-right wbx-hero-cta__arrow--in" aria-hidden="true" />
+              </span>
             </a>
             <a class="wbx-button wbx-button--outline" :href="withBase('/reading-guide')">查看阅读路线</a>
           </div>
@@ -114,15 +117,15 @@ const workflowSteps = [
           <span class="wbx-hero__monogram">{{ brand.shortMark }}</span>
           <a
             class="wbx-icon-card wbx-icon-card--buddy"
-            :href="withBase('/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/')"
-            aria-label="查看 Part 1 使用手册"
+            :href="withBase('/help/')"
+            aria-label="前往提需求"
           >
             <i class="hn hn-face-grin" aria-hidden="true" />
           </a>
           <a
             class="wbx-icon-card wbx-icon-card--book"
-            :href="withBase('/reading-guide')"
-            aria-label="查看阅读指南"
+            :href="withBase('/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/')"
+            aria-label="查看第一篇目录"
           >
             <i class="hn hn-book" aria-hidden="true" />
           </a>
@@ -147,11 +150,20 @@ const workflowSteps = [
           >
             <i class="hn hn-users" aria-hidden="true" />
           </a>
-          <div class="wbx-hero__metrics" aria-label="小白书内容规模">
-            <span><b>27</b> CHAPTERS</span>
-            <span><b>4</b> PARTS</span>
-            <span><b>∞</b> WORKFLOWS</span>
-          </div>
+          <a
+            class="wbx-hero__official"
+            href="https://www.workbuddy.ai/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="访问 WorkBuddy 官网"
+          >
+            <span class="wbx-hero__official-label">workbuddy.ai</span>
+            <img
+              class="wbx-hero__official-ip"
+              :src="withBase('/brand/workbuddy-official-ip.png')"
+              alt=""
+            >
+          </a>
         </div>
       </div>
 
@@ -212,7 +224,7 @@ const workflowSteps = [
     <section class="wbx-section wbx-system" aria-labelledby="wbx-system-title">
       <div class="wbx-system__intro">
         <p class="wbx-pixel-label">FROM TASK TO TEAM</p>
-        <h2 id="wbx-system-title">一次成功，不该只发生一次。</h2>
+        <h2 id="wbx-system-title">AI 时代，一起象限跃迁</h2>
         <p>小白书真正关心的不是“AI 会什么”，而是如何把一个结果沉淀成稳定、可协作、可复用的工作系统。</p>
       </div>
       <ol class="wbx-system__steps">
@@ -225,26 +237,44 @@ const workflowSteps = [
     </section>
 
     <section class="wbx-community" aria-labelledby="wbx-community-title">
-      <div>
+      <div class="wbx-community__copy">
         <p class="wbx-pixel-label">BUILD IN PUBLIC · LEARN IN PUBLIC</p>
-        <h2 id="wbx-community-title">这本小白书，也可以由你继续写下去。</h2>
+        <h2 id="wbx-community-title">获取 WorkBuddy 小白书与配套资料</h2>
+        <p class="wbx-community__description">下载完整读本、案例资料与后续更新内容。</p>
+        <div class="wbx-community__actions">
+          <a
+            class="wbx-button wbx-button--primary wbx-community__download"
+            href="https://pan.quark.cn/s/ca7b76d97d59?pwd=WPc9"
+            target="_blank"
+            rel="noopener noreferrer"
+          >教学资料</a>
+          <a
+            class="wbx-button wbx-button--outline"
+            :href="withBase('/community/contributing')"
+          >参与共创</a>
+        </div>
       </div>
-      <div class="wbx-community__actions">
-        <a class="wbx-button wbx-button--primary" :href="withBase('/community/contributing')">参与共创</a>
-        <a class="wbx-button wbx-button--outline" :href="brand.repository">前往 GitHub</a>
+      <div class="wbx-community__art" aria-hidden="true">
+        <div class="wbx-community__ip-stage">
+          <img class="wbx-community__ip" :src="withBase('/brand/workbuddy-ip.png')" alt="">
+        </div>
       </div>
-      <i class="hn hn-book wbx-community__icon" aria-hidden="true" />
     </section>
 
   </main>
 
   <footer class="wbx-home-footer">
     <div class="wbx-home-footer__inner">
-      <p>
-        以真实任务为主线的 WorkBuddy 社区实战读本 · Pixel icons by
-        <a href="https://pixeliconlibrary.com/" target="_blank" rel="noreferrer">HackerNoon</a>
+      <p class="wbx-home-footer__product">
+        <span>以真实场景为主线的 WB-X 实战读本</span>
+        <span aria-hidden="true"> · </span>
+        <a
+          href="https://hackernoon.com/pixel-icon-library"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Pixel icons by HackerNoon</a>
       </p>
-      <p>Copyright © 2026 {{ brand.author }}</p>
+      <p class="wbx-home-footer__copyright">Copyright © 2026 WB-X.SparkX</p>
     </div>
   </footer>
 </template>

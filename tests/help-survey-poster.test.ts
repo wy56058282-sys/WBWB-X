@@ -1,9 +1,20 @@
+import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 
 const helpPage = readFileSync('docs/help/index.md', 'utf8')
 
 describe('help survey poster layout', () => {
+  it('uses the approved scene collection poster', () => {
+    const poster = readFileSync(
+      'docs/public/article-assets/source-calibration/help/001.png',
+    )
+
+    expect(createHash('sha256').update(poster).digest('hex')).toBe(
+      '80816579e797eb39697857397d68a71972f178324408f54f8a7e00f9e716a15b',
+    )
+  })
+
   it('renders the survey poster full width without a fixed height cap', () => {
     const rule = helpPage.match(/\.help-survey-card img\s*{([\s\S]*?)}/)?.[1] ?? ''
 

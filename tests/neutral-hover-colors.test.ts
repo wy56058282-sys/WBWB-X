@@ -10,12 +10,17 @@ describe('neutral hover color system', () => {
     expect(customCss).toMatch(/\.dark\s*{[\s\S]*--wbx-hover-surface:\s*#252922;/)
   })
 
+  it('defines dedicated light and dark green-tinted sidebar hover surfaces', () => {
+    expect(customCss).toMatch(/:root\s*\{[^{}]*--wbx-sidebar-hover-surface:\s*#e4ece5;/)
+    expect(customCss).toMatch(/\.dark\s*\{[^{}]*--wbx-sidebar-hover-surface:\s*#202a24;/)
+  })
+
   it('uses the neutral surface for interactive hover backgrounds', () => {
     expect(customCss).toMatch(
       /\.wbx-book-index__entry > a:hover,[\s\S]*?background:\s*var\(--wbx-hover-surface\);/,
     )
     expect(customCss).toMatch(
-      /\.VPSidebarItem \.link:hover,[\s\S]*?background:\s*var\(--wbx-hover-surface\);/,
+      /\.VPSidebarItem \.link:hover,\s*\.VPSidebarItem \.link:focus-visible\s*\{[^{}]*background:\s*var\(--wbx-sidebar-hover-surface\);[^{}]*\}/,
     )
     expect(customCss).toMatch(
       /\.wbx-community-qr__close:hover\s*{[\s\S]*?background:\s*var\(--wbx-hover-surface\);/,

@@ -1,9 +1,13 @@
+import { resolve } from 'node:path'
 import { defineConfig } from 'vitepress'
 import { withMermaid } from 'vitepress-plugin-mermaid'
 import { brand } from './brand'
+import { discoverCaseSidebar } from './case-sidebar'
 import { legacyRouteRedirectPlugin } from './legacy-routes'
 import { nav } from './navigation'
 import { sidebar } from './sidebar'
+
+const casesSidebar = discoverCaseSidebar(resolve('docs/cases/submissions'))
 
 function canonicalPath(relativePath: string) {
   const normalized = relativePath.replace(/\\/g, '/')
@@ -57,17 +61,16 @@ export default withMermaid(defineConfig({
     nav: nav.map((item) => ({ ...item })),
     sidebar: {
       '/wb-x/': [...sidebar],
+      '/cases/': casesSidebar,
+      '/community/case-contributing': casesSidebar,
     },
     search: {
       provider: 'local',
     },
-    editLink: {
-      pattern: `${brand.repository}/edit/main/docs/:path`,
-      text: '在 GitHub 上改进此页',
-    },
     footer: {
-      message: '以真实任务为主线的 WorkBuddy 社区实战读本',
-      copyright: `Copyright © 2026 ${brand.author}`,
+      message:
+        '以真实场景为主线的 WB-X 实战读本 · <a href="https://hackernoon.com/pixel-icon-library" target="_blank" rel="noopener noreferrer">Pixel icons by HackerNoon</a>',
+      copyright: 'Copyright © 2026 WB-X.SparkX',
     },
     socialLinks: [{ icon: 'github', link: brand.repository }],
   },

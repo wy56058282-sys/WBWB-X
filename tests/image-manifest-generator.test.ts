@@ -25,6 +25,15 @@ const sampleImagePath = join(
   'ch02',
   '004.png',
 )
+const sampleJpegPath = join(
+  repositoryRoot,
+  'docs',
+  'public',
+  'article-assets',
+  'source-calibration',
+  'ch13',
+  '004.jpg',
+)
 const csvHeader =
   'id,page,order,purpose,sourceUrl,calibrationPath,replacementPath,sourceWidth,sourceHeight,format,status,notes\n'
 const fixtureRoots: string[] = []
@@ -375,5 +384,95 @@ describe('image manifest generator transactions', () => {
 
     expect(second.status).toBe(0)
     expect(generatedState(fixture)).toEqual(before)
+  })
+
+  it('preserves a user-provided image missing from upstream in Markdown order', () => {
+    const fixture = createFixture()
+    expect(runGenerator(fixture).status).toBe(0)
+
+    const manifestPath = join(
+      fixture.repository,
+      'docs',
+      '.vitepress',
+      'image-manifest.generated.json',
+    )
+    const csvPath = join(
+      fixture.repository,
+      'article-image-replacement-manifest.csv',
+    )
+    const calibrationPath =
+      '/article-assets/source-calibration/ch01/004.jpg'
+    const replacementPath = '/article-assets/replacements/ch01/004.jpg'
+    const sourceUrl = 'user-provided://safe-file.jpg'
+    const supplementalRecord = {
+      id: 'ch01-004',
+      page: '/bluebook/第一篇/第 1 章 Demo/',
+      order: 2,
+      purpose: 'user image',
+      sourceUrl,
+      calibrationPath,
+      replacementPath,
+      sourceWidth: 1080,
+      sourceHeight: 529,
+      format: 'jpg',
+      status: 'awaiting-replacement',
+    }
+
+    const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
+    manifest.splice(1, 0, supplementalRecord)
+    writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`)
+
+    const csv = parseCsv(readFileSync(csvPath, 'utf8'))
+    csv.splice(2, 0, [
+      ...Object.values(supplementalRecord).map(String),
+      '',
+    ])
+    writeFile(csvPath, serializeCsv(csv))
+
+    cpSync(
+      sampleJpegPath,
+      join(fixture.repository, 'docs', 'public', calibrationPath),
+    )
+    const chapterOne = fixture.markdownPaths[0]
+    writeFile(
+      chapterOne,
+      readFileSync(chapterOne, 'utf8').replace(
+        '\n',
+        `\n\n![user image](${calibrationPath})\n`,
+      ),
+    )
+
+    const first = runGenerator(fixture)
+
+    expect(first.status).toBe(0)
+    const regeneratedManifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
+    expect(regeneratedManifest.map((record: { id: string }) => record.id)).toEqual([
+      'ch01-004',
+      'ch01-001',
+      'ch02-001',
+    ])
+    expect(regeneratedManifest[0]).toEqual({
+      ...supplementalRecord,
+      order: 1,
+    })
+    expect(regeneratedManifest[1].order).toBe(2)
+    const regeneratedCsv = parseCsv(readFileSync(csvPath, 'utf8'))
+    const idColumn = regeneratedCsv[0].indexOf('id')
+    expect(regeneratedCsv.slice(1).map((row) => row[idColumn])).toEqual([
+      'ch01-004',
+      'ch01-001',
+      'ch02-001',
+    ])
+    expect(regeneratedCsv[1].slice(0, -1)).toEqual(
+      Object.values(regeneratedManifest[0]).map(String),
+    )
+    expect(readFileSync(chapterOne, 'utf8')).toContain(
+      `![user image](${calibrationPath})\n\n![demo](/article-assets/source-calibration/ch01/001.png)`,
+    )
+
+    const beforeRerun = generatedState(fixture)
+    const second = runGenerator(fixture)
+    expect(second.status).toBe(0)
+    expect(generatedState(fixture)).toEqual(beforeRerun)
   })
 })

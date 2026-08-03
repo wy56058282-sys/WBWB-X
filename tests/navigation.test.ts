@@ -37,14 +37,21 @@ describe('site navigation', () => {
     expect(serialized).not.toContain('/bluebook/')
   })
 
-  it('only enables the small-book sidebar on /wb-x/ routes', () => {
-    expect(config.themeConfig?.sidebar).toEqual({
-      '/wb-x/': sidebar,
-    })
+  it('enables dedicated sidebars for the small book, cases, and case contribution page', () => {
+    const configuredSidebars = config.themeConfig?.sidebar as Record<string, unknown>
+
+    expect(configuredSidebars['/wb-x/']).toEqual(sidebar)
+    expect(configuredSidebars['/cases/']).toEqual(expect.any(Array))
+    expect(configuredSidebars['/community/case-contributing']).toBe(configuredSidebars['/cases/'])
   })
 
   it('uses the approved SEO title for the browser title', () => {
     expect(config.title).toBe('WorkBuddy 教程与使用指南｜WorkBuddy WB-X 实战小白书')
+  })
+
+  it('keeps Git-derived update times without exposing page edit links', () => {
+    expect(config.lastUpdated).toBe(true)
+    expect(config.themeConfig?.editLink).toBeUndefined()
   })
 
   it('recognizes the homepage at root and under the GitHub Pages base path', () => {
