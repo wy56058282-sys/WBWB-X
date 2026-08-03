@@ -139,13 +139,22 @@ describe('article image replacement inventory', () => {
     expect(manifest.filter((item) => item.id.startsWith('community-'))).toHaveLength(2)
     expect(manifest.filter((item) => item.id.startsWith('help-'))).toHaveLength(1)
     expect(new Set(manifest.map((item) => item.id)).size).toBe(manifest.length)
+    expect(manifest.find((item) => item.id === 'ch01-004')?.sourceUrl).toBe(
+      'user-provided://1783101228901_kno9pn_HMOXgjAbkAASPAl.jpg',
+    )
 
     for (const item of manifest) {
       expect(Object.keys(item)).toEqual(columns)
       expect(item.id).toMatch(
         /^(?:ch\d{2}|appendix-[a-z]|case-[a-z0-9-]+|community|help)-\d{3}$/,
       )
-      expect(item.sourceUrl).toMatch(/^https:\/\/workbuddy\.homes\//)
+      if (item.id === 'ch01-004') {
+        expect(item.sourceUrl).toMatch(
+          /^user-provided:\/\/[A-Za-z0-9][A-Za-z0-9._-]*\.(?:png|jpg|gif)$/,
+        )
+      } else {
+        expect(item.sourceUrl).toMatch(/^https:\/\/workbuddy\.homes\//)
+      }
       expect(item.calibrationPath).toMatch(
         /^\/article-assets\/source-calibration\/(?:ch\d{2}|appendix-[a-z]|case-[a-z0-9-]+|community|help)\/\d{3}\.(?:png|jpg|gif)$/,
       )
