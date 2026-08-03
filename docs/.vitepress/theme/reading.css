@@ -6,7 +6,7 @@
 
 .wbx-reading-layout .VPSidebar {
   border-right: 1px solid var(--wbx-line);
-  background: var(--wbx-paper);
+  background: var(--vp-sidebar-bg-color);
 }
 
 .wbx-reading-layout .VPSidebar .curtain {

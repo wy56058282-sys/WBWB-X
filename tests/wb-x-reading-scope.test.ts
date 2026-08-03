@@ -45,6 +45,9 @@ describe('WB-X reading visual scope', () => {
 
   it('scopes neutral sidebar interactions to reading pages', () => {
     expect(readingCss).toMatch(
+      /\.wbx-reading-layout \.VPSidebar\s*{[^}]*background:\s*var\(--vp-sidebar-bg-color\)/,
+    )
+    expect(readingCss).toMatch(
       /\.wbx-reading-layout \.VPSidebarItem \.link:hover\s*{[^}]*background:\s*var\(--wbx-sidebar-hover-surface\)/,
     )
     expect(readingCss).toMatch(
