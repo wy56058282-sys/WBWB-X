@@ -133,8 +133,8 @@ describe('article image replacement inventory', () => {
       'status',
     ]
 
-    expect(manifest).toHaveLength(268)
-    expect(manifest.filter((item) => item.id.startsWith('ch'))).toHaveLength(236)
+    expect(manifest).toHaveLength(269)
+    expect(manifest.filter((item) => item.id.startsWith('ch'))).toHaveLength(237)
     expect(manifest.filter((item) => item.id.startsWith('case-'))).toHaveLength(29)
     expect(manifest.filter((item) => item.id.startsWith('community-'))).toHaveLength(2)
     expect(manifest.filter((item) => item.id.startsWith('help-'))).toHaveLength(1)
@@ -148,7 +148,7 @@ describe('article image replacement inventory', () => {
       expect(item.id).toMatch(
         /^(?:ch\d{2}|appendix-[a-z]|case-[a-z0-9-]+|community|help)-\d{3}$/,
       )
-      if (item.id === 'ch01-004') {
+      if (item.sourceUrl.startsWith('user-provided://')) {
         expect(item.sourceUrl).toMatch(
           /^user-provided:\/\/[A-Za-z0-9][A-Za-z0-9._-]*\.(?:png|jpg|gif)$/,
         )

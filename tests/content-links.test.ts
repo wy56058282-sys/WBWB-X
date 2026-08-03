@@ -100,6 +100,21 @@ describe('content inventory', () => {
     expect(existsSync('docs/public/article-assets/source-calibration/ch01/004.jpg')).toBe(true)
     expect(chapter.slice(mermaidEnd, exampleIndex).trim()).toBe(image)
   })
+
+  it('places the official-site screenshot after the WorkBuddy link', () => {
+    const chapter = readFileSync(
+      'docs/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 2 章 WorkBuddy的下载、安装、登录与更新/index.md',
+      'utf8',
+    )
+    const officialLink = '[WorkBuddy 官网](https://www.workbuddy.ai/)'
+    const screenshot =
+      '![WorkBuddy 官网首页](/article-assets/source-calibration/ch02/018.png)'
+    const codeBuddyLink = '[CodeBuddy 工作台](https://www.codebuddy.cn/work/)'
+
+    expect(existsSync('docs/public/article-assets/source-calibration/ch02/018.png')).toBe(true)
+    expect(chapter.indexOf(officialLink)).toBeLessThan(chapter.indexOf(screenshot))
+    expect(chapter.indexOf(screenshot)).toBeLessThan(chapter.indexOf(codeBuddyLink))
+  })
 })
 
 describe('internal content links', () => {
