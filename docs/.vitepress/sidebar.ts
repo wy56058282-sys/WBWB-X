@@ -39,6 +39,7 @@ export const sidebar = [
       { text: '第 9 章 如何接入外部 API', link: `${firstPart}第 9 章 如何接入外部 API/` },
       { text: '第 10 章 WorkBuddy 自动化任务', link: `${firstPart}第 10 章 WorkBuddy 自动化任务/` },
       { text: '课外阅读：一章看懂 AI 工作系统', link: `${firstPart}课外阅读：一章看懂 AI 工作系统/` },
+      { text: '使用心得：新手工具设置（必看）', link: `${firstPart}使用心得：新手工具设置（必看）` },
     ],
   },
   {
