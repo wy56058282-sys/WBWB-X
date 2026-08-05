@@ -72,6 +72,14 @@ export default withMermaid(defineConfig({
         '以真实场景为主线的 WB-X 实战读本 · <a href="https://hackernoon.com/pixel-icon-library" target="_blank" rel="noopener noreferrer">Pixel icons by HackerNoon</a>',
       copyright: 'Copyright © 2026 WB-X.SparkX',
     },
-    socialLinks: [{ icon: 'github', link: brand.repository }],
+    socialLinks: [
+      {
+        icon: {
+          svg: '<svg width="20" height="20" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M247.589 175.192C247.588 215.177 215.174 247.59 175.189 247.59H69.0037V310.333C202.286 310.333 310.334 202.286 310.334 69.0034H247.589V175.192Z" fill="currentColor"/><rect width="55.5059" height="130.318" rx="9.6532" transform="matrix(-0.707107 0.707107 0.707107 0.707107 155.822 119.266)" fill="currentColor"/><path d="M252.415 324.815C252.415 284.83 284.83 252.416 324.815 252.416H430.999V189.666C297.717 189.666 189.67 297.713 189.67 430.996H252.415L252.415 324.815Z" fill="currentColor"/><rect width="55.5059" height="130.318" rx="9.6532" transform="matrix(0.707107 -0.707107 -0.707107 -0.707107 343.844 380.395)" fill="currentColor"/></svg>'
+        },
+        link: 'https://www.sparkx.zone',
+        ariaLabel: 'SparkX'
+      }
+    ],
   },
 }))

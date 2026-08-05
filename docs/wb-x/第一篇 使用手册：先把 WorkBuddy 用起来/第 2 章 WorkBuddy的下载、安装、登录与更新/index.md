@@ -4,23 +4,27 @@
 
 下载 WorkBuddy，请选择以下官方入口：
 
-- [WorkBuddy 官网](https://www.workbuddy.ai/)
+- [WorkBuddy官网｜国际站](https://www.workbuddy.ai/)
 
-  进入页面后点击“立即下载”即可。
+  进入页面后点击"立即下载"即可。
 
   ![WorkBuddy 官网首页](/article-assets/source-calibration/ch02/018.png)
 
+- [WorkBuddy 官网｜中国站](https://www.workbuddy.cn/)
+
+  进入页面后点击"立即下载"即可。
+
 - [CodeBuddy 工作台](https://www.codebuddy.cn/work/)
 
-进入页面后选择 WorkBuddy，点击“下载 WorkBuddy”即可。
+  进入页面后选择 WorkBuddy，点击"下载 WorkBuddy"即可。
 
-![](/article-assets/source-calibration/ch02/001.png)
+  ![](/article-assets/source-calibration/ch02/001.png)
 
-网站会自动检查你当前设备，判断你是什么版本，Mac ARM64、Mac x64或者Windows x64。
+  网站会自动检查你当前设备，判断你是什么版本，Mac ARM64、Mac x64或者Windows x64。
 
-![](/article-assets/source-calibration/ch02/002.png)
+  ![](/article-assets/source-calibration/ch02/002.png)
 
-***切记：从官方入口进入下载，不从网盘或不明镜像获取安装包。***
+***切记：从官方入口进入下载，不从网盘或不明镜像获取安装包。下载前后，查看确认安装包是否是最新版本（最新版本会有更完善的功能）。***
 
 
 
