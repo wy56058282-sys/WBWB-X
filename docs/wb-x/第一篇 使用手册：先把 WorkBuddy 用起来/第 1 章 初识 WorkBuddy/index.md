@@ -50,3 +50,7 @@ WorkBuddy 面向的是完整的工作任务。
 想对workbuddy打分，可以去[观猹](https://watcha.cn/)，写出你对workbuddy的真实评价～
 
 ![](/article-assets/source-calibration/ch01/003.png)
+
+想对 WorkBuddy 打分，可以去[星火集](https://www.sparkx.zone/)，写出你对 WorkBuddy 的真实评价～
+
+![星火集 WorkBuddy 页面](/article-assets/source-calibration/ch01/004.png)
