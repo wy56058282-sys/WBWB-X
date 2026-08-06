@@ -21,6 +21,8 @@ describe('chapter 2 download links', () => {
       '',
       '  \u8fdb\u5165\u9875\u9762\u540e\u70b9\u51fb"\u7acb\u5373\u4e0b\u8f7d"\u5373\u53ef\u3002',
       '',
+      '  ![WorkBuddy \u4e2d\u56fd\u7ad9\u9996\u9875](/article-assets/source-calibration/ch02/019.png)',
+      '',
       '- [CodeBuddy \u5de5\u4f5c\u53f0](https://www.codebuddy.cn/work/)',
       '',
       '  \u8fdb\u5165\u9875\u9762\u540e\u9009\u62e9 WorkBuddy\uff0c\u70b9\u51fb"\u4e0b\u8f7d WorkBuddy"\u5373\u53ef\u3002',

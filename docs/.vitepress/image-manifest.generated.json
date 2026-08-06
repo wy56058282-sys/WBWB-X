@@ -52,6 +52,19 @@
     "status": "awaiting-replacement"
   },
   {
+    "id": "ch01-005",
+    "page": "/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 1 章 初识 WorkBuddy/",
+    "order": 5,
+    "purpose": "第 1 章 初识 WorkBuddy — image 5",
+    "sourceUrl": "user-provided://1786016899816_6ljye1f3.png",
+    "calibrationPath": "/article-assets/source-calibration/ch01/004.png",
+    "replacementPath": "/article-assets/replacements/ch01/004.png",
+    "sourceWidth": 3840,
+    "sourceHeight": 2160,
+    "format": "png",
+    "status": "awaiting-replacement"
+  },
+  {
     "id": "ch02-018",
     "page": "/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 2 章 WorkBuddy的下载、安装、登录与更新/",
     "order": 1,
@@ -65,9 +78,22 @@
     "status": "awaiting-replacement"
   },
   {
-    "id": "ch02-001",
+    "id": "ch02-019",
     "page": "/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 2 章 WorkBuddy的下载、安装、登录与更新/",
     "order": 2,
+    "purpose": "第 2 章 WorkBuddy的下载、安装、登录与更新 — china site screenshot",
+    "sourceUrl": "user-provided://1786014597380_0g9nhmxd.png",
+    "calibrationPath": "/article-assets/source-calibration/ch02/019.png",
+    "replacementPath": "/article-assets/replacements/ch02/019.png",
+    "sourceWidth": 3840,
+    "sourceHeight": 2160,
+    "format": "png",
+    "status": "awaiting-replacement"
+  },
+  {
+    "id": "ch02-001",
+    "page": "/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 2 章 WorkBuddy的下载、安装、登录与更新/",
+    "order": 3,
     "purpose": "第 2 章 WorkBuddy的下载、安装、登录与更新 — image 1",
     "sourceUrl": "https://workbuddy.homes/bluebook/%E7%AC%AC%E4%B8%80%E7%AF%87%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C%EF%BC%9A%E5%85%88%E6%8A%8A%20WorkBuddy%20%E7%94%A8%E8%B5%B7%E6%9D%A5/%E7%AC%AC%202%20%E7%AB%A0%20WorkBuddy%E7%9A%84%E4%B8%8B%E8%BD%BD%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9B%B4%E6%96%B0/assets/001_image_GGeabJkE2o.png",
     "calibrationPath": "/article-assets/source-calibration/ch02/001.png",
@@ -80,7 +106,7 @@
   {
     "id": "ch02-002",
     "page": "/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 2 章 WorkBuddy的下载、安装、登录与更新/",
-    "order": 3,
+    "order": 4,
     "purpose": "第 2 章 WorkBuddy的下载、安装、登录与更新 — image 2",
     "sourceUrl": "https://workbuddy.homes/bluebook/%E7%AC%AC%E4%B8%80%E7%AF%87%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C%EF%BC%9A%E5%85%88%E6%8A%8A%20WorkBuddy%20%E7%94%A8%E8%B5%B7%E6%9D%A5/%E7%AC%AC%202%20%E7%AB%A0%20WorkBuddy%E7%9A%84%E4%B8%8B%E8%BD%BD%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9B%B4%E6%96%B0/assets/002_image_HaXcbwaJXo.png",
     "calibrationPath": "/article-assets/source-calibration/ch02/002.png",
@@ -93,7 +119,7 @@
   {
     "id": "ch02-003",
     "page": "/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 2 章 WorkBuddy的下载、安装、登录与更新/",
-    "order": 4,
+    "order": 5,
     "purpose": "第 2 章 WorkBuddy的下载、安装、登录与更新 — image 3",
     "sourceUrl": "https://workbuddy.homes/bluebook/%E7%AC%AC%E4%B8%80%E7%AF%87%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C%EF%BC%9A%E5%85%88%E6%8A%8A%20WorkBuddy%20%E7%94%A8%E8%B5%B7%E6%9D%A5/%E7%AC%AC%202%20%E7%AB%A0%20WorkBuddy%E7%9A%84%E4%B8%8B%E8%BD%BD%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9B%B4%E6%96%B0/assets/003_image_Ehpebt4Eso.png",
     "calibrationPath": "/article-assets/source-calibration/ch02/003.png",
@@ -106,7 +132,7 @@
   {
     "id": "ch02-004",
     "page": "/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 2 章 WorkBuddy的下载、安装、登录与更新/",
-    "order": 5,
+    "order": 6,
     "purpose": "第 2 章 WorkBuddy的下载、安装、登录与更新 — image 4",
     "sourceUrl": "https://workbuddy.homes/bluebook/%E7%AC%AC%E4%B8%80%E7%AF%87%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C%EF%BC%9A%E5%85%88%E6%8A%8A%20WorkBuddy%20%E7%94%A8%E8%B5%B7%E6%9D%A5/%E7%AC%AC%202%20%E7%AB%A0%20WorkBuddy%E7%9A%84%E4%B8%8B%E8%BD%BD%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9B%B4%E6%96%B0/assets/004_image_LG3MbcWpvo.png",
     "calibrationPath": "/article-assets/source-calibration/ch02/004.png",
@@ -119,7 +145,7 @@
   {
     "id": "ch02-005",
     "page": "/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 2 章 WorkBuddy的下载、安装、登录与更新/",
-    "order": 6,
+    "order": 7,
     "purpose": "第 2 章 WorkBuddy的下载、安装、登录与更新 — image 5",
     "sourceUrl": "https://workbuddy.homes/bluebook/%E7%AC%AC%E4%B8%80%E7%AF%87%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C%EF%BC%9A%E5%85%88%E6%8A%8A%20WorkBuddy%20%E7%94%A8%E8%B5%B7%E6%9D%A5/%E7%AC%AC%202%20%E7%AB%A0%20WorkBuddy%E7%9A%84%E4%B8%8B%E8%BD%BD%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9B%B4%E6%96%B0/assets/005_image_CMvYbYWFOo.png",
     "calibrationPath": "/article-assets/source-calibration/ch02/005.png",
@@ -132,7 +158,7 @@
   {
     "id": "ch02-006",
     "page": "/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 2 章 WorkBuddy的下载、安装、登录与更新/",
-    "order": 7,
+    "order": 8,
     "purpose": "第 2 章 WorkBuddy的下载、安装、登录与更新 — image 6",
     "sourceUrl": "https://workbuddy.homes/bluebook/%E7%AC%AC%E4%B8%80%E7%AF%87%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C%EF%BC%9A%E5%85%88%E6%8A%8A%20WorkBuddy%20%E7%94%A8%E8%B5%B7%E6%9D%A5/%E7%AC%AC%202%20%E7%AB%A0%20WorkBuddy%E7%9A%84%E4%B8%8B%E8%BD%BD%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9B%B4%E6%96%B0/assets/006_image_Wujkbd9eTo.png",
     "calibrationPath": "/article-assets/source-calibration/ch02/006.png",
@@ -145,7 +171,7 @@
   {
     "id": "ch02-007",
     "page": "/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 2 章 WorkBuddy的下载、安装、登录与更新/",
-    "order": 8,
+    "order": 9,
     "purpose": "第 2 章 WorkBuddy的下载、安装、登录与更新 — image 7",
     "sourceUrl": "https://workbuddy.homes/bluebook/%E7%AC%AC%E4%B8%80%E7%AF%87%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C%EF%BC%9A%E5%85%88%E6%8A%8A%20WorkBuddy%20%E7%94%A8%E8%B5%B7%E6%9D%A5/%E7%AC%AC%202%20%E7%AB%A0%20WorkBuddy%E7%9A%84%E4%B8%8B%E8%BD%BD%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9B%B4%E6%96%B0/assets/007_image_V9L2bhWF2o.png",
     "calibrationPath": "/article-assets/source-calibration/ch02/007.png",
@@ -158,7 +184,7 @@
   {
     "id": "ch02-008",
     "page": "/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 2 章 WorkBuddy的下载、安装、登录与更新/",
-    "order": 9,
+    "order": 10,
     "purpose": "第 2 章 WorkBuddy的下载、安装、登录与更新 — image 8",
     "sourceUrl": "https://workbuddy.homes/bluebook/%E7%AC%AC%E4%B8%80%E7%AF%87%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C%EF%BC%9A%E5%85%88%E6%8A%8A%20WorkBuddy%20%E7%94%A8%E8%B5%B7%E6%9D%A5/%E7%AC%AC%202%20%E7%AB%A0%20WorkBuddy%E7%9A%84%E4%B8%8B%E8%BD%BD%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9B%B4%E6%96%B0/assets/008_image_DjcGbKYJSo.png",
     "calibrationPath": "/article-assets/source-calibration/ch02/008.png",
@@ -171,7 +197,7 @@
   {
     "id": "ch02-009",
     "page": "/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 2 章 WorkBuddy的下载、安装、登录与更新/",
-    "order": 10,
+    "order": 11,
     "purpose": "第 2 章 WorkBuddy的下载、安装、登录与更新 — image 9",
     "sourceUrl": "https://workbuddy.homes/bluebook/%E7%AC%AC%E4%B8%80%E7%AF%87%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C%EF%BC%9A%E5%85%88%E6%8A%8A%20WorkBuddy%20%E7%94%A8%E8%B5%B7%E6%9D%A5/%E7%AC%AC%202%20%E7%AB%A0%20WorkBuddy%E7%9A%84%E4%B8%8B%E8%BD%BD%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9B%B4%E6%96%B0/assets/009_image_Q0l3bAkUPo.png",
     "calibrationPath": "/article-assets/source-calibration/ch02/009.png",
@@ -184,7 +210,7 @@
   {
     "id": "ch02-010",
     "page": "/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 2 章 WorkBuddy的下载、安装、登录与更新/",
-    "order": 11,
+    "order": 12,
     "purpose": "第 2 章 WorkBuddy的下载、安装、登录与更新 — image 10",
     "sourceUrl": "https://workbuddy.homes/bluebook/%E7%AC%AC%E4%B8%80%E7%AF%87%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C%EF%BC%9A%E5%85%88%E6%8A%8A%20WorkBuddy%20%E7%94%A8%E8%B5%B7%E6%9D%A5/%E7%AC%AC%202%20%E7%AB%A0%20WorkBuddy%E7%9A%84%E4%B8%8B%E8%BD%BD%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9B%B4%E6%96%B0/assets/010_image_TmYPbu7Ibo.png",
     "calibrationPath": "/article-assets/source-calibration/ch02/010.png",
@@ -197,7 +223,7 @@
   {
     "id": "ch02-011",
     "page": "/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 2 章 WorkBuddy的下载、安装、登录与更新/",
-    "order": 12,
+    "order": 13,
     "purpose": "第 2 章 WorkBuddy的下载、安装、登录与更新 — image 11",
     "sourceUrl": "https://workbuddy.homes/bluebook/%E7%AC%AC%E4%B8%80%E7%AF%87%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C%EF%BC%9A%E5%85%88%E6%8A%8A%20WorkBuddy%20%E7%94%A8%E8%B5%B7%E6%9D%A5/%E7%AC%AC%202%20%E7%AB%A0%20WorkBuddy%E7%9A%84%E4%B8%8B%E8%BD%BD%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9B%B4%E6%96%B0/assets/011_image_UlJcbVqX7o.png",
     "calibrationPath": "/article-assets/source-calibration/ch02/011.png",
@@ -210,7 +236,7 @@
   {
     "id": "ch02-012",
     "page": "/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 2 章 WorkBuddy的下载、安装、登录与更新/",
-    "order": 13,
+    "order": 14,
     "purpose": "第 2 章 WorkBuddy的下载、安装、登录与更新 — image 12",
     "sourceUrl": "https://workbuddy.homes/bluebook/%E7%AC%AC%E4%B8%80%E7%AF%87%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C%EF%BC%9A%E5%85%88%E6%8A%8A%20WorkBuddy%20%E7%94%A8%E8%B5%B7%E6%9D%A5/%E7%AC%AC%202%20%E7%AB%A0%20WorkBuddy%E7%9A%84%E4%B8%8B%E8%BD%BD%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9B%B4%E6%96%B0/assets/012_image_LtqPbQ2z6o.png",
     "calibrationPath": "/article-assets/source-calibration/ch02/012.png",
@@ -223,7 +249,7 @@
   {
     "id": "ch02-013",
     "page": "/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 2 章 WorkBuddy的下载、安装、登录与更新/",
-    "order": 14,
+    "order": 15,
     "purpose": "第 2 章 WorkBuddy的下载、安装、登录与更新 — image 13",
     "sourceUrl": "https://workbuddy.homes/bluebook/%E7%AC%AC%E4%B8%80%E7%AF%87%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C%EF%BC%9A%E5%85%88%E6%8A%8A%20WorkBuddy%20%E7%94%A8%E8%B5%B7%E6%9D%A5/%E7%AC%AC%202%20%E7%AB%A0%20WorkBuddy%E7%9A%84%E4%B8%8B%E8%BD%BD%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9B%B4%E6%96%B0/assets/013_image_MMIXbZJafo.png",
     "calibrationPath": "/article-assets/source-calibration/ch02/013.png",
@@ -236,7 +262,7 @@
   {
     "id": "ch02-014",
     "page": "/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 2 章 WorkBuddy的下载、安装、登录与更新/",
-    "order": 15,
+    "order": 16,
     "purpose": "第 2 章 WorkBuddy的下载、安装、登录与更新 — image 14",
     "sourceUrl": "https://workbuddy.homes/bluebook/%E7%AC%AC%E4%B8%80%E7%AF%87%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C%EF%BC%9A%E5%85%88%E6%8A%8A%20WorkBuddy%20%E7%94%A8%E8%B5%B7%E6%9D%A5/%E7%AC%AC%202%20%E7%AB%A0%20WorkBuddy%E7%9A%84%E4%B8%8B%E8%BD%BD%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9B%B4%E6%96%B0/assets/014_image_MdmYbB2Avo.png",
     "calibrationPath": "/article-assets/source-calibration/ch02/014.png",
@@ -249,7 +275,7 @@
   {
     "id": "ch02-015",
     "page": "/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 2 章 WorkBuddy的下载、安装、登录与更新/",
-    "order": 16,
+    "order": 17,
     "purpose": "第 2 章 WorkBuddy的下载、安装、登录与更新 — image 15",
     "sourceUrl": "https://workbuddy.homes/bluebook/%E7%AC%AC%E4%B8%80%E7%AF%87%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C%EF%BC%9A%E5%85%88%E6%8A%8A%20WorkBuddy%20%E7%94%A8%E8%B5%B7%E6%9D%A5/%E7%AC%AC%202%20%E7%AB%A0%20WorkBuddy%E7%9A%84%E4%B8%8B%E8%BD%BD%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9B%B4%E6%96%B0/assets/015_image_WZrBbbWono.png",
     "calibrationPath": "/article-assets/source-calibration/ch02/015.png",
@@ -262,7 +288,7 @@
   {
     "id": "ch02-016",
     "page": "/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 2 章 WorkBuddy的下载、安装、登录与更新/",
-    "order": 17,
+    "order": 18,
     "purpose": "第 2 章 WorkBuddy的下载、安装、登录与更新 — image 16",
     "sourceUrl": "https://workbuddy.homes/bluebook/%E7%AC%AC%E4%B8%80%E7%AF%87%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C%EF%BC%9A%E5%85%88%E6%8A%8A%20WorkBuddy%20%E7%94%A8%E8%B5%B7%E6%9D%A5/%E7%AC%AC%202%20%E7%AB%A0%20WorkBuddy%E7%9A%84%E4%B8%8B%E8%BD%BD%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9B%B4%E6%96%B0/assets/016_image_Pmh8b7xc8o.png",
     "calibrationPath": "/article-assets/source-calibration/ch02/016.png",
@@ -275,7 +301,7 @@
   {
     "id": "ch02-017",
     "page": "/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 2 章 WorkBuddy的下载、安装、登录与更新/",
-    "order": 18,
+    "order": 19,
     "purpose": "第 2 章 WorkBuddy的下载、安装、登录与更新 — image 17",
     "sourceUrl": "https://workbuddy.homes/bluebook/%E7%AC%AC%E4%B8%80%E7%AF%87%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C%EF%BC%9A%E5%85%88%E6%8A%8A%20WorkBuddy%20%E7%94%A8%E8%B5%B7%E6%9D%A5/%E7%AC%AC%202%20%E7%AB%A0%20WorkBuddy%E7%9A%84%E4%B8%8B%E8%BD%BD%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9B%B4%E6%96%B0/assets/017_image_Qt1gbb7J3o.png",
     "calibrationPath": "/article-assets/source-calibration/ch02/017.png",
