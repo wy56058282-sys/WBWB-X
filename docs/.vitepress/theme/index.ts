@@ -7,6 +7,7 @@ import { legacyRouteTarget } from '../legacy-routes'
 import './custom.css'
 import './reading.css'
 import './home.css'
+import './floating-quick-access.css'
 
 export default {
   extends: DefaultTheme,

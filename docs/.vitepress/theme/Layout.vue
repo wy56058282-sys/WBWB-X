@@ -5,6 +5,7 @@ import { computed, onBeforeUnmount, onMounted } from 'vue'
 import { isHomeRoute, isReadingRoute } from '../route-state'
 import CommunityQr, { openCommunityQr } from './CommunityQr.vue'
 import DocImageLightbox from './DocImageLightbox.vue'
+import FloatingQuickAccess from './FloatingQuickAccess.vue'
 import HomePage from './HomePage.vue'
 
 const route = useRoute()
@@ -55,6 +56,7 @@ onBeforeUnmount(() => {
     <template #layout-bottom>
       <CommunityQr />
       <DocImageLightbox />
+      <FloatingQuickAccess />
     </template>
   </DefaultTheme.Layout>
 </template>
