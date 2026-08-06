@@ -298,6 +298,27 @@ describe('floating quick access button', () => {
     expect(css).toMatch(/\.wbx-fab\s*\{[^}]*z-index:\s*50;/s)
   })
 
+  it('has toggle button absolutely positioned to stay fixed', () => {
+    const css = readFileSync(
+      'docs/.vitepress/theme/floating-quick-access.css',
+      'utf8',
+    )
+
+    expect(css).toMatch(/\.wbx-fab__toggle\s*\{[^}]*position:\s*absolute;/s)
+    expect(css).toMatch(/\.wbx-fab__toggle\s*\{[^}]*bottom:\s*0;/s)
+    expect(css).toMatch(/\.wbx-fab__toggle\s*\{[^}]*right:\s*0;/s)
+  })
+
+  it('has menu absolutely positioned above toggle', () => {
+    const css = readFileSync(
+      'docs/.vitepress/theme/floating-quick-access.css',
+      'utf8',
+    )
+
+    expect(css).toMatch(/\.wbx-fab__menu\s*\{[^}]*position:\s*absolute;/s)
+    expect(css).toMatch(/\.wbx-fab__menu\s*\{[^}]*bottom:\s*64px;/s)
+  })
+
   it('has correct CSS styles for the toggle button', () => {
     const css = readFileSync(
       'docs/.vitepress/theme/floating-quick-access.css',
@@ -332,6 +353,7 @@ describe('floating quick access button', () => {
     expect(mobile).toMatch(/\.wbx-fab\s*\{[^}]*right:\s*16px;/s)
     expect(mobile).toMatch(/\.wbx-fab\s*\{[^}]*bottom:\s*16px;/s)
     expect(mobile).toMatch(/\.wbx-fab__toggle\s*\{[^}]*width:\s*46px;/s)
+    expect(mobile).toMatch(/\.wbx-fab__menu\s*\{[^}]*bottom:\s*58px;/s)
     expect(mobile).toMatch(/\.wbx-fab__item\s*\{[^}]*width:\s*40px;/s)
   })
 
