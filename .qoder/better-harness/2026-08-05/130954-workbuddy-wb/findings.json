@@ -1,0 +1,190 @@
+{
+  "summary": {
+    "projectName": "WORKBUDDY WB",
+    "locale": "zh-CN",
+    "modelId": "agent-work-loop-v4",
+    "reportContractVersion": 25,
+    "overview": "项目拥有清晰的构建与测试基础（27 个测试文件、CI 部署管道），但 CI 管道与本地检查不一致导致部分验证缺口，且缺少 Agent 路由文件和 Skill 覆盖，限制了 AI 代理的上下文获取和学习捕获能力。",
+    "aiAgentPractice": {
+      "inspectedSurfaces": [
+        "Workflows",
+        "Memories"
+      ],
+      "coverageRows": [
+        {
+          "surface": "Workflows",
+          "scopes": [
+            "Project"
+          ],
+          "count": 1,
+          "paths": [
+            ".github/workflows/deploy-pages.yml"
+          ]
+        },
+        {
+          "surface": "Memories",
+          "scopes": [
+            "Project"
+          ],
+          "count": 5
+        },
+        {
+          "surface": "Skills",
+          "scopes": [
+            "Project"
+          ],
+          "count": 0
+        },
+        {
+          "surface": "Custom Agents",
+          "scopes": [
+            "Project"
+          ],
+          "count": 0
+        },
+        {
+          "surface": "Rules",
+          "scopes": [
+            "Project"
+          ],
+          "count": 0
+        },
+        {
+          "surface": "MCP",
+          "scopes": [
+            "Project"
+          ],
+          "count": 0
+        },
+        {
+          "surface": "Hooks",
+          "scopes": [
+            "Project"
+          ],
+          "count": 0
+        },
+        {
+          "surface": "Commands",
+          "scopes": [
+            "Project"
+          ],
+          "count": 0
+        },
+        {
+          "surface": "Plugins",
+          "scopes": [
+            "Project"
+          ],
+          "count": 0
+        }
+      ]
+    },
+    "assignmentSummaries": [],
+    "dimensions": [
+      {
+        "id": "task-understanding",
+        "label": "任务理解",
+        "score": 58,
+        "summary": "项目有 25 个设计规格文件和清晰的目录结构，但缺少 AGENTS.md 或等效的 Agent 路由文件，AI 代理无法通过规范化入口理解项目架构和约定。",
+        "findingRefs": [
+          "no-agent-routing"
+        ]
+      },
+      {
+        "id": "controlled-execution",
+        "label": "可控执行",
+        "score": 68,
+        "summary": "package.json 提供了完整的脚本命令（dev/build/test/check），引擎版本已固定，但 CI 使用 Node 24 而 package.json 声明 >=20，存在轻微的环境不一致。",
+        "findingRefs": []
+      },
+      {
+        "id": "change-validation",
+        "label": "改动验证",
+        "score": 62,
+        "summary": "27 个测试文件覆盖主要变更路径，CI 运行测试和构建，但 CI 缺少 check:links 和 check:assets 步骤，且 TypeScript 类型检查未纳入验证流程。",
+        "findingRefs": [
+          "ci-missing-content-checks",
+          "typescript-check-not-enforced"
+        ]
+      },
+      {
+        "id": "reliable-delivery",
+        "label": "可靠交付",
+        "score": 50,
+        "summary": "GitHub Actions 在 push 到 main 时自动构建并部署到 GitHub Pages，但无观测到的验收证据，且 CI 验证范围窄于本地检查。",
+        "findingRefs": []
+      },
+      {
+        "id": "learning-capture",
+        "label": "经验沉淀",
+        "score": 35,
+        "summary": "项目未配置任何 Skill，11 个设计规格文件表明存在「设计→实现」的重复工作模式，但未被捕获为可复用的学习路径。无观测到的学习机制或episode记录。",
+        "findingRefs": [
+          "design-to-impl-pattern-uncovered"
+        ]
+      }
+    ]
+  },
+  "findings": [
+    {
+      "id": "ci-missing-content-checks",
+      "title": "CI 管道缺少链接和资源完整性检查",
+      "severity": "Medium",
+      "reason": "本地 check 脚本包含 check:links 和 check:assets 两个验证步骤，但 CI 管道仅运行 test 和 build。这意味着损坏的内部链接或缺失的替换资源可以通过 CI 检查并部署到生产环境，而本地验证才会发现问题。CI 与本地的验证范围不一致，导致持续交付的质量门存在缺口。",
+      "expectedOutput": [
+        "CI 管道包含与本地 check 脚本一致的链接和资源验证步骤",
+        "损坏的内部链接或缺失资源在 CI 阶段即可被发现，而非部署后"
+      ],
+      "expectedArtifact": "CI workflow update",
+      "aiFixPrompt": "/better-harness fix this issue\n\n在 CI 管道的 Test 步骤之后、Build 步骤之前，添加 check:links 和 check:assets 步骤，使 CI 验证范围与本地 check 脚本保持一致。\n\n## Validation\n\n- 运行 `pnpm run check` 确认所有检查通过\n- 确认 CI 配置文件语法正确",
+      "dimensionRefs": [
+        "change-validation"
+      ]
+    },
+    {
+      "id": "no-agent-routing",
+      "title": "项目缺少 Agent 路由文件",
+      "severity": "Low",
+      "reason": "项目没有 AGENTS.md 或等效的 Agent 路由文件。作为一个包含 25 个设计规格文件、27 个测试文件、自定义 VitePress 主题和多个脚本入口的项目，AI 代理缺少规范化的上下文入口。没有路由文件，代理需要自行探索项目结构来理解架构约定、核心边界和变更验证路径，增加了误解和错误变更的风险。",
+      "expectedOutput": [
+        "AI 代理通过一个文件即可了解项目结构、约定和验证路径",
+        "减少代理在项目探索上的时间和误解风险"
+      ],
+      "expectedArtifact": "AGENTS.md",
+      "aiFixPrompt": "/better-harness fix this issue\n\n在项目根目录创建 AGENTS.md，包含：项目概述、核心目录结构（docs/、tests/、scripts/、docs/.vitepress/）、构建和验证命令（pnpm dev/build/test/check）、设计规格文件约定、以及变更时需要关注的关键文件。\n\n## Validation\n\n- 确认 AGENTS.md 内容准确反映项目结构\n- 运行 `pnpm run check` 确认项目不受影响",
+      "dimensionRefs": [
+        "task-understanding"
+      ]
+    },
+    {
+      "id": "typescript-check-not-enforced",
+      "title": "TypeScript 类型检查未纳入验证流程",
+      "severity": "Low",
+      "reason": "项目配置了 tsconfig.json（strict 模式）并包含 .ts 文件（docs/、tests/、vitest.config.ts），但 check 脚本和 CI 管道均未运行 `tsc --noEmit` 类型检查。Vitest 运行测试时不会执行完整的类型检查，类型错误可能在测试通过后仍然存在。",
+      "expectedOutput": [
+        "TypeScript 类型检查成为验证流程的一部分",
+        "类型错误在 CI 和本地检查中均可被捕获"
+      ],
+      "expectedArtifact": "package.json and CI workflow update",
+      "aiFixPrompt": "/better-harness fix this issue\n\n在 package.json 中添加 `check:types` 脚本运行 `tsc --noEmit`，并将其加入 check 脚本的命令链中。同时在 CI 中添加对应的类型检查步骤。\n\n## Validation\n\n- 运行 `pnpm run check:types` 确认类型检查通过\n- 运行 `pnpm run check` 确认完整检查流程正常",
+      "dimensionRefs": [
+        "change-validation"
+      ]
+    },
+    {
+      "id": "design-to-impl-pattern-uncovered",
+      "title": "设计到实现的重复工作模式缺少 Skill 覆盖",
+      "severity": "Low",
+      "reason": "项目在 docs/superpowers/specs/ 下有 11 个设计规格文件，表明存在「设计规格 → 代码实现」的重复工作模式。但项目未配置任何 Skill 来捕获和标准化这一流程。每次设计到实现的过程可能不一致，缺少标准化的步骤、验证门和交付标准。由于会话证据不足（仅 1 个会话且无可用的 Task Episode），无法确认具体的重复频率，但规格文件的存在本身表明这一模式是有意的。",
+      "expectedOutput": [
+        "设计到实现的工作流程有标准化的步骤和验证门",
+        "减少每次设计实现过程中的不一致性"
+      ],
+      "expectedArtifact": "Skill evaluation or creation",
+      "aiFixPrompt": "/better-harness fix this issue\n\n基于 docs/superpowers/specs/ 下的设计规格文件模式，评估是否需要创建一个 Skill 来标准化「设计规格 → 实现」的工作流程。先检查现有的内置能力是否已覆盖此需求。\n\n## Validation\n\n- 确认设计到实现的关键步骤已被文档化或 Skill 化\n- 运行 `pnpm run check` 确认项目不受影响",
+      "dimensionRefs": [
+        "learning-capture"
+      ]
+    }
+  ]
+}

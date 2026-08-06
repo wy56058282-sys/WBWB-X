@@ -14,6 +14,8 @@
 
   进入页面后点击"立即下载"即可。
 
+  ![WorkBuddy 中国站首页](/article-assets/source-calibration/ch02/019.png)
+
 - [CodeBuddy 工作台](https://www.codebuddy.cn/work/)
 
   进入页面后选择 WorkBuddy，点击"下载 WorkBuddy"即可。
