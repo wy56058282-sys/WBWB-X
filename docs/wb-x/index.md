@@ -13,6 +13,8 @@ breadcrumbTitle: WorkBuddy 实战小白书
 
 中国版｜[更新日志](https://www.workbuddy.ai/docs/zh/workbuddy/Changelog)｜v5.3.8
 
+国际版｜[更新日志](https://www.workbuddy.ai/docs/zh/workbuddy/Changelog)｜v5.2.7
+
 ## 章节目录
 
 <ol class="wbx-book-index">
