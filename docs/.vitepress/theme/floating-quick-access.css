@@ -159,96 +159,41 @@
   transform: translateY(10px);
 }
 
-/* QR Dialog overlay */
-.wbx-fab-qr__layer {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.5);
-  animation: wbx-fab-overlay-in 0.2s ease;
+/* QR popup animation */
+.wbx-fab-qr-enter-active,
+.wbx-fab-qr-leave-active {
+  transition: opacity 0.15s ease, transform 0.15s ease;
 }
 
-@keyframes wbx-fab-overlay-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.wbx-fab-qr-enter-from,
+.wbx-fab-qr-leave-to {
+  opacity: 0;
+  transform: translateX(8px);
 }
 
-/* QR Dialog */
-.wbx-fab-qr {
-  position: relative;
-  width: 340px;
-  max-width: calc(100vw - 32px);
-  padding: 24px;
+/* QR Code Popup (left of FAB) */
+.wbx-fab-qr-popup {
+  position: absolute;
+  right: 100%;
+  bottom: 0;
+  margin-right: 12px;
+  padding: 12px;
   background: var(--vp-c-bg);
-  border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  outline: none;
-  animation: wbx-fab-dialog-in 0.2s ease;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
 }
 
-@keyframes wbx-fab-dialog-in {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-.wbx-fab-qr__heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
-
-.wbx-fab-qr__heading h2 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--vp-c-text-1);
-}
-
-.wbx-fab-qr__close {
-  width: 32px;
-  height: 32px;
-  border: none;
-  background: transparent;
-  color: var(--vp-c-text-2);
-  font-size: 24px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
-  transition: background-color 0.15s ease;
-}
-
-.wbx-fab-qr__close:hover {
-  background: var(--vp-c-bg-soft);
-  color: var(--vp-c-text-1);
-}
-
-.wbx-fab-qr__image {
-  width: 100%;
-  height: auto;
+.wbx-fab-qr-popup__image {
+  width: 200px;
+  height: 200px;
   border-radius: 8px;
   display: block;
 }
 
-.wbx-fab-qr__help {
-  margin: 12px 0 0;
+.wbx-fab-qr-popup__help {
+  margin: 8px 0 0;
   text-align: center;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--vp-c-text-2);
 }
 

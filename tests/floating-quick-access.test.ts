@@ -167,45 +167,49 @@ describe('floating quick access button', () => {
     openSpy.mockRestore()
   })
 
-  it('opens the QR code dialog when the QR button is clicked', async () => {
+  it('shows QR popup on hover over the QR button', async () => {
     mountComponent()
 
     const fab = document.querySelector<HTMLElement>('.wbx-fab')
     fab?.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
     await nextTick()
 
-    const qrButton = document.querySelector<HTMLButtonElement>(
+    const qrButton = document.querySelector<HTMLElement>(
       '.wbx-fab__item[aria-label="公众号"]',
     )
-    qrButton?.click()
+    qrButton?.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
     await nextTick()
 
-    const dialog = document.querySelector('.wbx-fab-qr')
-    const title = document.querySelector('#wbx-fab-qr-title')
+    const popup = document.querySelector('.wbx-fab-qr-popup')
+    const img = document.querySelector('.wbx-fab-qr-popup__image')
 
-    expect(dialog).not.toBeNull()
-    expect(title?.textContent).toBe('关注公众号')
+    expect(popup).not.toBeNull()
+    expect(img).not.toBeNull()
   })
 
-  it('closes the QR dialog when the close button is clicked', async () => {
+  it('hides QR popup when mouse leaves the QR button', async () => {
     mountComponent()
 
     const fab = document.querySelector<HTMLElement>('.wbx-fab')
     fab?.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
     await nextTick()
 
-    const qrButton = document.querySelector<HTMLButtonElement>(
+    const qrButton = document.querySelector<HTMLElement>(
       '.wbx-fab__item[aria-label="公众号"]',
     )
-    qrButton?.click()
+    qrButton?.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
     await nextTick()
 
-    const closeButton = document.querySelector<HTMLButtonElement>('.wbx-fab-qr__close')
-    closeButton?.click()
+    let popup = document.querySelector('.wbx-fab-qr-popup')
+    expect(popup).not.toBeNull()
+
+    qrButton?.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }))
     await nextTick()
 
-    const dialog = document.querySelector('.wbx-fab-qr')
-    expect(dialog).toBeNull()
+    await vi.waitFor(() => {
+      popup = document.querySelector('.wbx-fab-qr-popup')
+      expect(popup).toBeNull()
+    }, { timeout: 500 })
   })
 
   it('opens mailto link when contact button is clicked', async () => {
@@ -263,27 +267,29 @@ describe('floating quick access button', () => {
     }, { timeout: 500 })
   })
 
-  it('closes the QR dialog when Escape is pressed', async () => {
+  it('hides QR popup when Escape is pressed', async () => {
     mountComponent()
 
     const fab = document.querySelector<HTMLElement>('.wbx-fab')
     fab?.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
     await nextTick()
 
-    const qrButton = document.querySelector<HTMLButtonElement>(
+    const qrButton = document.querySelector<HTMLElement>(
       '.wbx-fab__item[aria-label="公众号"]',
     )
-    qrButton?.click()
+    qrButton?.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
     await nextTick()
 
-    let dialog = document.querySelector('.wbx-fab-qr')
-    expect(dialog).not.toBeNull()
+    let popup = document.querySelector('.wbx-fab-qr-popup')
+    expect(popup).not.toBeNull()
 
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
     await nextTick()
 
-    dialog = document.querySelector('.wbx-fab-qr')
-    expect(dialog).toBeNull()
+    await vi.waitFor(() => {
+      popup = document.querySelector('.wbx-fab-qr-popup')
+      expect(popup).toBeNull()
+    }, { timeout: 500 })
   })
 
   it('has correct CSS styles for the FAB container', () => {

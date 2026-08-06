@@ -60,15 +60,18 @@ async function copyLink() {
   collapse()
 }
 
-function openQrDialog() {
-  showQrDialog.value = true
-  void nextTick(() => {
-    qrDialog.value?.focus()
-  })
+function onItemHover(itemId: string) {
+  hoveredItem.value = itemId
+  if (itemId === 'qrcode') {
+    showQrDialog.value = true
+  }
 }
 
-function closeQrDialog() {
-  showQrDialog.value = false
+function onItemLeave(itemId: string) {
+  hoveredItem.value = null
+  if (itemId === 'qrcode') {
+    showQrDialog.value = false
+  }
 }
 
 function handleItemClick(itemId: string) {
@@ -82,10 +85,6 @@ function handleItemClick(itemId: string) {
       break
     case 'sparkx':
       window.open(SPARKX_URL, '_blank', 'noopener,noreferrer')
-      collapse()
-      break
-    case 'qrcode':
-      openQrDialog()
       collapse()
       break
     case 'contact':
@@ -107,7 +106,7 @@ function handleDocumentClick(event: MouseEvent) {
 function handleKeydown(event: KeyboardEvent) {
   if (event.key === 'Escape') {
     if (showQrDialog.value) {
-      closeQrDialog()
+      showQrDialog.value = false
       return
     }
     if (isExpanded.value) {
@@ -145,8 +144,8 @@ onBeforeUnmount(() => {
           class="wbx-fab__item"
           role="menuitem"
           :aria-label="item.label"
-          @mouseenter="hoveredItem = item.id"
-          @mouseleave="hoveredItem = null"
+          @mouseenter="onItemHover(item.id)"
+          @mouseleave="onItemLeave(item.id)"
           @click="handleItemClick(item.id)"
         >
           <span class="wbx-fab__icon" aria-hidden="true">
@@ -205,38 +204,23 @@ onBeforeUnmount(() => {
       </span>
     </button>
 
-    <!-- QR Code Dialog -->
-    <Teleport to="body">
-      <div v-if="showQrDialog" class="wbx-fab-qr__layer">
-        <section
-          ref="qrDialog"
-          class="wbx-fab-qr"
-          role="dialog"
-          aria-labelledby="wbx-fab-qr-title"
-          tabindex="-1"
-          @keydown="handleKeydown"
-        >
-          <div class="wbx-fab-qr__heading">
-            <h2 id="wbx-fab-qr-title">关注公众号</h2>
-            <button
-              class="wbx-fab-qr__close"
-              type="button"
-              aria-label="关闭"
-              @click="closeQrDialog"
-            >
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <img
-            class="wbx-fab-qr__image"
-            :src="withBase(QR_IMAGE_PATH)"
-            alt="公众号二维码"
-            width="300"
-            height="300"
-          />
-          <p class="wbx-fab-qr__help">扫描二维码关注公众号</p>
-        </section>
+    <!-- QR Code Popup (left of FAB) -->
+    <Transition name="wbx-fab-qr">
+      <div
+        v-if="showQrDialog"
+        class="wbx-fab-qr-popup"
+        @mouseenter="showQrDialog = true"
+        @mouseleave="showQrDialog = false"
+      >
+        <img
+          class="wbx-fab-qr-popup__image"
+          :src="withBase(QR_IMAGE_PATH)"
+          alt="公众号二维码"
+          width="200"
+          height="200"
+        />
+        <p class="wbx-fab-qr-popup__help">扫描二维码关注公众号</p>
       </div>
-    </Teleport>
+    </Transition>
   </div>
 </template>
