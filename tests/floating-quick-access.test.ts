@@ -345,7 +345,7 @@ describe('floating quick access button', () => {
 
     expect(css).toMatch(/\.wbx-fab__item\s*\{[^}]*width:\s*44px;/s)
     expect(css).toMatch(/\.wbx-fab__item\s*\{[^}]*height:\s*44px;/s)
-    expect(css).toMatch(/\.wbx-fab__item\s*\{[^}]*border-radius:\s*10px;/s)
+    expect(css).toMatch(/\.wbx-fab__item\s*\{[^}]*border-radius:\s*50%;/s)
   })
 
   it('has mobile responsive styles', () => {

@@ -65,7 +65,7 @@
 .wbx-fab__item {
   width: 44px;
   height: 44px;
-  border-radius: 10px;
+  border-radius: 50%;
   border: 1px solid var(--vp-c-divider);
   background: var(--vp-c-bg);
   color: var(--vp-c-text-1);
