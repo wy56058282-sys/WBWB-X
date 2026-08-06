@@ -126,9 +126,7 @@
 .wbx-fab__toast {
   position: absolute;
   bottom: 64px;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-bottom: 12px;
+  right: 0;
   padding: 8px 16px;
   background: var(--vp-c-text-1);
   color: var(--vp-c-bg);
@@ -146,7 +144,7 @@
 .wbx-fab-toast-enter-from,
 .wbx-fab-toast-leave-to {
   opacity: 0;
-  transform: translateX(-50%) translateY(8px);
+  transform: translateY(8px);
 }
 
 /* Menu animation */
