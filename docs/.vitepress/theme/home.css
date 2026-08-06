@@ -409,6 +409,12 @@
   height: auto;
 }
 
+.wbx-hero__official--cn {
+  bottom: 140px;
+  width: auto;
+  align-items: flex-end;
+}
+
 .wbx-value-strip {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1005,6 +1011,11 @@
 
   .wbx-hero__official-ip {
     width: 106px;
+  }
+
+  .wbx-hero__official--cn {
+    bottom: 100px;
+    right: 12px;
   }
 
   .wbx-value-strip {

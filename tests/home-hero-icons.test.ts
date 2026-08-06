@@ -310,7 +310,7 @@ describe('home hero icon navigation', () => {
   it('adds a labelled WorkBuddy official-site IP link to the hero', () => {
     mountHomePage()
 
-    const official = document.querySelector<HTMLAnchorElement>('.wbx-hero__official')
+    const official = document.querySelector<HTMLAnchorElement>('.wbx-hero__official:not(.wbx-hero__official--cn)')
     const image = official?.querySelector<HTMLImageElement>('.wbx-hero__official-ip')
 
     expect(official?.getAttribute('href')).toBe('https://www.workbuddy.ai/')
@@ -322,6 +322,20 @@ describe('home hero icon navigation', () => {
     )
     expect(image?.getAttribute('src')).toBe('/brand/workbuddy-official-ip.png')
     expect(image?.getAttribute('alt')).toBe('')
+  })
+
+  it('adds a workbuddy.cn label above the official-site IP link', () => {
+    mountHomePage()
+
+    const cn = document.querySelector<HTMLAnchorElement>('.wbx-hero__official--cn')
+
+    expect(cn?.getAttribute('href')).toBe('https://www.workbuddy.cn/')
+    expect(cn?.getAttribute('target')).toBe('_blank')
+    expect(cn?.getAttribute('rel')).toBe('noopener noreferrer')
+    expect(cn?.getAttribute('aria-label')).toBe('访问 WorkBuddy 中国站')
+    expect(cn?.querySelector('.wbx-hero__official-label')?.textContent).toBe(
+      'workbuddy.cn',
+    )
   })
 
   it('positions the official-site IP link without duplicate hero metrics', () => {

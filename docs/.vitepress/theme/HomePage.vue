@@ -151,6 +151,15 @@ const workflowSteps = [
             <i class="hn hn-users" aria-hidden="true" />
           </a>
           <a
+            class="wbx-hero__official wbx-hero__official--cn"
+            href="https://www.workbuddy.cn/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="访问 WorkBuddy 中国站"
+          >
+            <span class="wbx-hero__official-label">workbuddy.cn</span>
+          </a>
+          <a
             class="wbx-hero__official"
             href="https://www.workbuddy.ai/"
             target="_blank"
