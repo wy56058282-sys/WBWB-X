@@ -25,6 +25,14 @@ function toggleExpand() {
   isExpanded.value = !isExpanded.value
 }
 
+function expandOnHover() {
+  isExpanded.value = true
+}
+
+function collapseOnLeave() {
+  isExpanded.value = false
+}
+
 function collapse() {
   isExpanded.value = false
 }
@@ -120,7 +128,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="wbx-fab">
+  <div class="wbx-fab" @mouseenter="expandOnHover" @mouseleave="collapseOnLeave">
     <!-- Toast for copy success -->
     <Transition name="wbx-fab-toast">
       <div v-if="showCopiedToast" class="wbx-fab__toast" role="status" aria-live="polite">

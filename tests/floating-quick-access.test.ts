@@ -42,11 +42,11 @@ describe('floating quick access button', () => {
     expect(menu).toBeNull()
   })
 
-  it('expands the menu when the toggle is clicked', async () => {
+  it('expands the menu on hover', async () => {
     mountComponent()
 
-    const toggle = document.querySelector<HTMLButtonElement>('.wbx-fab__toggle')
-    toggle?.click()
+    const fab = document.querySelector<HTMLElement>('.wbx-fab')
+    fab?.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
     await nextTick()
 
     const menu = document.querySelector('.wbx-fab__menu')
@@ -56,18 +56,22 @@ describe('floating quick access button', () => {
     expect(items?.length).toBe(5)
   })
 
-  it('collapses the menu when the toggle is clicked again', async () => {
+  it('collapses the menu when mouse leaves', async () => {
     mountComponent()
 
-    const toggle = document.querySelector<HTMLButtonElement>('.wbx-fab__toggle')
-    toggle?.click()
+    const fab = document.querySelector<HTMLElement>('.wbx-fab')
+    fab?.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
     await nextTick()
-    toggle?.click()
+
+    let menu = document.querySelector('.wbx-fab__menu')
+    expect(menu).not.toBeNull()
+
+    fab?.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }))
     await nextTick()
 
     // Menu should be in leave animation or null
     await vi.waitFor(() => {
-      const menu = document.querySelector('.wbx-fab__menu')
+      menu = document.querySelector('.wbx-fab__menu')
       expect(menu).toBeNull()
     }, { timeout: 500 })
   })
@@ -75,8 +79,8 @@ describe('floating quick access button', () => {
   it('renders all five menu items with correct labels', async () => {
     mountComponent()
 
-    const toggle = document.querySelector<HTMLButtonElement>('.wbx-fab__toggle')
-    toggle?.click()
+    const fab = document.querySelector<HTMLElement>('.wbx-fab')
+    fab?.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
     await nextTick()
 
     const items = Array.from(
@@ -101,8 +105,8 @@ describe('floating quick access button', () => {
 
     mountComponent()
 
-    const toggle = document.querySelector<HTMLButtonElement>('.wbx-fab__toggle')
-    toggle?.click()
+    const fab = document.querySelector<HTMLElement>('.wbx-fab')
+    fab?.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
     await nextTick()
 
     const shareButton = document.querySelector<HTMLButtonElement>(
@@ -122,8 +126,8 @@ describe('floating quick access button', () => {
 
     mountComponent()
 
-    const toggle = document.querySelector<HTMLButtonElement>('.wbx-fab__toggle')
-    toggle?.click()
+    const fab = document.querySelector<HTMLElement>('.wbx-fab')
+    fab?.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
     await nextTick()
 
     const materialsButton = document.querySelector<HTMLButtonElement>(
@@ -145,8 +149,8 @@ describe('floating quick access button', () => {
 
     mountComponent()
 
-    const toggle = document.querySelector<HTMLButtonElement>('.wbx-fab__toggle')
-    toggle?.click()
+    const fab = document.querySelector<HTMLElement>('.wbx-fab')
+    fab?.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
     await nextTick()
 
     const sparkxButton = document.querySelector<HTMLButtonElement>(
@@ -166,8 +170,8 @@ describe('floating quick access button', () => {
   it('opens the QR code dialog when the QR button is clicked', async () => {
     mountComponent()
 
-    const toggle = document.querySelector<HTMLButtonElement>('.wbx-fab__toggle')
-    toggle?.click()
+    const fab = document.querySelector<HTMLElement>('.wbx-fab')
+    fab?.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
     await nextTick()
 
     const qrButton = document.querySelector<HTMLButtonElement>(
@@ -186,8 +190,8 @@ describe('floating quick access button', () => {
   it('closes the QR dialog when the close button is clicked', async () => {
     mountComponent()
 
-    const toggle = document.querySelector<HTMLButtonElement>('.wbx-fab__toggle')
-    toggle?.click()
+    const fab = document.querySelector<HTMLElement>('.wbx-fab')
+    fab?.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
     await nextTick()
 
     const qrButton = document.querySelector<HTMLButtonElement>(
@@ -207,8 +211,8 @@ describe('floating quick access button', () => {
   it('opens mailto link when contact button is clicked', async () => {
     mountComponent()
 
-    const toggle = document.querySelector<HTMLButtonElement>('.wbx-fab__toggle')
-    toggle?.click()
+    const fab = document.querySelector<HTMLElement>('.wbx-fab')
+    fab?.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
     await nextTick()
 
     const contactButton = document.querySelector<HTMLButtonElement>(
@@ -220,8 +224,8 @@ describe('floating quick access button', () => {
   it('closes the menu when clicking outside', async () => {
     mountComponent()
 
-    const toggle = document.querySelector<HTMLButtonElement>('.wbx-fab__toggle')
-    toggle?.click()
+    const fab = document.querySelector<HTMLElement>('.wbx-fab')
+    fab?.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
     await nextTick()
 
     let menu = document.querySelector('.wbx-fab__menu')
@@ -242,8 +246,8 @@ describe('floating quick access button', () => {
   it('closes the menu when Escape is pressed', async () => {
     mountComponent()
 
-    const toggle = document.querySelector<HTMLButtonElement>('.wbx-fab__toggle')
-    toggle?.click()
+    const fab = document.querySelector<HTMLElement>('.wbx-fab')
+    fab?.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
     await nextTick()
 
     let menu = document.querySelector('.wbx-fab__menu')
@@ -262,8 +266,8 @@ describe('floating quick access button', () => {
   it('closes the QR dialog when Escape is pressed', async () => {
     mountComponent()
 
-    const toggle = document.querySelector<HTMLButtonElement>('.wbx-fab__toggle')
-    toggle?.click()
+    const fab = document.querySelector<HTMLElement>('.wbx-fab')
+    fab?.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
     await nextTick()
 
     const qrButton = document.querySelector<HTMLButtonElement>(
