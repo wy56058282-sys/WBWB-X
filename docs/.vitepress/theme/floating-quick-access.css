@@ -91,6 +91,29 @@
   justify-content: center;
 }
 
+/* Tooltip */
+.wbx-fab__tooltip {
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 10px;
+  padding: 6px 12px;
+  background: var(--vp-c-text-1);
+  color: var(--vp-c-bg);
+  border-radius: 6px;
+  font-size: 13px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.wbx-fab__item:hover .wbx-fab__tooltip {
+  opacity: 1;
+}
+
 /* Toast notification */
 .wbx-fab__toast {
   position: absolute;

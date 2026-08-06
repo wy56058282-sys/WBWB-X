@@ -5,6 +5,7 @@ import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 const isExpanded = ref(false)
 const showQrDialog = ref(false)
 const showCopiedToast = ref(false)
+const hoveredItem = ref<string | null>(null)
 const qrDialog = ref<HTMLElement | null>(null)
 
 const TEACHING_MATERIALS_URL = 'https://pan.quark.cn/s/bf6971c32304?pwd=4yCv'
@@ -136,7 +137,8 @@ onBeforeUnmount(() => {
           class="wbx-fab__item"
           role="menuitem"
           :aria-label="item.label"
-          :title="item.label"
+          @mouseenter="hoveredItem = item.id"
+          @mouseleave="hoveredItem = null"
           @click="handleItemClick(item.id)"
         >
           <span class="wbx-fab__icon" aria-hidden="true">
@@ -176,6 +178,7 @@ onBeforeUnmount(() => {
               />
             </svg>
           </span>
+          <span class="wbx-fab__tooltip">{{ item.label }}</span>
         </button>
       </div>
     </Transition>

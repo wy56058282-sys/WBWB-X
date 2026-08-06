@@ -330,4 +330,16 @@ describe('floating quick access button', () => {
     expect(mobile).toMatch(/\.wbx-fab__toggle\s*\{[^}]*width:\s*46px;/s)
     expect(mobile).toMatch(/\.wbx-fab__item\s*\{[^}]*width:\s*40px;/s)
   })
+
+  it('has tooltip styles for hover labels', () => {
+    const css = readFileSync(
+      'docs/.vitepress/theme/floating-quick-access.css',
+      'utf8',
+    )
+
+    expect(css).toMatch(/\.wbx-fab__tooltip\s*\{[^}]*position:\s*absolute;/s)
+    expect(css).toMatch(/\.wbx-fab__tooltip\s*\{[^}]*right:\s*100%;/s)
+    expect(css).toMatch(/\.wbx-fab__tooltip\s*\{[^}]*opacity:\s*0;/s)
+    expect(css).toMatch(/\.wbx-fab__item:hover \.wbx-fab__tooltip\s*\{[^}]*opacity:\s*1;/s)
+  })
 })
