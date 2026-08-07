@@ -168,21 +168,19 @@ onBeforeUnmount(() => {
           @click="handleItemClick(item.id)"
         >
           <span class="wbx-fab__icon" aria-hidden="true">
+            <!-- Share icon (HackerNoon Pixel) -->
             <svg v-if="item.icon === 'share'" viewBox="0 0 24 24" width="20" height="20">
-              <path
-                fill="currentColor"
-                d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"
-              />
+              <polygon fill="currentColor" points="22 4 22 6 21 6 21 8 20 8 20 9 15 9 15 8 13 8 13 9 12 9 12 10 11 10 11 14 12 14 12 15 13 15 13 16 15 16 15 15 20 15 20 16 21 16 21 18 22 18 22 20 21 20 21 22 20 22 20 23 15 23 15 22 14 22 14 20 13 20 13 18 12 18 12 17 11 17 11 16 10 16 10 15 9 15 9 16 4 16 4 15 3 15 3 13 2 13 2 11 3 11 3 9 4 9 4 8 9 8 9 9 10 9 10 8 11 8 11 7 12 7 12 6 13 6 13 4 14 4 14 2 15 2 15 1 20 1 20 2 21 2 21 4 22 4"/>
             </svg>
-            <!-- Download icon -->
+            <!-- Download icon (HackerNoon Pixel) -->
             <svg v-else-if="item.icon === 'download'" viewBox="0 0 24 24" width="20" height="20">
-              <path
-                fill="currentColor"
-                d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"
-              />
+              <rect fill="currentColor" x="2" y="20" width="20" height="3"/>
+              <polygon fill="currentColor" points="20 8 20 10 19 10 19 11 18 11 18 12 17 12 17 13 16 13 16 14 15 14 15 15 14 15 14 16 13 16 13 17 11 17 11 16 10 16 10 15 9 15 9 14 8 14 8 13 7 13 7 12 6 12 6 11 5 11 5 10 4 10 4 8 5 8 5 7 7 7 7 8 8 8 8 9 9 9 9 10 10 10 10 1 14 1 14 10 15 10 15 9 16 9 16 8 17 8 17 7 19 7 19 8 20 8"/>
             </svg>
-            <!-- SparkX logo -->
-            <img v-else-if="item.icon === 'spark'" :src="withBase('/brand/sparkx-logo.svg')" alt="星火集" width="20" height="20" />
+            <!-- Star icon (HackerNoon Pixel) -->
+            <svg v-else-if="item.icon === 'spark'" viewBox="0 0 24 24" width="20" height="20">
+              <polygon fill="currentColor" points="23 8 23 10 22 10 22 11 21 11 21 12 20 12 20 13 19 13 19 14 18 14 18 19 19 19 19 23 17 23 17 22 15 22 15 21 13 21 13 20 11 20 11 21 9 21 9 22 7 22 7 23 5 23 5 19 6 19 6 14 5 14 5 13 4 13 4 12 3 12 3 11 2 11 2 10 1 10 1 8 8 8 8 6 9 6 9 4 10 4 10 2 11 2 11 1 13 1 13 2 14 2 14 4 15 4 15 6 16 6 16 8 23 8"/>
+            </svg>
             <!-- QR code icon -->
             <svg v-else-if="item.icon === 'qrcode'" viewBox="0 0 24 24" width="20" height="20">
               <path
@@ -190,12 +188,10 @@ onBeforeUnmount(() => {
                 d="M3 11h8V3H3v8zm2-6h4v4H5V5zM3 21h8v-8H3v8zm2-6h4v4H5v-4zM13 3v8h8V3h-8zm6 6h-4V5h4v4zm-6 4h2v2h-2zM15 15h2v2h-2zM17 17h2v2h-2zM13 17h2v2h-2zM19 13h2v2h-2zM17 9h2v2h-2zM19 7h2v2h-2z"
               />
             </svg>
-            <!-- Mail icon -->
+            <!-- Mail icon (HackerNoon Pixel) -->
             <svg v-else-if="item.icon === 'mail'" viewBox="0 0 24 24" width="20" height="20">
-              <path
-                fill="currentColor"
-                d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
-              />
+              <polygon fill="currentColor" points="21 4 21 5 20 5 20 6 19 6 19 7 18 7 18 8 17 8 17 9 16 9 16 10 15 10 15 11 14 11 14 12 13 12 13 13 11 13 11 12 10 12 10 11 9 11 9 10 8 10 8 9 7 9 7 8 6 8 6 7 5 7 5 6 4 6 4 5 3 5 3 4 21 4"/>
+              <polygon fill="currentColor" points="23 5 23 19 22 19 22 20 2 20 2 19 1 19 1 5 3 5 3 6 4 6 4 7 5 7 5 8 6 8 6 9 7 9 7 10 8 10 8 11 9 11 9 12 10 12 10 13 11 13 11 14 13 14 13 13 14 13 14 12 15 12 15 11 16 11 16 10 17 10 17 9 18 9 18 8 19 8 19 7 20 7 20 6 21 6 21 5 23 5"/>
             </svg>
           </span>
           <span v-if="item.id !== 'qrcode'" class="wbx-fab__tooltip">{{ item.label }}</span>
