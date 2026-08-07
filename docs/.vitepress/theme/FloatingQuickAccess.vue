@@ -7,6 +7,7 @@ const showQrDialog = ref(false)
 const showCopiedToast = ref(false)
 const hoveredItem = ref<string | null>(null)
 const qrDialog = ref<HTMLElement | null>(null)
+const qrPopupStyle = ref<Record<string, string>>({})
 
 const TEACHING_MATERIALS_URL = 'https://pan.quark.cn/s/bf6971c32304?pwd=4yCv'
 const SPARKX_URL = 'https://www.sparkx.zone/'
@@ -63,6 +64,7 @@ async function copyLink() {
 function onItemHover(itemId: string) {
   hoveredItem.value = itemId
   if (itemId === 'qrcode') {
+    positionQrPopup()
     showQrDialog.value = true
   }
 }
@@ -92,6 +94,21 @@ function handleItemClick(itemId: string) {
       collapse()
       break
   }
+}
+
+function positionQrPopup() {
+  void nextTick(() => {
+    const fab = document.querySelector<HTMLElement>('.wbx-fab')
+    if (!fab) return
+    const rect = fab.getBoundingClientRect()
+    const popupWidth = 224 // 200px image + 24px padding
+    qrPopupStyle.value = {
+      position: 'fixed',
+      right: `${window.innerWidth - rect.left + 12}px`,
+      bottom: `${window.innerHeight - rect.bottom}px`,
+      width: `${popupWidth}px`,
+    }
+  })
 }
 
 function handleDocumentClick(event: MouseEvent) {
@@ -205,22 +222,25 @@ onBeforeUnmount(() => {
     </button>
 
     <!-- QR Code Popup (left of FAB) -->
-    <Transition name="wbx-fab-qr">
-      <div
-        v-if="showQrDialog"
-        class="wbx-fab-qr-popup"
-        @mouseenter="showQrDialog = true"
-        @mouseleave="showQrDialog = false"
-      >
-        <img
-          class="wbx-fab-qr-popup__image"
-          :src="withBase(QR_IMAGE_PATH)"
-          alt="公众号二维码"
-          width="200"
-          height="200"
-        />
-        <p class="wbx-fab-qr-popup__help">扫描二维码关注公众号</p>
-      </div>
-    </Transition>
+    <Teleport to="body">
+      <Transition name="wbx-fab-qr">
+        <div
+          v-if="showQrDialog"
+          class="wbx-fab-qr-popup"
+          :style="qrPopupStyle"
+          @mouseenter="showQrDialog = true"
+          @mouseleave="showQrDialog = false"
+        >
+          <img
+            class="wbx-fab-qr-popup__image"
+            :src="withBase(QR_IMAGE_PATH)"
+            alt="公众号二维码"
+            width="200"
+            height="200"
+          />
+          <p class="wbx-fab-qr-popup__help">扫描二维码关注公众号</p>
+        </div>
+      </Transition>
+    </Teleport>
   </div>
 </template>

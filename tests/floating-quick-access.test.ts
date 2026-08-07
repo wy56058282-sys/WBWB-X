@@ -185,6 +185,8 @@ describe('floating quick access button', () => {
 
     expect(popup).not.toBeNull()
     expect(img).not.toBeNull()
+    // Popup should be teleported to body with fixed positioning
+    expect(popup?.parentElement?.tagName).toBe('BODY')
   })
 
   it('hides QR popup when mouse leaves the QR button', async () => {

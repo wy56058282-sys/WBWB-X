@@ -174,10 +174,7 @@
 
 /* QR Code Popup (left of FAB) */
 .wbx-fab-qr-popup {
-  position: absolute;
-  right: 100%;
-  bottom: 0;
-  margin-right: 12px;
+  z-index: 60;
   padding: 12px;
   background: var(--vp-c-bg);
   border-radius: 12px;
