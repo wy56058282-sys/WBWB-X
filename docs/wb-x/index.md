@@ -11,9 +11,9 @@ breadcrumbTitle: WorkBuddy 实战小白书
 
 这是一本以真实任务为主线的 WorkBuddy 中文使用手册。你可以从下载安装和第一个任务开始，再进入 Skills、连接器、移动办公、知识管理、专业诊断、内容自动化和多 Agent 团队，最终把一次成功沉淀为团队可复用的 AI 工作系统。
 
-WorkBuddy 中国版｜[更新日志](https://www.workbuddy.ai/docs/zh/workbuddy/Changelog)｜v5.3.8
+WorkBuddy 中国版｜[更新日志](https://www.workbuddy.cn/docs/workbuddy/Changelog)｜v5.3.8
 
-国际版｜[更新日志](https://www.workbuddy.ai/docs/zh/workbuddy/Changelog)｜v5.2.7
+WorkBuddy 国际版｜[更新日志](https://www.workbuddy.ai/docs/zh/workbuddy/Changelog)｜v5.2.7
 
 ## 章节目录
 

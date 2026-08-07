@@ -115,9 +115,9 @@ describe('floating quick access button', () => {
     shareButton?.click()
     await nextTick()
 
-    // Wait for clipboard to be called
+    // Wait for clipboard to be called with the site URL
     await vi.waitFor(() => {
-      expect(writeText).toHaveBeenCalled()
+      expect(writeText).toHaveBeenCalledWith('http://wbx.sparkx.zone/')
     })
   })
 

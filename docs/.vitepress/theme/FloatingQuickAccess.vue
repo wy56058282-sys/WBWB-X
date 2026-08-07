@@ -38,9 +38,11 @@ function collapse() {
   isExpanded.value = false
 }
 
+const SHARE_URL = 'http://wbx.sparkx.zone/'
+
 async function copyLink() {
   try {
-    await navigator.clipboard.writeText(window.location.href)
+    await navigator.clipboard.writeText(SHARE_URL)
     showCopiedToast.value = true
     setTimeout(() => {
       showCopiedToast.value = false
@@ -48,7 +50,7 @@ async function copyLink() {
   } catch {
     // Fallback for older browsers
     const input = document.createElement('input')
-    input.value = window.location.href
+    input.value = SHARE_URL
     document.body.appendChild(input)
     input.select()
     document.execCommand('copy')
