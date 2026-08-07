@@ -98,13 +98,15 @@ function handleItemClick(itemId: string) {
 
 function positionQrPopup() {
   void nextTick(() => {
-    const fab = document.querySelector<HTMLElement>('.wbx-fab')
-    if (!fab) return
-    const rect = fab.getBoundingClientRect()
+    const qrButton = document.querySelector<HTMLElement>(
+      '.wbx-fab__item[aria-label="公众号"]',
+    )
+    if (!qrButton) return
+    const rect = qrButton.getBoundingClientRect()
     const popupWidth = 224 // 200px image + 24px padding
     qrPopupStyle.value = {
       position: 'fixed',
-      right: `${window.innerWidth - rect.left + 12}px`,
+      right: `${window.innerWidth - rect.left + 10}px`,
       bottom: `${window.innerHeight - rect.bottom}px`,
       width: `${popupWidth}px`,
     }
@@ -166,7 +168,6 @@ onBeforeUnmount(() => {
           @click="handleItemClick(item.id)"
         >
           <span class="wbx-fab__icon" aria-hidden="true">
-            <!-- Share icon -->
             <svg v-if="item.icon === 'share'" viewBox="0 0 24 24" width="20" height="20">
               <path
                 fill="currentColor"
@@ -197,7 +198,7 @@ onBeforeUnmount(() => {
               />
             </svg>
           </span>
-          <span class="wbx-fab__tooltip">{{ item.label }}</span>
+          <span v-if="item.id !== 'qrcode'" class="wbx-fab__tooltip">{{ item.label }}</span>
         </button>
       </div>
     </Transition>
