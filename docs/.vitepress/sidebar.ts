@@ -83,6 +83,7 @@ export const sidebar = [
       { text: '附录导读', link: appendix },
       { text: '附录 A 常用指令模板', link: `${appendix}附录 A 常用指令模板/` },
       { text: '附录 B 场景速查表', link: `${appendix}附录 B 场景速查表/` },
+      { text: '附录 C 个人版与企业版对比', link: `${appendix}附录 C 个人版与企业版对比/` },
     ],
   },
 ]
