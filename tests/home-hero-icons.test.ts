@@ -114,6 +114,8 @@ function cardClearance(
 describe('home hero icon navigation', () => {
   it('defines the update ticker motion, pause, and reduced-motion contracts', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const hero = baseRule(css, '.wbx-hero')
+    const stage = baseRule(css, '.wbx-hero__stage')
 
     expect(css).toMatch(
       /\.wbx-update-ticker\s*\{[^}]*height:\s*48px;[^}]*display:\s*grid;/s,
@@ -136,6 +138,8 @@ describe('home hero icon navigation', () => {
     expect(css).toMatch(
       /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*\.wbx-update-ticker__group\[aria-hidden='true'\]\s*\{[^}]*display:\s*none;/s,
     )
+    expect(hero).not.toMatch(/min-width:\s*0;/)
+    expect(stage).not.toMatch(/min-width:\s*0;/)
   })
 
   it('renders sorted update links once and keeps the duplicate group hidden', () => {
