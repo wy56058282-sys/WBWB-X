@@ -75,8 +75,11 @@
 .wbx-update-ticker__label {
   display: inline-flex;
   align-items: center;
+  align-self: center;
+  width: max-content;
+  height: fit-content;
   gap: 8px;
-  padding: 0 16px;
+  padding: 8px 12px;
   color: #ffffff;
   background: #0d100d;
   font-family: var(--wbx-pixel);

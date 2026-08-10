@@ -124,6 +124,9 @@ describe('home hero icon navigation', () => {
       /\.wbx-update-ticker__group\s*>\s*\*\s*\{[^}]*min-height:\s*40px;/s,
     )
     expect(css).toMatch(
+      /\.wbx-update-ticker__label\s*\{[^}]*align-self:\s*center;[^}]*width:\s*max-content;[^}]*height:\s*fit-content;[^}]*padding:\s*8px 12px;/s,
+    )
+    expect(css).toMatch(
       /@media\s*\(max-width:\s*760px\)[\s\S]*\.wbx-update-ticker\s*\{[^}]*height:\s*40px;/s,
     )
     expect(css).toMatch(
