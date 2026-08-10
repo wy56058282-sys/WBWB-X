@@ -6,6 +6,7 @@ import { legacyRouteTarget } from '../docs/.vitepress/legacy-routes'
 import {
   generateLegacyRedirects,
   legacyTargetForBuiltFile,
+  writeLegacyMappings,
 } from '../scripts/generate-legacy-redirects.mjs'
 
 describe('legacy small-book routes', () => {
@@ -36,6 +37,14 @@ describe('legacy small-book routes', () => {
     expect(legacyTargetForBuiltFile('wb-x/../index.html')).toBeNull()
     expect(legacyTargetForBuiltFile('wb-x/%2e%2e/index.html')).toBeNull()
     expect(legacyTargetForBuiltFile('wb-x/%252e%252e/index.html')).toBeNull()
+    expect(
+      legacyTargetForBuiltFile('wb-x/%252e%252e%252fsecret/index.html'),
+    ).toBeNull()
+    expect(
+      legacyTargetForBuiltFile('wb-x/%252e%252e%255csecret/index.html'),
+    ).toBeNull()
+    expect(legacyTargetForBuiltFile('wb-x/safe%252fsecret/index.html')).toBeNull()
+    expect(legacyTargetForBuiltFile('wb-x/safe%255csecret/index.html')).toBeNull()
     expect(legacyTargetForBuiltFile('wb-x/draft?from=old#start/index.html')).toBe(
       '/wb-x/draft%3Ffrom%3Dold%23start/',
     )
@@ -88,5 +97,36 @@ describe('legacy small-book routes', () => {
 
     expect(() => generateLegacyRedirects(dist)).toThrow(/one-to-one legacy mapping/)
     expect(() => readFileSync(join(dist, 'bluebook/index.html'))).toThrow()
+  })
+
+  it('rejects empty, incomplete, or duplicate mappings before writing', () => {
+    const dist = mkdtempSync(join(tmpdir(), 'wbx-legacy-preflight-'))
+    const legacyRoot = join(dist, 'bluebook')
+    const redirectPath = join(legacyRoot, 'index.html')
+    const mapping = { redirectPath, target: '/wb-x/' }
+
+    expect(() => writeLegacyMappings([], legacyRoot, 1)).toThrow(/non-empty/)
+    expect(() => writeLegacyMappings([mapping], legacyRoot, 2)).toThrow(/count/)
+    expect(() =>
+      writeLegacyMappings([mapping, mapping], legacyRoot, 2),
+    ).toThrow(/unique/)
+    expect(() => readFileSync(redirectPath)).toThrow()
+  })
+
+  it('rejects an out-of-root mapping before writing valid siblings', () => {
+    const dist = mkdtempSync(join(tmpdir(), 'wbx-legacy-boundary-'))
+    const legacyRoot = join(dist, 'bluebook')
+    const inside = join(legacyRoot, 'index.html')
+    const outside = join(dist, 'outside.html')
+    const mappings = [
+      { redirectPath: inside, target: '/wb-x/' },
+      { redirectPath: outside, target: '/wb-x/outside.html' },
+    ]
+
+    expect(() => writeLegacyMappings(mappings, legacyRoot, 2)).toThrow(
+      /beneath the legacy root/,
+    )
+    expect(() => readFileSync(inside)).toThrow()
+    expect(() => readFileSync(outside)).toThrow()
   })
 })

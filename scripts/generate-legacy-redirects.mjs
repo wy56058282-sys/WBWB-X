@@ -31,7 +31,14 @@ function isUnsafePathSegment(segment) {
 
   let decoded = segment
   while (true) {
-    if (decoded === '.' || decoded === '..') return true
+    if (
+      decoded === '.' ||
+      decoded === '..' ||
+      decoded.includes('/') ||
+      decoded.includes('\\')
+    ) {
+      return true
+    }
 
     let next
     try {
@@ -86,6 +93,38 @@ function redirectDocument(target) {
 `
 }
 
+export function writeLegacyMappings(mappings, legacyRoot, sourceCount) {
+  if (mappings.length === 0) {
+    throw new Error('legacy mappings must be non-empty')
+  }
+  if (mappings.length !== sourceCount) {
+    throw new Error('wb-x source and legacy mapping counts do not match')
+  }
+
+  const resolvedLegacyRoot = resolve(legacyRoot)
+  const redirectPaths = new Set()
+  for (const mapping of mappings) {
+    if (!mapping || typeof mapping.target !== 'string') {
+      throw new Error('could not create a one-to-one legacy mapping for wb-x HTML files')
+    }
+
+    const redirectPath = resolve(mapping.redirectPath)
+    if (!redirectPath.startsWith(`${resolvedLegacyRoot}${sep}`)) {
+      throw new Error('every legacy redirect must remain beneath the legacy root')
+    }
+    if (redirectPaths.has(redirectPath)) {
+      throw new Error('legacy redirect paths must be unique')
+    }
+    redirectPaths.add(redirectPath)
+  }
+
+  return mappings.map(({ redirectPath, target }) => {
+    mkdirSync(dirname(redirectPath), { recursive: true })
+    writeFileSync(redirectPath, redirectDocument(target))
+    return redirectPath
+  })
+}
+
 export function generateLegacyRedirects(distRoot) {
   const currentRoot = join(distRoot, CURRENT_ROOT)
   if (!existsSync(currentRoot)) {
@@ -112,24 +151,10 @@ export function generateLegacyRedirects(distRoot) {
       ...relativePath.split(sep).slice(1),
     )
 
-    if (!target || !redirectPath.startsWith(`${legacyRoot}${sep}`)) return null
     return { builtFile, redirectPath, target }
   })
 
-  if (mappings.some((mapping) => mapping === null)) {
-    throw new Error('could not create a one-to-one legacy mapping for wb-x HTML files')
-  }
-
-  const written = mappings.map(({ redirectPath, target }) => {
-    mkdirSync(dirname(redirectPath), { recursive: true })
-    writeFileSync(redirectPath, redirectDocument(target))
-    return redirectPath
-  })
-
-  if (written.length !== builtFiles.length) {
-    throw new Error('wb-x source and legacy redirect counts do not match')
-  }
-  return written
+  return writeLegacyMappings(mappings, legacyRoot, builtFiles.length)
 }
 
 if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {
