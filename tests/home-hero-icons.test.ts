@@ -118,7 +118,7 @@ describe('home hero icon navigation', () => {
     const stage = baseRule(css, '.wbx-hero__stage')
 
     expect(css).toMatch(
-      /\.wbx-update-ticker\s*\{[^}]*height:\s*40px;[^}]*display:\s*grid;[^}]*border:\s*0;/s,
+      /\.wbx-update-ticker\s*\{[^}]*height:\s*40px;[^}]*display:\s*grid;[^}]*border:\s*0;[^}]*transform:\s*translateY\(-10px\);/s,
     )
     expect(css).toMatch(
       /\.wbx-update-ticker__group\s*>\s*\*\s*\{[^}]*min-height:\s*40px;/s,
