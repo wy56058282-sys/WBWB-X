@@ -112,6 +112,32 @@ function cardClearance(
 }
 
 describe('home hero icon navigation', () => {
+  it('defines the update ticker motion, pause, and reduced-motion contracts', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+
+    expect(css).toMatch(
+      /\.wbx-update-ticker\s*\{[^}]*height:\s*48px;[^}]*display:\s*grid;/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-update-ticker__viewport\s*\{[^}]*overflow:\s*hidden;/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-update-ticker__track\s*\{[^}]*animation:\s*wbx-update-ticker-scroll[^;]*infinite;/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-update-ticker:is\(:hover, :focus-within\)\s+\.wbx-update-ticker__track\s*\{[^}]*animation-play-state:\s*paused;/s,
+    )
+    expect(css).toMatch(
+      /@keyframes\s+wbx-update-ticker-scroll[\s\S]*transform:\s*translateX\(-50%\);/,
+    )
+    expect(css).toMatch(
+      /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*\.wbx-update-ticker__track\s*\{[^}]*animation:\s*none;/s,
+    )
+    expect(css).toMatch(
+      /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*\.wbx-update-ticker__group\[aria-hidden='true'\]\s*\{[^}]*display:\s*none;/s,
+    )
+  })
+
   it('renders sorted update links once and keeps the duplicate group hidden', () => {
     mountHomePage()
 

@@ -37,6 +37,7 @@
 }
 
 .wbx-hero {
+  min-width: 0;
   overflow: hidden;
   border: 2px solid #0d100d;
   border-radius: 20px;
@@ -47,6 +48,7 @@
 .wbx-hero__stage {
   display: grid;
   min-height: 568px;
+  min-width: 0;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   overflow: hidden;
   background: #f7f7f7;
@@ -58,6 +60,101 @@
   justify-content: center;
   min-width: 0;
   padding: 70px 28px 64px 80px;
+}
+
+.wbx-update-ticker {
+  height: 48px;
+  display: grid;
+  min-width: 0;
+  grid-template-columns: auto minmax(0, 1fr);
+  overflow: hidden;
+  border: 2px solid #0d100d;
+  color: #0d100d;
+  background: #ffffff;
+}
+
+.wbx-update-ticker__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  color: #ffffff;
+  background: #0d100d;
+  font-family: var(--wbx-pixel);
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.wbx-update-ticker__viewport {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.wbx-update-ticker__track,
+.wbx-update-ticker__group {
+  display: inline-flex;
+  width: max-content;
+  min-width: 0;
+  flex: none;
+}
+
+.wbx-update-ticker__track {
+  animation: wbx-update-ticker-scroll 32s linear infinite;
+  will-change: transform;
+}
+
+.wbx-update-ticker__group {
+  padding-right: 40px;
+}
+
+.wbx-update-ticker__group > * {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 20px;
+  color: inherit;
+  font-size: 14px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.wbx-update-ticker__group time {
+  color: var(--wbx-muted);
+  font-family: var(--wbx-pixel);
+  font-size: 11px;
+}
+
+.wbx-update-ticker__group i {
+  color: var(--wbx-accent);
+  font-style: normal;
+}
+
+.wbx-update-ticker__group a:hover,
+.wbx-update-ticker__group a:focus-visible {
+  color: #0d100d;
+  background: var(--wbx-accent);
+}
+
+.wbx-update-ticker__group a:focus-visible {
+  outline: 2px solid #0d100d;
+  outline-offset: -2px;
+}
+
+.wbx-update-ticker:is(:hover, :focus-within) .wbx-update-ticker__track {
+  animation-play-state: paused;
+}
+
+@keyframes wbx-update-ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .wbx-hero__copy > .wbx-pixel-label {
@@ -326,6 +423,16 @@
 @media (prefers-reduced-motion: reduce) {
   .wbx-icon-card {
     animation: none;
+  }
+
+  .wbx-update-ticker__track {
+    transform: none;
+    animation: none;
+  }
+
+  .wbx-update-ticker__group:first-child > :not(:first-child),
+  .wbx-update-ticker__group[aria-hidden='true'] {
+    display: none;
   }
 
   .wbx-hero-cta,
@@ -930,6 +1037,27 @@
 
   .wbx-hero__copy {
     padding: 46px 24px 22px;
+  }
+
+  .wbx-update-ticker {
+    width: min(100%, 320px);
+    height: 48px;
+  }
+
+  .wbx-update-ticker__label {
+    gap: 6px;
+    padding-inline: 10px;
+    font-size: 10px;
+  }
+
+  .wbx-update-ticker__group > * {
+    gap: 8px;
+    padding-inline: 14px;
+    font-size: 13px;
+  }
+
+  .wbx-update-ticker__group time {
+    font-size: 10px;
   }
 
   .wbx-hero__copy h1 {
