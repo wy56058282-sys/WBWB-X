@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createApp, type App } from 'vue'
 import { readFileSync } from 'node:fs'
 import HomePage from '../docs/.vitepress/theme/HomePage.vue'
+import { homeUpdates } from '../docs/.vitepress/theme/homeUpdates'
 
 vi.mock('vitepress', () => ({
   withBase: (path: string) => path,
@@ -111,6 +112,27 @@ function cardClearance(
 }
 
 describe('home hero icon navigation', () => {
+  it('renders sorted update links once and keeps the duplicate group hidden', () => {
+    mountHomePage()
+
+    expect(homeUpdates.length).toBeGreaterThanOrEqual(3)
+    expect(homeUpdates.map(({ date }) => date)).toEqual(
+      [...homeUpdates].map(({ date }) => date).sort().reverse(),
+    )
+
+    const ticker = document.querySelector('.wbx-update-ticker')
+    const groups = ticker?.querySelectorAll('.wbx-update-ticker__group')
+    expect(ticker?.getAttribute('aria-label')).toBe('内容更新')
+    expect(groups).toHaveLength(2)
+    expect(groups?.[1].getAttribute('aria-hidden')).toBe('true')
+    expect(groups?.[1].querySelectorAll('a')).toHaveLength(0)
+
+    const links = groups?.[0].querySelectorAll<HTMLAnchorElement>('a') ?? []
+    expect(Array.from(links, (link) => link.getAttribute('href'))).toEqual(
+      homeUpdates.map(({ href }) => href),
+    )
+  })
+
   it('renders the hero copy and art directly inside a static stage', () => {
     mountHomePage()
 

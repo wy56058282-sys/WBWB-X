@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
 import { brand } from '../brand'
+import { homeUpdates } from './homeUpdates'
+
+const sortedHomeUpdates = [...homeUpdates].sort((a, b) =>
+  b.date.localeCompare(a.date),
+)
 
 const valueProps = [
   { icon: 'hn-check-box', title: '场景实战', label: 'REAL-WORLD TASKS' },
@@ -96,6 +101,30 @@ const workflowSteps = [
     <section class="wbx-hero" aria-labelledby="wbx-hero-title">
       <div class="wbx-hero__stage">
         <div class="wbx-hero__copy">
+          <aside class="wbx-update-ticker" aria-label="内容更新">
+            <span class="wbx-update-ticker__label">
+              <i class="hn hn-megaphone" aria-hidden="true" />
+              内容更新
+            </span>
+            <span class="wbx-update-ticker__viewport">
+              <span class="wbx-update-ticker__track">
+                <span class="wbx-update-ticker__group">
+                  <a v-for="update in sortedHomeUpdates" :key="`${update.date}-${update.title}`" :href="withBase(update.href)">
+                    <time :datetime="update.date">{{ update.date }}</time>
+                    <span>{{ update.title }}</span>
+                    <i aria-hidden="true">/</i>
+                  </a>
+                </span>
+                <span class="wbx-update-ticker__group" aria-hidden="true">
+                  <span v-for="update in sortedHomeUpdates" :key="`duplicate-${update.date}-${update.title}`">
+                    <time :datetime="update.date">{{ update.date }}</time>
+                    <span>{{ update.title }}</span>
+                    <i aria-hidden="true">/</i>
+                  </span>
+                </span>
+              </span>
+            </span>
+          </aside>
           <p class="wbx-pixel-label">27 CHAPTERS / 4 PARTS / ∞ WORKFLOWS</p>
           <h1 id="wbx-hero-title">{{ brand.contentShortName }}</h1>
           <p class="wbx-hero__summary">
