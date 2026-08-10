@@ -26,12 +26,42 @@ function walkHtmlFiles(directory) {
   })
 }
 
+function isUnsafePathSegment(segment) {
+  if (!segment) return true
+
+  let decoded = segment
+  while (true) {
+    if (decoded === '.' || decoded === '..') return true
+
+    let next
+    try {
+      next = decodeURIComponent(decoded)
+    } catch {
+      return true
+    }
+    if (next === decoded) return false
+    decoded = next
+  }
+}
+
 export function legacyTargetForBuiltFile(relativePath) {
   const segments = relativePath.split(/[\\/]/)
-  if (segments[0] !== CURRENT_ROOT || segments.at(-1) !== 'index.html') return null
+  const fileName = segments.at(-1)
+  if (
+    segments[0] !== CURRENT_ROOT ||
+    segments.length < 2 ||
+    !fileName?.endsWith('.html') ||
+    segments.slice(1).some(isUnsafePathSegment)
+  ) {
+    return null
+  }
 
-  const pathSegments = segments.slice(1, -1)
-  return `/${[CURRENT_ROOT, ...pathSegments].join('/')}/`
+  const pageSegments = segments.slice(1)
+  const isDirectoryPage = fileName === 'index.html'
+  const routeSegments = isDirectoryPage ? pageSegments.slice(0, -1) : pageSegments
+  const encodedPath = routeSegments.map(encodeURIComponent).join('/')
+  const target = `/${CURRENT_ROOT}/${encodedPath}${encodedPath && isDirectoryPage ? '/' : ''}`
+  return target.startsWith(`/${CURRENT_ROOT}/`) ? target : null
 }
 
 function redirectDocument(target) {
@@ -58,22 +88,48 @@ function redirectDocument(target) {
 
 export function generateLegacyRedirects(distRoot) {
   const currentRoot = join(distRoot, CURRENT_ROOT)
-  if (!existsSync(currentRoot)) return []
+  if (!existsSync(currentRoot)) {
+    throw new Error(`wb-x build root is missing: ${currentRoot}`)
+  }
 
-  return walkHtmlFiles(currentRoot).flatMap((builtFile) => {
+  const builtFiles = walkHtmlFiles(currentRoot)
+  if (builtFiles.length === 0) {
+    throw new Error(`no wb-x HTML files found beneath: ${currentRoot}`)
+  }
+
+  const rootPage = join(currentRoot, 'index.html')
+  if (!builtFiles.includes(rootPage)) {
+    throw new Error(`wb-x root page is missing: ${rootPage}`)
+  }
+
+  const legacyRoot = resolve(distRoot, LEGACY_ROOT)
+  const mappings = builtFiles.map((builtFile) => {
     const relativePath = relative(distRoot, builtFile)
     const target = legacyTargetForBuiltFile(relativePath)
-    if (!target) return []
-
-    const redirectPath = join(
+    const redirectPath = resolve(
       distRoot,
       LEGACY_ROOT,
       ...relativePath.split(sep).slice(1),
     )
+
+    if (!target || !redirectPath.startsWith(`${legacyRoot}${sep}`)) return null
+    return { builtFile, redirectPath, target }
+  })
+
+  if (mappings.some((mapping) => mapping === null)) {
+    throw new Error('could not create a one-to-one legacy mapping for wb-x HTML files')
+  }
+
+  const written = mappings.map(({ redirectPath, target }) => {
     mkdirSync(dirname(redirectPath), { recursive: true })
     writeFileSync(redirectPath, redirectDocument(target))
-    return [redirectPath]
+    return redirectPath
   })
+
+  if (written.length !== builtFiles.length) {
+    throw new Error('wb-x source and legacy redirect counts do not match')
+  }
+  return written
 }
 
 if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {

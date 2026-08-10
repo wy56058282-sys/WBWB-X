@@ -24,23 +24,69 @@ describe('legacy small-book routes', () => {
   it('maps only built wb-x HTML files to clean public targets', () => {
     expect(legacyTargetForBuiltFile('wb-x/index.html')).toBe('/wb-x/')
     expect(legacyTargetForBuiltFile('wb-x/第一篇/第 1 章/index.html')).toBe(
-      '/wb-x/第一篇/第 1 章/',
+      '/wb-x/%E7%AC%AC%E4%B8%80%E7%AF%87/%E7%AC%AC%201%20%E7%AB%A0/',
+    )
+    expect(legacyTargetForBuiltFile('wb-x/index 2.html')).toBe(
+      '/wb-x/index%202.html',
     )
     expect(legacyTargetForBuiltFile('cases/index.html')).toBeNull()
   })
 
-  it('writes static bluebook redirects without touching other output', () => {
+  it('rejects dot segments and safely encodes reserved URL characters', () => {
+    expect(legacyTargetForBuiltFile('wb-x/../index.html')).toBeNull()
+    expect(legacyTargetForBuiltFile('wb-x/%2e%2e/index.html')).toBeNull()
+    expect(legacyTargetForBuiltFile('wb-x/%252e%252e/index.html')).toBeNull()
+    expect(legacyTargetForBuiltFile('wb-x/draft?from=old#start/index.html')).toBe(
+      '/wb-x/draft%3Ffrom%3Dold%23start/',
+    )
+  })
+
+  it('writes one static redirect for every built wb-x HTML file', () => {
     const dist = mkdtempSync(join(tmpdir(), 'wbx-legacy-'))
+    const root = join(dist, 'wb-x/index.html')
     const built = join(dist, 'wb-x/第一篇/第 1 章/index.html')
     mkdirSync(dirname(built), { recursive: true })
+    writeFileSync(root, '<!doctype html><title>root</title>')
     writeFileSync(built, '<!doctype html><title>chapter</title>')
 
     const written = generateLegacyRedirects(dist)
+    const rootRedirect = join(dist, 'bluebook/index.html')
     const redirect = join(dist, 'bluebook/第一篇/第 1 章/index.html')
 
-    expect(written).toContain(redirect)
-    expect(readFileSync(redirect, 'utf8')).toContain('/wb-x/第一篇/第 1 章/')
+    expect(written).toHaveLength(2)
+    expect(written).toEqual(expect.arrayContaining([rootRedirect, redirect]))
+    expect(readFileSync(rootRedirect, 'utf8')).toContain('/wb-x/')
+    expect(readFileSync(redirect, 'utf8')).toContain(
+      '/wb-x/%E7%AC%AC%E4%B8%80%E7%AF%87/%E7%AC%AC%201%20%E7%AB%A0/',
+    )
     expect(readFileSync(redirect, 'utf8')).toContain('location.search + location.hash')
     expect(readFileSync(built, 'utf8')).toContain('<title>chapter</title>')
+  })
+
+  it('fails when the wb-x build root is missing or empty', () => {
+    const missing = mkdtempSync(join(tmpdir(), 'wbx-legacy-missing-'))
+    expect(() => generateLegacyRedirects(missing)).toThrow(/wb-x build root is missing/)
+
+    const empty = mkdtempSync(join(tmpdir(), 'wbx-legacy-empty-'))
+    mkdirSync(join(empty, 'wb-x'))
+    expect(() => generateLegacyRedirects(empty)).toThrow(/no wb-x HTML files/)
+
+    const rootless = mkdtempSync(join(tmpdir(), 'wbx-legacy-rootless-'))
+    const nested = join(rootless, 'wb-x/chapter/index.html')
+    mkdirSync(dirname(nested), { recursive: true })
+    writeFileSync(nested, '<!doctype html><title>chapter</title>')
+    expect(() => generateLegacyRedirects(rootless)).toThrow(/wb-x root page is missing/)
+  })
+
+  it('fails before writing when a built source cannot map one-to-one', () => {
+    const dist = mkdtempSync(join(tmpdir(), 'wbx-legacy-invalid-'))
+    const root = join(dist, 'wb-x/index.html')
+    const unsafe = join(dist, 'wb-x/%2e%2e/index.html')
+    mkdirSync(dirname(unsafe), { recursive: true })
+    writeFileSync(root, '<!doctype html><title>root</title>')
+    writeFileSync(unsafe, '<!doctype html><title>unsafe</title>')
+
+    expect(() => generateLegacyRedirects(dist)).toThrow(/one-to-one legacy mapping/)
+    expect(() => readFileSync(join(dist, 'bluebook/index.html'))).toThrow()
   })
 })
