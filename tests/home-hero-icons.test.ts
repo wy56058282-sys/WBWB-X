@@ -127,7 +127,13 @@ describe('home hero icon navigation', () => {
       /\.wbx-update-ticker__track\s*\{[^}]*animation:\s*wbx-update-ticker-scroll[^;]*infinite;/s,
     )
     expect(css).toMatch(
-      /\.wbx-update-ticker:is\(:hover, :focus-within\)\s+\.wbx-update-ticker__track\s*\{[^}]*animation-play-state:\s*paused;/s,
+      /\.wbx-update-ticker:hover\s+\.wbx-update-ticker__track\s*\{[^}]*animation-play-state:\s*paused;/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-update-ticker:focus-within\s+\.wbx-update-ticker__track\s*\{[^}]*transform:\s*none;[^}]*animation:\s*none;/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-update-ticker:focus-within\s+\.wbx-update-ticker__viewport\s*\{[^}]*overflow-x:\s*auto;[^}]*scrollbar-width:\s*none;/s,
     )
     expect(css).toMatch(
       /@keyframes\s+wbx-update-ticker-scroll[\s\S]*transform:\s*translateX\(-50%\);/,
@@ -140,6 +146,14 @@ describe('home hero icon navigation', () => {
     )
     expect(hero).not.toMatch(/min-width:\s*0;/)
     expect(stage).not.toMatch(/min-width:\s*0;/)
+  })
+
+  it('keeps ticker dates legible on the fixed white surface', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const date = baseRule(css, '.wbx-update-ticker__group time')
+
+    expect(date).toMatch(/color:\s*#4f5752;/)
+    expect(date).not.toMatch(/var\(--wbx-muted\)/)
   })
 
   it('renders sorted update links once and keeps the duplicate group hidden', () => {

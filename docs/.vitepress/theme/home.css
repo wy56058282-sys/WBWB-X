@@ -120,7 +120,7 @@
 }
 
 .wbx-update-ticker__group time {
-  color: var(--wbx-muted);
+  color: #4f5752;
   font-family: var(--wbx-pixel);
   font-size: 11px;
 }
@@ -141,8 +141,22 @@
   outline-offset: -2px;
 }
 
-.wbx-update-ticker:is(:hover, :focus-within) .wbx-update-ticker__track {
+.wbx-update-ticker:hover .wbx-update-ticker__track {
   animation-play-state: paused;
+}
+
+.wbx-update-ticker:focus-within .wbx-update-ticker__viewport {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.wbx-update-ticker:focus-within .wbx-update-ticker__viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.wbx-update-ticker:focus-within .wbx-update-ticker__track {
+  transform: none;
+  animation: none;
 }
 
 @keyframes wbx-update-ticker-scroll {
