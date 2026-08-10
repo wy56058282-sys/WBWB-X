@@ -78,7 +78,7 @@
   align-self: center;
   width: max-content;
   height: fit-content;
-  padding: 8px 12px;
+  padding: 8px;
   color: #ffffff;
   background: #0d100d;
   font-family: var(--wbx-pixel);
@@ -1061,7 +1061,7 @@
 
   .wbx-update-ticker__label {
     gap: 6px;
-    padding-inline: 10px;
+    padding-inline: 8px;
     font-size: 10px;
   }
 

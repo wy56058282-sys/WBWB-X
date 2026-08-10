@@ -103,7 +103,7 @@ const workflowSteps = [
         <div class="wbx-hero__copy">
           <aside class="wbx-update-ticker" aria-label="内容更新">
             <span class="wbx-update-ticker__label">
-              内容更新
+              更新
             </span>
             <span class="wbx-update-ticker__viewport">
               <span class="wbx-update-ticker__track">
