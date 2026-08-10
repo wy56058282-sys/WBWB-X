@@ -1,5 +1,13 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
-import { basename, join, resolve } from 'node:path'
+import {
+  basename,
+  dirname,
+  isAbsolute,
+  join,
+  relative,
+  resolve,
+  sep,
+} from 'node:path'
 import { pathToFileURL } from 'node:url'
 
 function walkFiles(directory) {
@@ -24,6 +32,43 @@ function findLeakedTitle(files, titles) {
     if (title) return { file, title }
   }
   return null
+}
+
+function findSearchIndexes(files, distRoot) {
+  const loaders = files.filter((file) =>
+    basename(file).startsWith('VPLocalSearchBox.'),
+  )
+  if (loaders.length === 0) {
+    throw new Error('local search index loader is missing from build output')
+  }
+
+  const resolvedDistRoot = resolve(distRoot)
+  const indexes = new Set()
+  for (const loader of loaders) {
+    const source = readFileSync(loader, 'utf8')
+    for (const match of source.matchAll(/\bimport\(\s*["']([^"']+)["']\s*\)/g)) {
+      const reference = match[1].split(/[?#]/, 1)[0]
+      const index = resolve(dirname(loader), reference)
+      const relativePath = relative(resolvedDistRoot, index)
+      if (
+        !reference.startsWith('.') ||
+        relativePath === '..' ||
+        relativePath.startsWith(`..${sep}`) ||
+        isAbsolute(relativePath)
+      ) {
+        throw new Error(`local search index reference is invalid: ${reference}`)
+      }
+      if (!existsSync(index)) {
+        throw new Error(`local search index is missing: ${index}`)
+      }
+      indexes.add(index)
+    }
+  }
+
+  if (indexes.size === 0) {
+    throw new Error('local search index reference is missing from build output')
+  }
+  return [...indexes]
 }
 
 export function verifyPublishBoundary(
@@ -52,13 +97,7 @@ export function verifyPublishBoundary(
     )
   }
 
-  const searchLeak = findLeakedTitle(
-    files.filter((file) => {
-      const name = basename(file)
-      return name.startsWith('@localSearchIndex') && name.endsWith('.js')
-    }),
-    titles,
-  )
+  const searchLeak = findLeakedTitle(findSearchIndexes(files, distRoot), titles)
   if (searchLeak) {
     throw new Error(
       `local search index contains internal title "${searchLeak.title}": ${searchLeak.file}`,

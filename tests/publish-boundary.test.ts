@@ -1,4 +1,11 @@
-import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs'
+import {
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  renameSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { describe, expect, it } from 'vitest'
@@ -12,14 +19,19 @@ function createFixture() {
     dist,
     'assets/chunks/@localSearchIndexroot.fixture.js',
   )
+  const searchLoader = join(dist, 'assets/chunks/VPLocalSearchBox.fixture.js')
 
   mkdirSync(dirname(searchIndex), { recursive: true })
   mkdirSync(internalDocs, { recursive: true })
   writeFileSync(join(dist, 'index.html'), '<title>Public home</title>')
   writeFileSync(searchIndex, 'export default { public: "Public home" }')
+  writeFileSync(
+    searchLoader,
+    'const index = () => import("./@localSearchIndexroot.fixture.js")',
+  )
   writeFileSync(join(internalDocs, 'plan.md'), '# Internal Build Plan\n')
 
-  return { dist, internalDocs, searchIndex }
+  return { dist, internalDocs, searchIndex, searchLoader }
 }
 
 describe('production content boundary', () => {
@@ -59,6 +71,30 @@ describe('production content boundary', () => {
   it('rejects internal document titles in the local search index', () => {
     const fixture = createFixture()
     writeFileSync(fixture.searchIndex, 'export default "Internal Build Plan"')
+
+    expect(() =>
+      verifyPublishBoundary(fixture.dist, fixture.internalDocs),
+    ).toThrow(/search index.*Internal Build Plan/i)
+  })
+
+  it('rejects a missing local search index referenced by the build', () => {
+    const fixture = createFixture()
+    rmSync(fixture.searchIndex)
+
+    expect(() =>
+      verifyPublishBoundary(fixture.dist, fixture.internalDocs),
+    ).toThrow(/search index.*missing/i)
+  })
+
+  it('checks a renamed local search index through its build reference', () => {
+    const fixture = createFixture()
+    const renamedIndex = join(dirname(fixture.searchIndex), 'private-search.data')
+    renameSync(fixture.searchIndex, renamedIndex)
+    writeFileSync(renamedIndex, 'export default "Internal Build Plan"')
+    writeFileSync(
+      fixture.searchLoader,
+      'const index = () => import("./private-search.data")',
+    )
 
     expect(() =>
       verifyPublishBoundary(fixture.dist, fixture.internalDocs),
