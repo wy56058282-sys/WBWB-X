@@ -59,8 +59,6 @@ description: 第一次打开 WorkBuddy 的安全与效率设置清单，涵盖�
 
 WorkBuddy 内置多款大模型，不同任务适合不同模型。上表是基于个人使用后的场景建议；模型能力与名称可能随版本更新，请以产品界面为准。
 
-![WorkBuddy 模型选择菜单](/images/new-user-settings/03-model-selection.png)
-
 ## 4. 长任务开启“锁屏远程”
 
 | 场景 | 关闭 | 开启 |
