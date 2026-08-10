@@ -61,12 +61,12 @@
 }
 
 .wbx-update-ticker {
-  height: 48px;
+  height: 40px;
   display: grid;
   min-width: 0;
   grid-template-columns: auto minmax(0, 1fr);
   overflow: hidden;
-  border: 2px solid #0d100d;
+  border: 0;
   color: #0d100d;
   background: #ffffff;
 }
@@ -111,7 +111,7 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  min-height: 44px;
+  min-height: 40px;
   padding: 0 20px;
   color: inherit;
   font-size: 14px;
@@ -1053,7 +1053,7 @@
 
   .wbx-update-ticker {
     width: min(100%, 320px);
-    height: 48px;
+    height: 40px;
   }
 
   .wbx-update-ticker__label {
