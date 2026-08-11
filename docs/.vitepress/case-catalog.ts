@@ -27,6 +27,28 @@ function isIsoDate(value: string) {
   return !Number.isNaN(parsed.valueOf()) && parsed.toISOString().slice(0, 10) === value
 }
 
+function normalizedLocalPath(path: string) {
+  let decoded = path
+
+  for (let attempts = 0; attempts < 8; attempts += 1) {
+    if (decoded.split('/').some((segment) => segment === '.' || segment === '..')) {
+      return undefined
+    }
+
+    try {
+      const next = decodeURIComponent(decoded)
+      if (next === decoded) {
+        return `/${decoded.split('/').filter(Boolean).join('/')}${decoded.endsWith('/') ? '/' : ''}`
+      }
+      decoded = next
+    } catch {
+      return undefined
+    }
+  }
+
+  return undefined
+}
+
 export function validateCaseCatalogItem(input: unknown): CaseCatalogItem {
   if (!input || typeof input !== 'object') {
     throw new Error('case catalog item must be an object')
@@ -43,10 +65,19 @@ export function validateCaseCatalogItem(input: unknown): CaseCatalogItem {
   if (!isIsoDate(validated.date)) {
     throw new Error('date must be a valid ISO date')
   }
-  if (!/^\/cases\/submissions\/[^/]+\/$/.test(validated.route)) {
+  const normalizedRoute = normalizedLocalPath(validated.route)
+  if (
+    !/^\/cases\/submissions\/[^/]+\/$/.test(validated.route)
+    || !normalizedRoute?.startsWith('/cases/submissions/')
+  ) {
     throw new Error('route must be a /cases/submissions/ route')
   }
-  if (!/^\/(?:article-assets|brand)\//.test(validated.cover)) {
+
+  const normalizedCover = normalizedLocalPath(validated.cover)
+  if (
+    !/^\/(?:article-assets|brand)\//.test(validated.cover)
+    || !normalizedCover?.match(/^\/(?:article-assets|brand)\//)
+  ) {
     throw new Error('cover must be a local cover under /article-assets/ or /brand/')
   }
 

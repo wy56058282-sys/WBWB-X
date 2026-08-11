@@ -58,6 +58,40 @@ describe('case catalog validation', () => {
     expect(() => validateCaseCatalogItem({ ...validItem, cover: '/images/cover.png' })).toThrow(/cover/)
     expect(() => validateCaseCatalog([validItem, validItem])).toThrow(/duplicate route/)
   })
+
+  it('rejects literal, encoded, and repeatedly encoded dot path segments', () => {
+    for (const route of [
+      '/cases/submissions/./',
+      '/cases/submissions/../',
+      '/cases/submissions/%2e/',
+      '/cases/submissions/%2e%2e/',
+      '/cases/submissions/%252e/',
+      '/cases/submissions/%252e%252e/',
+    ]) {
+      expect(() => validateCaseCatalogItem({ ...validItem, route })).toThrow(/route/)
+    }
+
+    for (const cover of [
+      '/article-assets/./cover.png',
+      '/article-assets/../outside.png',
+      '/article-assets/%2e/cover.png',
+      '/article-assets/%2e%2e/outside.png',
+      '/article-assets/%252e/cover.png',
+      '/article-assets/%252e%252e/outside.png',
+    ]) {
+      expect(() => validateCaseCatalogItem({ ...validItem, cover })).toThrow(/cover/)
+    }
+  })
+
+  it('allows legal Chinese and space-containing paths', () => {
+    const item = {
+      ...validItem,
+      route: '/cases/submissions/中文 案例/',
+      cover: '/article-assets/中文 资源/案例封面.png',
+    }
+
+    expect(validateCaseCatalogItem(item)).toEqual(item)
+  })
 })
 
 describe('case catalog discovery helpers', () => {
