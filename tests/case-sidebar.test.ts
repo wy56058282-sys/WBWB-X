@@ -184,6 +184,26 @@ describe('discoverCaseSidebar', () => {
     expect(resumeCase?.text).toBe(title)
   })
 
+  it('uses the WorkBuddy tag in the WeChat publishing case', () => {
+    const contents = readFileSync(
+      'docs/cases/submissions/wechat-format-publish/index.md',
+      'utf8',
+    )
+    const title =
+      '用 WorkBuddy 公众号 Skill 一键排版并发布到微信公众号草稿箱'
+    const tag = '<span class="wbx-case-product-tag">WorkBuddy</span>'
+
+    expect(contents).toContain('productTag: WorkBuddy')
+    expect(contents).toContain(`# ${title} ${tag}`)
+
+    const publishingCase = discoverCaseSidebar(
+      'docs/cases/submissions',
+    )[2].items?.find(
+      (item) => item.link === '/cases/submissions/wechat-format-publish/',
+    )
+    expect(publishingCase?.text).toBe(`${title} ${tag}`)
+  })
+
   it('rejects a case without a title', () => {
     const root = createCasesRoot()
     writeCase(root, 'older', '---\ndate: 2026-07-13\n---\n')

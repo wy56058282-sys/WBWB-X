@@ -1,5 +1,6 @@
 ---
 title: 用 WorkBuddy 公众号 Skill 一键排版并发布到微信公众号草稿箱
+productTag: WorkBuddy
 summary: 在 WorkBuddy 中安装公众号排版 Skill，用 Markdown 写好内容，一键输出带主题、代码高亮和自动配图的公众号草稿。
 author: nikola
 date: "2026-07-13"
@@ -16,7 +17,7 @@ tags:
   - 自动发布
   - Skill 安装
 ---
-# 用 WorkBuddy 公众号 Skill 一键排版并发布到微信公众号草稿箱
+# 用 WorkBuddy 公众号 Skill 一键排版并发布到微信公众号草稿箱 <span class="wbx-case-product-tag">WorkBuddy</span>
 
 ## 场景描述
 
