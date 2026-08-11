@@ -167,15 +167,17 @@ describe('discoverCaseSidebar', () => {
     expect(knowledgeCase?.text).toBe(`${title} ${tag}`)
   })
 
-  it('uses the approved wording for the Vibe Resume case title', () => {
+  it('uses the approved wording and WorkBuddy tag for the Vibe Resume case title', () => {
     const contents = readFileSync(
       'docs/cases/submissions/vibe-resume/index.md',
       'utf8',
     )
     const title = '将自己的经历发给 WorkBuddy，直接生成一份好看的简历'
+    const tag = '<span class="wbx-case-product-tag">WorkBuddy</span>'
 
     expect(contents).toContain(`title: ${title}`)
-    expect(contents).toContain(`# ${title}`)
+    expect(contents).toContain('productTag: WorkBuddy')
+    expect(contents).toContain(`# ${title} ${tag}`)
     expect(contents).not.toContain('把经历发给 WorkBuddy')
 
     const resumeCase = discoverCaseSidebar(
@@ -183,7 +185,7 @@ describe('discoverCaseSidebar', () => {
     )[2].items?.find(
       (item) => item.link === '/cases/submissions/vibe-resume/',
     )
-    expect(resumeCase?.text).toBe(title)
+    expect(resumeCase?.text).toBe(`${title} ${tag}`)
   })
 
   it('uses the WorkBuddy tag in the WeChat publishing case', () => {

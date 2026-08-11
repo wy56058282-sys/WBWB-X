@@ -5,6 +5,7 @@ author: KevinYoung-Kw
 date: "2026-07-13"
 category: 职场效率
 difficulty: 入门
+productTag: WorkBuddy
 aside: false
 outline: false
 skills:
@@ -17,7 +18,7 @@ tags:
   - Skill 安装
 ---
 
-# 将自己的经历发给 WorkBuddy，直接生成一份好看的简历
+# 将自己的经历发给 WorkBuddy，直接生成一份好看的简历 <span class="wbx-case-product-tag">WorkBuddy</span>
 
 ## 这个案例解决什么问题
 
