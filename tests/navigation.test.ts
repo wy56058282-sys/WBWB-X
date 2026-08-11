@@ -12,10 +12,11 @@ describe('site navigation', () => {
       '首页',
       '开始阅读',
       '案例集',
-      '提需求',
+      '定制服务',
       '指南',
       '交流群',
     ])
+    expect(nav.find((item) => item.text === '定制服务')?.link).toBe('/help/')
   })
 
   it('contains all 27 numbered chapters and both appendices', () => {

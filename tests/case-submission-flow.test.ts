@@ -14,6 +14,7 @@ import CasesPage from '../docs/.vitepress/theme/CasesPage.vue'
 import { serviceConfig } from '../docs/.vitepress/service-config'
 
 const help = readFileSync('docs/help/index.md', 'utf8')
+const servicePage = readFileSync('docs/.vitepress/theme/ServicePage.vue', 'utf8')
 const cases = readFileSync('docs/cases/index.md', 'utf8')
 const guide = readFileSync('docs/community/case-contributing.md', 'utf8')
 const contributing = readFileSync('docs/community/contributing.md', 'utf8')
@@ -44,9 +45,10 @@ describe('low-friction case submission flow', () => {
 
     expect(fallback?.getAttribute('href')).toBe('/help/#scenario-survey')
     expect(fallback?.textContent).toContain('问卷二维码')
-    expect(help).toContain('需求与案例投稿问卷')
-    expect(help).toContain('【案例投稿】')
-    expect(help).toContain('无需 GitHub')
+    expect(help).toContain('<ServicePage />')
+    expect(servicePage).toContain('需求与案例投稿问卷')
+    expect(servicePage).toContain('【案例投稿】')
+    expect(servicePage).toContain('无需 GitHub')
   })
 
   it('uses the independent free form when operations config provides one', () => {
