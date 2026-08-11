@@ -46,7 +46,7 @@ docs/.vitepress/brand.ts
 | 附录 | 2 篇 | 常用指令模板、场景速查表 |
 | 社区案例 | 7 个 | 涵盖资讯、简历、公众号、知识管理、创意开发和数据分析 |
 | 支持与共创页面 | 4 个 | 阅读指南、提需求、参与共创、Case 投稿指南 |
-| 图片清单条目 | 267 | 覆盖 35 个页面 |
+| 图片清单条目 | 270 | 覆盖 35 个页面 |
 | 原始校准素材 | 272 个 | 位于 `source-calibration` |
 | 替换素材文件 | 36 个 | 位于 `replacements` |
 
@@ -379,7 +379,6 @@ Case 正文应覆盖：
 | 用途 | 文件 |
 | --- | --- |
 | 顶部交流群 | `docs/public/community/wechat-group.png` |
-| 案例共创联系人 | `docs/public/article-assets/source-calibration/case-index/001.jpg` |
 | 共创联系人 1 | `docs/public/article-assets/source-calibration/community/001.jpg` |
 | 共创联系人 2 | `docs/public/article-assets/replacements/community/002.jpg` |
 | 场景调查问卷 | `docs/public/article-assets/source-calibration/help/001.png` |
@@ -402,9 +401,9 @@ article-image-replacement-manifest.csv
 docs/.vitepress/image-manifest.generated.json
 ```
 
-清单当前有 267 条记录，其中：
+清单当前有 270 条记录，其中：
 
-- `awaiting-replacement`：266 条。
+- `awaiting-replacement`：269 条。
 - `replaced`：1 条。
 
 仓库中已经存在 36 个 replacement 文件，说明“文件实际替换情况”和“清单状态”尚未完全同步。后续图片更新应同时检查文件和清单状态。

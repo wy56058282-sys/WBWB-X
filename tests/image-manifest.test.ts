@@ -118,6 +118,29 @@ describe('required brand assets', () => {
 })
 
 describe('article image replacement inventory', () => {
+  it('does not retain the retired case-index calibration asset', () => {
+    const retiredId = 'case-index-001'
+    const retiredPublicPath =
+      'docs/public/article-assets/source-calibration/case-index/001.jpg'
+    const retiredPublishedPath =
+      'docs/.vitepress/dist/article-assets/source-calibration/case-index/001.jpg'
+    const retiredPublicUrl =
+      '/article-assets/source-calibration/case-index/001.jpg'
+    const inventory = readFileSync('CONTENT_INVENTORY.md', 'utf8')
+    const csv = readFileSync('article-image-replacement-manifest.csv', 'utf8')
+    const caseIndexSources = [
+      readFileSync('docs/cases/index.md', 'utf8'),
+      readFileSync('docs/.vitepress/theme/CasesPage.vue', 'utf8'),
+    ].join('\n')
+
+    expect.soft(manifest.some((item) => item.id === retiredId)).toBe(false)
+    expect.soft(csv).not.toContain(retiredId)
+    expect.soft(inventory).not.toContain(retiredPublicPath)
+    expect.soft(caseIndexSources).not.toContain(retiredPublicUrl)
+    expect.soft(existsSync(retiredPublicPath)).toBe(false)
+    expect.soft(existsSync(retiredPublishedPath)).toBe(false)
+  })
+
   it('tracks every captured article image with stable replacement paths', () => {
     const columns = [
       'id',
