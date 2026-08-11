@@ -19,3 +19,7 @@ export function isHomeRoute(path: string, base: string) {
 export function isReadingRoute(path: string, base: string) {
   return stripBase(path, base).startsWith('/wb-x/')
 }
+
+export function isCaseIndexRoute(path: string, base: string) {
+  return stripBase(path, base) === '/cases/'
+}

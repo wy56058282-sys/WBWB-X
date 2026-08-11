@@ -2,7 +2,7 @@
 import DefaultTheme from 'vitepress/theme'
 import { useData, useRoute } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted } from 'vue'
-import { isHomeRoute, isReadingRoute } from '../route-state'
+import { isCaseIndexRoute, isHomeRoute, isReadingRoute } from '../route-state'
 import CommunityQr, { openCommunityQr } from './CommunityQr.vue'
 import DocImageLightbox from './DocImageLightbox.vue'
 import FloatingQuickAccess from './FloatingQuickAccess.vue'
@@ -12,6 +12,7 @@ const route = useRoute()
 const { site } = useData()
 const isHome = computed(() => isHomeRoute(route.path, site.value.base))
 const isReading = computed(() => isReadingRoute(route.path, site.value.base))
+const isCaseIndex = computed(() => isCaseIndexRoute(route.path, site.value.base))
 
 function handleCommunityQrTrigger(event: MouseEvent) {
   if (
@@ -47,6 +48,7 @@ onBeforeUnmount(() => {
     :class="{
       'wbx-home-layout': isHome,
       'wbx-reading-layout': isReading,
+      'wbx-cases-layout': isCaseIndex,
     }"
   >
     <template #home-hero-before>

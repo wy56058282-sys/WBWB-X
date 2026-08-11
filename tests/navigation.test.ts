@@ -3,7 +3,7 @@
 import { describe, expect, it } from 'vitest'
 import config from '../docs/.vitepress/config.mts'
 import { nav } from '../docs/.vitepress/navigation'
-import { isHomeRoute } from '../docs/.vitepress/route-state'
+import { isCaseIndexRoute, isHomeRoute } from '../docs/.vitepress/route-state'
 import { sidebar } from '../docs/.vitepress/sidebar'
 
 describe('site navigation', () => {
@@ -58,5 +58,12 @@ describe('site navigation', () => {
     expect(isHomeRoute('/', '/')).toBe(true)
     expect(isHomeRoute('/WBWB-X/', '/WBWB-X/')).toBe(true)
     expect(isHomeRoute('/WBWB-X/wb-x/', '/WBWB-X/')).toBe(false)
+  })
+
+  it('only treats the exact case index as the sidebar-free gallery route', () => {
+    expect(isCaseIndexRoute('/cases/', '/')).toBe(true)
+    expect(isCaseIndexRoute('/WBWB-X/cases/', '/WBWB-X/')).toBe(true)
+    expect(isCaseIndexRoute('/cases/submissions/excel-store-analysis/', '/')).toBe(false)
+    expect(isCaseIndexRoute('/community/case-contributing/', '/')).toBe(false)
   })
 })
