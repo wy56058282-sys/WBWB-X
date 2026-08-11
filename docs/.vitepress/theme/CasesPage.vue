@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { withBase } from 'vitepress'
 import { caseCategories, filterCaseCatalog } from '../case-catalog'
 import { data } from '../case-catalog.data'
+import { isServiceFormUrl, serviceConfig } from '../service-config'
 
 const query = ref('')
 const category = ref('全部')
@@ -89,7 +90,18 @@ function resetFilters() {
         <p>分享真实任务、使用过程和结果，让下一位遇到相似问题的人少走一点弯路。</p>
       </div>
       <div class="wbx-cases-submit__actions">
-        <a class="wbx-cases-action wbx-cases-action--primary" :href="withBase('/help/#scenario-survey')">填写问卷投稿</a>
+        <a
+          v-if="isServiceFormUrl(serviceConfig.freeCaseFormUrl)"
+          class="wbx-cases-action wbx-cases-action--primary"
+          :href="serviceConfig.freeCaseFormUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+        >填写问卷投稿</a>
+        <a
+          v-else
+          class="wbx-cases-action wbx-cases-action--primary"
+          :href="withBase('/help/#scenario-survey')"
+        >查看投稿问卷二维码</a>
         <a class="wbx-cases-action" :href="withBase('/community/case-contributing')">查看投稿指南</a>
       </div>
     </section>
