@@ -82,7 +82,7 @@ export function discoverCaseSidebar(casesRoot: string): DefaultTheme.SidebarItem
       text: '社区 Case',
       items: cases.map(({ productTag, route, title }) => ({
         text: productTag
-          ? `<span class="wbx-case-product-tag">${escapeHtml(productTag)}</span> ${escapeHtml(title)}`
+          ? `${escapeHtml(title)} <span class="wbx-case-product-tag">${escapeHtml(productTag)}</span>`
           : title,
         link: route,
       })),

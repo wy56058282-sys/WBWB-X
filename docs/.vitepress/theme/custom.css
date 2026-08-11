@@ -362,9 +362,11 @@ body {
 }
 
 .vp-doc h1 .wbx-case-product-tag {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  width: max-content;
   min-height: 28px;
+  margin-top: 12px;
   padding: 4px 8px;
   border: 1px solid #0d100d;
   border-radius: 3px;
@@ -374,13 +376,12 @@ body {
   font-size: 13px;
   font-weight: 400;
   line-height: 1;
-  vertical-align: 0.22em;
   white-space: nowrap;
 }
 
 .VPSidebarItem .wbx-case-product-tag {
   display: inline-block;
-  margin-right: 4px;
+  margin-left: 4px;
   padding: 2px 4px;
   border: 1px solid currentcolor;
   border-radius: 2px;

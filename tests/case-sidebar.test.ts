@@ -56,7 +56,7 @@ describe('discoverCaseSidebar', () => {
     const communityCases = discoverCaseSidebar(root)[2].items
     expect(communityCases).toEqual([
       {
-        text: '<span class="wbx-case-product-tag">WorkBuddy</span> 专家团吃透十年年报',
+        text: '专家团吃透十年年报 <span class="wbx-case-product-tag">WorkBuddy</span>',
         link: '/cases/submissions/tagged/',
       },
     ])
@@ -71,9 +71,11 @@ describe('discoverCaseSidebar', () => {
 
     expect(contents).toContain('productTag: WorkBuddy')
     expect(contents).toContain(
-      '# <span class="wbx-case-product-tag">WorkBuddy</span> 专家团吃透十年年报',
+      '# 专家团吃透十年年报：一套可复用的上市公司深度研究方法 <span class="wbx-case-product-tag">WorkBuddy</span>',
     )
-    expect(css).toMatch(/\.vp-doc h1 \.wbx-case-product-tag\s*\{/)
+    expect(css).toMatch(
+      /\.vp-doc h1 \.wbx-case-product-tag\s*\{[^}]*display:\s*flex;[^}]*width:\s*max-content;[^}]*margin-top:\s*12px;/s,
+    )
     expect(css).toMatch(/\.VPSidebarItem \.wbx-case-product-tag\s*\{/)
   })
 

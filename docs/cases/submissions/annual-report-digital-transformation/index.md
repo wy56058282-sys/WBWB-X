@@ -21,7 +21,7 @@ tags:
   - MBA
 ---
 
-# <span class="wbx-case-product-tag">WorkBuddy</span> 专家团吃透十年年报：一套可复用的上市公司深度研究方法
+# 专家团吃透十年年报：一套可复用的上市公司深度研究方法 <span class="wbx-case-product-tag">WorkBuddy</span>
 
 ![案例封面：数字化转型叙事分析报告首页](/article-assets/source-calibration/case-annual-report-digital-transformation/001.png)
 
