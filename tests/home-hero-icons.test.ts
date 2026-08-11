@@ -10,6 +10,7 @@ vi.mock('vitepress', () => ({
 
 const apps: App[] = []
 let resizeObserverCallback: ResizeObserverCallback
+let resizeObserverObserve: ReturnType<typeof vi.fn>
 let resizeObserverDisconnect: ReturnType<typeof vi.fn>
 let mediaQueryRemoveEventListener: ReturnType<typeof vi.fn>
 
@@ -32,6 +33,7 @@ function stubMatchMedia(matches: boolean) {
 
 beforeEach(() => {
   stubMatchMedia(false)
+  resizeObserverObserve = vi.fn()
   resizeObserverDisconnect = vi.fn()
   vi.stubGlobal(
     'ResizeObserver',
@@ -40,7 +42,7 @@ beforeEach(() => {
         resizeObserverCallback = callback
       }
 
-      observe = vi.fn()
+      observe = resizeObserverObserve
       unobserve = vi.fn()
       disconnect = resizeObserverDisconnect
     },
@@ -199,6 +201,8 @@ describe('home hero icon navigation', () => {
 
     expect(viewport).not.toBeNull()
     expect(title).not.toBeNull()
+    expect(resizeObserverObserve).toHaveBeenCalledOnce()
+    expect(resizeObserverObserve).toHaveBeenCalledWith(viewport)
     Object.defineProperty(title, 'offsetWidth', {
       configurable: true,
       value: 420,
@@ -255,36 +259,51 @@ describe('home hero icon navigation', () => {
     )
   })
 
-  it('keeps the focused update in place until focus leaves the ticker', async () => {
+  it('stays paused until both overlapping hover and focus states end', async () => {
     vi.useFakeTimers()
     mountHomePage()
 
     const ticker = document.querySelector<HTMLElement>('.wbx-update-ticker')
-    const link = ticker?.querySelector<HTMLAnchorElement>('a')
-    const title = ticker?.querySelector<HTMLElement>('.wbx-update-ticker__title')
     const outside = document.createElement('button')
     document.body.append(outside)
 
-    link?.dispatchEvent(new FocusEvent('focusin', { bubbles: true }))
+    ticker?.dispatchEvent(new MouseEvent('mouseenter'))
+    const firstLink = ticker?.querySelector<HTMLAnchorElement>('a')
+    firstLink?.focus()
+    expect(document.activeElement).toBe(firstLink)
     await vi.advanceTimersByTimeAsync(12000)
     expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
       homeUpdates[0].title,
     )
 
-    link?.dispatchEvent(
-      new FocusEvent('focusout', { bubbles: true, relatedTarget: title }),
-    )
+    ticker?.dispatchEvent(new MouseEvent('mouseleave'))
     await vi.advanceTimersByTimeAsync(6000)
     expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
       homeUpdates[0].title,
     )
 
-    link?.dispatchEvent(
-      new FocusEvent('focusout', { bubbles: true, relatedTarget: outside }),
-    )
+    outside.focus()
+    expect(document.activeElement).toBe(outside)
     await vi.advanceTimersByTimeAsync(6000)
     expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
       homeUpdates[1].title,
+    )
+
+    ticker?.dispatchEvent(new MouseEvent('mouseenter'))
+    const secondLink = ticker?.querySelector<HTMLAnchorElement>('a')
+    secondLink?.focus()
+    expect(document.activeElement).toBe(secondLink)
+    outside.focus()
+    expect(document.activeElement).toBe(outside)
+    await vi.advanceTimersByTimeAsync(6000)
+    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
+      homeUpdates[1].title,
+    )
+
+    ticker?.dispatchEvent(new MouseEvent('mouseleave'))
+    await vi.advanceTimersByTimeAsync(6000)
+    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
+      homeUpdates[2].title,
     )
   })
 

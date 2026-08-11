@@ -16,7 +16,11 @@ const sortedHomeUpdates = [...homeUpdates].sort((a, b) =>
 )
 const UPDATE_INTERVAL_MS = 6000
 const currentUpdateIndex = ref(0)
-const isUpdatePaused = ref(false)
+const isUpdateHovered = ref(false)
+const isUpdateFocused = ref(false)
+const isUpdatePaused = computed(
+  () => isUpdateHovered.value || isUpdateFocused.value,
+)
 const prefersReducedMotion = ref(false)
 const isUpdateTitleOverflowing = ref(false)
 const updateTickerRef = ref<HTMLElement | null>(null)
@@ -59,13 +63,18 @@ function measureUpdateTitle() {
   )
 }
 
-function pauseUpdates() {
-  isUpdatePaused.value = true
+function pauseUpdateHover() {
+  isUpdateHovered.value = true
   scheduleUpdate()
 }
 
-function resumeUpdates() {
-  isUpdatePaused.value = false
+function resumeUpdateHover() {
+  isUpdateHovered.value = false
+  scheduleUpdate()
+}
+
+function pauseUpdateFocus() {
+  isUpdateFocused.value = true
   scheduleUpdate()
 }
 
@@ -77,7 +86,8 @@ function handleUpdateFocusOut(event: FocusEvent) {
     return
   }
 
-  resumeUpdates()
+  isUpdateFocused.value = false
+  scheduleUpdate()
 }
 
 function handleUpdateMotionChange(event: MediaQueryListEvent) {
@@ -212,9 +222,9 @@ const workflowSteps = [
             class="wbx-update-ticker"
             :class="{ 'is-paused': isUpdatePaused }"
             aria-label="内容更新"
-            @mouseenter="pauseUpdates"
-            @mouseleave="resumeUpdates"
-            @focusin="pauseUpdates"
+            @mouseenter="pauseUpdateHover"
+            @mouseleave="resumeUpdateHover"
+            @focusin="pauseUpdateFocus"
             @focusout="handleUpdateFocusOut"
           >
             <span class="wbx-update-ticker__date-viewport">
