@@ -52,7 +52,7 @@ function resetFilters() {
           :aria-pressed="category === item"
           @click="category = item"
         >
-          <span class="wbx-cases-category__indicator" aria-hidden="true">✓</span>
+          <i class="hn hn-check-circle-solid wbx-cases-category__indicator" aria-hidden="true" />
           {{ item }}
         </button>
       </div>
