@@ -24,6 +24,12 @@ const updateTickerRef = ref<HTMLElement | null>(null)
 const currentHomeUpdate = computed(
   () => sortedHomeUpdates[currentUpdateIndex.value],
 )
+const currentUpdateDatePrefix = computed(() =>
+  currentHomeUpdate.value.date.slice(0, 8),
+)
+const currentUpdateDateDay = computed(() =>
+  currentHomeUpdate.value.date.slice(8),
+)
 let updateTimer: ReturnType<typeof window.setTimeout> | undefined
 let updateMotionQuery: MediaQueryList | undefined
 
@@ -201,13 +207,20 @@ const workflowSteps = [
             @focusout="handleUpdateFocusOut"
           >
             <span class="wbx-update-ticker__date-viewport">
-              <Transition name="wbx-update-date">
-                <time
-                  :key="`${currentHomeUpdate.date}-${currentHomeUpdate.title}`"
-                  class="wbx-update-ticker__date"
-                  :datetime="currentHomeUpdate.date"
-                >{{ currentHomeUpdate.date }}</time>
-              </Transition>
+              <time
+                class="wbx-update-ticker__date"
+                :datetime="currentHomeUpdate.date"
+              >
+                <span>{{ currentUpdateDatePrefix }}</span>
+                <span class="wbx-update-ticker__date-day-viewport">
+                  <Transition name="wbx-update-date">
+                    <span
+                      :key="currentHomeUpdate.date"
+                      class="wbx-update-ticker__date-day"
+                    >{{ currentUpdateDateDay }}</span>
+                  </Transition>
+                </span>
+              </time>
             </span>
             <span class="wbx-update-ticker__content">
               <a

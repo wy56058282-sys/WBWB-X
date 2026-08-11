@@ -75,6 +75,7 @@ describe('home update carousel synchronization', () => {
 
     const ticker = document.querySelector('.wbx-update-ticker')
     const initialTime = ticker?.querySelector('time')
+    const initialDay = ticker?.querySelector('.wbx-update-ticker__date-day')
 
     expect(ticker?.querySelectorAll('.wbx-update-ticker__link')).toHaveLength(1)
     expect(initialTime?.textContent).toBe(fixtureHomeUpdates[0].date)
@@ -87,11 +88,16 @@ describe('home update carousel synchronization', () => {
 
     await vi.advanceTimersByTimeAsync(6000)
 
-    const nextTime = Array.from(ticker?.querySelectorAll('time') ?? []).find(
-      (time) => time !== initialTime,
+    const nextDay = Array.from(
+      ticker?.querySelectorAll('.wbx-update-ticker__date-day') ?? [],
+    ).find(
+      (day) => day !== initialDay,
     )
-    expect(nextTime).toBeDefined()
-    expect(nextTime?.textContent).toBe(fixtureHomeUpdates[1].date)
+    expect(nextDay).toBeDefined()
+    expect(nextDay?.textContent).toBe('11')
+    expect(ticker?.querySelector('time')?.getAttribute('datetime')).toBe(
+      fixtureHomeUpdates[1].date,
+    )
     expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
       fixtureHomeUpdates[1].title,
     )

@@ -165,6 +165,7 @@ describe('home hero icon navigation', () => {
 
     const ticker = document.querySelector('.wbx-update-ticker')
     const initialTime = ticker?.querySelector('time')
+    const initialDay = ticker?.querySelector('.wbx-update-ticker__date-day')
     expect(ticker?.getAttribute('aria-label')).toBe('内容更新')
     expect(ticker?.querySelectorAll('.wbx-update-ticker__link')).toHaveLength(1)
     expect(initialTime?.textContent).toBe(homeUpdates[0].date)
@@ -174,12 +175,9 @@ describe('home hero icon navigation', () => {
 
     await vi.advanceTimersByTimeAsync(6000)
 
-    const secondTime = Array.from(ticker?.querySelectorAll('time') ?? []).find(
-      (time) => time !== initialTime,
-    )
-    expect(secondTime).toBeDefined()
-    expect(secondTime).not.toBe(initialTime)
-    expect(secondTime?.textContent).toBe(homeUpdates[1].date)
+    expect(ticker?.querySelector('time')).toBe(initialTime)
+    expect(ticker?.querySelector('.wbx-update-ticker__date-day')).toBe(initialDay)
+    expect(initialTime?.textContent).toBe(homeUpdates[1].date)
     expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
       homeUpdates[1].title,
     )

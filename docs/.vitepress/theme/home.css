@@ -90,6 +90,20 @@
   font-size: 11px;
 }
 
+.wbx-update-ticker__date-day-viewport {
+  position: relative;
+  width: 2ch;
+  height: 28px;
+  overflow: hidden;
+}
+
+.wbx-update-ticker__date-day {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+}
+
 .wbx-update-date-enter-active,
 .wbx-update-date-leave-active {
   transition: transform 400ms ease, opacity 400ms ease;
