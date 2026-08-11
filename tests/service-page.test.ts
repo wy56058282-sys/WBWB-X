@@ -149,7 +149,20 @@ describe('custom diagnostic service page', () => {
     expect(form?.getAttribute('rel')).toBe('noopener noreferrer')
     expect(payment?.textContent).toContain('1 个工作日内确认')
     expect(payment?.textContent).toContain('support@example.com')
+    expect(payment?.textContent).toContain('同设备访问时，保存二维码，在微信“扫一扫”中从相册识别')
+    expect(payment?.textContent).toContain('无法完成时联系支持人员')
+    expect(payment?.textContent).not.toMatch(/支付宝|银行转账|银行卡/)
     expect(payment?.textContent).not.toContain('暂未开放预约')
+  })
+
+  it('states who can use submitted materials and how long they are retained', () => {
+    mountServicePage()
+
+    const privacyRule = document.querySelector('.wbx-service-rules')?.textContent ?? ''
+
+    expect(privacyRule).toContain('付款截图和需求资料仅限服务人员核对、诊断使用')
+    expect(privacyRule).toContain('未成交项目在诊断完成后 30 天删除')
+    expect(privacyRule).toContain('成交项目按交付周期保留')
   })
 
   it('uses four catalog entries as accessible related-case links', () => {

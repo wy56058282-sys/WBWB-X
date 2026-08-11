@@ -123,7 +123,7 @@ const process = [
             width="280"
             height="280"
           >
-          <figcaption>扫码支付 ¥399，付款备注请填写申请人姓名与手机号后四位。</figcaption>
+          <figcaption>扫码支付 ¥399，付款备注请填写申请人姓名与手机号后四位。同设备访问时，保存二维码，在微信“扫一扫”中从相册识别；无法完成时联系支持人员。</figcaption>
         </figure>
         <div class="wbx-service-payment__instructions">
           <h3>付款后填写诊断申请表</h3>
@@ -167,7 +167,7 @@ const process = [
         </div>
         <div>
           <dt>资料与隐私</dt>
-          <dd>付款截图只用于订单核对；需求材料只用于诊断与后续报价，请勿提交密码、密钥或无关敏感数据。</dd>
+          <dd>付款截图和需求资料仅限服务人员核对、诊断使用；未成交项目在诊断完成后 30 天删除，成交项目按交付周期保留。请勿提交密码、密钥或无关敏感数据。</dd>
         </div>
       </dl>
     </section>
