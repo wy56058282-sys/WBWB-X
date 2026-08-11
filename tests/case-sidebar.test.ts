@@ -111,6 +111,28 @@ describe('discoverCaseSidebar', () => {
     )
   })
 
+  it('uses the WorkBuddy tag in the JZ showreel case heading and sidebar', () => {
+    const contents = readFileSync(
+      'docs/cases/submissions/jz-2025-showreel/index.md',
+      'utf8',
+    )
+    const title = '用 WorkBuddy 生成一个 GSAP 粒子球体作品集动画网站'
+
+    expect(contents).toContain('productTag: WorkBuddy')
+    expect(contents).toContain(
+      `# ${title} <span class="wbx-case-product-tag">WorkBuddy</span>`,
+    )
+
+    const showreelCase = discoverCaseSidebar(
+      'docs/cases/submissions',
+    )[2].items?.find(
+      (item) => item.link === '/cases/submissions/jz-2025-showreel/',
+    )
+    expect(showreelCase?.text).toBe(
+      `${title} <span class="wbx-case-product-tag">WorkBuddy</span>`,
+    )
+  })
+
   it('rejects a case without a title', () => {
     const root = createCasesRoot()
     writeCase(root, 'older', '---\ndate: 2026-07-13\n---\n')
