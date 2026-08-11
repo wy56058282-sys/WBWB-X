@@ -33,10 +33,10 @@ describe('discoverCaseSidebar', () => {
       'utf8',
     )
 
-    expect(dailyAiNews).toContain('title: 用 WorkBuddy 自动整理每日 AI 资讯')
+    expect(dailyAiNews).toContain('title: 自动整理每日 AI 资讯')
     expect(dailyAiNews).toContain('productTag: WorkBuddy')
     expect(dailyAiNews).toContain(
-      '# 用 WorkBuddy 自动整理每日 AI 资讯 <span class="wbx-case-product-tag">WorkBuddy</span>',
+      '# 自动整理每日 AI 资讯 <span class="wbx-case-product-tag">WorkBuddy</span>',
     )
     expect(dailyAiNews).not.toContain('【示例】')
 
@@ -46,7 +46,7 @@ describe('discoverCaseSidebar', () => {
       (item) => item.link === '/cases/submissions/daily-ai-news/',
     )
     expect(dailyAiNewsCase?.text).toBe(
-      '用 WorkBuddy 自动整理每日 AI 资讯 <span class="wbx-case-product-tag">WorkBuddy</span>',
+      '自动整理每日 AI 资讯 <span class="wbx-case-product-tag">WorkBuddy</span>',
     )
   })
 
