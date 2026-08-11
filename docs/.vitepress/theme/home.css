@@ -1044,6 +1044,7 @@
   .wbx-update-ticker {
     width: min(100%, 320px);
     height: 28px;
+    margin-bottom: -14px;
     grid-template-columns: 82px minmax(0, 1fr);
   }
 

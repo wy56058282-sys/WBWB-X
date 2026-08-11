@@ -398,13 +398,24 @@ describe('home hero icon navigation', () => {
     )
   })
 
-  it('keeps the transformed update ticker inside the mobile hero content inset', () => {
+  it('keeps the mobile ticker inside the hero without moving subsequent copy content', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
-
-    expect(mobile).toMatch(
-      /\.wbx-hero__copy\s*\{[^}]*padding:\s*60px 24px 22px;/s,
+    const ticker = baseRule(css, '.wbx-update-ticker')
+    const mobileCopy = mobile.match(/\.wbx-hero__copy\s*\{([^}]*)\}/)?.[1]
+    const mobileTicker = mobile.match(/\.wbx-update-ticker\s*\{([^}]*)\}/)?.[1]
+    const mobileTopInset = Number(
+      mobileCopy?.match(/padding:\s*(\d+)px/)?.[1],
     )
+    const tickerTranslation = Number(
+      ticker.match(/transform:\s*translateY\((-?\d+)px\);/)?.[1],
+    )
+    const tickerFlowCompensation = Number(
+      mobileTicker?.match(/margin-bottom:\s*(-?\d+)px;/)?.[1],
+    )
+
+    expect(mobileTopInset + tickerTranslation).toBeGreaterThanOrEqual(0)
+    expect(mobileTopInset + tickerFlowCompensation).toBe(46)
   })
 
   it('renders the hero copy and art directly inside a static stage', () => {
