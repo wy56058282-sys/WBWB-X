@@ -69,7 +69,7 @@
   border: 0;
   transform: translateY(-10px);
   color: #0d100d;
-  background: #ffffff;
+  background: transparent;
 }
 
 .wbx-update-ticker__viewport {
