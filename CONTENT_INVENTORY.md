@@ -45,7 +45,7 @@ docs/.vitepress/brand.ts
 | 额外阅读 | 1 篇 | 《一章看懂 AI 工作系统》 |
 | 附录 | 2 篇 | 常用指令模板、场景速查表 |
 | 社区案例 | 7 个 | 涵盖资讯、简历、公众号、知识管理、创意开发和数据分析 |
-| 支持与共创页面 | 4 个 | 阅读指南、提需求、参与共创、Case 投稿指南 |
+| 支持与共创页面 | 4 个 | 阅读指南、定制服务、参与共创、Case 投稿指南 |
 | 图片清单条目 | 270 | 覆盖 35 个页面 |
 | 原始校准素材 | 272 个 | 位于 `source-calibration` |
 | 替换素材文件 | 36 个 | 位于 `replacements` |
@@ -74,7 +74,7 @@ docs/.vitepress/navigation.ts
 | 首页 | `/` | 品牌介绍、四段阅读路径、任务分类和共创入口 |
 | 开始阅读 | `/wb-x/` | 小白书总览及 27 章目录 |
 | 案例集 | `/cases/` | 社区真实案例及投稿入口 |
-| 提需求 | `/help/` | 收集真实工作场景和需求 |
+| 定制服务 | `/help/` | 说明付费需求诊断与预约状态 |
 | 指南 | `/reading-guide` | 按新手、任务、团队三条路线导读 |
 | 交流群 | 自定义弹窗 | 展示可定期替换的交流群二维码 |
 
@@ -318,13 +318,12 @@ Case 标准字段：
 
 ```yaml
 title:
-summary:
-author:
 date:
+productTag:
 category:
-difficulty:
-skills:
-tags:
+outcome:
+cover:
+coverAlt:
 ```
 
 Case 正文应覆盖：
@@ -346,7 +345,7 @@ Case 正文应覆盖：
 | 页面 | 文件 | 作用 |
 | --- | --- | --- |
 | 阅读与学习指南 | `docs/reading-guide.md` | 为新手、任务实践者和团队负责人提供阅读路线 |
-| 提需求 | `docs/help/index.md` | 通过问卷收集真实工作场景 |
+| 定制服务 | `docs/help/index.md` | 说明付费需求诊断与预约状态 |
 | 参与共创 | `docs/community/contributing.md` | 说明可贡献的内容和联系方式 |
 | Case 投稿指南 | `docs/community/case-contributing.md` | 定义社区案例结构、字段和审核标准 |
 
@@ -381,7 +380,7 @@ Case 正文应覆盖：
 | 顶部交流群 | `docs/public/community/wechat-group.png` |
 | 共创联系人 1 | `docs/public/article-assets/source-calibration/community/001.jpg` |
 | 共创联系人 2 | `docs/public/article-assets/replacements/community/002.jpg` |
-| 场景调查问卷 | `docs/public/article-assets/source-calibration/help/001.png` |
+| 案例投稿问卷 | `docs/public/article-assets/source-calibration/help/001.png` |
 
 顶部交流群二维码过期后，覆盖 `docs/public/community/wechat-group.png`，保持文件名不变即可。替换后应重新构建并用手机实际扫码。
 
@@ -574,35 +573,28 @@ pnpm run build
 
 #### 1. 补齐仓库贡献文件
 
-网站目前引用了以下文件，但仓库中不存在：
+网站目前仍引用根目录贡献规范，但仓库中不存在：
 
 ```text
 CONTRIBUTING.md
-.github/CASE_TEMPLATE.md
 ```
 
-这会直接阻断外部贡献者按照页面说明提交内容。建议优先补齐：
+`.github/CASE_TEMPLATE.md` 已补齐并与案例目录校验字段一致。后续建议补齐：
 
 - 根目录 `CONTRIBUTING.md`。
-- `.github/CASE_TEMPLATE.md`。
 - Case 专用 Pull Request 模板。
 - Issue 模板：内容纠错、失效链接、功能建议、案例投稿。
 
-#### 2. 修正文档中的本地命令
+#### 2. 保持文档中的本地命令与脚本同步
 
-共创和投稿页面写的是：
-
-```text
-npm install
-npm run docs:build
-```
-
-但项目实际使用 pnpm，且没有 `docs:build` 脚本。应统一改为：
+共创和投稿页面已经统一使用：
 
 ```text
 pnpm install
 pnpm run build
 ```
+
+后续调整 `package.json` 脚本时，应同步检查这两个页面。
 
 #### 3. 完成图片替换与状态同步
 
@@ -736,8 +728,8 @@ WorkBuddy 界面和能力会持续变化，但网站目前没有公开的内容�
 
 建议按以下顺序推进：
 
-1. 补齐 `CONTRIBUTING.md`、Case 模板和 PR/Issue 模板。
-2. 修正贡献页面中的 pnpm/build 命令。
+1. 补齐 `CONTRIBUTING.md` 和 PR/Issue 模板。
+2. 保持贡献页面中的 pnpm/build 命令与 `package.json` 同步。
 3. 为公网生成 `/bluebook/` 静态兼容页。
 4. 建立图片替换进度表，先处理第一篇和支持页。
 5. 扩写第 9、12、26、27 章与附录 A。

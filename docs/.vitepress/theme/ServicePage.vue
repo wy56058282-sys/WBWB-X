@@ -33,7 +33,7 @@ const process = [
 </script>
 
 <template>
-  <main class="wbx-service">
+  <div class="wbx-service">
     <header class="wbx-service-offer">
       <div class="wbx-service-offer__copy">
         <p class="wbx-service-eyebrow">CUSTOM SERVICE</p>
@@ -133,6 +133,7 @@ const process = [
             :href="serviceConfig.paidDiagnosticFormUrl"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="打开付费诊断申请表（在新页面打开）"
           >打开付费诊断申请表</a>
           <p class="wbx-service-payment__notice">预计 {{ serviceConfig.confirmationWindow }}；如需核对，请联系 {{ serviceConfig.supportContact }}。</p>
         </div>
@@ -167,7 +168,7 @@ const process = [
         </div>
         <div>
           <dt>资料与隐私</dt>
-          <dd>付款截图和需求资料仅限服务人员核对、诊断使用；未成交项目在诊断完成后 30 天删除，成交项目按交付周期保留。请勿提交密码、密钥或无关敏感数据。</dd>
+          <dd>付款截图仅供服务人员核对订单；需求资料仅供服务人员进行需求诊断。未成交项目在诊断完成后 30 天删除，成交项目按交付周期保留。请勿提交密码、密钥或无关敏感数据。</dd>
         </div>
       </dl>
     </section>
@@ -195,32 +196,5 @@ const process = [
       </div>
     </section>
 
-    <section id="scenario-survey" class="wbx-service-section wbx-service-survey" aria-labelledby="service-survey-title">
-      <div class="wbx-service-section__heading">
-        <p class="wbx-service-eyebrow">FREE CASE SUBMISSION</p>
-        <h2 id="service-survey-title">免费案例投稿</h2>
-      </div>
-      <div class="wbx-service-survey__content">
-        <div>
-          <h3>WorkBuddy 需求与案例投稿问卷</h3>
-          <p>这是免费社区共建入口，与付费需求诊断分开。提交案例时，请在场景描述开头注明“【案例投稿】”，无需 GitHub。</p>
-          <p>请勿提交密码、密钥、客户隐私或不方便公开的内部资料。</p>
-        </div>
-        <a
-          class="wbx-service-survey__media"
-          :href="withBase('/article-assets/source-calibration/help/001.png')"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="查看 WorkBuddy 需求与案例投稿问卷二维码大图"
-        >
-          <img
-            class="wbx-service-survey__image"
-            :src="withBase('/article-assets/source-calibration/help/001.png')"
-            alt="WorkBuddy 需求与案例投稿问卷二维码"
-            loading="lazy"
-          >
-        </a>
-      </div>
-    </section>
-  </main>
+  </div>
 </template>

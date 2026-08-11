@@ -52,6 +52,13 @@ describe('case catalog validation', () => {
     })).toThrow(/local cover/)
   })
 
+  it('rejects categories outside the approved catalog taxonomy', () => {
+    expect(() => validateCaseCatalogItem({
+      ...validItem,
+      category: '客户服务',
+    })).toThrow(/category/)
+  })
+
   it('rejects invalid dates, routes, covers, and duplicate routes', () => {
     expect(() => validateCaseCatalogItem({ ...validItem, date: '2026-02-30' })).toThrow(/date/)
     expect(() => validateCaseCatalogItem({ ...validItem, route: '/cases/other/' })).toThrow(/route/)

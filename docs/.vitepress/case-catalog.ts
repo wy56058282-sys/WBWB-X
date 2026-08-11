@@ -9,6 +9,13 @@ export interface CaseCatalogItem {
   coverAlt: string
 }
 
+export const allowedCaseCategories = [
+  '数据分析',
+  '内容创作',
+  '知识管理',
+  '自动化',
+] as const
+
 const requiredFields: readonly (keyof CaseCatalogItem)[] = [
   'route',
   'title',
@@ -27,7 +34,7 @@ function isIsoDate(value: string) {
   return !Number.isNaN(parsed.valueOf()) && parsed.toISOString().slice(0, 10) === value
 }
 
-function normalizedLocalPath(path: string) {
+export function normalizeLocalPath(path: string) {
   let decoded = path
 
   for (let attempts = 0; attempts < 8; attempts += 1) {
@@ -65,7 +72,10 @@ export function validateCaseCatalogItem(input: unknown): CaseCatalogItem {
   if (!isIsoDate(validated.date)) {
     throw new Error('date must be a valid ISO date')
   }
-  const normalizedRoute = normalizedLocalPath(validated.route)
+  if (!(allowedCaseCategories as readonly string[]).includes(validated.category)) {
+    throw new Error(`category must be one of: ${allowedCaseCategories.join(', ')}`)
+  }
+  const normalizedRoute = normalizeLocalPath(validated.route)
   if (
     !/^\/cases\/submissions\/[^/]+\/$/.test(validated.route)
     || !normalizedRoute?.startsWith('/cases/submissions/')
@@ -73,7 +83,7 @@ export function validateCaseCatalogItem(input: unknown): CaseCatalogItem {
     throw new Error('route must be a /cases/submissions/ route')
   }
 
-  const normalizedCover = normalizedLocalPath(validated.cover)
+  const normalizedCover = normalizeLocalPath(validated.cover)
   if (
     !/^\/(?:article-assets|brand)\//.test(validated.cover)
     || !normalizedCover?.match(/^\/(?:article-assets|brand)\//)

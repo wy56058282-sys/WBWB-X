@@ -14,35 +14,64 @@ export const serviceConfig: ServiceConfig = {
   supportContact: '',
 }
 
-export function isServiceFormUrl(value: string) {
+export function normalizeServiceFormUrl(value: string) {
   try {
-    return new URL(value).protocol === 'https:'
+    const url = new URL(value)
+    return url.protocol === 'https:' ? url : undefined
   } catch {
-    return false
+    return undefined
   }
 }
 
-function isLocalArticleAssetPath(value: string) {
-  const segments = value.split('/')
+export function isServiceFormUrl(value: string) {
+  return normalizeServiceFormUrl(value) !== undefined
+}
 
-  return value.startsWith('/article-assets/')
-    && segments.every((segment) => segment !== '.' && segment !== '..')
-    && !value.includes('?')
-    && !value.includes('#')
+export function normalizeLocalArticleAssetPath(value: string) {
+  let decoded = value
+
+  for (let attempts = 0; attempts < 8; attempts += 1) {
+    if (
+      !decoded.startsWith('/')
+      || decoded.startsWith('//')
+      || /[?#\\\0]/.test(decoded)
+      || decoded.split('/').some((segment) => segment === '.' || segment === '..')
+    ) {
+      return undefined
+    }
+
+    let next: string
+    try {
+      next = decodeURIComponent(decoded)
+    } catch {
+      return undefined
+    }
+
+    if (next === decoded) {
+      return decoded.startsWith('/article-assets/') ? decoded : undefined
+    }
+    decoded = next
+  }
+
+  return undefined
 }
 
 export function isPaidServiceReady(config: ServiceConfig) {
+  const freeForm = normalizeServiceFormUrl(config.freeCaseFormUrl)
+  const paidForm = normalizeServiceFormUrl(config.paidDiagnosticFormUrl)
+
   if (
-    !isServiceFormUrl(config.paidDiagnosticFormUrl)
-    || !isLocalArticleAssetPath(config.paymentQrPath)
+    !freeForm
+    || !paidForm
+    || freeForm.href === paidForm.href
+    || !normalizeLocalArticleAssetPath(config.paymentQrPath)
     || !config.confirmationWindow.trim()
     || !config.supportContact.trim()
   ) {
     return false
   }
 
-  return !config.freeCaseFormUrl
-    || (isServiceFormUrl(config.freeCaseFormUrl) && config.freeCaseFormUrl !== config.paidDiagnosticFormUrl)
+  return true
 }
 
 export function assertPaidServiceReady(config: ServiceConfig) {

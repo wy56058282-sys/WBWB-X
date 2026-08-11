@@ -115,6 +115,9 @@ describe('custom diagnostic service page', () => {
     expect(document.querySelectorAll('.wbx-service-process li')).toHaveLength(6)
     expect(sectionOrder.every(Boolean)).toBe(true)
     expect(sectionOrder.map((element) => pageBands.indexOf(element!))).toEqual([0, 1, 2, 3, 4, 5, 6, 7])
+    expect(document.querySelector('.wbx-service')?.tagName).not.toBe('MAIN')
+    expect(document.querySelector('#scenario-survey')).toBeNull()
+    expect(text).not.toContain('免费案例投稿')
   })
 
   it('fails closed without production payment inputs', () => {
@@ -147,6 +150,7 @@ describe('custom diagnostic service page', () => {
     expect(form?.getAttribute('href')).toBe('https://forms.example.com/paid-diagnostic')
     expect(form?.getAttribute('target')).toBe('_blank')
     expect(form?.getAttribute('rel')).toBe('noopener noreferrer')
+    expect(form?.getAttribute('aria-label')).toContain('在新页面打开')
     expect(payment?.textContent).toContain('1 个工作日内确认')
     expect(payment?.textContent).toContain('support@example.com')
     expect(payment?.textContent).toContain('同设备访问时，保存二维码，在微信“扫一扫”中从相册识别')
@@ -160,7 +164,8 @@ describe('custom diagnostic service page', () => {
 
     const privacyRule = document.querySelector('.wbx-service-rules')?.textContent ?? ''
 
-    expect(privacyRule).toContain('付款截图和需求资料仅限服务人员核对、诊断使用')
+    expect(privacyRule).toContain('付款截图仅供服务人员核对订单')
+    expect(privacyRule).toContain('需求资料仅供服务人员进行需求诊断')
     expect(privacyRule).toContain('未成交项目在诊断完成后 30 天删除')
     expect(privacyRule).toContain('成交项目按交付周期保留')
   })

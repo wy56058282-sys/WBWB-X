@@ -257,7 +257,7 @@ const workflowSteps = [
           <a
             class="wbx-icon-card wbx-icon-card--buddy"
             :href="withBase('/help/')"
-            aria-label="前往提需求"
+            aria-label="前往定制服务"
           >
             <i class="hn hn-face-grin" aria-hidden="true" />
           </a>

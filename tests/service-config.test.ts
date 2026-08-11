@@ -23,6 +23,7 @@ describe('service operations configuration', () => {
   })
 
   it('fails closed when a paid form or payment QR is unavailable', () => {
+    expect(isPaidServiceReady({ ...readyConfig, freeCaseFormUrl: '' })).toBe(false)
     expect(isPaidServiceReady({ ...serviceConfig, paidDiagnosticFormUrl: '' })).toBe(false)
     expect(isPaidServiceReady({ ...serviceConfig, paymentQrPath: '' })).toBe(false)
   })
@@ -42,6 +43,28 @@ describe('service operations configuration', () => {
     expect(isPaidServiceReady({ ...readyConfig, paidDiagnosticFormUrl: 'http://forms.example.com/paid' })).toBe(false)
     expect(isPaidServiceReady({ ...readyConfig, paymentQrPath: 'https://cdn.example.com/payment.png' })).toBe(false)
     expect(isPaidServiceReady({ ...readyConfig, paidDiagnosticFormUrl: readyConfig.freeCaseFormUrl })).toBe(false)
+    expect(isPaidServiceReady({
+      ...readyConfig,
+      freeCaseFormUrl: 'https://FORMS.example.com:443/free-case-submission',
+      paidDiagnosticFormUrl: 'https://forms.example.com/free-case-submission',
+    })).toBe(false)
+  })
+
+  it('rejects payment QR path escapes and URL tricks', () => {
+    for (const paymentQrPath of [
+      '/article-assets/../payment.png',
+      '/article-assets/%2e%2e/payment.png',
+      '/article-assets/%252e%252e/payment.png',
+      '/article-assets/payment.png?next=/outside.png',
+      '/article-assets/payment.png%3fnext=/outside.png',
+      '/article-assets/payment.png#outside',
+      '/article-assets/payment.png%23outside',
+      '/article-assets\\..\\payment.png',
+      '/brand/payment.png',
+      'https://cdn.example.com/payment.png',
+    ]) {
+      expect(isPaidServiceReady({ ...readyConfig, paymentQrPath }), paymentQrPath).toBe(false)
+    }
   })
 
   it('explains why invalid paid diagnostics cannot be opened', () => {

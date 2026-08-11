@@ -156,6 +156,17 @@
   cursor: pointer;
 }
 
+.wbx-cases-category__indicator {
+  display: inline-block;
+  width: 1em;
+  margin-right: 4px;
+  visibility: hidden;
+}
+
+.wbx-cases-categories button[aria-pressed="true"] .wbx-cases-category__indicator {
+  visibility: visible;
+}
+
 .wbx-cases-categories button:hover,
 .wbx-cases-categories button[aria-pressed="true"],
 .wbx-cases-empty button:hover {
@@ -282,7 +293,37 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: flex-end;
   flex: 0 0 auto;
+}
+
+.wbx-cases-submit__qr-wrap {
+  width: min(100%, 280px);
+  margin: 0;
+}
+
+.wbx-cases-submit__qr {
+  display: block;
+  width: min(100%, 280px);
+  overflow: hidden;
+  border: 1px solid var(--wbx-line);
+  border-radius: 8px;
+  background: #eef8ff;
+}
+
+.wbx-cases-submit__qr img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.wbx-cases-submit__qr-wrap figcaption {
+  margin-top: 8px;
+  color: var(--wbx-muted);
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .wbx-cases-action {
@@ -377,5 +418,6 @@
 
   .wbx-cases-submit__actions {
     flex-direction: column;
+    align-items: stretch;
   }
 }

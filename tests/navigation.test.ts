@@ -1,5 +1,6 @@
 // @vitest-environment node
 
+import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import config from '../docs/.vitepress/config.mts'
 import { nav } from '../docs/.vitepress/navigation'
@@ -17,6 +18,14 @@ describe('site navigation', () => {
       '交流群',
     ])
     expect(nav.find((item) => item.text === '定制服务')?.link).toBe('/help/')
+  })
+
+  it('documents /help/ as paid custom service rather than a free questionnaire', () => {
+    const inventory = readFileSync('CONTENT_INVENTORY.md', 'utf8')
+
+    expect(inventory).toContain('| 定制服务 | `/help/` | 说明付费需求诊断与预约状态 |')
+    expect(inventory).toContain('| 定制服务 | `docs/help/index.md` | 说明付费需求诊断与预约状态 |')
+    expect(inventory).not.toContain('| 提需求 | `/help/`')
   })
 
   it('contains all 27 numbered chapters and both appendices', () => {

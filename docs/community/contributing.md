@@ -30,7 +30,7 @@ WorkBuddy 的能力、界面和使用方式会持续变化。这本小白书希�
 1. Fork 或克隆仓库。
 2. 找到 `docs/wb-x/` 下对应章节的 `index.md`。
 3. 修改内容或在同目录的 `assets/` 中补充素材。
-4. 本地运行 `npm install` 和 `npm run docs:build`。
+4. 本地运行 `pnpm install` 和 `pnpm run build`。
 5. 提交 Pull Request，并说明改动、原因和验证方式。
 
 完整规范见仓库根目录的 [CONTRIBUTING.md](https://github.com/wy56058282-sys/WBWB-X/blob/main/CONTRIBUTING.md)。

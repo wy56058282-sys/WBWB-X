@@ -396,38 +396,6 @@
   -webkit-line-clamp: 2;
 }
 
-.wbx-service-survey__content {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(240px, 360px);
-  gap: 32px;
-  align-items: start;
-}
-
-.wbx-service-survey__content h3 {
-  margin-bottom: 10px;
-  font-size: 20px;
-}
-
-.wbx-service-survey__content p + p {
-  margin-top: 12px;
-}
-
-.wbx-service-survey__media {
-  display: block;
-  width: min(100%, 360px);
-  overflow: hidden;
-  border: 1px solid var(--wbx-line);
-  border-radius: 8px;
-  background: #eef8ff;
-}
-
-.wbx-service-survey__image {
-  display: block;
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-}
-
 @media (max-width: 900px) {
   .wbx-service-offer,
   .wbx-service-section {
@@ -474,8 +442,7 @@
 
   .wbx-service-output-list,
   .wbx-service-process ol,
-  .wbx-service-payment__ready,
-  .wbx-service-survey__content {
+  .wbx-service-payment__ready {
     grid-template-columns: 1fr;
   }
 

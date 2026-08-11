@@ -25,7 +25,7 @@ outline: false
 ## 默认方式：填写问卷
 
 1. 搜索案例集和小白书，确认任务没有重复。
-2. 打开[需求与案例投稿问卷](/help/#scenario-survey)。
+2. 前往[案例集投稿区](/cases/#submit-case)，打开需求与案例投稿问卷二维码。
 3. 在场景描述开头注明“【案例投稿】”。
 4. 写清场景、使用的 Skills、操作过程、实际效果、验收标准和可公开范围。
 5. 留下联系方式，等待审核或补充信息确认。
@@ -37,10 +37,10 @@ outline: false
 该方式适合熟悉 GitHub 和 Markdown 的贡献者，可以直接提交结构化内容：
 
 1. Fork [wy56058282-sys/WBWB-X](https://github.com/wy56058282-sys/WBWB-X) 仓库。
-2. 复制 `.github/CASE_TEMPLATE.md` 中的案例模板。
+2. 复制仓库中的 `.github/CASE_TEMPLATE.md` 案例模板。
 3. 新建 `docs/cases/submissions/<case-slug>/index.md` 并添加素材。
-4. 本地运行 `npm install` 和 `npm run docs:build`。
-5. 提交 Pull Request，并选择 Case 专用 PR 模板。
+4. 本地运行 `pnpm install` 和 `pnpm run build`。
+5. 提交 Pull Request，并说明案例场景、可复现步骤和公开范围。
 
 推荐使用简短的英文小写目录名：
 
@@ -52,7 +52,7 @@ docs/cases/submissions/daily-ai-news/
     └── workbuddy-result.png
 ```
 
-GitHub 投稿者不需要修改案例集合首页。网站构建时会自动读取所有 Case 的标题、分类、Skills、作者和简介。
+GitHub 投稿者不需要修改案例集合首页。网站构建时会自动读取所有 Case 的标题、日期、产品标签、分类、成果和封面信息。
 
 ## Frontmatter 字段
 
@@ -61,21 +61,16 @@ GitHub 投稿者不需要修改案例集合首页。网站构建时会自动读�
 ```yaml
 ---
 title: 用 WorkBuddy 自动整理每日 AI 资讯
-summary: 自动收集多个来源的信息并生成每日简报
-author: your-github-name
+productTag: WorkBuddy
 date: "2026-07-13"
 category: 自动化
-difficulty: 中等
-skills:
-  - 浏览器
-  - 飞书文档
-tags:
-  - AI 资讯
-  - 信息整理
+outcome: 自动收集多个来源的信息并生成保留来源链接的每日简报。
+cover: /article-assets/source-calibration/case-daily-ai-news/001.png
+coverAlt: WorkBuddy 生成的每日 AI 资讯热点报告
 ---
 ```
 
-其中 `title`、`summary`、`author`、`date`、`category`、`difficulty` 和 `skills` 是必填项。缺少必填字段时，网站构建会失败，避免不完整的案例被发布。
+其中 `title`、`date`、`productTag`、`category`、`outcome`、`cover` 和 `coverAlt` 是案例目录必填项。`category` 只能是 `数据分析`、`内容创作`、`知识管理` 或 `自动化`；封面必须指向 `docs/public` 下真实存在的本地文件。缺少字段或封面无效时，网站构建会失败，避免不完整的案例被发布。
 
 ## 内容结构
 

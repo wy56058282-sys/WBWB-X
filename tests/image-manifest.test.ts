@@ -228,7 +228,7 @@ describe('article image replacement inventory', () => {
         ? indexPath
         : join('docs', `${page.replace(/^\/|\/$/g, '')}.md`)
       const componentPathByPage: Record<string, string> = {
-        '/help/': 'docs/.vitepress/theme/ServicePage.vue',
+        '/cases/': 'docs/.vitepress/theme/CasesPage.vue',
       }
       const componentPath = componentPathByPage[page]
       const markdown = [

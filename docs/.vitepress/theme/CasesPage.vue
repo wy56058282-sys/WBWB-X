@@ -52,6 +52,7 @@ function resetFilters() {
           :aria-pressed="category === item"
           @click="category = item"
         >
+          <span class="wbx-cases-category__indicator" aria-hidden="true">✓</span>
           {{ item }}
         </button>
       </div>
@@ -96,12 +97,29 @@ function resetFilters() {
           :href="serviceConfig.freeCaseFormUrl"
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="填写问卷投稿（在新页面打开）"
         >填写问卷投稿</a>
-        <a
+        <figure
           v-else
-          class="wbx-cases-action wbx-cases-action--primary"
-          :href="withBase('/help/#scenario-survey')"
-        >查看投稿问卷二维码</a>
+          class="wbx-cases-submit__qr-wrap"
+        >
+          <a
+            class="wbx-cases-submit__qr"
+            :href="withBase('/article-assets/source-calibration/help/001.png')"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="查看 WorkBuddy 需求与案例投稿问卷二维码大图（在新页面打开）"
+          >
+            <img
+              :src="withBase('/article-assets/source-calibration/help/001.png')"
+              alt="WorkBuddy 需求与案例投稿问卷二维码"
+              width="1560"
+              height="1936"
+              loading="lazy"
+            >
+          </a>
+          <figcaption>WorkBuddy 需求与案例投稿问卷。提交时请在场景描述开头注明“【案例投稿】”。</figcaption>
+        </figure>
         <a class="wbx-cases-action" :href="withBase('/community/case-contributing')">查看投稿指南</a>
       </div>
     </section>

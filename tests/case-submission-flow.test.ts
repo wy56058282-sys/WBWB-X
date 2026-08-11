@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createApp, type App } from 'vue'
 
@@ -41,14 +41,16 @@ describe('low-friction case submission flow', () => {
     expect(serviceConfig.freeCaseFormUrl).toBe('')
     mountCasesPage()
 
-    const fallback = document.querySelector<HTMLAnchorElement>('.wbx-cases-submit__actions a')
+    const fallback = document.querySelector<HTMLAnchorElement>('.wbx-cases-submit__qr')
+    const poster = fallback?.querySelector<HTMLImageElement>('img')
 
-    expect(fallback?.getAttribute('href')).toBe('/help/#scenario-survey')
-    expect(fallback?.textContent).toContain('问卷二维码')
+    expect(fallback?.getAttribute('href')).toBe('/article-assets/source-calibration/help/001.png')
+    expect(fallback?.getAttribute('href')).not.toMatch(/^\/help\//)
+    expect(poster?.getAttribute('src')).toBe('/article-assets/source-calibration/help/001.png')
+    expect(poster?.getAttribute('alt')).toContain('需求与案例投稿问卷二维码')
     expect(help).toContain('<ServicePage />')
-    expect(servicePage).toContain('需求与案例投稿问卷')
-    expect(servicePage).toContain('【案例投稿】')
-    expect(servicePage).toContain('无需 GitHub')
+    expect(servicePage).not.toContain('需求与案例投稿问卷')
+    expect(servicePage).not.toContain('scenario-survey')
   })
 
   it('uses the independent free form when operations config provides one', () => {
@@ -60,16 +62,17 @@ describe('low-friction case submission flow', () => {
     expect(form?.getAttribute('href')).toBe('https://forms.example.com/free-case-submission')
     expect(form?.getAttribute('target')).toBe('_blank')
     expect(form?.getAttribute('rel')).toBe('noopener noreferrer')
+    expect(form?.getAttribute('aria-label')).toContain('在新页面打开')
   })
 
   it('falls back to the questionnaire QR entry for an invalid free form URL', () => {
     serviceConfig.freeCaseFormUrl = 'http://forms.example.com/free-case-submission'
     mountCasesPage()
 
-    const fallback = document.querySelector<HTMLAnchorElement>('.wbx-cases-submit__actions a')
+    const fallback = document.querySelector<HTMLAnchorElement>('.wbx-cases-submit__qr')
 
-    expect(fallback?.getAttribute('href')).toBe('/help/#scenario-survey')
-    expect(fallback?.textContent).toContain('问卷二维码')
+    expect(fallback?.getAttribute('href')).toBe('/article-assets/source-calibration/help/001.png')
+    expect(fallback?.getAttribute('href')).not.toMatch(/^\/help\//)
   })
 
   it('keeps paid diagnostics separate from the free case path', () => {
@@ -77,13 +80,28 @@ describe('low-friction case submission flow', () => {
     expect(cases).not.toContain('本地构建通过后提交 Pull Request')
 
     expect(guide).toContain('## 默认方式：填写问卷')
-    expect(guide).toContain('/help/#scenario-survey')
+    expect(guide).toContain('/cases/#submit-case')
+    expect(guide).not.toContain('/help/#scenario-survey')
     expect(guide).toContain('## 可选方式：通过 GitHub 提交')
+  })
+
+  it('references the executable GitHub template and production build script', () => {
+    expect(guide).toContain('.github/CASE_TEMPLATE.md')
+    expect(existsSync('.github/CASE_TEMPLATE.md')).toBe(true)
+    expect(guide).toContain('pnpm run build')
+
+    const packageJson = JSON.parse(readFileSync('package.json', 'utf8')) as {
+      scripts?: Record<string, string>
+    }
+    expect(packageJson.scripts?.build).toBeTypeOf('string')
+    expect(packageJson.scripts?.build?.trim()).not.toBe('')
   })
 
   it('keeps GitHub as an optional advanced contribution path', () => {
     expect(guide).toContain('适合熟悉 GitHub 和 Markdown 的贡献者')
     expect(contributing).toContain('无需 GitHub')
     expect(contributing).toContain('GitHub PR 仍作为可选的高级方式')
+    expect(contributing).toContain('pnpm run build')
+    expect(contributing).not.toContain('npm run docs:build')
   })
 })

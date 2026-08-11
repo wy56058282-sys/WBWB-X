@@ -3498,7 +3498,7 @@
   },
   {
     "id": "help-001",
-    "page": "/help/",
+    "page": "/cases/",
     "order": 1,
     "purpose": "WorkBuddy 场景收集调查问卷二维码",
     "sourceUrl": "https://workbuddy.homes/help/workbuddy-scenario-survey.png",
