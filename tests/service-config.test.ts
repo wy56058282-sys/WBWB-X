@@ -27,6 +27,16 @@ describe('service operations configuration', () => {
     expect(isPaidServiceReady({ ...serviceConfig, paymentQrPath: '' })).toBe(false)
   })
 
+  it('fails closed when paid diagnostic follow-up details are unavailable', () => {
+    const missingConfirmationWindow = { ...readyConfig, confirmationWindow: '' }
+    const missingSupportContact = { ...readyConfig, supportContact: '' }
+
+    expect(isPaidServiceReady(missingConfirmationWindow)).toBe(false)
+    expect(isPaidServiceReady(missingSupportContact)).toBe(false)
+    expect(() => assertPaidServiceReady(missingConfirmationWindow)).toThrow(/paid diagnostic/i)
+    expect(() => assertPaidServiceReady(missingSupportContact)).toThrow(/paid diagnostic/i)
+  })
+
   it('rejects insecure, reused, or non-local paid-service inputs', () => {
     expect(isPaidServiceReady({ ...readyConfig, freeCaseFormUrl: 'http://forms.example.com/free' })).toBe(false)
     expect(isPaidServiceReady({ ...readyConfig, paidDiagnosticFormUrl: 'http://forms.example.com/paid' })).toBe(false)

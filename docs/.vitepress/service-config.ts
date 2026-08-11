@@ -32,7 +32,12 @@ function isLocalArticleAssetPath(value: string) {
 }
 
 export function isPaidServiceReady(config: ServiceConfig) {
-  if (!isServiceFormUrl(config.paidDiagnosticFormUrl) || !isLocalArticleAssetPath(config.paymentQrPath)) {
+  if (
+    !isServiceFormUrl(config.paidDiagnosticFormUrl)
+    || !isLocalArticleAssetPath(config.paymentQrPath)
+    || !config.confirmationWindow.trim()
+    || !config.supportContact.trim()
+  ) {
     return false
   }
 
