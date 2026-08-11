@@ -398,6 +398,15 @@ describe('home hero icon navigation', () => {
     )
   })
 
+  it('keeps the transformed update ticker inside the mobile hero content inset', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
+
+    expect(mobile).toMatch(
+      /\.wbx-hero__copy\s*\{[^}]*padding:\s*60px 24px 22px;/s,
+    )
+  })
+
   it('renders the hero copy and art directly inside a static stage', () => {
     mountHomePage()
 
