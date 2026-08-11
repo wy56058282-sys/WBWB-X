@@ -90,6 +90,27 @@ describe('discoverCaseSidebar', () => {
     expect(css).toMatch(/\.VPSidebarItem \.wbx-case-product-tag\s*\{/)
   })
 
+  it('uses the WorkBuddy tag in the tea-shop sales case heading and sidebar', () => {
+    const contents = readFileSync(
+      'docs/cases/submissions/tea-shop-sales-analysis/index.md',
+      'utf8',
+    )
+
+    expect(contents).toContain('productTag: WorkBuddy')
+    expect(contents).toContain(
+      '# 用 WorkBuddy 清洗 119 份门店 Excel 并生成可交互运营看板 <span class="wbx-case-product-tag">WorkBuddy</span>',
+    )
+
+    const teaShopCase = discoverCaseSidebar(
+      'docs/cases/submissions',
+    )[2].items?.find(
+      (item) => item.link === '/cases/submissions/tea-shop-sales-analysis/',
+    )
+    expect(teaShopCase?.text).toBe(
+      '用 WorkBuddy 清洗 119 份门店 Excel 并生成可交互运营看板 <span class="wbx-case-product-tag">WorkBuddy</span>',
+    )
+  })
+
   it('rejects a case without a title', () => {
     const root = createCasesRoot()
     writeCase(root, 'older', '---\ndate: 2026-07-13\n---\n')

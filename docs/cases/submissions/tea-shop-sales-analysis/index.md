@@ -1,5 +1,6 @@
 ---
 title: 用 WorkBuddy 清洗 119 份门店 Excel 并生成可交互运营看板
+productTag: WorkBuddy
 summary: 把格式混乱的 119 个门店销售 Excel 自动清洗合并成 18 万行汇总表，再生成多 Sheet 分析报告和德勤风格的全局联动 HTML 看板。
 author: stephenlzc
 date: "2026-07-24"
@@ -17,7 +18,7 @@ tags:
   - 连锁零售
 ---
 
-# 用 WorkBuddy 清洗 119 份门店 Excel 并生成可交互运营看板
+# 用 WorkBuddy 清洗 119 份门店 Excel 并生成可交互运营看板 <span class="wbx-case-product-tag">WorkBuddy</span>
 
 ![案例封面：门店运营分析看板](/article-assets/source-calibration/case-tea-shop-sales-analysis/001.jpg)
 
