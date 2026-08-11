@@ -1,6 +1,6 @@
 // @vitest-environment node
 
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
@@ -43,6 +43,38 @@ describe('discoverCaseSidebar', () => {
         ],
       },
     ])
+  })
+
+  it('renders an optional product tag in the sidebar item', () => {
+    const root = createCasesRoot()
+    writeCase(
+      root,
+      'tagged',
+      '---\ntitle: 专家团吃透十年年报\nproductTag: WorkBuddy\ndate: 2026-07-25\n---\n',
+    )
+
+    const communityCases = discoverCaseSidebar(root)[2].items
+    expect(communityCases).toEqual([
+      {
+        text: '<span class="wbx-case-product-tag">WorkBuddy</span> 专家团吃透十年年报',
+        link: '/cases/submissions/tagged/',
+      },
+    ])
+  })
+
+  it('uses the WorkBuddy tag in the annual-report case heading and styles both surfaces', () => {
+    const contents = readFileSync(
+      'docs/cases/submissions/annual-report-digital-transformation/index.md',
+      'utf8',
+    )
+    const css = readFileSync('docs/.vitepress/theme/custom.css', 'utf8')
+
+    expect(contents).toContain('productTag: WorkBuddy')
+    expect(contents).toContain(
+      '# <span class="wbx-case-product-tag">WorkBuddy</span> 专家团吃透十年年报',
+    )
+    expect(css).toMatch(/\.vp-doc h1 \.wbx-case-product-tag\s*\{/)
+    expect(css).toMatch(/\.VPSidebarItem \.wbx-case-product-tag\s*\{/)
   })
 
   it('rejects a case without a title', () => {

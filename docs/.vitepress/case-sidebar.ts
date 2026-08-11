@@ -4,8 +4,19 @@ import type { DefaultTheme } from 'vitepress'
 
 interface CaseRecord {
   date: string
+  productTag: string
   route: string
   title: string
+}
+
+function escapeHtml(value: string) {
+  return value.replace(/[&<>"']/g, (character) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  })[character] ?? character)
 }
 
 function scalar(frontmatter: string, field: string) {
@@ -52,6 +63,7 @@ function readCase(sourcePath: string, folderName: string): CaseRecord {
 
   return {
     date,
+    productTag: scalar(frontmatter[1], 'productTag'),
     route: `/cases/submissions/${encodeURI(folderName)}/`,
     title,
   }
@@ -68,7 +80,12 @@ export function discoverCaseSidebar(casesRoot: string): DefaultTheme.SidebarItem
     { text: '如何提交 Case', link: '/community/case-contributing' },
     {
       text: '社区 Case',
-      items: cases.map(({ route, title }) => ({ text: title, link: route })),
+      items: cases.map(({ productTag, route, title }) => ({
+        text: productTag
+          ? `<span class="wbx-case-product-tag">${escapeHtml(productTag)}</span> ${escapeHtml(title)}`
+          : title,
+        link: route,
+      })),
     },
   ]
 }

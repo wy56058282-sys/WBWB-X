@@ -361,6 +361,38 @@ body {
   color: #0d100d !important;
 }
 
+.vp-doc h1 .wbx-case-product-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 4px 8px;
+  border: 1px solid #0d100d;
+  border-radius: 3px;
+  color: #0d100d;
+  background: var(--wbx-accent);
+  font-family: var(--wbx-pixel);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1;
+  vertical-align: 0.22em;
+  white-space: nowrap;
+}
+
+.VPSidebarItem .wbx-case-product-tag {
+  display: inline-block;
+  margin-right: 4px;
+  padding: 2px 4px;
+  border: 1px solid currentcolor;
+  border-radius: 2px;
+  color: inherit;
+  font-family: var(--wbx-pixel);
+  font-size: 9px;
+  font-weight: 400;
+  line-height: 1;
+  vertical-align: 0.12em;
+  white-space: nowrap;
+}
+
 .VPDocFooter .pager-link {
   border: 1px solid var(--wbx-line);
   border-radius: 5px;

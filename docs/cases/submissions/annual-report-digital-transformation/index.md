@@ -1,5 +1,6 @@
 ---
-title: 用 WorkBuddy 专家团吃透十年年报：一套可复用的上市公司深度研究方法
+title: 专家团吃透十年年报：一套可复用的上市公司深度研究方法
+productTag: WorkBuddy
 summary: 演示一套可复用的上市公司深度研究方法——以十年年报一手信源为底座、文本语义与财务数据双线交叉验证、理论框架组织发现、全流程脚本可复现，由 WorkBuddy「智数分析专家团」自动执行并交付咨询报告风格的 HTML。
 author: stephenlzc
 date: "2026-07-25"
@@ -20,7 +21,7 @@ tags:
   - MBA
 ---
 
-# 用 WorkBuddy 专家团吃透十年年报：一套可复用的上市公司深度研究方法
+# <span class="wbx-case-product-tag">WorkBuddy</span> 专家团吃透十年年报：一套可复用的上市公司深度研究方法
 
 ![案例封面：数字化转型叙事分析报告首页](/article-assets/source-calibration/case-annual-report-digital-transformation/001.png)
 
