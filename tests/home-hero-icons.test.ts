@@ -338,6 +338,59 @@ describe('home hero icon navigation', () => {
     )
   })
 
+  it('styles the synchronized update ticker as a vertically changing date with an overflow-only title marquee', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const ticker = baseRule(css, '.wbx-update-ticker')
+    const date = baseRule(css, '.wbx-update-ticker__date')
+    const titleTrack = baseRule(css, '.wbx-update-ticker__title-track')
+    const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
+    const reducedMotion = css.slice(
+      css.indexOf('@media (prefers-reduced-motion: reduce)'),
+      css.indexOf('.wbx-hero__official'),
+    )
+
+    expect(ticker).toMatch(/height:\s*28px;/)
+    expect(ticker).toMatch(
+      /grid-template-columns:\s*92px minmax\(0, 1fr\);/,
+    )
+    expect(ticker).toMatch(/background:\s*transparent;/)
+    expect(ticker).toMatch(/transform:\s*translateY\(-60px\);/)
+    expect(css).toMatch(
+      /\.wbx-update-ticker__date-viewport,[\s\S]*?\.wbx-update-ticker__content\s*\{[^}]*height:\s*28px;[^}]*overflow:\s*hidden;/s,
+    )
+    expect(date).toMatch(/position:\s*absolute;/)
+    expect(css).toMatch(
+      /\.wbx-update-date-enter-active,\s*\.wbx-update-date-leave-active\s*\{[^}]*transition:\s*transform 400ms ease, opacity 400ms ease;/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-update-date-enter-from\s*\{[^}]*transform:\s*translateY\(100%\);[^}]*opacity:\s*0;/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-update-date-leave-to\s*\{[^}]*transform:\s*translateY\(-100%\);[^}]*opacity:\s*0;/s,
+    )
+    expect(titleTrack).toMatch(/display:\s*inline-flex;/)
+    expect(titleTrack).toMatch(/width:\s*max-content;/)
+    expect(titleTrack).not.toMatch(/animation:/)
+    expect(css).toMatch(
+      /\.is-overflowing\s+\.wbx-update-ticker__title-track\s*\{[^}]*animation:\s*wbx-update-title-marquee 12s linear 400ms infinite;/s,
+    )
+    expect(css).toMatch(
+      /@keyframes wbx-update-title-marquee\s*\{[\s\S]*?to\s*\{[^}]*transform:\s*translateX\(calc\(-50% - 16px\)\);/,
+    )
+    expect(css).toMatch(
+      /\.wbx-update-ticker:hover\s+\.wbx-update-ticker__title-track,[\s\S]*?\.wbx-update-ticker\.is-paused\s+\.wbx-update-ticker__title-track\s*\{[^}]*animation-play-state:\s*paused;/s,
+    )
+    expect(mobile).toMatch(
+      /\.wbx-update-ticker\s*\{[^}]*width:\s*min\(100%, 320px\);[^}]*grid-template-columns:\s*82px minmax\(0, 1fr\);/s,
+    )
+    expect(reducedMotion).toMatch(
+      /\.wbx-update-date-enter-active,[\s\S]*?\.wbx-update-ticker__title-track\s*\{[^}]*transition:\s*none;[^}]*animation:\s*none;/s,
+    )
+    expect(reducedMotion).not.toMatch(
+      /\.wbx-update-ticker__link\s*\{[^}]*display:\s*none;/s,
+    )
+  })
+
   it('renders the hero copy and art directly inside a static stage', () => {
     mountHomePage()
 
