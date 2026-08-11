@@ -4,7 +4,10 @@ productTag: WorkBuddy
 summary: 从一份脚本和 27 个本地素材出发，经过 17 轮迭代，在 WorkBuddy 中完成一个可在线预览的 3D 粒子球体 Showreel 动画网站，最终推送到 GitHub 并启用 Pages。
 author: JZCreative
 date: "2026-07-15"
-category: 创意开发
+category: 内容创作
+outcome: 完成可在线预览并已发布到 GitHub Pages 的粒子球体作品集网站。
+cover: /article-assets/source-calibration/case-jz-2025-showreel/001.png
+coverAlt: GSAP 粒子球体作品集动画页面
 difficulty: 进阶
 aside: false
 outline: false

@@ -5,6 +5,9 @@ summary: 在 WorkBuddy 中安装公众号排版 Skill，用 Markdown 写好内�
 author: nikola
 date: "2026-07-13"
 category: 内容创作
+outcome: 将 Markdown 自动排版为带配图和代码高亮的微信公众号草稿。
+cover: /article-assets/source-calibration/case-wechat-format-publish/001.png
+coverAlt: 公众号排版内容发布到微信公众号草稿箱
 difficulty: 入门
 aside: false
 outline: false

@@ -1,13 +1,7 @@
 import { readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import type { DefaultTheme } from 'vitepress'
-
-interface CaseRecord {
-  date: string
-  productTag: string
-  route: string
-  title: string
-}
+import { validateCaseCatalogItem, type CaseCatalogItem } from './case-catalog'
 
 function escapeHtml(value: string) {
   return value.replace(/[&<>"']/g, (character) => ({
@@ -31,14 +25,7 @@ function scalar(frontmatter: string, field: string) {
   return value.trim()
 }
 
-function isIsoDate(value: string) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false
-
-  const parsed = new Date(`${value}T00:00:00Z`)
-  return !Number.isNaN(parsed.valueOf()) && parsed.toISOString().slice(0, 10) === value
-}
-
-function readCase(sourcePath: string, folderName: string): CaseRecord {
+function readCase(sourcePath: string, folderName: string): CaseCatalogItem {
   let contents: string
   try {
     contents = readFileSync(sourcePath, 'utf8')
@@ -51,21 +38,20 @@ function readCase(sourcePath: string, folderName: string): CaseRecord {
     throw new Error(`${sourcePath}: invalid frontmatter`)
   }
 
-  const title = scalar(frontmatter[1], 'title')
-  if (!title) {
-    throw new Error(`${sourcePath}: missing title`)
-  }
-
-  const date = scalar(frontmatter[1], 'date')
-  if (!isIsoDate(date)) {
-    throw new Error(`${sourcePath}: missing or invalid ISO date`)
-  }
-
-  return {
-    date,
-    productTag: scalar(frontmatter[1], 'productTag'),
-    route: `/cases/submissions/${encodeURI(folderName)}/`,
-    title,
+  try {
+    return validateCaseCatalogItem({
+      route: `/cases/submissions/${encodeURI(folderName)}/`,
+      title: scalar(frontmatter[1], 'title'),
+      date: scalar(frontmatter[1], 'date'),
+      productTag: scalar(frontmatter[1], 'productTag'),
+      category: scalar(frontmatter[1], 'category'),
+      outcome: scalar(frontmatter[1], 'outcome'),
+      cover: scalar(frontmatter[1], 'cover'),
+      coverAlt: scalar(frontmatter[1], 'coverAlt'),
+    })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error)
+    throw new Error(`${sourcePath}: ${message}`)
   }
 }
 

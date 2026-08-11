@@ -5,6 +5,9 @@ summary: 把微信里的文字、图片、公众号文章存入 ima 知识库，
 author: nikola
 date: "2026-07-14"
 category: 知识管理
+outcome: 建立从微信收集、结构化加工到 ima 沉淀回传的知识闭环。
+cover: /article-assets/source-calibration/case-wechat-ima-knowledge/001.jpg
+coverAlt: 微信内容整理到 ima 知识库的操作界面
 difficulty: 进阶
 aside: false
 outline: false

@@ -5,6 +5,9 @@ summary: 演示一套可复用的上市公司深度研究方法——以十年�
 author: stephenlzc
 date: "2026-07-25"
 category: 数据分析
+outcome: 自动完成十年年报解析、交叉分析与咨询报告式 HTML 交付。
+cover: /article-assets/source-calibration/case-annual-report-digital-transformation/001.png
+coverAlt: 数字化转型叙事分析报告首页
 difficulty: 进阶
 aside: false
 outline: false

@@ -5,6 +5,9 @@ summary: 把格式混乱的 119 个门店销售 Excel 自动清洗合并成 18 �
 author: stephenlzc
 date: "2026-07-24"
 category: 数据分析
+outcome: 将 119 份门店 Excel 清洗汇总并生成可交互运营看板。
+cover: /article-assets/source-calibration/case-tea-shop-sales-analysis/001.jpg
+coverAlt: 门店销售分析运营看板
 difficulty: 中等
 aside: false
 outline: false

@@ -52,8 +52,8 @@ describe('discoverCaseSidebar', () => {
 
   it('discovers cases in descending date order', () => {
     const root = createCasesRoot()
-    writeCase(root, 'older', '---\ntitle: 较早案例\ndate: 2026-07-13\n---\n')
-    writeCase(root, 'newer', '---\ntitle: 较新案例\ndate: 2026-07-25\n---\n')
+    writeCase(root, 'older', '---\ntitle: 较早案例\nproductTag: WorkBuddy\ndate: 2026-07-13\ncategory: 内容创作\noutcome: 较早案例成果。\ncover: /brand/wb-x-logo.svg\ncoverAlt: WB-X 标志\n---\n')
+    writeCase(root, 'newer', '---\ntitle: 较新案例\nproductTag: WorkBuddy\ndate: 2026-07-25\ncategory: 内容创作\noutcome: 较新案例成果。\ncover: /brand/wb-x-logo.svg\ncoverAlt: WB-X 标志\n---\n')
 
     expect(discoverCaseSidebar(root)).toEqual([
       { text: '案例集首页', link: '/cases/' },
@@ -61,8 +61,8 @@ describe('discoverCaseSidebar', () => {
       {
         text: '社区 Case',
         items: [
-          { text: '较新案例', link: '/cases/submissions/newer/' },
-          { text: '较早案例', link: '/cases/submissions/older/' },
+          { text: '较新案例 <span class="wbx-case-product-tag">WorkBuddy</span>', link: '/cases/submissions/newer/' },
+          { text: '较早案例 <span class="wbx-case-product-tag">WorkBuddy</span>', link: '/cases/submissions/older/' },
         ],
       },
     ])
@@ -73,7 +73,7 @@ describe('discoverCaseSidebar', () => {
     writeCase(
       root,
       'tagged',
-      '---\ntitle: 专家团吃透十年年报\nproductTag: WorkBuddy\ndate: 2026-07-25\n---\n',
+      '---\ntitle: 专家团吃透十年年报\nproductTag: WorkBuddy\ndate: 2026-07-25\ncategory: 数据分析\noutcome: 年报分析报告。\ncover: /brand/wb-x-logo.svg\ncoverAlt: WB-X 标志\n---\n',
     )
 
     const communityCases = discoverCaseSidebar(root)[2].items
