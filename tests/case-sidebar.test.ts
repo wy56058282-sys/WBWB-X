@@ -34,8 +34,20 @@ describe('discoverCaseSidebar', () => {
     )
 
     expect(dailyAiNews).toContain('title: 用 WorkBuddy 自动整理每日 AI 资讯')
-    expect(dailyAiNews).toContain('# 用 WorkBuddy 自动整理每日 AI 资讯')
+    expect(dailyAiNews).toContain('productTag: WorkBuddy')
+    expect(dailyAiNews).toContain(
+      '# 用 WorkBuddy 自动整理每日 AI 资讯 <span class="wbx-case-product-tag">WorkBuddy</span>',
+    )
     expect(dailyAiNews).not.toContain('【示例】')
+
+    const dailyAiNewsCase = discoverCaseSidebar(
+      'docs/cases/submissions',
+    )[2].items?.find(
+      (item) => item.link === '/cases/submissions/daily-ai-news/',
+    )
+    expect(dailyAiNewsCase?.text).toBe(
+      '用 WorkBuddy 自动整理每日 AI 资讯 <span class="wbx-case-product-tag">WorkBuddy</span>',
+    )
   })
 
   it('discovers cases in descending date order', () => {

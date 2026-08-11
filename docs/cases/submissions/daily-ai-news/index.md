@@ -1,5 +1,6 @@
 ---
 title: 用 WorkBuddy 自动整理每日 AI 资讯
+productTag: WorkBuddy
 summary: 安装 AIHot Skill，查询近期 AI 动态，并把分散的信息整理成带来源链接的每日热点报告。
 author: WorkBuddy WB-X 编辑组
 date: "2026-07-13"
@@ -16,7 +17,7 @@ tags:
   - Skill 安装
 ---
 
-# 用 WorkBuddy 自动整理每日 AI 资讯
+# 用 WorkBuddy 自动整理每日 AI 资讯 <span class="wbx-case-product-tag">WorkBuddy</span>
 
 ## 场景描述
 
