@@ -967,6 +967,10 @@
     font-size: 68px;
   }
 
+  .wbx-icon-card--buddy {
+    left: calc(35% + 10px);
+  }
+
   .wbx-community__copy {
     padding-left: 132px;
   }

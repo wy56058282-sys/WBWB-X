@@ -418,6 +418,9 @@ describe('home hero icon navigation', () => {
     expect(compactDesktop).toMatch(
       /\.wbx-hero__stage\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/s,
     )
+    expect(compactDesktop).toMatch(
+      /\.wbx-icon-card--buddy\s*\{[^}]*left:\s*calc\(35% \+ 10px\);/s,
+    )
   })
 
   it('does not import or style the retired partner reveal', () => {
