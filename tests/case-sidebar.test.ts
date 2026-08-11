@@ -97,9 +97,11 @@ describe('discoverCaseSidebar', () => {
       '# 专家团吃透十年年报：一套可复用的上市公司深度研究方法 <span class="wbx-case-product-tag">WorkBuddy</span>',
     )
     expect(css).toMatch(
-      /\.vp-doc h1 \.wbx-case-product-tag\s*\{[^}]*display:\s*flex;[^}]*width:\s*max-content;[^}]*margin-top:\s*12px;/s,
+      /\.vp-doc h1 \.wbx-case-product-tag\s*\{[^}]*display:\s*flex;[^}]*width:\s*max-content;[^}]*margin-top:\s*12px;[^}]*letter-spacing:\s*1px;/s,
     )
-    expect(css).toMatch(/\.VPSidebarItem \.wbx-case-product-tag\s*\{/)
+    expect(css).toMatch(
+      /\.VPSidebarItem \.wbx-case-product-tag\s*\{[^}]*letter-spacing:\s*1px;/s,
+    )
   })
 
   it('uses the WorkBuddy tag in the tea-shop sales case heading and sidebar', () => {
