@@ -1,5 +1,5 @@
 ---
-title: 用 WorkBuddy 生成一个 GSAP 粒子球体作品集动画网站
+title: 生成一个 GSAP 粒子球体作品集动画网站
 productTag: WorkBuddy
 summary: 从一份脚本和 27 个本地素材出发，经过 17 轮迭代，在 WorkBuddy 中完成一个可在线预览的 3D 粒子球体 Showreel 动画网站，最终推送到 GitHub 并启用 Pages。
 author: JZCreative
@@ -21,7 +21,7 @@ tags:
   - 迭代优化
 ---
 
-# 用 WorkBuddy 生成一个 GSAP 粒子球体作品集动画网站 <span class="wbx-case-product-tag">WorkBuddy</span>
+# 生成一个 GSAP 粒子球体作品集动画网站 <span class="wbx-case-product-tag">WorkBuddy</span>
 
 ## 场景描述
 

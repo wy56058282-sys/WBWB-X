@@ -130,7 +130,7 @@ describe('discoverCaseSidebar', () => {
       'docs/cases/submissions/jz-2025-showreel/index.md',
       'utf8',
     )
-    const title = '用 WorkBuddy 生成一个 GSAP 粒子球体作品集动画网站'
+    const title = '生成一个 GSAP 粒子球体作品集动画网站'
 
     expect(contents).toContain('productTag: WorkBuddy')
     expect(contents).toContain(
@@ -153,7 +153,7 @@ describe('discoverCaseSidebar', () => {
       'utf8',
     )
     const title =
-      '告别微信收藏夹吃灰：用 ima + WorkBuddy 把碎片内容构建成可生长的知识体系'
+      '告别微信收藏夹吃灰：把碎片内容构建成可生长的知识体系'
     const tag = '<span class="wbx-case-product-tag">WorkBuddy+ima</span>'
 
     expect(contents).toContain('productTag: WorkBuddy+ima')

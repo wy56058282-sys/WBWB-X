@@ -1,5 +1,5 @@
 ---
-title: 告别微信收藏夹吃灰：用 ima + WorkBuddy 把碎片内容构建成可生长的知识体系
+title: 告别微信收藏夹吃灰：把碎片内容构建成可生长的知识体系
 productTag: WorkBuddy+ima
 summary: 把微信里的文字、图片、公众号文章存入 ima 知识库，再用 WorkBuddy 连接器系统化梳理，最后将结构化成果一键回传 ima，形成「收集 → 加工 → 沉淀」的知识闭环。
 author: nikola
@@ -17,7 +17,7 @@ tags:
   - 知识管理
   - 连接器
 ---
-# 告别微信收藏夹吃灰：用 ima + WorkBuddy 把碎片内容构建成可生长的知识体系 <span class="wbx-case-product-tag">WorkBuddy+ima</span>
+# 告别微信收藏夹吃灰：把碎片内容构建成可生长的知识体系 <span class="wbx-case-product-tag">WorkBuddy+ima</span>
 
 ## 场景描述
 
