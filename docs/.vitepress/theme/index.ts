@@ -3,6 +3,7 @@ import '@fontsource/silkscreen/700.css'
 import '@hackernoon/pixel-icon-library/fonts/iconfont.css'
 import DefaultTheme from 'vitepress/theme'
 import CasesPage from './CasesPage.vue'
+import CaseServiceCta from './CaseServiceCta.vue'
 import Layout from './Layout.vue'
 import { legacyRouteTarget } from '../legacy-routes'
 import './custom.css'
@@ -16,6 +17,7 @@ export default {
   Layout,
   enhanceApp({ app, router }) {
     app.component('CasesPage', CasesPage)
+    app.component('CaseServiceCta', CaseServiceCta)
     router.onBeforeRouteChange = (to) => legacyRouteTarget(to) ?? undefined
   },
 }

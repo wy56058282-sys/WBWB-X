@@ -185,3 +185,5 @@ WorkBuddy 会先获取 Skill 内容，并调用 Skill 安全检查流程。确�
 ```
 
 也可以在确认单次任务稳定后，再结合 WorkBuddy 自动化任务，把相同提示词设置为每日或每周重复执行。自动化属于后续扩展，这个 Case 首先确保 AIHot 的安装、调用和输出可以独立跑通。
+
+<CaseServiceCta />

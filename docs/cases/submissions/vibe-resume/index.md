@@ -122,3 +122,5 @@ AI 生成完成后，记得核对姓名、联系方式、经历时间和数据�
 
 - GitHub：[KevinYoung-Kw/vibe-resume-skill](https://github.com/KevinYoung-Kw/vibe-resume-skill)
 - 文章：[《别花几千改简历了，我开源了个 Skill 给你》](https://mp.weixin.qq.com/s/gdUR5l3h9IrM9g1geL69aA)
+
+<CaseServiceCta />
