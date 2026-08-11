@@ -193,8 +193,7 @@ describe('discoverCaseSidebar', () => {
       'docs/cases/submissions/wechat-format-publish/index.md',
       'utf8',
     )
-    const title =
-      '用 WorkBuddy 公众号 Skill 一键排版并发布到微信公众号草稿箱'
+    const title = '公众号 Skill 一键排版并发布到微信公众号草稿箱'
     const tag = '<span class="wbx-case-product-tag">WorkBuddy</span>'
 
     expect(contents).toContain('productTag: WorkBuddy')
