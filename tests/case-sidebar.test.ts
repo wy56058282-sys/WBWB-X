@@ -133,6 +133,26 @@ describe('discoverCaseSidebar', () => {
     )
   })
 
+  it('uses the WorkBuddy+ima tag in the WeChat knowledge case', () => {
+    const contents = readFileSync(
+      'docs/cases/submissions/wechat-ima-knowledge/index.md',
+      'utf8',
+    )
+    const title =
+      '告别微信收藏夹吃灰：用 ima + WorkBuddy 把碎片内容构建成可生长的知识体系'
+    const tag = '<span class="wbx-case-product-tag">WorkBuddy+ima</span>'
+
+    expect(contents).toContain('productTag: WorkBuddy+ima')
+    expect(contents).toContain(`# ${title} ${tag}`)
+
+    const knowledgeCase = discoverCaseSidebar(
+      'docs/cases/submissions',
+    )[2].items?.find(
+      (item) => item.link === '/cases/submissions/wechat-ima-knowledge/',
+    )
+    expect(knowledgeCase?.text).toBe(`${title} ${tag}`)
+  })
+
   it('rejects a case without a title', () => {
     const root = createCasesRoot()
     writeCase(root, 'older', '---\ndate: 2026-07-13\n---\n')
