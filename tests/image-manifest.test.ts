@@ -118,6 +118,24 @@ describe('required brand assets', () => {
 })
 
 describe('article image replacement inventory', () => {
+  it('keeps every awaiting-replacement inventory statistic aligned with the manifest', () => {
+    const inventory = readFileSync('CONTENT_INVENTORY.md', 'utf8')
+    const awaitingReplacementCount = manifest.filter(
+      (item) => item.status === 'awaiting-replacement',
+    ).length
+    const reportedCounts = [
+      ...inventory.matchAll(
+        /(?:`awaiting-replacement`[：:]\s*(\d+)\s*条|(\d+)\s*条图片仍标记为\s*`awaiting-replacement`)/g,
+      ),
+    ].map((match) => Number(match[1] ?? match[2]))
+
+    expect(reportedCounts).toHaveLength(2)
+    expect(reportedCounts).toEqual([
+      awaitingReplacementCount,
+      awaitingReplacementCount,
+    ])
+  })
+
   it('does not retain the retired case-index calibration asset', () => {
     const retiredId = 'case-index-001'
     const retiredPublicPath =
