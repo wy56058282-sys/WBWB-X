@@ -164,29 +164,40 @@ describe('home hero icon navigation', () => {
     )
 
     const ticker = document.querySelector('.wbx-update-ticker')
+    const initialTime = ticker?.querySelector('time')
     expect(ticker?.getAttribute('aria-label')).toBe('内容更新')
     expect(ticker?.querySelectorAll('.wbx-update-ticker__link')).toHaveLength(1)
-    expect(ticker?.querySelector('time')?.textContent).toBe(homeUpdates[0].date)
+    expect(initialTime?.textContent).toBe(homeUpdates[0].date)
     expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
       homeUpdates[0].title,
     )
 
     await vi.advanceTimersByTimeAsync(6000)
 
-    expect(ticker?.querySelector('time')?.textContent).toBe(homeUpdates[1].date)
+    const secondTime = Array.from(ticker?.querySelectorAll('time') ?? []).find(
+      (time) => time !== initialTime,
+    )
+    expect(secondTime).toBeDefined()
+    expect(secondTime).not.toBe(initialTime)
+    expect(secondTime?.textContent).toBe(homeUpdates[1].date)
     expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
       homeUpdates[1].title,
     )
     expect(ticker?.querySelector<HTMLAnchorElement>('a')?.getAttribute('href')).toBe(
       homeUpdates[1].href,
     )
+    expect(ticker?.querySelectorAll('.wbx-update-ticker__link')).toHaveLength(1)
 
-    await vi.advanceTimersByTimeAsync(homeUpdates.length * 6000)
+    await vi.advanceTimersByTimeAsync((homeUpdates.length - 1) * 6000)
 
-    expect(ticker?.querySelector('time')?.textContent).toBe(homeUpdates[1].date)
+    expect(ticker?.querySelector('time')?.textContent).toBe(homeUpdates[0].date)
     expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
-      homeUpdates[1].title,
+      homeUpdates[0].title,
     )
+    expect(ticker?.querySelector<HTMLAnchorElement>('a')?.getAttribute('href')).toBe(
+      homeUpdates[0].href,
+    )
+    expect(ticker?.querySelectorAll('.wbx-update-ticker__link')).toHaveLength(1)
   })
 
   it('duplicates only an overflowing update title', async () => {
