@@ -123,6 +123,7 @@
   gap: 32px;
   flex: none;
   will-change: transform;
+  animation: wbx-update-title-marquee 12s linear 400ms infinite;
 }
 
 .wbx-update-ticker__title {
@@ -138,10 +139,6 @@
 .wbx-update-ticker__link:focus-visible {
   outline: 2px solid #0d100d;
   outline-offset: -2px;
-}
-
-.is-overflowing .wbx-update-ticker__title-track {
-  animation: wbx-update-title-marquee 12s linear 400ms infinite;
 }
 
 .wbx-update-ticker:hover .wbx-update-ticker__title-track,
@@ -433,7 +430,7 @@
     transition: none;
   }
 
-  .is-overflowing .wbx-update-ticker__title-track {
+  .wbx-update-ticker__title-track {
     animation: none;
   }
 

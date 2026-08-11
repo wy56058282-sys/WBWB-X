@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import {
   computed,
-  nextTick,
   onBeforeUnmount,
   onMounted,
   ref,
-  watch,
 } from 'vue'
 import { withBase } from 'vitepress'
 import { brand } from '../brand'
@@ -22,16 +20,12 @@ const isUpdatePaused = computed(
   () => isUpdateHovered.value || isUpdateFocused.value,
 )
 const prefersReducedMotion = ref(false)
-const isUpdateTitleOverflowing = ref(false)
 const updateTickerRef = ref<HTMLElement | null>(null)
-const updateTitleViewportRef = ref<HTMLElement | null>(null)
-const updateTitleTextRef = ref<HTMLElement | null>(null)
 const currentHomeUpdate = computed(
   () => sortedHomeUpdates[currentUpdateIndex.value],
 )
 let updateTimer: ReturnType<typeof window.setTimeout> | undefined
 let updateMotionQuery: MediaQueryList | undefined
-let updateResizeObserver: ResizeObserver | undefined
 
 function scheduleUpdate() {
   if (updateTimer !== undefined) {
@@ -52,15 +46,6 @@ function scheduleUpdate() {
       (currentUpdateIndex.value + 1) % sortedHomeUpdates.length
     scheduleUpdate()
   }, UPDATE_INTERVAL_MS)
-}
-
-function measureUpdateTitle() {
-  isUpdateTitleOverflowing.value = Boolean(
-    updateTitleTextRef.value &&
-      updateTitleViewportRef.value &&
-      updateTitleTextRef.value.offsetWidth >
-        updateTitleViewportRef.value.clientWidth,
-  )
 }
 
 function pauseUpdateHover() {
@@ -95,22 +80,11 @@ function handleUpdateMotionChange(event: MediaQueryListEvent) {
   scheduleUpdate()
 }
 
-watch(currentUpdateIndex, async () => {
-  await nextTick()
-  measureUpdateTitle()
-})
-
 onMounted(() => {
   updateMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
   prefersReducedMotion.value = updateMotionQuery.matches
   updateMotionQuery.addEventListener('change', handleUpdateMotionChange)
 
-  updateResizeObserver = new ResizeObserver(measureUpdateTitle)
-  if (updateTitleViewportRef.value) {
-    updateResizeObserver.observe(updateTitleViewportRef.value)
-  }
-
-  measureUpdateTitle()
   scheduleUpdate()
 })
 
@@ -120,7 +94,6 @@ onBeforeUnmount(() => {
     updateTimer = undefined
   }
   updateMotionQuery?.removeEventListener('change', handleUpdateMotionChange)
-  updateResizeObserver?.disconnect()
 })
 
 const valueProps = [
@@ -236,16 +209,15 @@ const workflowSteps = [
                 >{{ currentHomeUpdate.date }}</time>
               </Transition>
             </span>
-            <span ref="updateTitleViewportRef" class="wbx-update-ticker__content">
+            <span class="wbx-update-ticker__content">
               <a
                 :key="`${currentHomeUpdate.date}-${currentHomeUpdate.title}`"
                 class="wbx-update-ticker__link"
-                :class="{ 'is-overflowing': isUpdateTitleOverflowing }"
                 :href="withBase(currentHomeUpdate.href)"
               >
                 <span class="wbx-update-ticker__title-track">
-                  <span ref="updateTitleTextRef" class="wbx-update-ticker__title">{{ currentHomeUpdate.title }}</span>
-                  <span v-if="isUpdateTitleOverflowing" class="wbx-update-ticker__title" aria-hidden="true">{{ currentHomeUpdate.title }}</span>
+                  <span class="wbx-update-ticker__title">{{ currentHomeUpdate.title }}</span>
+                  <span class="wbx-update-ticker__title" aria-hidden="true">{{ currentHomeUpdate.title }}</span>
                 </span>
               </a>
             </span>

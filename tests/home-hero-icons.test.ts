@@ -200,47 +200,16 @@ describe('home hero icon navigation', () => {
     expect(ticker?.querySelectorAll('.wbx-update-ticker__link')).toHaveLength(1)
   })
 
-  it('duplicates only an overflowing update title', async () => {
+  it('always duplicates the current update title for the marquee', () => {
     mountHomePage()
 
-    const viewport = document.querySelector<HTMLElement>(
-      '.wbx-update-ticker__content',
-    )
-    const title = document.querySelector<HTMLElement>(
+    const marqueeTitles = document.querySelectorAll(
       '.wbx-update-ticker__title',
     )
-
-    expect(viewport).not.toBeNull()
-    expect(title).not.toBeNull()
-    expect(resizeObserverObserve).toHaveBeenCalledOnce()
-    expect(resizeObserverObserve).toHaveBeenCalledWith(viewport)
-    Object.defineProperty(title, 'offsetWidth', {
-      configurable: true,
-      value: 420,
-    })
-    Object.defineProperty(viewport, 'clientWidth', {
-      configurable: true,
-      value: 240,
-    })
-
-    resizeObserverCallback([], {} as ResizeObserver)
-    await nextTick()
-
-    const overflowingTitles = document.querySelectorAll(
-      '.wbx-update-ticker__title',
-    )
-    expect(overflowingTitles).toHaveLength(2)
-    expect(overflowingTitles[1]?.getAttribute('aria-hidden')).toBe('true')
-
-    Object.defineProperty(title, 'offsetWidth', {
-      configurable: true,
-      value: 180,
-    })
-
-    resizeObserverCallback([], {} as ResizeObserver)
-    await nextTick()
-
-    expect(document.querySelectorAll('.wbx-update-ticker__title')).toHaveLength(1)
+    expect(marqueeTitles).toHaveLength(2)
+    expect(marqueeTitles[0]?.textContent).toBe(homeUpdates[0].title)
+    expect(marqueeTitles[1]?.textContent).toBe(homeUpdates[0].title)
+    expect(marqueeTitles[1]?.getAttribute('aria-hidden')).toBe('true')
   })
 
   it('pauses on hover and starts a fresh interval after the pointer leaves', async () => {
@@ -318,7 +287,7 @@ describe('home hero icon navigation', () => {
     )
   })
 
-  it('clears timers and observers when unmounted', () => {
+  it('clears timers and media listeners when unmounted', () => {
     vi.useFakeTimers()
     const app = mountHomePage()
 
@@ -332,7 +301,6 @@ describe('home hero icon navigation', () => {
       'change',
       expect.any(Function),
     )
-    expect(resizeObserverDisconnect).toHaveBeenCalledOnce()
   })
 
   it('keeps the first update visible when reduced motion is preferred', async () => {
@@ -349,7 +317,7 @@ describe('home hero icon navigation', () => {
     )
   })
 
-  it('styles the synchronized update ticker as a vertically changing date with an overflow-only title marquee', () => {
+  it('styles the synchronized update ticker as a vertically changing date with a persistent title marquee', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const ticker = baseRule(css, '.wbx-update-ticker')
     const date = baseRule(css, '.wbx-update-ticker__date')
@@ -383,12 +351,12 @@ describe('home hero icon navigation', () => {
     expect(titleTrack).toMatch(/display:\s*inline-flex;/)
     expect(titleTrack).toMatch(/width:\s*max-content;/)
     expect(titleTrack).toMatch(/gap:\s*32px;/)
-    expect(titleTrack).not.toMatch(/animation:/)
+    expect(titleTrack).toMatch(
+      /animation:\s*wbx-update-title-marquee 12s linear 400ms infinite;/,
+    )
     expect(titleLink).toMatch(/width:\s*100%;/)
     expect(titleLink).toMatch(/height:\s*100%;/)
-    expect(css).toMatch(
-      /\.is-overflowing\s+\.wbx-update-ticker__title-track\s*\{[^}]*animation:\s*wbx-update-title-marquee 12s linear 400ms infinite;/s,
-    )
+    expect(css).not.toMatch(/\.is-overflowing/)
     expect(css).toMatch(
       /@keyframes wbx-update-title-marquee\s*\{[\s\S]*?to\s*\{[^}]*transform:\s*translateX\(calc\(-50% - 16px\)\);/,
     )
@@ -402,7 +370,7 @@ describe('home hero icon navigation', () => {
       /\.wbx-update-date-enter-active,\s*\.wbx-update-date-leave-active\s*\{[^}]*transition:\s*none;/s,
     )
     expect(reducedMotion).toMatch(
-      /\.is-overflowing\s+\.wbx-update-ticker__title-track\s*\{[^}]*animation:\s*none;/s,
+      /\.wbx-update-ticker__title-track\s*\{[^}]*animation:\s*none;/s,
     )
     expect(reducedMotion).not.toMatch(
       /\.wbx-update-ticker__link\s*\{[^}]*display:\s*none;/s,
