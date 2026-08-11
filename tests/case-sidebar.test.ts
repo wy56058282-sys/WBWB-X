@@ -172,7 +172,7 @@ describe('discoverCaseSidebar', () => {
       'docs/cases/submissions/vibe-resume/index.md',
       'utf8',
     )
-    const title = '将自己的经历发给 WorkBuddy，直接生成一份好看的简历'
+    const title = '将自己的经历直接生成一份好看的简历'
     const tag = '<span class="wbx-case-product-tag">WorkBuddy</span>'
 
     expect(contents).toContain(`title: ${title}`)
