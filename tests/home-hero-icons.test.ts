@@ -118,14 +118,12 @@ describe('home hero icon navigation', () => {
     const stage = baseRule(css, '.wbx-hero__stage')
 
     expect(css).toMatch(
-      /\.wbx-update-ticker\s*\{[^}]*height:\s*28px;[^}]*display:\s*grid;[^}]*border:\s*0;[^}]*transform:\s*translateY\(-10px\);/s,
+      /\.wbx-update-ticker\s*\{[^}]*height:\s*28px;[^}]*display:\s*grid;[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\);[^}]*border:\s*0;[^}]*transform:\s*translateY\(-10px\);/s,
     )
     expect(css).toMatch(
       /\.wbx-update-ticker__group\s*>\s*\*\s*\{[^}]*min-height:\s*28px;/s,
     )
-    expect(css).toMatch(
-      /\.wbx-update-ticker__label\s*\{[^}]*align-self:\s*center;[^}]*width:\s*max-content;[^}]*height:\s*fit-content;[^}]*padding:\s*8px;/s,
-    )
+    expect(css).not.toMatch(/\.wbx-update-ticker__label/)
     expect(css).toMatch(
       /@media\s*\(max-width:\s*760px\)[\s\S]*\.wbx-update-ticker\s*\{[^}]*height:\s*28px;/s,
     )
@@ -174,11 +172,9 @@ describe('home hero icon navigation', () => {
     )
 
     const ticker = document.querySelector('.wbx-update-ticker')
-    const label = ticker?.querySelector('.wbx-update-ticker__label')
     const groups = ticker?.querySelectorAll('.wbx-update-ticker__group')
     expect(ticker?.getAttribute('aria-label')).toBe('内容更新')
-    expect(label?.textContent?.trim()).toBe('更新')
-    expect(label?.querySelector('.hn')).toBeNull()
+    expect(ticker?.querySelector('.wbx-update-ticker__label')).toBeNull()
     expect(groups).toHaveLength(2)
     expect(groups?.[1].getAttribute('aria-hidden')).toBe('true')
     expect(groups?.[1].querySelectorAll('a')).toHaveLength(0)

@@ -64,27 +64,12 @@
   height: 28px;
   display: grid;
   min-width: 0;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   overflow: hidden;
   border: 0;
   transform: translateY(-10px);
   color: #0d100d;
   background: #ffffff;
-}
-
-.wbx-update-ticker__label {
-  display: inline-flex;
-  align-items: center;
-  align-self: center;
-  width: max-content;
-  height: fit-content;
-  padding: 8px;
-  color: #ffffff;
-  background: #0d100d;
-  font-family: var(--wbx-pixel);
-  font-size: 12px;
-  line-height: 1;
-  white-space: nowrap;
 }
 
 .wbx-update-ticker__viewport {
@@ -1057,12 +1042,6 @@
   .wbx-update-ticker {
     width: min(100%, 320px);
     height: 28px;
-  }
-
-  .wbx-update-ticker__label {
-    gap: 6px;
-    padding-inline: 8px;
-    font-size: 10px;
   }
 
   .wbx-update-ticker__group > * {
