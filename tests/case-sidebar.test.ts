@@ -165,6 +165,25 @@ describe('discoverCaseSidebar', () => {
     expect(knowledgeCase?.text).toBe(`${title} ${tag}`)
   })
 
+  it('uses the approved wording for the Vibe Resume case title', () => {
+    const contents = readFileSync(
+      'docs/cases/submissions/vibe-resume/index.md',
+      'utf8',
+    )
+    const title = '将自己的经历发给 WorkBuddy，直接生成一份好看的简历'
+
+    expect(contents).toContain(`title: ${title}`)
+    expect(contents).toContain(`# ${title}`)
+    expect(contents).not.toContain('把经历发给 WorkBuddy')
+
+    const resumeCase = discoverCaseSidebar(
+      'docs/cases/submissions',
+    )[2].items?.find(
+      (item) => item.link === '/cases/submissions/vibe-resume/',
+    )
+    expect(resumeCase?.text).toBe(title)
+  })
+
   it('rejects a case without a title', () => {
     const root = createCasesRoot()
     writeCase(root, 'older', '---\ndate: 2026-07-13\n---\n')

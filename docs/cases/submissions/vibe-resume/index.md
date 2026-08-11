@@ -1,5 +1,5 @@
 ---
-title: 把经历发给 WorkBuddy，直接生成一份好看的简历
+title: 将自己的经历发给 WorkBuddy，直接生成一份好看的简历
 summary: 安装 Vibe Resume Skill，发出个人经历和照片，就能生成一页简历；后续补经历、换岗位，也可以继续在对话里修改。
 author: KevinYoung-Kw
 date: "2026-07-13"
@@ -17,7 +17,7 @@ tags:
   - Skill 安装
 ---
 
-# 把经历发给 WorkBuddy，直接生成一份好看的简历
+# 将自己的经历发给 WorkBuddy，直接生成一份好看的简历
 
 ## 这个案例解决什么问题
 
