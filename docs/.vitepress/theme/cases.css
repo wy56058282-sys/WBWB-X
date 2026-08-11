@@ -6,7 +6,8 @@
   display: none;
 }
 
-.wbx-cases-layout .VPContent {
+.wbx-cases-layout .VPContent.has-sidebar {
+  padding-right: 0;
   padding-left: 0;
 }
 

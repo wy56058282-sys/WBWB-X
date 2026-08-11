@@ -422,6 +422,12 @@
   -webkit-line-clamp: 2;
 }
 
+@media (max-width: 1200px) {
+  .wbx-service-related__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 900px) {
   .wbx-service-offer,
   .wbx-service-section {
@@ -441,7 +447,7 @@
   }
 
   .wbx-service-related__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
   }
 }
 
@@ -469,10 +475,6 @@
   .wbx-service-output-list,
   .wbx-service-process ol,
   .wbx-service-payment__ready {
-    grid-template-columns: 1fr;
-  }
-
-  .wbx-service-related__grid {
     grid-template-columns: 1fr;
   }
 
