@@ -14,7 +14,7 @@ WorkBuddy 的能力、界面和使用方式会持续变化。这本小白书希�
 
 如果你已经用 WorkBuddy 跑通了一项真实任务，推荐优先提交到[社区案例集](/cases/)。每个 Case 需要说明使用场景、使用的 Skills、在 WorkBuddy 中的操作、最终效果和验收标准。
 
-请先阅读[Case 投稿指南](/community/case-contributing)。PR 合并后，案例会自动显示在网站的案例集合页；经过进一步复现和编辑的经典任务，未来可能进入小白书正文。
+请先阅读[Case 投稿指南](/community/case-contributing)。默认通过统一问卷投稿，无需 GitHub；审核通过后由维护者协助整理发布。GitHub PR 仍作为可选的高级方式，适合希望直接修改网站内容的贡献者。
 
 ## 最轻量的方式：提交 Issue
 

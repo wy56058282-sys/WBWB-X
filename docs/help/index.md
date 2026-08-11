@@ -1,7 +1,7 @@
 ---
-title: 帮你解决 WorkBuddy 使用场景问题
+title: 提交 WorkBuddy 需求与案例
 titleTemplate: false
-description: 如果你不知道如何用 WorkBuddy 解决真实工作问题，可以提交场景问卷。我们会评估需求、联系沟通，并将具有复用价值的解决方案制作成开源 Case。
+description: 通过统一问卷提交 WorkBuddy 使用需求或已经跑通的真实案例，无需使用 GitHub。
 breadcrumbTitle: 帮你解决
 aside: false
 outline: false
@@ -11,11 +11,11 @@ pageClass: help-you-page
 <div class="help-hero">
   <div class="help-hero__copy">
     <p class="help-pixel-label">SCENARIO SUPPORT · OPEN CASES</p>
-    <h1>有工作场景，不知道怎么用 WorkBuddy 解决？</h1>
-    <p class="help-hero__lead">把你的真实问题告诉我们。我们会阅读每一份场景问卷，评估 WorkBuddy 是否能够解决；如果需要补充信息，我们会联系你进一步沟通。</p>
-    <p>具有代表性和复用价值的问题，我们会尝试做成完整 Case，写清使用的 Skill、操作过程、任务描述和最终效果，并开源到社区案例集，帮助更多遇到同类问题的人。</p>
+    <h1>提交需求，或者分享你已经跑通的案例</h1>
+    <p class="help-hero__lead">同一份问卷可以提交两类内容：尚未解决的真实工作需求，以及已经在 WorkBuddy 中跑通、希望分享给社区的案例。</p>
+    <p>无需 GitHub。我们会阅读每一份提交；需要补充信息时联系你，并协助把具有复用价值的成果整理成公开 Case。</p>
     <div class="help-hero__actions">
-      <a class="help-button help-button--primary" href="#scenario-survey">扫码填写问卷</a>
+      <a class="help-button help-button--primary" href="#scenario-survey">提交需求或案例</a>
       <a class="help-button" href="/cases/">查看开源 Case</a>
     </div>
   </div>
@@ -24,14 +24,14 @@ pageClass: help-you-page
     <div class="help-survey-card__heading">
       <span>01</span>
       <div>
-        <strong>WorkBuddy 场景收集调查问卷</strong>
-        <small>扫码后填写你的真实需求</small>
+        <strong>WorkBuddy 需求与案例投稿问卷</strong>
+        <small>普通需求直接填写；案例投稿请注明类型</small>
       </div>
     </div>
     <a href="/article-assets/source-calibration/help/001.png" target="_blank" rel="noreferrer" aria-label="查看 WorkBuddy 场景收集调查问卷二维码大图">
       <img src="/article-assets/source-calibration/help/001.png" alt="WorkBuddy 场景收集调查问卷二维码" loading="eager">
     </a>
-    <p>使用手机扫码填写；如果你正在手机上阅读，可以点击图片查看大图后长按识别。</p>
+    <p>提交案例时，请在场景描述开头注明“【案例投稿】”，并附上操作步骤、结果证明和可公开范围。使用手机扫码填写；手机阅读时可点击图片后长按识别。</p>
   </div>
 </div>
 
@@ -41,13 +41,13 @@ pageClass: help-you-page
   <div class="help-process__grid">
     <article>
       <span>01</span>
-      <h3>理解你的场景</h3>
-      <p>了解你现在怎样工作、卡在哪里、已有输入以及希望得到什么结果。</p>
+      <h3>识别提交类型</h3>
+      <p>区分待解决的需求与已经跑通的案例投稿，进入对应处理流程。</p>
     </article>
     <article>
       <span>02</span>
-      <h3>评估解决路径</h3>
-      <p>判断 WorkBuddy 是否适合处理，并梳理可能需要的 Skill、权限和交付方式。</p>
+      <h3>评估与初审</h3>
+      <p>需求会评估解决路径；案例会检查真实性、完整性、安全性和复用价值。</p>
     </article>
     <article>
       <span>03</span>
@@ -56,8 +56,8 @@ pageClass: help-you-page
     </article>
     <article>
       <span>04</span>
-      <h3>制作开源 Case</h3>
-      <p>具有通用价值的解决方案会被整理成可复现 Case，审核后公开到社区案例集。</p>
+      <h3>整理并发布</h3>
+      <p>审核通过后，由维护者整理为网站 Case；投稿人不需要修改仓库或提交 PR。</p>
     </article>
   </div>
 </section>
@@ -65,20 +65,21 @@ pageClass: help-you-page
 <section class="help-submit-guide" aria-labelledby="help-submit-title">
   <div>
     <p class="help-pixel-label">WHAT TO PREPARE</p>
-    <h2 id="help-submit-title">怎样描述问题，更容易得到帮助</h2>
+    <h2 id="help-submit-title">提交前准备这些信息</h2>
   </div>
   <ul>
+    <li><strong>提交类型：</strong>案例投稿请在描述开头注明“【案例投稿】”；普通需求直接描述问题。</li>
     <li><strong>真实场景：</strong>你在什么岗位或任务中遇到了问题。</li>
     <li><strong>当前做法：</strong>现在需要哪些步骤，大概花多少时间。</li>
     <li><strong>输入资料：</strong>通常会用到哪些文件、网页、系统或数据。</li>
-    <li><strong>期望结果：</strong>希望 WorkBuddy 最终交付什么，以及怎样算完成。</li>
+    <li><strong>结果与证明：</strong>需求请说明期望交付；案例请说明实际结果、验收方式和可提供的截图。</li>
     <li><strong>安全边界：</strong>是否涉及账号权限、敏感数据、文件修改或对外发布。</li>
   </ul>
 </section>
 
 <div class="help-note">
   <strong>关于隐私与联系</strong>
-  <p>请不要在问卷中提交密码、密钥、客户隐私或不方便公开的内部资料。我们只会在需要补充信息或可以推进解决方案时，通过你主动留下的联系方式与你沟通。</p>
+  <p>请不要在问卷中提交密码、密钥、客户隐私或不方便公开的内部资料。案例发布前会与你确认署名、素材和公开范围。</p>
 </div>
 
 <style>

@@ -1,6 +1,6 @@
 ---
 title: 提交 WorkBuddy WB-X 案例
-description: 按统一格式提交真实、可复现的 WorkBuddy Case，合并后自动显示在社区案例集中。
+description: 通过问卷提交真实、可复现的 WorkBuddy Case，无需 GitHub；熟悉开发流程的贡献者也可选择提交 PR。
 breadcrumbTitle: Case 投稿指南
 aside: false
 outline: false
@@ -8,7 +8,7 @@ outline: false
 
 # 提交 WorkBuddy WB-X 案例
 
-社区案例集用于收录大家已经在 WorkBuddy 中实际跑通过的任务。案例合并后会自动出现在[社区案例集](/cases/)；经过进一步复现和编辑的经典任务，未来可能进入小白书正文。
+社区案例集用于收录大家已经在 WorkBuddy 中实际跑通过的任务。填写问卷即可投稿，无需 GitHub。审核通过后，维护者会协助整理并发布；经过进一步复现和编辑的经典任务，未来可能进入小白书正文。
 
 ## 一个合格的 Case 必须回答什么
 
@@ -19,20 +19,30 @@ outline: false
 5. **怎样判断任务完成**：明确且可以复查的验收标准。
 
 ::: warning 提交前先检查是否重复
-请先搜索[社区案例集](/cases/)和[小白书目录](/wb-x/)，自行确认场景或任务是否已经存在。相同目标、相同流程或仅更换输入数据的内容，建议直接补充现有案例；如果新 Case 使用了明显不同的 Skill、方法或交付方式，请在 PR 中说明差异。
+请先搜索[社区案例集](/cases/)和[小白书目录](/wb-x/)，确认场景或任务是否已经存在。相同目标、相同流程或仅更换输入数据的内容，建议补充现有案例；如果新 Case 使用了明显不同的 Skill、方法或交付方式，请在问卷中说明差异。
 :::
 
-## 提交步骤
+## 默认方式：填写问卷
 
 1. 搜索案例集和小白书，确认任务没有重复。
-2. Fork [wy56058282-sys/WBWB-X](https://github.com/wy56058282-sys/WBWB-X) 仓库。
-3. 复制 `.github/CASE_TEMPLATE.md` 中的案例模板。
-4. 新建 `docs/cases/submissions/<case-slug>/index.md`。
-5. 将截图等素材放进同目录的 `assets/` 文件夹。
-6. 本地运行 `npm install` 和 `npm run docs:build`。
-7. 提交 Pull Request，并选择 Case 专用 PR 模板。
+2. 打开[需求与案例投稿问卷](/help/#scenario-survey)。
+3. 在场景描述开头注明“【案例投稿】”。
+4. 写清场景、使用的 Skills、操作过程、实际效果、验收标准和可公开范围。
+5. 留下联系方式，等待审核或补充信息确认。
 
-推荐使用简短的英文小写目录名，例如：
+我们会协助整理标题、结构和图片，并在发布前确认署名与公开内容。你不需要准备 Markdown、Fork 仓库或运行本地构建。
+
+## 可选方式：通过 GitHub 提交
+
+该方式适合熟悉 GitHub 和 Markdown 的贡献者，可以直接提交结构化内容：
+
+1. Fork [wy56058282-sys/WBWB-X](https://github.com/wy56058282-sys/WBWB-X) 仓库。
+2. 复制 `.github/CASE_TEMPLATE.md` 中的案例模板。
+3. 新建 `docs/cases/submissions/<case-slug>/index.md` 并添加素材。
+4. 本地运行 `npm install` 和 `npm run docs:build`。
+5. 提交 Pull Request，并选择 Case 专用 PR 模板。
+
+推荐使用简短的英文小写目录名：
 
 ```text
 docs/cases/submissions/daily-ai-news/
@@ -42,7 +52,7 @@ docs/cases/submissions/daily-ai-news/
     └── workbuddy-result.png
 ```
 
-你不需要修改案例集合首页。网站构建时会自动读取所有 Case 的标题、分类、Skills、作者和简介。
+GitHub 投稿者不需要修改案例集合首页。网站构建时会自动读取所有 Case 的标题、分类、Skills、作者和简介。
 
 ## Frontmatter 字段
 
