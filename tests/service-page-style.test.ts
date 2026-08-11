@@ -11,6 +11,7 @@ describe('custom service page styles', () => {
     expect(styles).toMatch(/\.wbx-service h1\s*\{[^}]*font-weight:\s*850[^}]*line-height:\s*1\.16/s)
     expect(styles).toMatch(/\.wbx-service-action\s*\{[^}]*border:\s*2px solid var\(--wbx-ink\)[^}]*border-radius:\s*0/s)
     expect(styles).toMatch(/\.wbx-service-action--primary\s*\{[^}]*background:\s*var\(--wbx-accent\)/)
+    expect(styles).toMatch(/\.wbx-service \.wbx-service-action:hover,\s*\.wbx-service \.wbx-service-action:focus-visible\s*\{[^}]*color:\s*#0d100d[^}]*background:\s*var\(--wbx-accent\)/s)
     expect(styles).toMatch(/\.wbx-service-action:focus-visible,\s*\.wbx-service-case:focus-visible,\s*\.wbx-service-survey__media:focus-visible\s*\{[^}]*outline:\s*2px solid var\(--wbx-accent\)/s)
     expect(styles).toMatch(/\.wbx-service-related__grid\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/)
     expect(styles).toMatch(/@media \(max-width:\s*1200px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.wbx-service-related__grid\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/)
