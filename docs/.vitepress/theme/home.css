@@ -429,9 +429,11 @@
   }
 
   .wbx-update-date-enter-active,
-  .wbx-update-date-leave-active,
-  .wbx-update-ticker__title-track {
+  .wbx-update-date-leave-active {
     transition: none;
+  }
+
+  .is-overflowing .wbx-update-ticker__title-track {
     animation: none;
   }
 

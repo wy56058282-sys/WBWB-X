@@ -342,6 +342,7 @@ describe('home hero icon navigation', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const ticker = baseRule(css, '.wbx-update-ticker')
     const date = baseRule(css, '.wbx-update-ticker__date')
+    const titleLink = baseRule(css, '.wbx-update-ticker__link')
     const titleTrack = baseRule(css, '.wbx-update-ticker__title-track')
     const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
     const reducedMotion = css.slice(
@@ -370,7 +371,10 @@ describe('home hero icon navigation', () => {
     )
     expect(titleTrack).toMatch(/display:\s*inline-flex;/)
     expect(titleTrack).toMatch(/width:\s*max-content;/)
+    expect(titleTrack).toMatch(/gap:\s*32px;/)
     expect(titleTrack).not.toMatch(/animation:/)
+    expect(titleLink).toMatch(/width:\s*100%;/)
+    expect(titleLink).toMatch(/height:\s*100%;/)
     expect(css).toMatch(
       /\.is-overflowing\s+\.wbx-update-ticker__title-track\s*\{[^}]*animation:\s*wbx-update-title-marquee 12s linear 400ms infinite;/s,
     )
@@ -378,13 +382,16 @@ describe('home hero icon navigation', () => {
       /@keyframes wbx-update-title-marquee\s*\{[\s\S]*?to\s*\{[^}]*transform:\s*translateX\(calc\(-50% - 16px\)\);/,
     )
     expect(css).toMatch(
-      /\.wbx-update-ticker:hover\s+\.wbx-update-ticker__title-track,[\s\S]*?\.wbx-update-ticker\.is-paused\s+\.wbx-update-ticker__title-track\s*\{[^}]*animation-play-state:\s*paused;/s,
+      /\.wbx-update-ticker:hover\s+\.wbx-update-ticker__title-track,\s*\.wbx-update-ticker:focus-within\s+\.wbx-update-ticker__title-track,\s*\.wbx-update-ticker\.is-paused\s+\.wbx-update-ticker__title-track\s*\{[^}]*animation-play-state:\s*paused;/s,
     )
     expect(mobile).toMatch(
       /\.wbx-update-ticker\s*\{[^}]*width:\s*min\(100%, 320px\);[^}]*grid-template-columns:\s*82px minmax\(0, 1fr\);/s,
     )
     expect(reducedMotion).toMatch(
-      /\.wbx-update-date-enter-active,[\s\S]*?\.wbx-update-ticker__title-track\s*\{[^}]*transition:\s*none;[^}]*animation:\s*none;/s,
+      /\.wbx-update-date-enter-active,\s*\.wbx-update-date-leave-active\s*\{[^}]*transition:\s*none;/s,
+    )
+    expect(reducedMotion).toMatch(
+      /\.is-overflowing\s+\.wbx-update-ticker__title-track\s*\{[^}]*animation:\s*none;/s,
     )
     expect(reducedMotion).not.toMatch(
       /\.wbx-update-ticker__link\s*\{[^}]*display:\s*none;/s,
