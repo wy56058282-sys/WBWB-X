@@ -112,7 +112,7 @@ describe('discoverCaseSidebar', () => {
 
     expect(contents).toContain('productTag: WorkBuddy')
     expect(contents).toContain(
-      '# 用 WorkBuddy 清洗 119 份门店 Excel 并生成可交互运营看板 <span class="wbx-case-product-tag">WorkBuddy</span>',
+      '# 清洗 119 份门店 Excel 并生成可交互运营看板 <span class="wbx-case-product-tag">WorkBuddy</span>',
     )
 
     const teaShopCase = discoverCaseSidebar(
@@ -121,7 +121,7 @@ describe('discoverCaseSidebar', () => {
       (item) => item.link === '/cases/submissions/tea-shop-sales-analysis/',
     )
     expect(teaShopCase?.text).toBe(
-      '用 WorkBuddy 清洗 119 份门店 Excel 并生成可交互运营看板 <span class="wbx-case-product-tag">WorkBuddy</span>',
+      '清洗 119 份门店 Excel 并生成可交互运营看板 <span class="wbx-case-product-tag">WorkBuddy</span>',
     )
   })
 
