@@ -132,13 +132,20 @@
   font: inherit;
 }
 
-.wbx-cases-search input:focus-visible,
 .wbx-cases-categories button:focus-visible,
 .wbx-case-card__link:focus-visible,
 .wbx-cases-action:focus-visible,
 .wbx-cases-empty button:focus-visible {
   outline: 2px solid var(--wbx-accent);
   outline-offset: 2px;
+}
+
+.wbx-cases-search input:focus-visible {
+  outline-color: var(--wbx-ink);
+  outline-style: solid;
+  outline-width: 2px;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--wbx-surface), 0 0 0 6px var(--wbx-ink);
 }
 
 .wbx-cases-categories {
@@ -344,7 +351,8 @@
   line-height: 1.5;
 }
 
-.wbx-cases-action {
+.wbx-cases .wbx-cases-action,
+.wbx-case-service-cta .wbx-cases-action {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -368,7 +376,8 @@
   transform: translate(-2px, -2px);
 }
 
-.wbx-cases-action--primary {
+.wbx-cases .wbx-cases-action--primary,
+.wbx-case-service-cta .wbx-cases-action--primary {
   color: #0d100d;
   background: var(--wbx-accent);
 }
@@ -446,7 +455,8 @@
 @media (prefers-reduced-motion: reduce) {
   .wbx-cases-categories button,
   .wbx-cases-empty button,
-  .wbx-cases-action {
+  .wbx-cases .wbx-cases-action,
+  .wbx-case-service-cta .wbx-cases-action {
     transition: none;
   }
 }

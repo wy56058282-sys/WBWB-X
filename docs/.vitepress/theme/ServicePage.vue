@@ -64,7 +64,7 @@ const process = [
       </div>
       <ul class="wbx-service-checklist">
         <li v-for="problem in suitableProblems" :key="problem">
-          <i class="hn hn-check-square-solid wbx-service-checklist__icon" aria-hidden="true" />
+          <i class="hn hn-check-box-solid wbx-service-checklist__icon" aria-hidden="true" />
           <span>{{ problem }}</span>
         </li>
       </ul>
