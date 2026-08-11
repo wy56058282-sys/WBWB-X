@@ -14,8 +14,7 @@
   max-width: 1280px;
 }
 
-.wbx-cases-layout .VPDoc .content,
-.wbx-cases-layout .VPDoc .content-container {
+.wbx-cases-layout .VPDoc .content {
   max-width: none;
 }
 
@@ -31,7 +30,7 @@
   align-items: flex-end;
   justify-content: space-between;
   padding: 26px 0 38px;
-  border-bottom: 1px solid var(--wbx-line);
+  border-bottom: 2px solid var(--wbx-ink);
 }
 
 .wbx-cases-eyebrow {
@@ -54,6 +53,7 @@
   border: 0;
   padding: 0;
   font-size: 40px;
+  font-weight: 850;
   line-height: 1.2;
   letter-spacing: 0;
 }
@@ -123,8 +123,8 @@
 .wbx-cases-search input {
   width: 100%;
   min-height: 42px;
-  border: 1px solid var(--wbx-line);
-  border-radius: 4px;
+  border: 2px solid var(--wbx-ink);
+  border-radius: 0;
   padding: 0 12px;
   color: var(--wbx-ink);
   background: var(--wbx-surface);
@@ -150,8 +150,8 @@
 .wbx-cases-categories button,
 .wbx-cases-empty button {
   min-height: 36px;
-  border: 1px solid var(--wbx-line);
-  border-radius: 4px;
+  border: 2px solid var(--wbx-ink);
+  border-radius: 0;
   padding: 0 12px;
   color: var(--wbx-ink);
   background: var(--wbx-surface);
@@ -159,6 +159,7 @@
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
+  transition: background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
 
 .wbx-cases-category__indicator {
@@ -178,6 +179,14 @@
   border-color: var(--wbx-ink);
   color: var(--wbx-ink);
   background: var(--wbx-accent);
+}
+
+.wbx-cases-categories button:hover,
+.wbx-cases-categories button:focus-visible,
+.wbx-cases-empty button:hover,
+.wbx-cases-empty button:focus-visible {
+  box-shadow: 4px 4px 0 var(--wbx-ink);
+  transform: translate(-2px, -2px);
 }
 
 .wbx-cases .wbx-cases-grid {
@@ -336,20 +345,23 @@
   align-items: center;
   justify-content: center;
   min-height: 42px;
-  border: 1px solid var(--wbx-ink);
-  border-radius: 4px;
+  border: 2px solid var(--wbx-ink);
+  border-radius: 0;
   padding: 0 16px;
   color: var(--wbx-ink);
   background: var(--wbx-surface);
   font-size: 14px;
   font-weight: 700;
   text-decoration: none;
+  transition: background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
 
 .wbx-cases-action:hover,
 .wbx-cases-action:focus-visible {
   color: var(--wbx-ink);
   background: var(--wbx-accent);
+  box-shadow: 4px 4px 0 var(--wbx-ink);
+  transform: translate(-2px, -2px);
 }
 
 .wbx-cases-action--primary {
@@ -424,5 +436,13 @@
   .wbx-cases-submit__actions {
     flex-direction: column;
     align-items: stretch;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wbx-cases-categories button,
+  .wbx-cases-empty button,
+  .wbx-cases-action {
+    transition: none;
   }
 }

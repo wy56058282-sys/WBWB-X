@@ -63,7 +63,10 @@ const process = [
         <h2 id="service-problems-title">适合带着这些问题来</h2>
       </div>
       <ul class="wbx-service-checklist">
-        <li v-for="problem in suitableProblems" :key="problem">{{ problem }}</li>
+        <li v-for="problem in suitableProblems" :key="problem">
+          <i class="hn hn-check-square-solid wbx-service-checklist__icon" aria-hidden="true" />
+          <span>{{ problem }}</span>
+        </li>
       </ul>
     </section>
 

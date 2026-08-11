@@ -15,9 +15,7 @@ describe('case collection page styles', () => {
     expect(source).toMatch(/\.wbx-case-card__outcome\s*\{[^}]*-webkit-line-clamp:/)
     expect(source).toMatch(/\.wbx-cases-layout\s+\.VPSidebar\s*\{[^}]*display:\s*none/)
     expect(source).toMatch(/\.wbx-cases-layout\s+\.VPLocalNav\s*\{[^}]*display:\s*none/)
-    expect(source).toMatch(
-      /\.wbx-cases-layout \.VPDoc \.content,\s*\.wbx-cases-layout \.VPDoc \.content-container\s*\{[^}]*max-width:\s*none;/s,
-    )
+    expect(source).toMatch(/\.wbx-cases-layout \.VPDoc \.content\s*\{[^}]*max-width:\s*none;/s)
   })
 
   it('registers the gallery and makes it the entire case-index body', () => {
