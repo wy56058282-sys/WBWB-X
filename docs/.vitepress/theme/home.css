@@ -67,7 +67,7 @@
   grid-template-columns: minmax(0, 1fr);
   overflow: hidden;
   border: 0;
-  transform: translateY(-50px);
+  transform: translateY(-60px);
   color: #0d100d;
   background: transparent;
 }
