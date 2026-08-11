@@ -133,9 +133,9 @@ describe('article image replacement inventory', () => {
       'status',
     ]
 
-    expect(manifest).toHaveLength(271)
+    expect(manifest).toHaveLength(270)
     expect(manifest.filter((item) => item.id.startsWith('ch'))).toHaveLength(239)
-    expect(manifest.filter((item) => item.id.startsWith('case-'))).toHaveLength(29)
+    expect(manifest.filter((item) => item.id.startsWith('case-'))).toHaveLength(28)
     expect(manifest.filter((item) => item.id.startsWith('community-'))).toHaveLength(2)
     expect(manifest.filter((item) => item.id.startsWith('help-'))).toHaveLength(1)
     expect(new Set(manifest.map((item) => item.id)).size).toBe(manifest.length)
@@ -186,14 +186,28 @@ describe('article image replacement inventory', () => {
       const markdownPath = existsSync(indexPath)
         ? indexPath
         : join('docs', `${page.replace(/^\/|\/$/g, '')}.md`)
-      const markdown = readFileSync(markdownPath, 'utf8')
+      const componentPathByPage: Record<string, string> = {
+        '/help/': 'docs/.vitepress/theme/ServicePage.vue',
+      }
+      const componentPath = componentPathByPage[page]
+      const markdown = [
+        readFileSync(markdownPath, 'utf8'),
+        componentPath ? readFileSync(componentPath, 'utf8') : '',
+      ].join('\n')
       const imagePaths = [
         ...new Set(
           [
             ...markdown.matchAll(
               /!\[[^\]]*\]\(([^)\s]+)|<img\b[^>]*?\bsrc\s*=\s*["']([^"']+)["']/gi,
             ),
-          ].map((match) => match[1] ?? match[2]),
+            ...markdown.matchAll(
+              /<img\b[^>]*?:src\s*=\s*["']withBase\(["']([^"']+)["']\)["']/gi,
+            ),
+          ]
+            .map((match) => match[1] ?? match[2])
+            .filter((path) =>
+              /^\/article-assets\/(?:source-calibration|replacements)\//.test(path),
+            ),
         ),
       ]
 

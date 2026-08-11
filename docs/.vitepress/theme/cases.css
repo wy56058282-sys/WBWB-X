@@ -164,7 +164,7 @@
   background: var(--wbx-accent);
 }
 
-.wbx-cases-grid {
+.wbx-cases .wbx-cases-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
@@ -173,8 +173,9 @@
   list-style: none;
 }
 
-.wbx-case-card {
+.wbx-cases-grid > .wbx-case-card {
   min-width: 0;
+  margin: 0;
 }
 
 .wbx-case-card__link {
@@ -222,6 +223,7 @@
 
 .wbx-case-card__title {
   display: -webkit-box;
+  min-height: 2.7em;
   overflow: hidden;
   color: var(--wbx-ink);
   font-size: 18px;
@@ -338,7 +340,7 @@
 }
 
 @media (max-width: 960px) {
-  .wbx-cases-grid {
+  .wbx-cases .wbx-cases-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -369,7 +371,7 @@
     width: 100%;
   }
 
-  .wbx-cases-grid {
+  .wbx-cases .wbx-cases-grid {
     grid-template-columns: 1fr;
   }
 

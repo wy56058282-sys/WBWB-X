@@ -3107,19 +3107,6 @@
     "status": "awaiting-replacement"
   },
   {
-    "id": "case-index-001",
-    "page": "/cases/",
-    "order": 1,
-    "purpose": "刘聪NLP 微信二维码，添加时备注 workbuddy共创",
-    "sourceUrl": "https://workbuddy.homes/cases/workbuddy-co-create-wechat.png",
-    "calibrationPath": "/article-assets/source-calibration/case-index/001.jpg",
-    "replacementPath": "/article-assets/replacements/case-index/001.jpg",
-    "sourceWidth": 828,
-    "sourceHeight": 1224,
-    "format": "jpg",
-    "status": "awaiting-replacement"
-  },
-  {
     "id": "case-annual-report-digital-transformation-001",
     "page": "/cases/submissions/annual-report-digital-transformation/",
     "order": 1,
