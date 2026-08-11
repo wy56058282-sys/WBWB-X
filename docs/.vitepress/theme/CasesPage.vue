@@ -22,7 +22,7 @@ function resetFilters() {
     <header class="wbx-cases-header">
       <div>
         <p class="wbx-cases-eyebrow">WORKBUDDY COMMUNITY</p>
-        <h1 id="case-gallery-title">WorkBuddy WB-X 案例集</h1>
+        <h1 id="case-gallery-title"><span class="wbx-cases-brand">WorkBuddy WB-X</span> 案例集</h1>
         <p>从真实场景出发，找到可以带走复用的工作方法。</p>
       </div>
       <nav class="wbx-cases-header__links" aria-label="案例集页面导航">

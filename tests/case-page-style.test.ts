@@ -20,10 +20,18 @@ describe('case collection page styles', () => {
   it('registers the gallery and makes it the entire case-index body', () => {
     const themeSource = readFileSync('docs/.vitepress/theme/index.ts', 'utf8')
     const indexSource = readFileSync('docs/cases/index.md', 'utf8')
+    const pageSource = readFileSync('docs/.vitepress/theme/CasesPage.vue', 'utf8')
+    const styles = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
 
     expect(themeSource).toContain("import CasesPage from './CasesPage.vue'")
     expect(themeSource).toContain("app.component('CasesPage', CasesPage)")
     expect(indexSource).toContain('<CasesPage />')
     expect(indexSource).not.toContain('# WorkBuddy WB-X 案例集')
+    expect(pageSource).toContain(
+      '<span class="wbx-cases-brand">WorkBuddy WB-X</span> 案例集',
+    )
+    expect(styles).toMatch(
+      /\.wbx-cases-brand\s*\{[^}]*font-weight:\s*850;/s,
+    )
   })
 })
