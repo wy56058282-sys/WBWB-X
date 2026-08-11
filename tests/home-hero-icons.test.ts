@@ -1,5 +1,5 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
-import { createApp, type App } from 'vue'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { createApp, nextTick, type App } from 'vue'
 import { readFileSync } from 'node:fs'
 import HomePage from '../docs/.vitepress/theme/HomePage.vue'
 import { homeUpdates } from '../docs/.vitepress/theme/homeUpdates'
@@ -9,10 +9,49 @@ vi.mock('vitepress', () => ({
 }))
 
 const apps: App[] = []
+let resizeObserverCallback: ResizeObserverCallback
+let resizeObserverDisconnect: ReturnType<typeof vi.fn>
+let mediaQueryRemoveEventListener: ReturnType<typeof vi.fn>
+
+function stubMatchMedia(matches: boolean) {
+  mediaQueryRemoveEventListener = vi.fn()
+  vi.stubGlobal(
+    'matchMedia',
+    vi.fn((query: string) => ({
+      matches,
+      media: query,
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: mediaQueryRemoveEventListener,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  )
+}
+
+beforeEach(() => {
+  stubMatchMedia(false)
+  resizeObserverDisconnect = vi.fn()
+  vi.stubGlobal(
+    'ResizeObserver',
+    class ResizeObserverStub {
+      constructor(callback: ResizeObserverCallback) {
+        resizeObserverCallback = callback
+      }
+
+      observe = vi.fn()
+      unobserve = vi.fn()
+      disconnect = resizeObserverDisconnect
+    },
+  )
+})
 
 afterEach(() => {
   apps.splice(0).forEach((app) => app.unmount())
   document.body.replaceChildren()
+  vi.useRealTimers()
+  vi.unstubAllGlobals()
 })
 
 function mountHomePage() {
@@ -22,6 +61,7 @@ function mountHomePage() {
   const app = createApp(HomePage)
   app.mount(host)
   apps.push(app)
+  return app
 }
 
 function baseRule(css: string, selector: string) {
@@ -112,58 +152,8 @@ function cardClearance(
 }
 
 describe('home hero icon navigation', () => {
-  it('defines the update ticker motion, pause, and reduced-motion contracts', () => {
-    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
-    const hero = baseRule(css, '.wbx-hero')
-    const stage = baseRule(css, '.wbx-hero__stage')
-
-    expect(css).toMatch(
-      /\.wbx-update-ticker\s*\{[^}]*height:\s*28px;[^}]*display:\s*grid;[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\);[^}]*border:\s*0;[^}]*transform:\s*translateY\(-60px\);[^}]*background:\s*transparent;/s,
-    )
-    expect(css).toMatch(
-      /\.wbx-update-ticker__group\s*>\s*\*\s*\{[^}]*min-height:\s*28px;/s,
-    )
-    expect(css).not.toMatch(/\.wbx-update-ticker__label/)
-    expect(css).toMatch(
-      /@media\s*\(max-width:\s*760px\)[\s\S]*\.wbx-update-ticker\s*\{[^}]*height:\s*28px;/s,
-    )
-    expect(css).toMatch(
-      /\.wbx-update-ticker__viewport\s*\{[^}]*overflow:\s*hidden;/s,
-    )
-    expect(css).toMatch(
-      /\.wbx-update-ticker__track\s*\{[^}]*animation:\s*wbx-update-ticker-scroll[^;]*infinite;/s,
-    )
-    expect(css).toMatch(
-      /\.wbx-update-ticker:hover\s+\.wbx-update-ticker__track\s*\{[^}]*animation-play-state:\s*paused;/s,
-    )
-    expect(css).toMatch(
-      /\.wbx-update-ticker:focus-within\s+\.wbx-update-ticker__track\s*\{[^}]*transform:\s*none;[^}]*animation:\s*none;/s,
-    )
-    expect(css).toMatch(
-      /\.wbx-update-ticker:focus-within\s+\.wbx-update-ticker__viewport\s*\{[^}]*overflow-x:\s*auto;[^}]*scrollbar-width:\s*none;/s,
-    )
-    expect(css).toMatch(
-      /@keyframes\s+wbx-update-ticker-scroll[\s\S]*transform:\s*translateX\(-50%\);/,
-    )
-    expect(css).toMatch(
-      /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*\.wbx-update-ticker__track\s*\{[^}]*animation:\s*none;/s,
-    )
-    expect(css).toMatch(
-      /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*\.wbx-update-ticker__group\[aria-hidden='true'\]\s*\{[^}]*display:\s*none;/s,
-    )
-    expect(hero).not.toMatch(/min-width:\s*0;/)
-    expect(stage).not.toMatch(/min-width:\s*0;/)
-  })
-
-  it('keeps ticker dates legible on the fixed white surface', () => {
-    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
-    const date = baseRule(css, '.wbx-update-ticker__group time')
-
-    expect(date).toMatch(/color:\s*#4f5752;/)
-    expect(date).not.toMatch(/var\(--wbx-muted\)/)
-  })
-
-  it('renders sorted update links once and keeps the duplicate group hidden', () => {
+  it('rotates one synchronized update link every six seconds and loops a full cycle', async () => {
+    vi.useFakeTimers()
     mountHomePage()
 
     expect(homeUpdates.length).toBeGreaterThanOrEqual(3)
@@ -172,16 +162,160 @@ describe('home hero icon navigation', () => {
     )
 
     const ticker = document.querySelector('.wbx-update-ticker')
-    const groups = ticker?.querySelectorAll('.wbx-update-ticker__group')
     expect(ticker?.getAttribute('aria-label')).toBe('内容更新')
-    expect(ticker?.querySelector('.wbx-update-ticker__label')).toBeNull()
-    expect(groups).toHaveLength(2)
-    expect(groups?.[1].getAttribute('aria-hidden')).toBe('true')
-    expect(groups?.[1].querySelectorAll('a')).toHaveLength(0)
+    expect(ticker?.querySelectorAll('.wbx-update-ticker__link')).toHaveLength(1)
+    expect(ticker?.querySelector('time')?.textContent).toBe(homeUpdates[0].date)
+    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
+      homeUpdates[0].title,
+    )
 
-    const links = groups?.[0].querySelectorAll<HTMLAnchorElement>('a') ?? []
-    expect(Array.from(links, (link) => link.getAttribute('href'))).toEqual(
-      homeUpdates.map(({ href }) => href),
+    await vi.advanceTimersByTimeAsync(6000)
+
+    expect(ticker?.querySelector('time')?.textContent).toBe(homeUpdates[1].date)
+    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
+      homeUpdates[1].title,
+    )
+    expect(ticker?.querySelector<HTMLAnchorElement>('a')?.getAttribute('href')).toBe(
+      homeUpdates[1].href,
+    )
+
+    await vi.advanceTimersByTimeAsync(homeUpdates.length * 6000)
+
+    expect(ticker?.querySelector('time')?.textContent).toBe(homeUpdates[1].date)
+    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
+      homeUpdates[1].title,
+    )
+  })
+
+  it('duplicates only an overflowing update title', async () => {
+    mountHomePage()
+
+    const viewport = document.querySelector<HTMLElement>(
+      '.wbx-update-ticker__content',
+    )
+    const title = document.querySelector<HTMLElement>(
+      '.wbx-update-ticker__title',
+    )
+
+    expect(viewport).not.toBeNull()
+    expect(title).not.toBeNull()
+    Object.defineProperty(title, 'offsetWidth', {
+      configurable: true,
+      value: 420,
+    })
+    Object.defineProperty(viewport, 'clientWidth', {
+      configurable: true,
+      value: 240,
+    })
+
+    resizeObserverCallback([], {} as ResizeObserver)
+    await nextTick()
+
+    const overflowingTitles = document.querySelectorAll(
+      '.wbx-update-ticker__title',
+    )
+    expect(overflowingTitles).toHaveLength(2)
+    expect(overflowingTitles[1]?.getAttribute('aria-hidden')).toBe('true')
+
+    Object.defineProperty(title, 'offsetWidth', {
+      configurable: true,
+      value: 180,
+    })
+
+    resizeObserverCallback([], {} as ResizeObserver)
+    await nextTick()
+
+    expect(document.querySelectorAll('.wbx-update-ticker__title')).toHaveLength(1)
+  })
+
+  it('pauses on hover and starts a fresh interval after the pointer leaves', async () => {
+    vi.useFakeTimers()
+    mountHomePage()
+
+    const ticker = document.querySelector<HTMLElement>('.wbx-update-ticker')
+
+    await vi.advanceTimersByTimeAsync(3000)
+    ticker?.dispatchEvent(new MouseEvent('mouseenter'))
+    await vi.advanceTimersByTimeAsync(18000)
+
+    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
+      homeUpdates[0].title,
+    )
+    expect(ticker?.classList.contains('is-paused')).toBe(true)
+
+    ticker?.dispatchEvent(new MouseEvent('mouseleave'))
+    await vi.advanceTimersByTimeAsync(5999)
+    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
+      homeUpdates[0].title,
+    )
+
+    await vi.advanceTimersByTimeAsync(1)
+    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
+      homeUpdates[1].title,
+    )
+  })
+
+  it('keeps the focused update in place until focus leaves the ticker', async () => {
+    vi.useFakeTimers()
+    mountHomePage()
+
+    const ticker = document.querySelector<HTMLElement>('.wbx-update-ticker')
+    const link = ticker?.querySelector<HTMLAnchorElement>('a')
+    const title = ticker?.querySelector<HTMLElement>('.wbx-update-ticker__title')
+    const outside = document.createElement('button')
+    document.body.append(outside)
+
+    link?.dispatchEvent(new FocusEvent('focusin', { bubbles: true }))
+    await vi.advanceTimersByTimeAsync(12000)
+    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
+      homeUpdates[0].title,
+    )
+
+    link?.dispatchEvent(
+      new FocusEvent('focusout', { bubbles: true, relatedTarget: title }),
+    )
+    await vi.advanceTimersByTimeAsync(6000)
+    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
+      homeUpdates[0].title,
+    )
+
+    link?.dispatchEvent(
+      new FocusEvent('focusout', { bubbles: true, relatedTarget: outside }),
+    )
+    await vi.advanceTimersByTimeAsync(6000)
+    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
+      homeUpdates[1].title,
+    )
+  })
+
+  it('clears timers and observers when unmounted', () => {
+    vi.useFakeTimers()
+    const app = mountHomePage()
+
+    expect(vi.getTimerCount()).toBeGreaterThan(0)
+
+    app.unmount()
+    apps.splice(apps.indexOf(app), 1)
+
+    expect(vi.getTimerCount()).toBe(0)
+    expect(mediaQueryRemoveEventListener).toHaveBeenCalledWith(
+      'change',
+      expect.any(Function),
+    )
+    expect(resizeObserverDisconnect).toHaveBeenCalledOnce()
+  })
+
+  it('keeps the first update visible when reduced motion is preferred', async () => {
+    vi.useFakeTimers()
+    stubMatchMedia(true)
+    mountHomePage()
+
+    const ticker = document.querySelector('.wbx-update-ticker')
+    await vi.advanceTimersByTimeAsync(18000)
+
+    expect(ticker?.querySelector('time')?.textContent).toBe(homeUpdates[0].date)
+    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
+      homeUpdates[0].title,
     )
   })
 

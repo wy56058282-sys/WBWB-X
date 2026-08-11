@@ -1,4 +1,12 @@
 <script setup lang="ts">
+import {
+  computed,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  watch,
+} from 'vue'
 import { withBase } from 'vitepress'
 import { brand } from '../brand'
 import { homeUpdates } from './homeUpdates'
@@ -6,6 +14,104 @@ import { homeUpdates } from './homeUpdates'
 const sortedHomeUpdates = [...homeUpdates].sort((a, b) =>
   b.date.localeCompare(a.date),
 )
+const UPDATE_INTERVAL_MS = 6000
+const currentUpdateIndex = ref(0)
+const isUpdatePaused = ref(false)
+const prefersReducedMotion = ref(false)
+const isUpdateTitleOverflowing = ref(false)
+const updateTickerRef = ref<HTMLElement | null>(null)
+const updateTitleViewportRef = ref<HTMLElement | null>(null)
+const updateTitleTextRef = ref<HTMLElement | null>(null)
+const currentHomeUpdate = computed(
+  () => sortedHomeUpdates[currentUpdateIndex.value],
+)
+let updateTimer: ReturnType<typeof window.setTimeout> | undefined
+let updateMotionQuery: MediaQueryList | undefined
+let updateResizeObserver: ResizeObserver | undefined
+
+function scheduleUpdate() {
+  if (updateTimer !== undefined) {
+    window.clearTimeout(updateTimer)
+    updateTimer = undefined
+  }
+
+  if (
+    isUpdatePaused.value ||
+    prefersReducedMotion.value ||
+    sortedHomeUpdates.length < 2
+  ) {
+    return
+  }
+
+  updateTimer = window.setTimeout(() => {
+    currentUpdateIndex.value =
+      (currentUpdateIndex.value + 1) % sortedHomeUpdates.length
+    scheduleUpdate()
+  }, UPDATE_INTERVAL_MS)
+}
+
+function measureUpdateTitle() {
+  isUpdateTitleOverflowing.value = Boolean(
+    updateTitleTextRef.value &&
+      updateTitleViewportRef.value &&
+      updateTitleTextRef.value.offsetWidth >
+        updateTitleViewportRef.value.clientWidth,
+  )
+}
+
+function pauseUpdates() {
+  isUpdatePaused.value = true
+  scheduleUpdate()
+}
+
+function resumeUpdates() {
+  isUpdatePaused.value = false
+  scheduleUpdate()
+}
+
+function handleUpdateFocusOut(event: FocusEvent) {
+  if (
+    event.relatedTarget instanceof Node &&
+    updateTickerRef.value?.contains(event.relatedTarget)
+  ) {
+    return
+  }
+
+  resumeUpdates()
+}
+
+function handleUpdateMotionChange(event: MediaQueryListEvent) {
+  prefersReducedMotion.value = event.matches
+  scheduleUpdate()
+}
+
+watch(currentUpdateIndex, async () => {
+  await nextTick()
+  measureUpdateTitle()
+})
+
+onMounted(() => {
+  updateMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+  prefersReducedMotion.value = updateMotionQuery.matches
+  updateMotionQuery.addEventListener('change', handleUpdateMotionChange)
+
+  updateResizeObserver = new ResizeObserver(measureUpdateTitle)
+  if (updateTitleViewportRef.value) {
+    updateResizeObserver.observe(updateTitleViewportRef.value)
+  }
+
+  measureUpdateTitle()
+  scheduleUpdate()
+})
+
+onBeforeUnmount(() => {
+  if (updateTimer !== undefined) {
+    window.clearTimeout(updateTimer)
+    updateTimer = undefined
+  }
+  updateMotionQuery?.removeEventListener('change', handleUpdateMotionChange)
+  updateResizeObserver?.disconnect()
+})
 
 const valueProps = [
   { icon: 'hn-check-box', title: '场景实战', label: 'REAL-WORLD TASKS' },
@@ -101,24 +207,37 @@ const workflowSteps = [
     <section class="wbx-hero" aria-labelledby="wbx-hero-title">
       <div class="wbx-hero__stage">
         <div class="wbx-hero__copy">
-          <aside class="wbx-update-ticker" aria-label="内容更新">
-            <span class="wbx-update-ticker__viewport">
-              <span class="wbx-update-ticker__track">
-                <span class="wbx-update-ticker__group">
-                  <a v-for="update in sortedHomeUpdates" :key="`${update.date}-${update.title}`" :href="withBase(update.href)">
-                    <time :datetime="update.date">{{ update.date }}</time>
-                    <span>{{ update.title }}</span>
-                    <i aria-hidden="true">/</i>
-                  </a>
+          <aside
+            ref="updateTickerRef"
+            class="wbx-update-ticker"
+            :class="{ 'is-paused': isUpdatePaused }"
+            aria-label="内容更新"
+            @mouseenter="pauseUpdates"
+            @mouseleave="resumeUpdates"
+            @focusin="pauseUpdates"
+            @focusout="handleUpdateFocusOut"
+          >
+            <span class="wbx-update-ticker__date-viewport">
+              <Transition name="wbx-update-date">
+                <time
+                  :key="`${currentHomeUpdate.date}-${currentHomeUpdate.title}`"
+                  class="wbx-update-ticker__date"
+                  :datetime="currentHomeUpdate.date"
+                >{{ currentHomeUpdate.date }}</time>
+              </Transition>
+            </span>
+            <span ref="updateTitleViewportRef" class="wbx-update-ticker__content">
+              <a
+                :key="`${currentHomeUpdate.date}-${currentHomeUpdate.title}`"
+                class="wbx-update-ticker__link"
+                :class="{ 'is-overflowing': isUpdateTitleOverflowing }"
+                :href="withBase(currentHomeUpdate.href)"
+              >
+                <span class="wbx-update-ticker__title-track">
+                  <span ref="updateTitleTextRef" class="wbx-update-ticker__title">{{ currentHomeUpdate.title }}</span>
+                  <span v-if="isUpdateTitleOverflowing" class="wbx-update-ticker__title" aria-hidden="true">{{ currentHomeUpdate.title }}</span>
                 </span>
-                <span class="wbx-update-ticker__group" aria-hidden="true">
-                  <span v-for="update in sortedHomeUpdates" :key="`duplicate-${update.date}-${update.title}`">
-                    <time :datetime="update.date">{{ update.date }}</time>
-                    <span>{{ update.title }}</span>
-                    <i aria-hidden="true">/</i>
-                  </span>
-                </span>
-              </span>
+              </a>
             </span>
           </aside>
           <p class="wbx-pixel-label">27 CHAPTERS / 4 PARTS / ∞ WORKFLOWS</p>
