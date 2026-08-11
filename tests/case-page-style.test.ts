@@ -37,4 +37,16 @@ describe('case collection page styles', () => {
       /\.wbx-cases-brand\s*\{[^}]*font-weight:\s*850;/s,
     )
   })
+
+  it('keeps the shared content width and square category controls', () => {
+    const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
+    const pageSource = readFileSync('docs/.vitepress/theme/CasesPage.vue', 'utf8')
+
+    expect(source).toMatch(/\.wbx-cases-layout \.VPDoc \.container\s*\{[^}]*max-width:\s*1280px/s)
+    expect(source).not.toMatch(/\.wbx-cases-layout \.VPDoc \.content-container\s*\{[^}]*max-width:\s*none/s)
+    expect(source).toMatch(/\.wbx-cases h1\s*\{[^}]*font-weight:\s*850/s)
+    expect(source).toMatch(/\.wbx-cases-categories button,[\s\S]*border:\s*2px solid var\(--wbx-ink\)[\s\S]*border-radius:\s*0/s)
+    expect(pageSource).toContain('hn-check-circle-solid')
+    expect(pageSource).toContain('aria-hidden="true"')
+  })
 })
