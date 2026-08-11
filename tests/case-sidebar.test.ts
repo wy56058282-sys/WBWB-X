@@ -27,6 +27,17 @@ afterEach(() => {
 })
 
 describe('discoverCaseSidebar', () => {
+  it('keeps the daily AI news case title free of example markers', () => {
+    const dailyAiNews = readFileSync(
+      'docs/cases/submissions/daily-ai-news/index.md',
+      'utf8',
+    )
+
+    expect(dailyAiNews).toContain('title: 用 WorkBuddy 自动整理每日 AI 资讯')
+    expect(dailyAiNews).toContain('# 用 WorkBuddy 自动整理每日 AI 资讯')
+    expect(dailyAiNews).not.toContain('【示例】')
+  })
+
   it('discovers cases in descending date order', () => {
     const root = createCasesRoot()
     writeCase(root, 'older', '---\ntitle: 较早案例\ndate: 2026-07-13\n---\n')
