@@ -445,10 +445,6 @@
   .wbx-service-process ol {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
-  .wbx-service-related__grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (max-width: 640px) {
@@ -475,6 +471,10 @@
   .wbx-service-output-list,
   .wbx-service-process ol,
   .wbx-service-payment__ready {
+    grid-template-columns: 1fr;
+  }
+
+  .wbx-service-related__grid {
     grid-template-columns: 1fr;
   }
 
