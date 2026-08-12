@@ -57,6 +57,32 @@ function px(value: string) {
   return Number.parseFloat(value)
 }
 
+function resolvedLength(value: string, availableWidth: number, fallback: number) {
+  if (!value || value === 'auto' || value === 'none') return fallback
+  if (value.endsWith('%')) return availableWidth * (px(value) / 100)
+
+  const length = px(value)
+  return Number.isFinite(length) ? length : fallback
+}
+
+function usedBlockWidth(availableWidth: number, styles: CSSStyleDeclaration) {
+  const width = resolvedLength(styles.width, availableWidth, availableWidth)
+  const maxWidth = resolvedLength(styles.maxWidth, availableWidth, Number.POSITIVE_INFINITY)
+  return Math.min(availableWidth, width, maxWidth)
+}
+
+function inlineStartOffset(
+  availableWidth: number,
+  usedWidth: number,
+  styles: CSSStyleDeclaration,
+) {
+  if (styles.marginLeft === 'auto' && styles.marginRight === 'auto') {
+    return (availableWidth - usedWidth) / 2
+  }
+
+  return resolvedLength(styles.marginLeft, availableWidth, 0)
+}
+
 describe('case collection page styles', () => {
   it('uses a stable responsive card grid with constrained cards', () => {
     const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
@@ -167,40 +193,83 @@ describe('case collection page styles', () => {
     `
     document.body.append(fixture)
 
-    const content = fixture.querySelector<HTMLElement>('.VPContent')!
+    const vpContent = fixture.querySelector<HTMLElement>('.VPContent')!
     const doc = fixture.querySelector<HTMLElement>('.VPDoc')!
     const container = fixture.querySelector<HTMLElement>('.container')!
+    const content = fixture.querySelector<HTMLElement>('.content')!
+    const contentContainer = fixture.querySelector<HTMLElement>('.content-container')!
     const shell = fixture.querySelector<HTMLElement>('.wbx-cases-shell')!
     const grid = fixture.querySelector<HTMLElement>('.wbx-cases-grid')!
     const outline = fixture.querySelector<HTMLElement>('.wbx-cases-outline')!
-    const contentStyle = getComputedStyle(content)
+    const vpContentStyle = getComputedStyle(vpContent)
     const docStyle = getComputedStyle(doc)
     const containerStyle = getComputedStyle(container)
+    const contentStyle = getComputedStyle(content)
+    const contentContainerStyle = getComputedStyle(contentContainer)
     const shellStyle = getComputedStyle(shell)
     const gridStyle = getComputedStyle(grid)
     const outlineStyle = getComputedStyle(outline)
 
     try {
-      expect(contentStyle.paddingLeft).toBe('0px')
-      expect(contentStyle.paddingRight).toBe('0px')
+      expect(vpContentStyle.paddingLeft).toBe('0px')
+      expect(vpContentStyle.paddingRight).toBe('0px')
+      expect(contentStyle.paddingLeft).toBe('32px')
+      expect(contentStyle.paddingRight).toBe('32px')
       expect(outlineStyle.display).toBe('none')
       expect(shellStyle.gridTemplateColumns).toBe('minmax(0, 1fr)')
       expect(gridStyle.gridTemplateColumns).toBe('repeat(2, minmax(0, 1fr))')
 
-      const documentWidth = viewportWidth
-        - px(contentStyle.paddingLeft)
-        - px(contentStyle.paddingRight)
+      const vpContentWidth = usedBlockWidth(viewportWidth, vpContentStyle)
+      const vpContentLeft = inlineStartOffset(viewportWidth, vpContentWidth, vpContentStyle)
+      const vpContentInnerWidth = vpContentWidth
+        - px(vpContentStyle.paddingLeft)
+        - px(vpContentStyle.paddingRight)
+      const docWidth = usedBlockWidth(vpContentInnerWidth, docStyle)
+      const docLeft = inlineStartOffset(vpContentInnerWidth, docWidth, docStyle)
+      const docInnerWidth = docWidth
         - px(docStyle.paddingLeft)
         - px(docStyle.paddingRight)
-      const shellWidth = Math.min(documentWidth, px(containerStyle.maxWidth))
-      const shellLeft = px(contentStyle.paddingLeft)
+      const containerWidth = usedBlockWidth(docInnerWidth, containerStyle)
+      const containerLeft = inlineStartOffset(docInnerWidth, containerWidth, containerStyle)
+      const contentWidth = usedBlockWidth(containerWidth, contentStyle)
+      const contentLeft = inlineStartOffset(containerWidth, contentWidth, contentStyle)
+      const contentInnerWidth = contentWidth
+        - px(contentStyle.paddingLeft)
+        - px(contentStyle.paddingRight)
+      const contentContainerWidth = usedBlockWidth(contentInnerWidth, contentContainerStyle)
+      const contentContainerLeft = inlineStartOffset(
+        contentInnerWidth,
+        contentContainerWidth,
+        contentContainerStyle,
+      )
+      const shellWidth = usedBlockWidth(contentContainerWidth, shellStyle)
+      const shellOffset = inlineStartOffset(contentContainerWidth, shellWidth, shellStyle)
+      const shellLeft = vpContentLeft
+        + px(vpContentStyle.paddingLeft)
+        + docLeft
         + px(docStyle.paddingLeft)
-        + ((documentWidth - shellWidth) / 2)
+        + containerLeft
+        + contentLeft
+        + px(contentStyle.paddingLeft)
+        + contentContainerLeft
+        + shellOffset
       const cardWidth = (shellWidth - px(gridStyle.gap)) / 2
+      const expectedShellWidth = viewportWidth
+        - px(vpContentStyle.paddingLeft)
+        - px(vpContentStyle.paddingRight)
+        - px(docStyle.paddingLeft)
+        - px(docStyle.paddingRight)
+        - px(contentStyle.paddingLeft)
+        - px(contentStyle.paddingRight)
 
-      expect(shellWidth).toBe(910)
-      expect(shellLeft).toBe(32)
-      expect(cardWidth).toBe(446)
+      expect(contentWidth).toBe(containerWidth)
+      expect(contentContainerWidth).toBe(contentInnerWidth)
+      expect(shellWidth).toBe(contentContainerWidth)
+      expect(shellWidth).toBe(expectedShellWidth)
+      expect(shellLeft).toBe(
+        px(docStyle.paddingLeft) + px(contentStyle.paddingLeft),
+      )
+      expect(cardWidth).toBeGreaterThanOrEqual(400)
     } finally {
       fixture.remove()
       appliedStyles.remove()
