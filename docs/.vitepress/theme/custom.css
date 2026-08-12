@@ -412,7 +412,7 @@ body {
   padding-left: 0;
 }
 
-.vp-doc .wbx-case-detail-back {
+.wbx-case-detail-layout .wbx-case-detail-back {
   display: inline-flex;
   gap: 8px;
   align-items: center;
@@ -430,14 +430,14 @@ body {
   transition: background-color 140ms ease, box-shadow 140ms ease;
 }
 
-.vp-doc .wbx-case-detail-back:hover,
-.vp-doc .wbx-case-detail-back:focus-visible {
+.wbx-case-detail-layout .wbx-case-detail-back:hover,
+.wbx-case-detail-layout .wbx-case-detail-back:focus-visible {
   color: #0d100d;
   background: var(--wbx-accent);
   box-shadow: 3px 3px 0 var(--wbx-ink);
 }
 
-.vp-doc .wbx-case-detail-back:focus-visible {
+.wbx-case-detail-layout .wbx-case-detail-back:focus-visible {
   outline: 3px solid var(--wbx-accent);
   outline-offset: 3px;
 }

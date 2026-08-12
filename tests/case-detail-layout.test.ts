@@ -34,4 +34,11 @@ describe('case detail layout', () => {
       /\.wbx-case-detail-layout \.VPDoc\.has-sidebar\s*\{[^}]*padding-left:\s*0;/s,
     )
   })
+
+  it('styles the doc-before back link at its real content-container level', () => {
+    expect(customCss).toMatch(
+      /\.wbx-case-detail-layout \.wbx-case-detail-back\s*\{[^}]*display:\s*inline-flex[^}]*border:\s*2px solid var\(--wbx-ink\)[^}]*border-radius:\s*0/s,
+    )
+    expect(customCss).not.toMatch(/\.vp-doc \.wbx-case-detail-back\s*\{/)
+  })
 })
