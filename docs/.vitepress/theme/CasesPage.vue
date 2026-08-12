@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { withBase } from 'vitepress'
 import { caseCategories, filterCaseCatalog } from '../case-catalog'
 import { data } from '../case-catalog.data'
@@ -7,6 +7,9 @@ import { isServiceFormUrl, serviceConfig } from '../service-config'
 
 const query = ref('')
 const category = ref('全部')
+const toolsColumn = ref<HTMLElement | null>(null)
+const toolsSticky = ref(false)
+let toolsResizeObserver: ResizeObserver | undefined
 
 const categories = computed(() => caseCategories(data))
 const cases = computed(() => filterCaseCatalog(data, query.value, category.value))
@@ -22,6 +25,34 @@ function resetFilters() {
   query.value = ''
   category.value = '全部'
 }
+
+function updateToolsSticky() {
+  if (!toolsColumn.value || typeof window === 'undefined') return
+
+  const navHeight = Number.parseFloat(
+    getComputedStyle(document.documentElement).getPropertyValue('--vp-nav-height'),
+  ) || 64
+  const stickyTop = navHeight + 24
+  const availableHeight = window.innerHeight - stickyTop - 24
+
+  toolsSticky.value = window.innerWidth > 1024
+    && toolsColumn.value.getBoundingClientRect().height <= availableHeight
+}
+
+onMounted(() => {
+  void nextTick(updateToolsSticky)
+  window.addEventListener('resize', updateToolsSticky)
+
+  if (typeof ResizeObserver === 'function' && toolsColumn.value) {
+    toolsResizeObserver = new ResizeObserver(updateToolsSticky)
+    toolsResizeObserver.observe(toolsColumn.value)
+  }
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateToolsSticky)
+  toolsResizeObserver?.disconnect()
+})
 </script>
 
 <template>
@@ -86,6 +117,10 @@ function resetFilters() {
       </main>
 
       <aside class="wbx-cases-tools-column" aria-label="案例搜索与投稿">
+        <div
+          ref="toolsColumn"
+          :class="['wbx-cases-tools-stack', { 'is-sticky': toolsSticky }]"
+        >
         <label class="wbx-cases-search">
           <input v-model="query" type="search" aria-label="搜索案例" placeholder="搜索场景、成果或产品" autocomplete="off">
         </label>
@@ -127,6 +162,7 @@ function resetFilters() {
           <a class="wbx-cases-action" :href="withBase('/community/case-contributing')">查看投稿指南</a>
         </div>
         </section>
+        </div>
       </aside>
     </div>
   </section>

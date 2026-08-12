@@ -58,14 +58,20 @@
 }
 
 .wbx-cases-tools-column {
-  position: sticky;
-  top: calc(var(--vp-nav-height) + 24px);
-  display: grid;
-  gap: 36px;
-  align-self: start;
+  align-self: stretch;
   grid-column: 2;
   grid-row: 1;
   margin-top: 153px;
+}
+
+.wbx-cases-tools-stack {
+  display: grid;
+  gap: 36px;
+}
+
+.wbx-cases-tools-stack.is-sticky {
+  position: sticky;
+  top: calc(var(--vp-nav-height) + 24px);
 }
 
 .wbx-cases-hero {
@@ -143,7 +149,7 @@
   font-weight: 700;
 }
 
-.wbx-cases-tools-column > .wbx-cases-search {
+.wbx-cases-tools-stack > .wbx-cases-search {
   width: 100%;
   max-width: none;
 }
@@ -463,7 +469,8 @@
 
   .wbx-cases-layout-grid,
   .wbx-cases-main-column,
-.wbx-cases-tools-column {
+  .wbx-cases-tools-column,
+  .wbx-cases-tools-stack {
     display: contents;
   }
 

@@ -46,10 +46,16 @@ vi.mock('../docs/.vitepress/case-catalog.data', () => ({
 import CasesPage from '../docs/.vitepress/theme/CasesPage.vue'
 
 const apps: App[] = []
+const originalResizeObserver = globalThis.ResizeObserver
+const originalInnerWidth = window.innerWidth
+const originalInnerHeight = window.innerHeight
 
 afterEach(() => {
   apps.splice(0).forEach((app) => app.unmount())
   document.body.replaceChildren()
+  globalThis.ResizeObserver = originalResizeObserver
+  Object.defineProperty(window, 'innerWidth', { configurable: true, value: originalInnerWidth })
+  Object.defineProperty(window, 'innerHeight', { configurable: true, value: originalInnerHeight })
 })
 
 function mountCasesPage() {
@@ -126,12 +132,43 @@ describe('case gallery', () => {
     ).toEqual(caseCategories(fixtureCatalog))
     expect(main?.querySelector('.wbx-cases-gallery-results')).not.toBeNull()
     expect(main?.querySelector('.wbx-cases-submit')).toBeNull()
-    expect(tools?.firstElementChild?.classList.contains('wbx-cases-search')).toBe(true)
+    expect(tools?.firstElementChild?.classList.contains('wbx-cases-tools-stack')).toBe(true)
+    expect(tools?.querySelector('.wbx-cases-tools-stack > .wbx-cases-search')).not.toBeNull()
     expect(tools?.querySelector('.wbx-cases-search > span')).toBeNull()
     expect(tools?.querySelector('.wbx-cases-search input')?.getAttribute('aria-label')).toBe('搜索案例')
     expect(tools?.querySelector('.wbx-cases-categories')).toBeNull()
     expect(tools?.querySelector('#submit-case')).not.toBeNull()
     expect(document.querySelectorAll('.wbx-cases-submit')).toHaveLength(1)
     expect(document.querySelector('.wbx-cases-outline')).toBeNull()
+  })
+
+  it('only fixes the tools column when it fits in the desktop viewport', async () => {
+    let resizeCallback: ResizeObserverCallback | undefined
+    globalThis.ResizeObserver = class {
+      constructor(callback: ResizeObserverCallback) { resizeCallback = callback }
+      observe() {}
+      disconnect() {}
+      unobserve() {}
+    }
+
+    Object.defineProperty(window, 'innerWidth', { configurable: true, value: 1440 })
+    Object.defineProperty(window, 'innerHeight', { configurable: true, value: 900 })
+    mountCasesPage()
+    const tools = document.querySelector<HTMLElement>('.wbx-cases-tools-stack')!
+    tools.getBoundingClientRect = () => ({ top: 260, bottom: 800, height: 540 } as DOMRect)
+    resizeCallback?.([], {} as ResizeObserver)
+    await nextTick()
+    expect(tools.classList.contains('is-sticky')).toBe(true)
+
+    tools.getBoundingClientRect = () => ({ top: 260, bottom: 1080, height: 820 } as DOMRect)
+    resizeCallback?.([], {} as ResizeObserver)
+    await nextTick()
+    expect(tools.classList.contains('is-sticky')).toBe(false)
+
+    Object.defineProperty(window, 'innerWidth', { configurable: true, value: 1024 })
+    tools.getBoundingClientRect = () => ({ top: 180, bottom: 720, height: 540 } as DOMRect)
+    resizeCallback?.([], {} as ResizeObserver)
+    await nextTick()
+    expect(tools.classList.contains('is-sticky')).toBe(false)
   })
 })
