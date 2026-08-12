@@ -10,6 +10,13 @@ const category = ref('全部')
 
 const categories = computed(() => caseCategories(data))
 const cases = computed(() => filterCaseCatalog(data, query.value, category.value))
+const categoryIcons: Record<string, string> = {
+  '全部': 'hn-grid-solid',
+  '内容创作': 'hn-pen-nib-solid',
+  '数据分析': 'hn-analytics-solid',
+  '知识管理': 'hn-book-bookmark-solid',
+  '自动化': 'hn-robot-solid',
+}
 
 function resetFilters() {
   query.value = ''
@@ -18,17 +25,15 @@ function resetFilters() {
 </script>
 
 <template>
-  <section class="wbx-cases wbx-cases-shell" aria-labelledby="case-gallery-title">
-    <div class="wbx-cases-main">
-      <header class="wbx-cases-header">
-        <div>
+  <section class="wbx-cases" aria-labelledby="case-gallery-title">
+    <header class="wbx-cases-hero">
+      <div class="wbx-cases-hero__copy">
           <p class="wbx-cases-eyebrow wbx-cases-header__eyebrow">WORKBUDDY COMMUNITY</p>
           <h1 id="case-gallery-title"><span class="wbx-cases-brand">WorkBuddy WB-X</span> 案例集</h1>
           <p>从真实场景出发，找到可以带走复用的工作方法。</p>
-        </div>
-      </header>
+      </div>
 
-      <section id="case-gallery" class="wbx-cases-gallery" aria-labelledby="case-gallery-heading">
+      <section id="case-gallery" class="wbx-cases-filter-panel" aria-labelledby="case-gallery-heading">
         <div class="wbx-cases-gallery__topline">
           <div>
             <p class="wbx-cases-eyebrow">CASE GALLERY</p>
@@ -49,12 +54,23 @@ function resetFilters() {
             :aria-pressed="category === item"
             @click="category = item"
           >
-            <i class="hn hn-check-circle-solid wbx-cases-category__indicator" aria-hidden="true" />
+            <i
+              :class="[
+                'hn',
+                category === item ? 'hn-check-circle-solid' : categoryIcons[item],
+                'wbx-cases-category__indicator',
+              ]"
+              aria-hidden="true"
+            />
             {{ item }}
           </button>
         </div>
 
-        <ul v-if="cases.length" class="wbx-cases-grid" aria-live="polite">
+      </section>
+    </header>
+
+    <section class="wbx-cases-gallery-results">
+      <ul v-if="cases.length" class="wbx-cases-grid" aria-live="polite">
           <li v-for="item in cases" :key="item.route" class="wbx-case-card">
             <a
               class="wbx-case-card__link"
@@ -75,13 +91,13 @@ function resetFilters() {
           </li>
         </ul>
 
-        <div v-else class="wbx-cases-empty" role="status">
-          <p>没有找到匹配的案例</p>
-          <button type="button" @click="resetFilters">清除筛选</button>
-        </div>
-      </section>
+      <div v-else class="wbx-cases-empty" role="status">
+        <p>没有找到匹配的案例</p>
+        <button type="button" @click="resetFilters">清除筛选</button>
+      </div>
+    </section>
 
-      <section id="submit-case" class="wbx-cases-submit" aria-labelledby="submit-case-title">
+    <section id="submit-case" class="wbx-cases-submit" aria-labelledby="submit-case-title">
         <div>
           <p class="wbx-cases-eyebrow">CONTRIBUTE A CASE</p>
           <h2 id="submit-case-title">把你的工作方法带进案例集</h2>
@@ -119,15 +135,6 @@ function resetFilters() {
           </figure>
           <a class="wbx-cases-action" :href="withBase('/community/case-contributing')">查看投稿指南</a>
         </div>
-      </section>
-    </div>
-
-    <aside class="wbx-cases-outline" aria-label="案例集页内目录">
-      <p>本页目录</p>
-      <nav>
-        <a href="#case-gallery">浏览案例</a>
-        <a href="#submit-case">提交案例</a>
-      </nav>
-    </aside>
+    </section>
   </section>
 </template>

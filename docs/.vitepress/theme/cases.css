@@ -11,6 +11,12 @@
   padding-left: 0;
 }
 
+.wbx-cases-layout .VPNavBar.has-sidebar > .wrapper > .container > .title {
+  background: color-mix(in srgb, var(--wbx-paper) 82%, transparent);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
 .wbx-cases-layout .VPDoc .container {
   max-width: 1104px;
 }
@@ -29,71 +35,18 @@
   color: var(--wbx-ink);
 }
 
-.wbx-cases-shell {
+.wbx-cases-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-}
-
-.wbx-cases-main {
-  min-width: 0;
-}
-
-.wbx-cases-outline {
-  display: none;
-  align-self: start;
-  border-left: 1px solid var(--wbx-line);
-  padding-left: 16px;
-}
-
-.wbx-cases-outline > p {
-  margin: 0;
-  color: var(--wbx-muted);
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 32px;
-}
-
-.wbx-cases-outline nav {
-  display: grid;
-}
-
-.wbx-cases-outline a {
-  display: block;
-  margin-left: -17px;
-  border-left: 2px solid transparent;
-  padding: 7px 0 7px 15px;
-  color: var(--wbx-muted);
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.4;
-  text-decoration: none;
-  transition: color 160ms ease, background 160ms ease, border-color 160ms ease;
-}
-
-.wbx-cases-outline a:first-child {
-  border-left-color: var(--vp-c-brand-1);
-  color: var(--wbx-ink);
-}
-
-.wbx-cases-outline a:hover,
-.wbx-cases-outline a:focus-visible {
-  color: var(--wbx-ink);
-  background: var(--wbx-sidebar-hover-surface);
-}
-
-.wbx-cases-outline a:focus-visible {
-  outline: 2px solid var(--wbx-accent);
-  outline-offset: 2px;
-}
-
-.wbx-cases-header {
-  position: relative;
-  display: flex;
-  gap: 32px;
-  align-items: flex-end;
-  justify-content: space-between;
-  padding: 0 0 38px;
+  grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.7fr);
+  gap: 44px;
+  align-items: start;
+  padding: 26px 0 36px;
   border-bottom: 2px solid var(--wbx-ink);
+}
+
+.wbx-cases-hero__copy,
+.wbx-cases-filter-panel {
+  min-width: 0;
 }
 
 .wbx-cases-eyebrow {
@@ -135,6 +88,7 @@
   letter-spacing: 0;
 }
 
+.wbx-cases-hero__copy > p:last-child,
 .wbx-cases-header > div > p:last-child,
 .wbx-cases-submit p:not(.wbx-cases-eyebrow) {
   max-width: 620px;
@@ -142,10 +96,6 @@
   color: var(--wbx-muted);
   font-size: 16px;
   line-height: 1.75;
-}
-
-.wbx-cases-gallery {
-  padding: 38px 0 56px;
 }
 
 .wbx-cases-gallery__topline {
@@ -217,11 +167,7 @@
   display: inline-block;
   width: 1em;
   margin-right: 4px;
-  visibility: hidden;
-}
-
-.wbx-cases-categories button[aria-pressed="true"] .wbx-cases-category__indicator {
-  visibility: visible;
+  text-align: center;
 }
 
 .wbx-cases-categories button:hover,
@@ -240,7 +186,7 @@
   transform: translate(-2px, -2px);
 }
 
-.wbx-cases-main .wbx-cases-grid {
+.wbx-cases-gallery-results .wbx-cases-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
@@ -346,7 +292,7 @@
 .wbx-cases-submit {
   display: flex;
   gap: 32px;
-  align-items: end;
+  align-items: flex-start;
   justify-content: space-between;
   padding: 34px 0;
   border-top: 2px solid var(--wbx-ink);
@@ -361,7 +307,7 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: flex-end;
   width: 100%;
   max-width: 412px;
@@ -456,38 +402,18 @@
   margin-bottom: 8px;
 }
 
-@media (max-width: 1200px) {
-  .wbx-cases-main .wbx-cases-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
 @media (min-width: 1280px) {
   .wbx-cases-layout .VPDoc .content-container {
     max-width: none;
   }
 
-  .wbx-cases-shell {
-    grid-template-columns: minmax(0, 784px) minmax(0, 256px);
-  }
-
-  .wbx-cases-main {
-    padding: 0 48px;
-  }
-
-  .wbx-cases-outline {
-    position: sticky;
-    top: calc(var(--vp-nav-height) + 48px);
-    display: block;
-    width: 224px;
-    margin-left: 32px;
-  }
-
   .wbx-cases-header__eyebrow {
     position: absolute;
-    top: 8px;
-    right: 0;
+    top: -22px;
+    left: 0;
+    margin: 0;
   }
+
 }
 
 @media (max-width: 959px) {
@@ -502,31 +428,22 @@
 }
 
 @media (max-width: 1024px) {
-  .wbx-cases-main .wbx-cases-grid {
+  .wbx-cases-hero {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+
+  .wbx-cases-gallery-results .wbx-cases-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .wbx-cases-shell {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .wbx-cases-outline {
-    display: none;
   }
 }
 
 @media (max-width: 640px) {
-  .wbx-cases-header,
   .wbx-cases-gallery__topline,
   .wbx-cases-submit,
   .wbx-case-service-cta {
     align-items: stretch;
     flex-direction: column;
-  }
-
-  .wbx-cases-header {
-    gap: 20px;
-    padding-bottom: 28px;
   }
 
   .wbx-cases h1 {
@@ -538,7 +455,7 @@
     width: 100%;
   }
 
-  .wbx-cases-main .wbx-cases-grid {
+  .wbx-cases-gallery-results .wbx-cases-grid {
     grid-template-columns: 1fr;
   }
 
@@ -552,8 +469,7 @@
   .wbx-cases-categories button,
   .wbx-cases-empty button,
   .wbx-cases .wbx-cases-action,
-  .wbx-case-service-cta .wbx-cases-action,
-  .wbx-cases-outline a {
+  .wbx-case-service-cta .wbx-cases-action {
     transition: none;
   }
 }

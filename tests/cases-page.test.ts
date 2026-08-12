@@ -101,16 +101,17 @@ describe('case gallery', () => {
     expect(selectedCategory?.querySelector('[aria-hidden="true"]')?.classList.contains('hn-check-circle-solid')).toBe(true)
     expect(selectedCategory?.querySelector('[aria-hidden="true"]')?.textContent).toBe('')
     expect(selectedCategory?.textContent?.trim()).toBe('全部')
-    expect(document.querySelector<HTMLAnchorElement>('a[href="#case-gallery"]')?.textContent).toBe('浏览案例')
-    expect(document.querySelector<HTMLAnchorElement>('a[href="#submit-case"]')?.textContent).toBe('提交案例')
+    expect(document.querySelector('.wbx-cases-filter-panel')?.getAttribute('id')).toBe('case-gallery')
   })
 
-  it('puts case navigation in the dedicated contents rail without duplicating it in the header', () => {
+  it('keeps the case filters beside the hero copy without rendering an outline rail', () => {
     mountCasesPage()
 
-    expect(document.querySelector('.wbx-cases-outline')?.getAttribute('aria-label')).toBe('案例集页内目录')
-    expect(Array.from(document.querySelectorAll('.wbx-cases-outline a')).map((item) => item.getAttribute('href')))
-      .toEqual(['#case-gallery', '#submit-case'])
-    expect(document.querySelector('.wbx-cases-header__links')).toBeNull()
+    const hero = document.querySelector('.wbx-cases-hero')
+    const filterPanel = document.querySelector('.wbx-cases-filter-panel')
+
+    expect(hero?.querySelector('.wbx-cases-hero__copy')).not.toBeNull()
+    expect(hero?.contains(filterPanel)).toBe(true)
+    expect(document.querySelector('.wbx-cases-outline')).toBeNull()
   })
 })
