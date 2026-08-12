@@ -65,36 +65,34 @@ function resetFilters() {
         </section>
       </main>
 
-      <aside class="wbx-cases-tools-column" aria-label="案例搜索、筛选与投稿">
-        <section id="case-gallery" class="wbx-cases-filter-panel" aria-label="案例搜索与分类筛选">
-          <div class="wbx-cases-filter-panel__controls">
-            <label class="wbx-cases-search">
-              <span>搜索案例</span>
-              <input v-model="query" type="search" placeholder="搜索场景、成果或产品" autocomplete="off">
-            </label>
-            <div class="wbx-cases-categories" aria-label="案例分类">
-              <button
-                v-for="item in categories"
-                :key="item"
-                type="button"
-                :data-category="item"
-                :aria-pressed="category === item"
-                @click="category = item"
-              >
-                <i
-                  :class="[
-                    'hn',
-                    category === item ? 'hn-check-circle-solid' : categoryIcons[item],
-                    'wbx-cases-category__indicator',
-                  ]"
-                  aria-hidden="true"
-                />
-                {{ item }}
-              </button>
-            </div>
-          </div>
-        </section>
+      <section id="case-gallery" class="wbx-cases-filter-toolbar" aria-label="案例搜索与分类筛选">
+        <div class="wbx-cases-categories" aria-label="案例分类">
+          <button
+            v-for="item in categories"
+            :key="item"
+            type="button"
+            :data-category="item"
+            :aria-pressed="category === item"
+            @click="category = item"
+          >
+            <i
+              :class="[
+                'hn',
+                category === item ? 'hn-check-circle-solid' : categoryIcons[item],
+                'wbx-cases-category__indicator',
+              ]"
+              aria-hidden="true"
+            />
+            {{ item }}
+          </button>
+        </div>
+        <label class="wbx-cases-search">
+          <span>搜索案例</span>
+          <input v-model="query" type="search" placeholder="搜索场景、成果或产品" autocomplete="off">
+        </label>
+      </section>
 
+      <aside class="wbx-cases-tools-column" aria-label="案例投稿">
         <section id="submit-case" class="wbx-cases-submit" aria-labelledby="submit-case-title">
         <div>
           <p class="wbx-cases-eyebrow">CONTRIBUTE A CASE</p>

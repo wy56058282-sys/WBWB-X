@@ -48,8 +48,17 @@
 }
 
 .wbx-cases-main-column {
-  display: grid;
-  gap: 36px;
+  display: contents;
+}
+
+.wbx-cases-hero {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.wbx-cases-gallery-results {
+  grid-column: 1;
+  grid-row: 3;
 }
 
 .wbx-cases-tools-column {
@@ -58,6 +67,8 @@
   display: grid;
   gap: 36px;
   align-self: start;
+  grid-column: 2;
+  grid-row: 1 / span 3;
 }
 
 .wbx-cases-hero {
@@ -65,7 +76,7 @@
 }
 
 .wbx-cases-hero__copy,
-.wbx-cases-filter-panel {
+.wbx-cases-filter-toolbar {
   min-width: 0;
 }
 
@@ -121,31 +132,32 @@
   line-height: 1.75;
 }
 
-.wbx-cases-filter-panel {
-  min-width: 0;
-}
-
-.wbx-cases-filter-panel__controls {
-  min-width: 0;
-}
-
-.wbx-cases-filter-panel__controls {
+.wbx-cases-filter-toolbar {
   display: grid;
-  gap: 16px;
-  justify-items: start;
+  grid-column: 1 / -1;
+  grid-row: 2;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 280px);
+  gap: 24px;
+  align-items: start;
+  min-width: 0;
+  margin: -8px 0 -6px;
 }
 
 .wbx-cases-search {
   display: grid;
   gap: 8px;
-  width: min(100%, 320px);
+  width: 100%;
+  max-width: 280px;
   color: var(--wbx-muted);
   font-size: 13px;
   font-weight: 700;
 }
 
-.wbx-cases-filter-panel__controls .wbx-cases-categories {
-  justify-content: flex-start;
+.wbx-cases-filter-toolbar .wbx-cases-search {
+  justify-self: end;
+}
+
+.wbx-cases-filter-toolbar .wbx-cases-categories {
   margin: 0;
 }
 
@@ -185,6 +197,7 @@
 
 .wbx-cases-categories button,
 .wbx-cases-empty button {
+  flex: 0 0 auto;
   min-height: 36px;
   border: 2px solid var(--wbx-ink);
   border-radius: 0;
@@ -194,6 +207,7 @@
   font: inherit;
   font-size: 14px;
   font-weight: 700;
+  white-space: nowrap;
   cursor: pointer;
   transition: background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
@@ -472,7 +486,7 @@
 
   .wbx-cases-layout-grid,
   .wbx-cases-main-column,
-  .wbx-cases-tools-column {
+.wbx-cases-tools-column {
     display: contents;
   }
 
@@ -480,8 +494,11 @@
     order: 1;
   }
 
-  .wbx-cases-filter-panel {
+  .wbx-cases-filter-toolbar {
     order: 2;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin: 0;
   }
 
   .wbx-cases-gallery-results {
@@ -493,8 +510,15 @@
     margin-top: 36px;
   }
 
-  .wbx-cases-search {
+  .wbx-cases-filter-toolbar .wbx-cases-search {
+    order: 1;
     width: 100%;
+    max-width: none;
+    justify-self: stretch;
+  }
+
+  .wbx-cases-filter-toolbar .wbx-cases-categories {
+    order: 2;
   }
 
   .wbx-cases-gallery-results .wbx-cases-grid {

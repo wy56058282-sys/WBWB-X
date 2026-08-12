@@ -132,13 +132,12 @@ describe('case collection page styles', () => {
     expect(source).toMatch(/\.wbx-cases-layout-grid\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*minmax\(0, 3fr\) minmax\(240px, 1fr\)/s)
     expect(source).toMatch(/\.wbx-cases-tools-column\s*\{[^}]*position:\s*sticky[^}]*top:\s*calc\(var\(--vp-nav-height\) \+ 24px\)/s)
     expect(source).not.toMatch(/\.wbx-cases-hero\s*\{[^}]*border-bottom:/s)
-    expect(source).toMatch(/\.wbx-cases-filter-panel__controls\s*\{[^}]*display:\s*grid[^}]*justify-items:\s*start/s)
-    expect(source).toMatch(/\.wbx-cases-filter-panel__controls \.wbx-cases-categories\s*\{[^}]*justify-content:\s*flex-start/s)
+    expect(source).toMatch(/\.wbx-cases-filter-toolbar\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*minmax\(0, 1fr\) minmax\(240px, 280px\)[^}]*align-items:\s*start/s)
+    expect(source).toMatch(/\.wbx-cases-filter-toolbar\s*\{[^}]*grid-column:\s*1\s*\/\s*-1/s)
     expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-layout-grid,\s*\.wbx-cases-main-column,\s*\.wbx-cases-tools-column\s*\{[^}]*display:\s*contents/s)
-    expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-filter-panel\s*\{[^}]*order:\s*2/s)
-    expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-gallery-results\s*\{[^}]*order:\s*3/s)
-    expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-submit\s*\{[^}]*order:\s*4/s)
-    expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-search\s*\{[^}]*width:\s*100%/s)
+    expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-filter-toolbar\s*\{[^}]*grid-template-columns:\s*1fr/s)
+    expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-filter-toolbar \.wbx-cases-search\s*\{[^}]*order:\s*1[^}]*width:\s*100%/s)
+    expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-filter-toolbar \.wbx-cases-categories\s*\{[^}]*order:\s*2/s)
   })
 
   it('registers the gallery and makes it the entire case-index body', () => {
