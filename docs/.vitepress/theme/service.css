@@ -1,5 +1,5 @@
 .custom-service-page .VPDoc:not(.has-sidebar) .container {
-  max-width: 1280px;
+  max-width: 1104px;
 }
 
 .custom-service-page .VPDoc:not(.has-sidebar) .content,
@@ -41,6 +41,7 @@
 .wbx-service h2 {
   margin-bottom: 0;
   font-size: 25px;
+  font-weight: 600;
   line-height: 1.32;
 }
 
@@ -147,15 +148,27 @@
   display: grid;
   grid-template-columns: minmax(190px, 0.34fr) minmax(0, 1fr);
   gap: 40px;
-  padding: 40px 0;
-  border-bottom: 1px solid var(--wbx-line);
+  padding: 48px 0;
 }
 
 .wbx-service-section__heading {
   min-width: 0;
 }
 
-.wbx-service-checklist,
+.wbx-service-checklist {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@supports selector(::marker) {
+  .wbx-service-checklist li::marker {
+    content: "";
+  }
+}
+
 .wbx-service-exclusions ul {
   display: grid;
   gap: 0;
@@ -165,7 +178,8 @@
 }
 
 .wbx-service-checklist li {
-  display: flex;
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
   gap: 10px;
   align-items: flex-start;
   padding: 14px 0;
@@ -198,7 +212,6 @@
   display: inline-flex;
   width: 20px;
   height: 20px;
-  flex: 0 0 20px;
   align-items: center;
   justify-content: center;
   margin-top: 3px;
@@ -248,7 +261,6 @@
 }
 
 .wbx-service-exclusions {
-  border-top: 1px solid var(--wbx-line);
   background: var(--wbx-hover-surface);
   box-shadow: 48px 0 0 var(--wbx-hover-surface), -48px 0 0 var(--wbx-hover-surface);
 }
