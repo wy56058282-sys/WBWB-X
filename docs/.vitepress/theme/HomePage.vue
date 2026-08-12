@@ -298,9 +298,9 @@ const workflowSteps = [
             href="https://www.workbuddy.cn/"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="访问 WorkBuddy 中国版 v5.3.11"
+            aria-label="访问 WorkBuddy 中国版 v5.3.12"
           >
-            <span class="wbx-hero__official-label">中国版 v5.3.11</span>
+            <span class="wbx-hero__official-label">中国版 v5.3.12</span>
           </a>
           <a
             class="wbx-hero__official"

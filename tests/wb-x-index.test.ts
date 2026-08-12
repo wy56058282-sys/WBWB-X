@@ -28,7 +28,7 @@ describe('small-book reading index', () => {
   it('shows the latest official WorkBuddy release versions', () => {
     const text = document.body.textContent
 
-    expect(text).toContain('WorkBuddy 中国版｜更新日志｜v5.3.11')
+    expect(text).toContain('WorkBuddy 中国版｜更新日志｜v5.3.12')
     expect(text).toContain('WorkBuddy 国际版｜更新日志｜v5.2.7')
   })
 
