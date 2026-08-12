@@ -20,6 +20,9 @@
 - The suitable-problems list shows the registered pixel icon only, with no native marker or duplicate indentation.
 - Remove repeated full-width service section dividers while retaining necessary internal row separators.
 - No dependencies, content deletion, or changes to homepage structure.
+- The reading guide is the single geometry and typography reference; at the same desktop viewport, case and guide main-left, H1-top, outline-left, and outline-top coordinates differ by no more than `1px`.
+- Desktop H1 is `51.2px / 58.88px / 850`, tablet H1 is `44px / 52.8px / 850`, and mobile H1 is `36px / 43.2px / 850`.
+- Product-page H2 is `28px / 600`; page body copy is `16px / 1.75`. Compact card metadata and labels retain their existing sizes.
 
 ---
 
@@ -185,3 +188,69 @@ git add docs/.vitepress/theme/CasesPage.vue docs/.vitepress/theme/cases.css docs
 git commit -m "修复指南式布局验收问题"
 ```
 
+---
+
+### Task 4: Eliminate Cross-Page Layout Shift And Align Typography
+
+**Files:**
+- Modify: `docs/.vitepress/theme/cases.css`
+- Modify: `docs/.vitepress/theme/service.css`
+- Modify: `tests/case-page-style.test.ts`
+- Modify: `tests/service-page-style.test.ts`
+- Modify: `tests/product-page-computed-style.test.ts`
+
+**Interfaces:**
+- Consumes: the production VitePress geometry and typography of `/reading-guide`, plus the completed case outline structure.
+- Produces: case and service page geometry and typography that match the guide reference without changing content or behavior.
+
+- [ ] **Step 1: Add failing computed-style typography contracts**
+
+At desktop, tablet, and mobile widths, require case and service H1 computed values to match the guide values exactly:
+
+```ts
+expect(desktopH1).toMatchObject({ fontSize: '51.2px', lineHeight: '58.88px', fontWeight: '850' })
+expect(tabletH1).toMatchObject({ fontSize: '44px', lineHeight: '52.8px', fontWeight: '850' })
+expect(mobileH1).toMatchObject({ fontSize: '36px', lineHeight: '43.2px', fontWeight: '850' })
+```
+
+Require page H2 to compute to `28px / 600` and primary page body copy to `16px / 1.75`. Keep card metadata and labels outside this shared body selector.
+
+- [ ] **Step 2: Add a cross-page geometry regression contract**
+
+Model or render the guide and case VitePress layers at the same desktop viewport. Assert that main-content left, H1 top, outline left, and outline top differ by no more than `1px`. The test must account for `VPDoc`, `.container`, `.content`, `.content-container`, and the guide aside column rather than only matching source declarations.
+
+- [ ] **Step 3: Run focused tests and confirm red**
+
+```bash
+./node_modules/.bin/vitest run tests/case-page-style.test.ts tests/service-page-style.test.ts tests/product-page-computed-style.test.ts --exclude '.worktrees/**' --exclude '.pnpm-store/**'
+```
+
+Expected: FAIL on the current smaller H1/H2 sizes and any remaining case/guide coordinate differences.
+
+- [ ] **Step 4: Apply the guide typography without widening compact surfaces**
+
+Update only page-level H1, H2, and body-copy selectors in `cases.css` and `service.css`. Do not change card title, metadata, category, date, eyebrow, button, price fact, or helper-text sizes unless they are currently captured by an overly broad page-body selector; narrow that selector instead.
+
+- [ ] **Step 5: Remove case-specific offsets that cause navigation shift**
+
+Align case top padding, main column start, outline rail position, and outline top offset with the actual guide geometry. Reuse VitePress document gutters and aside dimensions; do not duplicate hidden sidebar padding or add compensating negative transforms.
+
+- [ ] **Step 6: Run focused and complete verification**
+
+```bash
+./node_modules/.bin/vitest run tests/case-page-style.test.ts tests/service-page-style.test.ts tests/product-page-computed-style.test.ts tests/cases-page.test.ts tests/service-page.test.ts --exclude '.worktrees/**' --exclude '.pnpm-store/**'
+./node_modules/.bin/vitest run --dir tests --exclude '.worktrees/**' --exclude '.pnpm-store/**'
+./node_modules/.bin/vitepress build docs
+git diff --check
+```
+
+- [ ] **Step 7: Browser-compare the page switch**
+
+At `1440x900`, capture the guide and case geometry in the same browser session and assert each reference coordinate differs by at most `1px`. At tablet and `390x844`, verify the specified H1 sizes, no overflow, and stable top/left content baselines. Verify service typography in both themes.
+
+- [ ] **Step 8: Commit the alignment change**
+
+```bash
+git add docs/.vitepress/theme/cases.css docs/.vitepress/theme/service.css tests/case-page-style.test.ts tests/service-page-style.test.ts tests/product-page-computed-style.test.ts
+git commit -m "对齐指南页基线与产品页排版"
+```
