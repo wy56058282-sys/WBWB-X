@@ -76,7 +76,7 @@
 }
 
 .wbx-cases-hero__copy,
-.wbx-cases-filter-toolbar {
+.wbx-cases-layout-grid > .wbx-cases-categories {
   min-width: 0;
 }
 
@@ -132,14 +132,9 @@
   line-height: 1.75;
 }
 
-.wbx-cases-filter-toolbar {
-  display: grid;
-  grid-column: 1 / -1;
+.wbx-cases-layout-grid > .wbx-cases-categories {
+  grid-column: 1;
   grid-row: 2;
-  grid-template-columns: minmax(0, 1fr) minmax(240px, 280px);
-  gap: 24px;
-  align-items: start;
-  min-width: 0;
   margin: -8px 0 -6px;
 }
 
@@ -153,12 +148,9 @@
   font-weight: 700;
 }
 
-.wbx-cases-filter-toolbar .wbx-cases-search {
-  justify-self: end;
-}
-
-.wbx-cases-filter-toolbar .wbx-cases-categories {
-  margin: 0;
+.wbx-cases-tools-column > .wbx-cases-search {
+  width: 100%;
+  max-width: none;
 }
 
 .wbx-cases-search input {
@@ -494,31 +486,24 @@
     order: 1;
   }
 
-  .wbx-cases-filter-toolbar {
+  .wbx-cases-search {
     order: 2;
-    grid-template-columns: 1fr;
-    gap: 16px;
-    margin: 0;
+    width: 100%;
+    max-width: none;
   }
 
   .wbx-cases-gallery-results {
-    order: 3;
+    order: 4;
   }
 
   .wbx-cases-submit {
-    order: 4;
+    order: 5;
     margin-top: 36px;
   }
 
-  .wbx-cases-filter-toolbar .wbx-cases-search {
-    order: 1;
-    width: 100%;
-    max-width: none;
-    justify-self: stretch;
-  }
-
-  .wbx-cases-filter-toolbar .wbx-cases-categories {
-    order: 2;
+  .wbx-cases-layout-grid > .wbx-cases-categories {
+    order: 3;
+    margin: 0;
   }
 
   .wbx-cases-gallery-results .wbx-cases-grid {

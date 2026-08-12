@@ -101,7 +101,7 @@ describe('case gallery', () => {
     expect(selectedCategory?.querySelector('[aria-hidden="true"]')?.classList.contains('hn-check-circle-solid')).toBe(true)
     expect(selectedCategory?.querySelector('[aria-hidden="true"]')?.textContent).toBe('')
     expect(selectedCategory?.textContent?.trim()).toBe('全部')
-    expect(document.querySelector('.wbx-cases-filter-toolbar')?.getAttribute('id')).toBe('case-gallery')
+    expect(document.querySelector('.wbx-cases-categories')?.getAttribute('id')).toBe('case-gallery')
   })
 
   it('keeps cases in the main column and tools in the sticky side column', () => {
@@ -116,17 +116,15 @@ describe('case gallery', () => {
     expect(document.body.textContent).not.toContain('CASE GALLERY')
     expect(main?.querySelector('.wbx-cases-hero__copy > p:last-child')?.textContent)
       .toBe('从真实场景出发，找到可以带走复用的工作方法。')
-    const toolbar = layout?.querySelector(':scope > .wbx-cases-filter-toolbar')
-    expect(toolbar?.querySelector('.wbx-cases-search')).not.toBeNull()
-    expect(toolbar?.querySelector('.wbx-cases-categories')).not.toBeNull()
+    const categories = layout?.querySelector(':scope > .wbx-cases-categories')
+    expect(categories).not.toBeNull()
     expect(
-      [...(toolbar?.querySelectorAll<HTMLButtonElement>('.wbx-cases-categories button') ?? [])]
+      [...(categories?.querySelectorAll<HTMLButtonElement>('button') ?? [])]
         .map((button) => button.dataset.category),
     ).toEqual(caseCategories(fixtureCatalog))
     expect(main?.querySelector('.wbx-cases-gallery-results')).not.toBeNull()
-    expect(main?.querySelector('.wbx-cases-filter-toolbar')).toBeNull()
     expect(main?.querySelector('.wbx-cases-submit')).toBeNull()
-    expect(tools?.querySelector('.wbx-cases-search')).toBeNull()
+    expect(tools?.firstElementChild?.classList.contains('wbx-cases-search')).toBe(true)
     expect(tools?.querySelector('.wbx-cases-categories')).toBeNull()
     expect(tools?.querySelector('#submit-case')).not.toBeNull()
     expect(document.querySelectorAll('.wbx-cases-submit')).toHaveLength(1)
