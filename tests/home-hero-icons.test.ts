@@ -602,9 +602,9 @@ describe('home hero icon navigation', () => {
     expect(official?.getAttribute('href')).toBe('https://www.workbuddy.ai/')
     expect(official?.getAttribute('target')).toBe('_blank')
     expect(official?.getAttribute('rel')).toBe('noopener noreferrer')
-    expect(official?.getAttribute('aria-label')).toBe('访问 WorkBuddy 官网')
+    expect(official?.getAttribute('aria-label')).toBe('访问 WorkBuddy 国际版 v5.2.7')
     expect(official?.querySelector('.wbx-hero__official-label')?.textContent).toBe(
-      'workbuddy.ai',
+      '国际版 v5.2.7',
     )
     expect(image?.getAttribute('src')).toBe('/brand/workbuddy-official-ip.png')
     expect(image?.getAttribute('alt')).toBe('')
@@ -618,9 +618,9 @@ describe('home hero icon navigation', () => {
     expect(cn?.getAttribute('href')).toBe('https://www.workbuddy.cn/')
     expect(cn?.getAttribute('target')).toBe('_blank')
     expect(cn?.getAttribute('rel')).toBe('noopener noreferrer')
-    expect(cn?.getAttribute('aria-label')).toBe('访问 WorkBuddy 中国站')
+    expect(cn?.getAttribute('aria-label')).toBe('访问 WorkBuddy 中国版 v5.3.11')
     expect(cn?.querySelector('.wbx-hero__official-label')?.textContent).toBe(
-      'workbuddy.cn',
+      '中国版 v5.3.11',
     )
   })
 

@@ -298,18 +298,18 @@ const workflowSteps = [
             href="https://www.workbuddy.cn/"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="访问 WorkBuddy 中国站"
+            aria-label="访问 WorkBuddy 中国版 v5.3.11"
           >
-            <span class="wbx-hero__official-label">workbuddy.cn</span>
+            <span class="wbx-hero__official-label">中国版 v5.3.11</span>
           </a>
           <a
             class="wbx-hero__official"
             href="https://www.workbuddy.ai/"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="访问 WorkBuddy 官网"
+            aria-label="访问 WorkBuddy 国际版 v5.2.7"
           >
-            <span class="wbx-hero__official-label">workbuddy.ai</span>
+            <span class="wbx-hero__official-label">国际版 v5.2.7</span>
             <img
               class="wbx-hero__official-ip"
               :src="withBase('/brand/workbuddy-official-ip.png')"
