@@ -91,7 +91,6 @@ function resetFilters() {
         </label>
         <section id="submit-case" class="wbx-cases-submit" aria-labelledby="submit-case-title">
         <div>
-          <p class="wbx-cases-eyebrow">CONTRIBUTE A CASE</p>
           <h2 id="submit-case-title">把你的工作方法带进案例集</h2>
           <p>分享真实任务、使用过程和结果，让下一位遇到相似问题的人少走一点弯路。</p>
         </div>
