@@ -44,6 +44,9 @@ describe('case detail layout', () => {
 
   it('aligns desktop detail content to the logo baseline and restores compact gutters', () => {
     expect(customCss).toMatch(
+      /@media \(min-width:\s*960px\)[\s\S]*?\.wbx-case-detail-layout \.VPDoc \.container\s*\{[^}]*max-width:\s*1104px[^}]*margin-left:\s*auto[^}]*margin-right:\s*auto/s,
+    )
+    expect(customCss).toMatch(
       /@media \(min-width:\s*960px\)[\s\S]*?\.wbx-case-detail-layout \.VPDoc \.content\s*\{[^}]*max-width:\s*none[^}]*padding-left:\s*40px[^}]*padding-right:\s*40px/s,
     )
     expect(customCss).toMatch(

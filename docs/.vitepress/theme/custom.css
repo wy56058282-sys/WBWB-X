@@ -413,6 +413,12 @@ body {
 }
 
 @media (min-width: 960px) {
+  .wbx-case-detail-layout .VPDoc .container {
+    max-width: 1104px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .wbx-case-detail-layout .VPDoc .content {
     max-width: none;
     padding-left: 40px;
