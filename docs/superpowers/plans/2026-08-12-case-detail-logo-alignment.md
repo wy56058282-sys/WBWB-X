@@ -1,8 +1,8 @@
-# 案例详情页 Logo 基线对齐实施计划
+# 案例页面收尾调整实施计划
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** 让案例详情页桌面端返回入口、标题和正文以顶部文字 Logo 左边缘为基准对齐，同时保持窄屏可读性。
+**Goal:** 让案例详情页内容对齐顶部文字 Logo，并精简案例集首页重复标题。
 
 **Architecture:** 继续使用 `wbx-case-detail-layout` 路由作用域，只调整 VitePress 详情内容容器的响应式内边距。以自动化 CSS 合同锁定桌面 `40px` 和 `959px` 以下回退，再以生产浏览器量测验证实际几何位置。
 
@@ -16,6 +16,8 @@
 - 不恢复侧栏，不修改正文和其他页面。
 - 桌面端详情内容左边缘与顶部文字 Logo 左边缘误差不超过 `2px`。
 - 所有验收视口均不得产生横向溢出。
+- 删除 `CASE GALLERY` 和“浏览案例”，说明文案移到案例集主标题下方。
+- 搜索与分类筛选继续保留在右侧固定工具栏。
 
 ---
 
@@ -101,4 +103,58 @@ git diff --check
 ```bash
 git add docs/.vitepress/theme/custom.css tests/case-detail-layout.test.ts
 git commit -m "对齐案例详情页内容基线"
+```
+
+### Task 2: 精简案例集首页标题层级
+
+**Files:**
+- Modify: `docs/.vitepress/theme/CasesPage.vue`
+- Modify: `docs/.vitepress/theme/cases.css`
+- Test: `tests/cases-page.test.ts`
+- Test: `tests/case-page-style.test.ts`
+
+**Interfaces:**
+- Consumes: 现有 `.wbx-cases-hero__copy` 主标题区和右侧 `.wbx-cases-filter-panel`。
+- Produces: 单一案例集标题层级，右侧搜索与分类行为保持不变。
+
+- [ ] **Step 1: 写入失败测试**
+
+在组件测试中断言：
+
+```ts
+expect(document.querySelector('#case-gallery-title')?.textContent).toContain('案例集')
+expect(document.querySelector('#case-gallery-heading')).toBeNull()
+expect(document.body.textContent).not.toContain('CASE GALLERY')
+expect(document.querySelector('.wbx-cases-hero__copy > p:last-child')?.textContent)
+  .toBe('从真实场景出发，找到可以带走复用的工作方法。')
+expect(document.querySelector('.wbx-cases-tools-column .wbx-cases-search')).not.toBeNull()
+expect(document.querySelector('.wbx-cases-tools-column .wbx-cases-categories')).not.toBeNull()
+```
+
+- [ ] **Step 2: 运行测试并确认因重复标题仍存在而失败**
+
+```bash
+../../node_modules/.bin/vitest run tests/cases-page.test.ts tests/case-page-style.test.ts
+```
+
+- [ ] **Step 3: 最小修改模板和失效样式**
+
+删除 `wbx-cases-filter-panel__heading` 内的眉题和 H2，把说明文案放到主标题后；保留右侧 `wbx-cases-filter-panel__controls`、搜索框和分类按钮。删除只服务于已移除标题的 CSS 选择器。
+
+- [ ] **Step 4: 验证功能、布局和回归**
+
+```bash
+../../node_modules/.bin/vitest run tests/cases-page.test.ts tests/case-page-style.test.ts tests/case-detail-layout.test.ts
+../../node_modules/.bin/vitest run --dir tests
+../../node_modules/.bin/vitepress build docs
+git diff --check
+```
+
+生产预览检查桌面、平板和手机：标题无重复、卡片上移、右侧工具栏筛选和搜索正常、页面无横向溢出。
+
+- [ ] **Step 5: 提交首页精简**
+
+```bash
+git add docs/.vitepress/theme/CasesPage.vue docs/.vitepress/theme/cases.css tests/cases-page.test.ts tests/case-page-style.test.ts
+git commit -m "精简案例集首页标题层级"
 ```
