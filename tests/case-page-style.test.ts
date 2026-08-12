@@ -240,6 +240,7 @@ describe('case collection page styles', () => {
     document.body.append(fixture)
 
     try {
+      const measureGeometry = () => {
       const guideDoc = getComputedStyle(fixture.querySelector('.guide .VPDoc')!)
       const guideContainer = getComputedStyle(fixture.querySelector('.guide .container')!)
       const guideContent = getComputedStyle(fixture.querySelector('.guide .content')!)
@@ -317,7 +318,10 @@ describe('case collection page styles', () => {
         + caseMainTrack
         + caseGap
         + px(caseOutline.marginLeft)
-      const caseShellTop = navHeight + px(caseDoc.paddingTop) + px(caseShell.paddingTop)
+      const caseShellTop = navHeight
+        + px(caseDoc.paddingTop)
+        + px(caseShell.marginTop)
+        + px(caseShell.paddingTop)
       const caseH1Top = caseShellTop
         + px(caseHeader.paddingTop)
         + (caseEyebrow.position === 'absolute'
@@ -325,14 +329,36 @@ describe('case collection page styles', () => {
           : usedLineHeight(caseEyebrow) + px(caseEyebrow.marginBottom))
       const caseOutlineTop = px(caseOutline.top)
 
-      expect(caseMainTrack + caseGap + caseOutlineTrack).toBeCloseTo(
-        caseShellWidth,
-        5,
-      )
-      expect(Math.abs(caseMainLeft - guideMainLeft)).toBeLessThanOrEqual(1)
-      expect(Math.abs(caseH1Top - guideH1Top)).toBeLessThanOrEqual(1)
-      expect(Math.abs(caseOutlineLeft - guideOutlineLeft)).toBeLessThanOrEqual(1)
-      expect(Math.abs(caseOutlineTop - guideOutlineTop)).toBeLessThanOrEqual(1)
+      return {
+        grid: {
+          tracks: caseMainTrack + caseGap + caseOutlineTrack,
+          shell: caseShellWidth,
+        },
+        guide: {
+          mainLeft: guideMainLeft,
+          h1Top: guideH1Top,
+          outlineLeft: guideOutlineLeft,
+          outlineTop: guideOutlineTop,
+        },
+        cases: {
+          mainLeft: caseMainLeft,
+          h1Top: caseH1Top,
+          outlineLeft: caseOutlineLeft,
+          outlineTop: caseOutlineTop,
+        },
+      }
+      }
+
+      const expectAligned = (geometry: ReturnType<typeof measureGeometry>) => {
+        expect(geometry.grid.tracks).toBeCloseTo(geometry.grid.shell, 5)
+        for (const coordinate of ['mainLeft', 'h1Top', 'outlineLeft', 'outlineTop'] as const) {
+          expect(
+            Math.abs(geometry.cases[coordinate] - geometry.guide[coordinate]),
+          ).toBeLessThanOrEqual(1)
+        }
+      }
+
+      expectAligned(measureGeometry())
 
       const mutation = document.createElement('style')
       mutation.textContent = `
@@ -340,14 +366,9 @@ describe('case collection page styles', () => {
         .wbx-cases-layout .wbx-cases-main { padding-left: 56px; }
       `
       document.head.append(mutation)
-      const mutatedShell = getComputedStyle(fixture.querySelector('.wbx-cases-shell')!)
-      const mutatedMain = getComputedStyle(fixture.querySelector('.wbx-cases-main')!)
-      const mutatedMainLeft = caseShellLeft + px(mutatedMain.paddingLeft)
-      const mutatedH1Top = caseH1Top + px(mutatedShell.marginTop)
-
-      expect(Math.abs(mutatedMainLeft - guideMainLeft)).toBeGreaterThan(1)
-      expect(Math.abs(mutatedH1Top - guideH1Top)).toBeGreaterThan(1)
+      expect(() => expectAligned(measureGeometry())).toThrow()
       mutation.remove()
+      expectAligned(measureGeometry())
     } finally {
       fixture.remove()
       appliedStyles.remove()

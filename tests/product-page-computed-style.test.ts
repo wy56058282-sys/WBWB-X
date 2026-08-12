@@ -115,27 +115,28 @@ describe('product page computed styles', () => {
         {
           css: pageStyles.cases,
           markup: `
-            <div class="VPDoc"><div class="vp-doc"><section class="wbx-cases">
-              <header class="wbx-cases-header"><div>
-                <p class="wbx-cases-eyebrow wbx-cases-header__eyebrow">页首标签</p>
-                <h1>案例集</h1><p class="primary-copy">案例正文</p>
-              </div></header>
-              <section class="wbx-cases-gallery"><p class="wbx-cases-eyebrow gallery-eyebrow">画廊标签</p><h2>浏览案例</h2></section>
-              <div class="wbx-cases-categories"><button>分类</button></div>
-              <section class="wbx-cases-submit"><div><p class="wbx-cases-eyebrow submit-eyebrow">投稿标签</p><h2>投稿</h2><p class="submit-copy">投稿正文</p></div></section>
+            <div class="VPDoc"><div class="vp-doc">
+              <section class="wbx-cases wbx-cases-shell"><div class="wbx-cases-main">
+                <header class="wbx-cases-header"><div>
+                  <p class="wbx-cases-eyebrow wbx-cases-header__eyebrow header-eyebrow">页首标签</p>
+                  <h1>案例集</h1><p class="primary-copy">案例正文</p>
+                </div></header>
+                <section class="wbx-cases-gallery"><div class="wbx-cases-gallery__topline"><div><p class="wbx-cases-eyebrow gallery-eyebrow">画廊标签</p><h2>浏览案例</h2></div></div></section>
+                <div class="wbx-cases-categories"><button>分类</button></div>
+                <section class="wbx-cases-submit"><div><p class="wbx-cases-eyebrow submit-eyebrow">投稿标签</p><h2>投稿</h2><p class="submit-copy">投稿正文</p></div></section>
+                <article class="wbx-case-card">
+                  <span class="wbx-case-card__meta">元数据</span><strong class="wbx-case-card__title">卡片标题</strong>
+                  <span class="wbx-case-card__outcome">辅助结果</span><span class="wbx-case-card__product">产品标签</span>
+                </article>
+              </div></section>
               <section class="wbx-case-service-cta"><div><p class="wbx-cases-eyebrow cta-eyebrow">服务标签</p><h2>服务</h2></div><a class="wbx-cases-action">操作</a></section>
-              <article class="wbx-case-card">
-                <span class="wbx-case-card__meta">元数据</span>
-                <strong class="wbx-case-card__title">卡片标题</strong>
-                <span class="wbx-case-card__outcome">辅助结果</span>
-                <span class="wbx-case-card__product">产品标签</span>
-              </article>
-            </section></div></div>
+            </div></div>
           `,
           h1: '.wbx-cases h1',
           h2: '.wbx-cases h2',
           body: '.primary-copy',
           compact: {
+            '.header-eyebrow': '12px',
             '.gallery-eyebrow': '12px',
             '.submit-eyebrow': '12px',
             '.cta-eyebrow': '12px',
@@ -150,10 +151,10 @@ describe('product page computed styles', () => {
           css: pageStyles.service,
           markup: `
             <div class="VPDoc"><div class="vp-doc"><section class="wbx-service">
-              <div class="wbx-service-offer__copy">
+              <section class="wbx-service-offer"><div class="wbx-service-offer__copy">
                 <p class="wbx-service-eyebrow">服务标签</p><h1>定制服务</h1><p>服务正文</p>
-              </div>
-              <h2>服务范围</h2>
+              </div></section>
+              <section class="wbx-service-section"><div class="wbx-service-section__heading"><h2>服务范围</h2></div></section>
               <dl class="wbx-service-offer__facts"><div><dt>价格</dt><dd>¥999</dd></div></dl>
               <a class="wbx-service-action">预约</a>
               <a class="wbx-service-case">
@@ -220,6 +221,7 @@ describe('product page computed styles', () => {
           expect(getComputedStyle(document.querySelector('.submit-eyebrow')!).position).not.toBe('absolute')
           expect(getComputedStyle(document.querySelector('.cta-eyebrow')!).position).not.toBe('absolute')
           expect(getComputedStyle(document.querySelector('.submit-copy')!).fontSize).toBe('16px')
+          expect(getComputedStyle(document.querySelector('.wbx-cases-action')!).fontSize).toBe('14px')
         }
 
         const eyebrowSelector = page.css === pageStyles.cases
@@ -234,6 +236,32 @@ describe('product page computed styles', () => {
       }
     },
   )
+
+  it('fails the cases compact contract when main eyebrows are enlarged', () => {
+    installStyles(pageStyles.cases, themes.light, 1440)
+    document.body.innerHTML = `
+      <div class="wbx-cases"><div class="wbx-cases-main">
+        <header><p class="wbx-cases-eyebrow header-eyebrow">页首</p></header>
+        <section><p class="wbx-cases-eyebrow gallery-eyebrow">画廊</p></section>
+        <section><p class="wbx-cases-eyebrow submit-eyebrow">投稿</p></section>
+      </div></div>
+      <section class="wbx-case-service-cta"><p class="wbx-cases-eyebrow cta-eyebrow">详情服务</p></section>
+    `
+
+    const expectCompactEyebrows = () => {
+      for (const selector of ['.header-eyebrow', '.gallery-eyebrow', '.submit-eyebrow', '.cta-eyebrow']) {
+        expect(getComputedStyle(document.querySelector(selector)!).fontSize).toBe('12px')
+      }
+    }
+
+    expectCompactEyebrows()
+    const mutation = document.createElement('style')
+    mutation.textContent = '.wbx-cases-main .wbx-cases-eyebrow { font-size: 20px; }'
+    document.head.append(mutation)
+    expect(expectCompactEyebrows).toThrow()
+    mutation.remove()
+    expectCompactEyebrows()
+  })
 
   it.each(Object.entries(themes))(
     'keeps %s idle primary actions legible over the VitePress link rule',
