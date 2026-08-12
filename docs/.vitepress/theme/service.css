@@ -33,14 +33,14 @@
 
 .wbx-service h1 {
   margin-bottom: 16px;
-  font-size: 42px;
+  font-size: 51.2px;
   font-weight: 850;
-  line-height: 1.16;
+  line-height: 58.88px;
 }
 
 .wbx-service h2 {
   margin-bottom: 0;
-  font-size: 25px;
+  font-size: 28px;
   font-weight: 600;
   line-height: 1.32;
 }
@@ -72,7 +72,7 @@
   max-width: 680px;
   margin-bottom: 26px;
   color: var(--wbx-muted);
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.75;
 }
 
@@ -459,17 +459,25 @@
   }
 }
 
+@media (max-width: 959px) {
+  .wbx-service h1 {
+    font-size: 44px;
+    line-height: 52.8px;
+  }
+}
+
 @media (max-width: 640px) {
   .wbx-service {
     padding-top: 4px;
   }
 
   .wbx-service h1 {
-    font-size: 32px;
+    font-size: 36px;
+    line-height: 43.2px;
   }
 
   .wbx-service h2 {
-    font-size: 22px;
+    font-size: 28px;
   }
 
   .wbx-service-offer {

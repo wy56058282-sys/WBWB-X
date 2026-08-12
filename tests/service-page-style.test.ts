@@ -10,7 +10,7 @@ describe('custom service page styles', () => {
     expect(styles).toMatch(/\.custom-service-page \.VPDoc:not\(\.has-sidebar\) \.container\s*\{[^}]*max-width:\s*1104px/s)
     expect(styles).not.toMatch(/\.custom-service-page \.VP(?:Content|Doc)[^{]*\{[^}]*padding(?:-inline|-left|-right):/s)
     expect(styles).toMatch(/\.wbx-service h1,\s*\.wbx-service h2,\s*\.wbx-service h3\s*\{[^}]*letter-spacing:\s*0/s)
-    expect(styles).toMatch(/\.wbx-service h1\s*\{[^}]*font-weight:\s*850[^}]*line-height:\s*1\.16/s)
+    expect(styles).toMatch(/\.wbx-service h1\s*\{[^}]*font-weight:\s*850[^}]*line-height:\s*58\.88px/s)
     expect(styles).toMatch(/\.wbx-service \.wbx-service-action\s*\{[^}]*border:\s*2px solid var\(--wbx-ink\)[^}]*border-radius:\s*0/s)
     expect(styles).toMatch(/\.wbx-service \.wbx-service-action--primary\s*\{[^}]*background:\s*var\(--wbx-accent\)/)
     expect(styles).toMatch(/\.wbx-service \.wbx-service-action:hover,\s*\.wbx-service \.wbx-service-action:focus-visible\s*\{[^}]*color:\s*#0d100d[^}]*background:\s*var\(--wbx-accent\)/s)

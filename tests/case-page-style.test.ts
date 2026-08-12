@@ -54,7 +54,8 @@ function flattenStylesAtViewport(source: string, viewportWidth: number) {
 }
 
 function px(value: string) {
-  return Number.parseFloat(value)
+  const length = Number.parseFloat(value)
+  return Number.isFinite(length) ? length : 0
 }
 
 function resolvedLength(value: string, availableWidth: number, fallback: number) {
@@ -83,6 +84,25 @@ function inlineStartOffset(
   return resolvedLength(styles.marginLeft, availableWidth, 0)
 }
 
+function paddingBoxWidth(width: number, styles: CSSStyleDeclaration) {
+  return width - px(styles.paddingLeft) - px(styles.paddingRight)
+}
+
+function centeredChildLeft(parentLeft: number, parentWidth: number, childWidth: number) {
+  return parentLeft + (parentWidth - childWidth) / 2
+}
+
+function usedLineHeight(styles: CSSStyleDeclaration) {
+  if (styles.lineHeight === 'normal') return px(styles.fontSize) * 1.2
+  if (!styles.lineHeight.endsWith('px')) return px(styles.fontSize) * px(styles.lineHeight)
+  return px(styles.lineHeight)
+}
+
+function finalGridTrackWidth(template: string, availableWidth: number) {
+  const max = template.match(/minmax\([\s\S]*?,\s*([\d.]+)px\)\s*$/)?.[1]
+  return max ? Math.min(availableWidth, Number(max)) : Number.NaN
+}
+
 describe('case collection page styles', () => {
   it('uses a stable responsive card grid with constrained cards', () => {
     const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
@@ -104,9 +124,9 @@ describe('case collection page styles', () => {
   it('uses a guide-style contents rail and sizes cards for the available main column', () => {
     const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
 
-    expect(source).toMatch(/\.wbx-cases-shell\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*minmax\(0, 1fr\) minmax\(180px, 220px\)[^}]*gap:\s*48px/s)
+    expect(source).toMatch(/@media \(min-width:\s*1280px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.wbx-cases-shell\s*\{[^}]*grid-template-columns:\s*minmax\(0, 784px\) minmax\(0, 256px\)/s)
     expect(source).toMatch(/\.wbx-cases-main\s*\{[^}]*min-width:\s*0/s)
-    expect(source).toMatch(/\.wbx-cases-outline\s*\{[^}]*position:\s*sticky[^}]*top:\s*calc\(var\(--vp-nav-height\) \+ 32px\)/s)
+    expect(source).toMatch(/@media \(min-width:\s*1280px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.wbx-cases-outline\s*\{[^}]*position:\s*sticky[^}]*top:\s*calc\(var\(--vp-nav-height\) \+ 48px\)[^}]*width:\s*224px[^}]*margin-left:\s*32px/s)
     expect(source).toMatch(/@media \(max-width:\s*1024px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.wbx-cases-outline\s*\{[^}]*display:\s*none/s)
     expect(source).toMatch(/@media \(max-width:\s*1024px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.wbx-cases-main \.wbx-cases-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/s)
     expect(source).toMatch(/@media \(max-width:\s*640px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.wbx-cases-main \.wbx-cases-grid\s*\{[^}]*grid-template-columns:\s*1fr/s)
@@ -135,9 +155,10 @@ describe('case collection page styles', () => {
     const pageSource = readFileSync('docs/.vitepress/theme/CasesPage.vue', 'utf8')
 
     expect(source).toMatch(/\.wbx-cases-layout \.VPDoc \.container\s*\{[^}]*max-width:\s*1104px/s)
-    expect(source).not.toMatch(/\.wbx-cases-layout \.VPDoc \.content-container\s*\{[^}]*max-width:\s*none/s)
+    expect(source).toMatch(/\.wbx-cases-layout \.VPDoc \.content-container\s*\{[^}]*max-width:\s*688px/s)
+    expect(source).toMatch(/@media \(min-width:\s*1280px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.wbx-cases-layout \.VPDoc \.content-container\s*\{[^}]*max-width:\s*none/s)
     expect(source).not.toMatch(/\.wbx-cases-layout \.VPDoc[^{]*\{[^}]*padding(?:-inline|-left|-right):/s)
-    expect(source).toMatch(/\.wbx-cases h1\s*\{[^}]*font-weight:\s*850[^}]*line-height:\s*1\.2[^}]*letter-spacing:\s*0/s)
+    expect(source).toMatch(/\.wbx-cases h1\s*\{[^}]*font-weight:\s*850[^}]*line-height:\s*58\.88px[^}]*letter-spacing:\s*0/s)
     expect(source).toMatch(/\.wbx-cases-categories button,\s*\.wbx-cases-empty button\s*\{[^}]*border:\s*2px solid var\(--wbx-ink\)[^}]*border-radius:\s*0/s)
     expect(source).toMatch(/\.wbx-cases-categories button:hover,\s*\.wbx-cases-categories button\[aria-pressed="true"\],\s*\.wbx-cases-empty button:hover\s*\{[^}]*color:\s*#0d100d[^}]*background:\s*var\(--wbx-accent\)/s)
     expect(source).toMatch(/\.wbx-cases \.wbx-cases-action:hover,\s*\.wbx-cases \.wbx-cases-action:focus-visible\s*\{[^}]*color:\s*#0d100d[^}]*background:\s*var\(--wbx-accent\)/s)
@@ -159,6 +180,195 @@ describe('case collection page styles', () => {
     expect(casesStyles).toMatch(/\.wbx-cases-layout \.VPDoc \.container\s*\{[^}]*max-width:\s*1104px/s)
     expect(serviceStyles).toMatch(/\.custom-service-page \.VPDoc:not\(\.has-sidebar\) \.container\s*\{[^}]*max-width:\s*1104px/s)
   })
+
+  it('matches the rendered reading-guide main and outline coordinates at 1440px', () => {
+    const viewportWidth = 1440
+    const navHeight = 64
+    const casesStyles = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
+    const appliedStyles = document.createElement('style')
+    appliedStyles.textContent = [
+      componentStyles(vpContentSource).replaceAll('var(--vp-sidebar-width)', '272px'),
+      componentStyles(vpDocSource)
+        .replaceAll('var(--vp-nav-height)', `${navHeight}px`)
+        .replaceAll('var(--vp-layout-top-height, 0px)', '0px')
+        .replaceAll('var(--vp-doc-top-height, 0px)', '0px'),
+      casesStyles.replaceAll('var(--vp-nav-height)', `${navHeight}px`),
+    ].map((styles) => flattenStylesAtViewport(styles, viewportWidth)).join('\n')
+    document.head.append(appliedStyles)
+
+    const fixture = document.createElement('div')
+    fixture.innerHTML = `
+      <div class="guide">
+        <div class="VPContent">
+          <div class="VPDoc has-aside">
+            <div class="container">
+              <div class="aside"><div class="aside-container"></div></div>
+              <div class="content"><div class="content-container"><h1>阅读指南</h1></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="wbx-cases-layout">
+        <div class="VPContent has-sidebar">
+          <div class="VPDoc has-sidebar">
+            <div class="container">
+              <div class="content"><div class="content-container">
+                <section class="wbx-cases wbx-cases-shell">
+                  <div class="wbx-cases-main">
+                    <header class="wbx-cases-header"><div>
+                      <p class="wbx-cases-eyebrow">WORKBUDDY COMMUNITY</p>
+                      <h1>案例集</h1><p>案例正文</p>
+                    </div></header>
+                  </div>
+                  <aside class="wbx-cases-outline"></aside>
+                </section>
+              </div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `
+    document.body.append(fixture)
+
+    try {
+      const guideDoc = getComputedStyle(fixture.querySelector('.guide .VPDoc')!)
+      const guideContainer = getComputedStyle(fixture.querySelector('.guide .container')!)
+      const guideContent = getComputedStyle(fixture.querySelector('.guide .content')!)
+      const guideContentContainer = getComputedStyle(fixture.querySelector('.guide .content-container')!)
+      const guideAside = getComputedStyle(fixture.querySelector('.guide .aside')!)
+      const guideAsideContainer = getComputedStyle(fixture.querySelector('.guide .aside-container')!)
+
+      const guideDocInnerWidth = paddingBoxWidth(viewportWidth, guideDoc)
+      const guideContainerWidth = usedBlockWidth(guideDocInnerWidth, guideContainer)
+      const guideContainerLeft = px(guideDoc.paddingLeft)
+        + inlineStartOffset(guideDocInnerWidth, guideContainerWidth, guideContainer)
+      const guideContentWidth = usedBlockWidth(guideContainerWidth, guideContent)
+      const guideAsideWidth = usedBlockWidth(guideContainerWidth, guideAside)
+      const guideColumnsWidth = guideContentWidth + guideAsideWidth
+      const guideContentLeft = centeredChildLeft(
+        guideContainerLeft,
+        guideContainerWidth,
+        guideColumnsWidth,
+      )
+      const guideContentInnerWidth = paddingBoxWidth(guideContentWidth, guideContent)
+      const guideContentContainerWidth = usedBlockWidth(
+        guideContentInnerWidth,
+        guideContentContainer,
+      )
+      const guideMainLeft = guideContentLeft
+        + px(guideContent.paddingLeft)
+        + inlineStartOffset(
+          guideContentInnerWidth,
+          guideContentContainerWidth,
+          guideContentContainer,
+        )
+      const guideOutlineLeft = guideContentLeft
+        + guideContentWidth
+        + px(guideAside.paddingLeft)
+      const guideH1Top = navHeight + px(guideDoc.paddingTop)
+      const guideOutlineTop = px(guideAsideContainer.paddingTop)
+
+      const caseVpContent = getComputedStyle(fixture.querySelector('.wbx-cases-layout .VPContent')!)
+      const caseDoc = getComputedStyle(fixture.querySelector('.wbx-cases-layout .VPDoc')!)
+      const caseContainer = getComputedStyle(fixture.querySelector('.wbx-cases-layout .container')!)
+      const caseContent = getComputedStyle(fixture.querySelector('.wbx-cases-layout .content')!)
+      const caseContentContainer = getComputedStyle(fixture.querySelector('.wbx-cases-layout .content-container')!)
+      const caseShell = getComputedStyle(fixture.querySelector('.wbx-cases-shell')!)
+      const caseMain = getComputedStyle(fixture.querySelector('.wbx-cases-main')!)
+      const caseHeader = getComputedStyle(fixture.querySelector('.wbx-cases-header')!)
+      const caseEyebrow = getComputedStyle(fixture.querySelector('.wbx-cases-eyebrow')!)
+      const caseOutline = getComputedStyle(fixture.querySelector('.wbx-cases-outline')!)
+
+      const caseVpContentWidth = paddingBoxWidth(viewportWidth, caseVpContent)
+      const caseDocWidth = usedBlockWidth(caseVpContentWidth, caseDoc)
+      const caseDocInnerWidth = paddingBoxWidth(caseDocWidth, caseDoc)
+      const caseContainerWidth = usedBlockWidth(caseDocInnerWidth, caseContainer)
+      const caseContainerLeft = px(caseVpContent.paddingLeft)
+        + px(caseDoc.paddingLeft)
+        + inlineStartOffset(caseDocInnerWidth, caseContainerWidth, caseContainer)
+      const caseContentWidth = usedBlockWidth(caseContainerWidth, caseContent)
+      const caseContentLeft = caseContainerLeft
+        + inlineStartOffset(caseContainerWidth, caseContentWidth, caseContent)
+      const caseContentInnerWidth = paddingBoxWidth(caseContentWidth, caseContent)
+      const caseContentContainerWidth = usedBlockWidth(caseContentInnerWidth, caseContentContainer)
+      const caseShellWidth = usedBlockWidth(caseContentContainerWidth, caseShell)
+      const caseShellLeft = caseContentLeft
+        + px(caseContent.paddingLeft)
+        + inlineStartOffset(
+          caseContentInnerWidth,
+          caseContentContainerWidth,
+          caseContentContainer,
+        )
+        + inlineStartOffset(caseContentContainerWidth, caseShellWidth, caseShell)
+      const caseOutlineTrack = finalGridTrackWidth(caseShell.gridTemplateColumns, caseShellWidth)
+      const caseGap = px(caseShell.columnGap || caseShell.gap)
+      const caseMainTrack = caseShellWidth - caseGap - caseOutlineTrack
+      const caseMainLeft = caseShellLeft + px(caseMain.paddingLeft)
+      const caseOutlineLeft = caseShellLeft
+        + caseMainTrack
+        + caseGap
+        + px(caseOutline.marginLeft)
+      const caseShellTop = navHeight + px(caseDoc.paddingTop) + px(caseShell.paddingTop)
+      const caseH1Top = caseShellTop
+        + px(caseHeader.paddingTop)
+        + (caseEyebrow.position === 'absolute'
+          ? 0
+          : usedLineHeight(caseEyebrow) + px(caseEyebrow.marginBottom))
+      const caseOutlineTop = px(caseOutline.top)
+
+      expect(caseMainTrack + caseGap + caseOutlineTrack).toBeCloseTo(
+        caseShellWidth,
+        5,
+      )
+      expect(Math.abs(caseMainLeft - guideMainLeft)).toBeLessThanOrEqual(1)
+      expect(Math.abs(caseH1Top - guideH1Top)).toBeLessThanOrEqual(1)
+      expect(Math.abs(caseOutlineLeft - guideOutlineLeft)).toBeLessThanOrEqual(1)
+      expect(Math.abs(caseOutlineTop - guideOutlineTop)).toBeLessThanOrEqual(1)
+    } finally {
+      fixture.remove()
+      appliedStyles.remove()
+    }
+  })
+
+  it.each([
+    { viewportWidth: 900, expectedPaddingTop: '4px' },
+    { viewportWidth: 390, expectedPaddingTop: '4px' },
+  ])(
+    'keeps the guide content baseline at $viewportWidth px',
+    ({ viewportWidth, expectedPaddingTop }) => {
+      const casesStyles = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
+      const appliedStyles = document.createElement('style')
+      appliedStyles.textContent = [
+        componentStyles(vpDocSource),
+        casesStyles,
+      ].map((styles) => flattenStylesAtViewport(styles, viewportWidth)).join('\n')
+      document.head.append(appliedStyles)
+
+      const fixture = document.createElement('div')
+      fixture.className = 'wbx-cases-layout'
+      fixture.innerHTML = `
+        <div class="VPDoc has-sidebar"><div class="container"><div class="content">
+          <div class="content-container"><section class="wbx-cases wbx-cases-shell">
+            <div class="wbx-cases-main"><header class="wbx-cases-header"><h1>案例集</h1></header></div>
+          </section></div>
+        </div></div></div>
+      `
+      document.body.append(fixture)
+
+      try {
+        const contentContainer = getComputedStyle(fixture.querySelector('.content-container')!)
+        const cases = getComputedStyle(fixture.querySelector('.wbx-cases')!)
+
+        expect(contentContainer.maxWidth).toBe('688px')
+        expect(contentContainer.marginLeft).toBe('auto')
+        expect(contentContainer.marginRight).toBe('auto')
+        expect(cases.paddingTop).toBe(expectedPaddingTop)
+      } finally {
+        fixture.remove()
+        appliedStyles.remove()
+      }
+    },
+  )
 
   it('releases the VitePress sidebar slot and keeps cards readable at 974px', () => {
     const viewportWidth = 974
@@ -263,13 +473,13 @@ describe('case collection page styles', () => {
         - px(contentStyle.paddingRight)
 
       expect(contentWidth).toBe(containerWidth)
-      expect(contentContainerWidth).toBe(contentInnerWidth)
+      expect(contentContainerWidth).toBe(688)
       expect(shellWidth).toBe(contentContainerWidth)
-      expect(shellWidth).toBe(expectedShellWidth)
-      expect(shellLeft).toBe(
+      expect(shellWidth).toBeLessThan(expectedShellWidth)
+      expect(shellLeft).toBeGreaterThan(
         px(docStyle.paddingLeft) + px(contentStyle.paddingLeft),
       )
-      expect(cardWidth).toBeGreaterThanOrEqual(400)
+      expect(cardWidth).toBeGreaterThanOrEqual(300)
     } finally {
       fixture.remove()
       appliedStyles.remove()
