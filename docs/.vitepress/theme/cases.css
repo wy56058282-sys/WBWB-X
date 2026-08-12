@@ -6,6 +6,11 @@
   display: none;
 }
 
+.wbx-cases-layout .VPContent.has-sidebar {
+  padding-right: 0;
+  padding-left: 0;
+}
+
 .wbx-cases-layout .VPDoc .container {
   max-width: 1104px;
 }
@@ -453,7 +458,7 @@
   }
 }
 
-@media (max-width: 960px) {
+@media (max-width: 1024px) {
   .wbx-cases-main .wbx-cases-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
