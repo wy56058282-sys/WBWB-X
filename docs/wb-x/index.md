@@ -5,7 +5,10 @@ description: WorkBuddy 中文使用手册与实战指南，共 27 章，涵盖�
 breadcrumbTitle: WorkBuddy 实战小白书
 ---
 
-# WorkBuddy 使用手册与实战指南
+<h1 class="wbx-book-index-heading">
+  <span>WorkBuddy</span>
+  <span>使用手册与实战指南</span>
+</h1>
 
 **27 章完整目录：从安装入门到 AI 工作系统**
 

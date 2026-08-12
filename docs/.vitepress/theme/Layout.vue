@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import DefaultTheme from 'vitepress/theme'
-import { useData, useRoute } from 'vitepress'
+import { useData, useRoute, withBase } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted } from 'vue'
-import { isCaseIndexRoute, isHomeRoute, isReadingRoute } from '../route-state'
+import {
+  isCaseDetailRoute,
+  isCaseIndexRoute,
+  isHomeRoute,
+  isReadingRoute,
+} from '../route-state'
 import CommunityQr, { openCommunityQr } from './CommunityQr.vue'
 import DocImageLightbox from './DocImageLightbox.vue'
 import FloatingQuickAccess from './FloatingQuickAccess.vue'
@@ -13,6 +18,7 @@ const { site } = useData()
 const isHome = computed(() => isHomeRoute(route.path, site.value.base))
 const isReading = computed(() => isReadingRoute(route.path, site.value.base))
 const isCaseIndex = computed(() => isCaseIndexRoute(route.path, site.value.base))
+const isCaseDetail = computed(() => isCaseDetailRoute(route.path, site.value.base))
 
 function handleCommunityQrTrigger(event: MouseEvent) {
   if (
@@ -49,10 +55,22 @@ onBeforeUnmount(() => {
       'wbx-home-layout': isHome,
       'wbx-reading-layout': isReading,
       'wbx-cases-layout': isCaseIndex,
+      'wbx-case-detail-layout': isCaseDetail,
     }"
   >
     <template #home-hero-before>
       <HomePage v-if="isHome" />
+    </template>
+
+    <template #doc-before>
+      <a
+        v-if="isCaseDetail"
+        class="wbx-case-detail-back"
+        :href="withBase('/cases/')"
+      >
+        <i class="hn hn-arrow-left-solid" aria-hidden="true" />
+        返回案例集
+      </a>
     </template>
 
     <template #layout-bottom>

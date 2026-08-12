@@ -23,3 +23,7 @@ export function isReadingRoute(path: string, base: string) {
 export function isCaseIndexRoute(path: string, base: string) {
   return stripBase(path, base) === '/cases/'
 }
+
+export function isCaseDetailRoute(path: string, base: string) {
+  return stripBase(path, base).startsWith('/cases/submissions/')
+}

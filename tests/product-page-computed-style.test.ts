@@ -93,6 +93,37 @@ function installStyles(
   document.head.append(style)
 }
 
+function assertCompactSurfaces(doc: Document) {
+  const size = (selector: string, expected: string) => {
+    expect(getComputedStyle(doc.querySelector(selector)!).fontSize).toBe(expected)
+  }
+
+  if (doc.querySelector('.wbx-cases')) {
+    size('.header-eyebrow', '12px')
+    size('.gallery-eyebrow', '12px')
+    size('.submit-eyebrow', '12px')
+    size('.cta-eyebrow', '12px')
+    size('.wbx-cases-categories button', '14px')
+    size('.wbx-case-card__meta', '12px')
+    size('.wbx-case-card__title', '18px')
+    size('.wbx-case-card__outcome', '14px')
+    size('.wbx-case-card__product', '11px')
+    size('.wbx-cases-submit .wbx-cases-action', '14px')
+    size('.wbx-case-service-cta .wbx-cases-action', '14px')
+  }
+
+  if (doc.querySelector('.wbx-service')) {
+    size('.wbx-service-eyebrow', '12px')
+    size('.wbx-service-offer__facts > div:first-child dd', '24px')
+    size('.wbx-service-offer__copy .wbx-service-action', '14px')
+    size('.wbx-service-payment__notice', '14px')
+    size('.wbx-service-case small', '10px')
+    size('.wbx-service-case strong', '15px')
+    size('.wbx-service-case span span', '13px')
+    size('.wbx-service-output-list dd', '14px')
+  }
+}
+
 afterEach(() => {
   document.head.querySelectorAll('style').forEach((style) => style.remove())
   document.body.replaceChildren()
@@ -120,10 +151,12 @@ describe('product page computed styles', () => {
                 <header class="wbx-cases-hero">
                   <div class="wbx-cases-hero__copy">
                   <p class="wbx-cases-eyebrow wbx-cases-header__eyebrow header-eyebrow">页首标签</p>
-                  <h1>案例集</h1><p class="primary-copy">案例正文</p>
+                  <h1>案例集</h1>
+                  <div class="wbx-cases-filter-panel__heading"><p class="wbx-cases-eyebrow gallery-eyebrow">画廊标签</p><h2>浏览案例</h2></div>
+                  <p class="primary-copy">案例正文</p>
                   </div>
-                  <section class="wbx-cases-filter-panel"><div class="wbx-cases-gallery__topline"><div><p class="wbx-cases-eyebrow gallery-eyebrow">画廊标签</p><h2>浏览案例</h2></div></div>
-                  <div class="wbx-cases-categories"><button>分类</button></div>
+                  <section class="wbx-cases-filter-panel">
+                  <div class="wbx-cases-filter-panel__controls"><label class="wbx-cases-search"><input type="search"></label><div class="wbx-cases-categories"><button>分类</button></div></div>
                   </section>
                 </header>
                 <section class="wbx-cases-gallery-results">
@@ -157,15 +190,13 @@ describe('product page computed styles', () => {
           markup: `
             <div class="VPDoc"><div class="vp-doc"><section class="wbx-service">
               <section class="wbx-service-offer"><div class="wbx-service-offer__copy">
-                <p class="wbx-service-eyebrow">服务标签</p><h1>定制服务</h1><p>服务正文</p>
-              </div></section>
-              <section class="wbx-service-section"><div class="wbx-service-section__heading"><h2>服务范围</h2></div></section>
-              <dl class="wbx-service-offer__facts"><div><dt>价格</dt><dd>¥999</dd></div></dl>
-              <a class="wbx-service-action">预约</a>
-              <a class="wbx-service-case">
+                <p class="wbx-service-eyebrow">服务标签</p><h1>定制服务</h1><p>服务正文</p><a class="wbx-service-action">预约</a>
+              </div><dl class="wbx-service-offer__facts"><div><dt>价格</dt><dd>¥999</dd></div></dl></section>
+              <section class="wbx-service-section wbx-service-deliverables"><div class="wbx-service-section__heading"><h2>服务范围</h2></div><dl class="wbx-service-output-list"><div><dt>输出</dt><dd>辅助说明</dd></div></dl></section>
+              <section class="wbx-service-section wbx-service-payment"><div class="wbx-service-payment__instructions"><p class="wbx-service-payment__notice">辅助提示</p></div></section>
+              <section class="wbx-service-section wbx-service-related"><div class="wbx-service-related__grid"><a class="wbx-service-case">
                 <span><small>案例标签</small><strong>卡片标题</strong><span>辅助结果</span></span>
-              </a>
-              <div class="wbx-service-output-list"><dd>辅助说明</dd></div>
+              </a></div></section>
             </section></div></div>
           `,
           h1: '.wbx-service h1',
@@ -215,9 +246,7 @@ describe('product page computed styles', () => {
           lineHeight: '1.75',
         })
 
-        for (const [selector, expectedSize] of Object.entries(page.compact)) {
-          expect(getComputedStyle(document.querySelector(selector)!).fontSize).toBe(expectedSize)
-        }
+        assertCompactSurfaces(document)
 
         if (page.css === pageStyles.cases) {
           expect(getComputedStyle(document.querySelector('.wbx-cases-header__eyebrow')!).position)

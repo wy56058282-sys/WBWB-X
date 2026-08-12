@@ -104,14 +104,21 @@ describe('case gallery', () => {
     expect(document.querySelector('.wbx-cases-filter-panel')?.getAttribute('id')).toBe('case-gallery')
   })
 
-  it('keeps the case filters beside the hero copy without rendering an outline rail', () => {
+  it('keeps cases in the main column and tools in the sticky side column', () => {
     mountCasesPage()
 
-    const hero = document.querySelector('.wbx-cases-hero')
-    const filterPanel = document.querySelector('.wbx-cases-filter-panel')
+    const layout = document.querySelector('.wbx-cases-layout-grid')
+    const main = layout?.querySelector(':scope > .wbx-cases-main-column')
+    const tools = layout?.querySelector(':scope > .wbx-cases-tools-column')
 
-    expect(hero?.querySelector('.wbx-cases-hero__copy')).not.toBeNull()
-    expect(hero?.contains(filterPanel)).toBe(true)
+    expect(main?.querySelector('#case-gallery-title')).not.toBeNull()
+    expect(main?.querySelector('#case-gallery-heading')?.textContent).toBe('浏览案例')
+    expect(main?.querySelector('.wbx-cases-gallery-results')).not.toBeNull()
+    expect(main?.querySelector('.wbx-cases-submit')).toBeNull()
+    expect(tools?.querySelector('.wbx-cases-search')).not.toBeNull()
+    expect(tools?.querySelector('.wbx-cases-categories')).not.toBeNull()
+    expect(tools?.querySelector('#submit-case')).not.toBeNull()
+    expect(document.querySelectorAll('.wbx-cases-submit')).toHaveLength(1)
     expect(document.querySelector('.wbx-cases-outline')).toBeNull()
   })
 })

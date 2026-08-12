@@ -4,7 +4,11 @@ import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import config from '../docs/.vitepress/config.mts'
 import { nav } from '../docs/.vitepress/navigation'
-import { isCaseIndexRoute, isHomeRoute } from '../docs/.vitepress/route-state'
+import {
+  isCaseDetailRoute,
+  isCaseIndexRoute,
+  isHomeRoute,
+} from '../docs/.vitepress/route-state'
 import { sidebar } from '../docs/.vitepress/sidebar'
 
 describe('site navigation', () => {
@@ -75,5 +79,17 @@ describe('site navigation', () => {
     expect(isCaseIndexRoute('/WBWB-X/cases/', '/WBWB-X/')).toBe(true)
     expect(isCaseIndexRoute('/cases/submissions/excel-store-analysis/', '/')).toBe(false)
     expect(isCaseIndexRoute('/community/case-contributing/', '/')).toBe(false)
+  })
+
+  it('recognizes case detail routes without matching the gallery or contribution guide', () => {
+    expect(isCaseDetailRoute('/cases/submissions/daily-ai-news/', '/')).toBe(true)
+    expect(
+      isCaseDetailRoute(
+        '/WBWB-X/cases/submissions/daily-ai-news/',
+        '/WBWB-X/',
+      ),
+    ).toBe(true)
+    expect(isCaseDetailRoute('/cases/', '/')).toBe(false)
+    expect(isCaseDetailRoute('/community/case-contributing/', '/')).toBe(false)
   })
 })

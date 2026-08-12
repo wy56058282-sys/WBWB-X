@@ -121,17 +121,24 @@ describe('case collection page styles', () => {
     expect(source).toMatch(/\.wbx-cases-layout \.VPDoc \.content\s*\{[^}]*max-width:\s*none;/s)
   })
 
-  it('places copy and filters in a responsive two-column hero without an outline rail', () => {
+  it('places cases and tools in a responsive 3:1 layout with a sticky desktop sidebar', () => {
     const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
     const pageSource = readFileSync('docs/.vitepress/theme/CasesPage.vue', 'utf8')
 
-    expect(pageSource).toContain('class="wbx-cases-hero"')
-    expect(pageSource).toContain('class="wbx-cases-filter-panel"')
+    expect(pageSource).toContain('class="wbx-cases-layout-grid"')
+    expect(pageSource).toContain('class="wbx-cases-main-column"')
+    expect(pageSource).toContain('class="wbx-cases-tools-column"')
     expect(pageSource).not.toContain('class="wbx-cases-outline"')
-    expect(source).toMatch(/\.wbx-cases-hero\s*\{[^}]*grid-template-columns:[^}]*minmax\(320px, 0\.7fr\)/s)
-    expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-hero\s*\{[^}]*grid-template-columns:\s*1fr/s)
+    expect(source).toMatch(/\.wbx-cases-layout-grid\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*minmax\(0, 3fr\) minmax\(240px, 1fr\)/s)
+    expect(source).toMatch(/\.wbx-cases-tools-column\s*\{[^}]*position:\s*sticky[^}]*top:\s*calc\(var\(--vp-nav-height\) \+ 24px\)/s)
+    expect(source).not.toMatch(/\.wbx-cases-hero\s*\{[^}]*border-bottom:/s)
+    expect(source).toMatch(/\.wbx-cases-filter-panel__controls\s*\{[^}]*display:\s*grid[^}]*justify-items:\s*start/s)
+    expect(source).toMatch(/\.wbx-cases-filter-panel__controls \.wbx-cases-categories\s*\{[^}]*justify-content:\s*flex-start/s)
+    expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-layout-grid,\s*\.wbx-cases-main-column,\s*\.wbx-cases-tools-column\s*\{[^}]*display:\s*contents/s)
+    expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-filter-panel\s*\{[^}]*order:\s*2/s)
+    expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-gallery-results\s*\{[^}]*order:\s*3/s)
+    expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-submit\s*\{[^}]*order:\s*4/s)
     expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-search\s*\{[^}]*width:\s*100%/s)
-    expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-gallery__topline\s*\{[^}]*flex-direction:\s*column/s)
   })
 
   it('registers the gallery and makes it the entire case-index body', () => {
@@ -169,7 +176,7 @@ describe('case collection page styles', () => {
 
     expect(source).toMatch(/\.wbx-cases-layout \.VPDoc \.container\s*\{[^}]*max-width:\s*1104px/s)
     expect(source).toMatch(/\.wbx-cases-layout \.VPDoc \.content-container\s*\{[^}]*max-width:\s*688px/s)
-    expect(source).toMatch(/@media \(min-width:\s*1280px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.wbx-cases-layout \.VPDoc \.content-container\s*\{[^}]*max-width:\s*none/s)
+    expect(source).toMatch(/@media \(min-width:\s*1025px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.wbx-cases-layout \.VPDoc \.content-container\s*\{[^}]*max-width:\s*none/s)
     expect(source).not.toMatch(/\.wbx-cases-layout \.VPDoc[^{]*\{[^}]*padding(?:-inline|-left|-right):/s)
     expect(source).toMatch(/\.wbx-cases h1\s*\{[^}]*font-weight:\s*850[^}]*line-height:\s*58\.88px[^}]*letter-spacing:\s*0/s)
     expect(source).toMatch(/\.wbx-cases-categories button,\s*\.wbx-cases-empty button\s*\{[^}]*border:\s*2px solid var\(--wbx-ink\)[^}]*border-radius:\s*0/s)
@@ -267,8 +274,8 @@ describe('case collection page styles', () => {
             <div class="content">
               <div class="content-container">
                 <section class="wbx-cases">
-                  <header class="wbx-cases-hero"><div class="wbx-cases-hero__copy"></div><section class="wbx-cases-filter-panel"></section></header>
-                  <section class="wbx-cases-gallery-results"><ul class="wbx-cases-grid"><li class="wbx-case-card"></li></ul></section>
+                  <div class="wbx-cases-layout-grid"><main class="wbx-cases-main-column"><header class="wbx-cases-hero"><div class="wbx-cases-hero__copy"></div></header>
+                  <section class="wbx-cases-gallery-results"><ul class="wbx-cases-grid"><li class="wbx-case-card"></li></ul></section></main><aside class="wbx-cases-tools-column"><section class="wbx-cases-filter-panel"></section></aside></div>
                 </section>
               </div>
             </div>
@@ -298,7 +305,7 @@ describe('case collection page styles', () => {
       expect(vpContentStyle.paddingRight).toBe('0px')
       expect(contentStyle.paddingLeft).toBe('32px')
       expect(contentStyle.paddingRight).toBe('32px')
-      expect(heroStyle.gridTemplateColumns).toBe('1fr')
+      expect(heroStyle.display).not.toBe('grid')
       expect(gridStyle.gridTemplateColumns).toBe('repeat(2, minmax(0, 1fr))')
 
       const vpContentWidth = usedBlockWidth(viewportWidth, vpContentStyle)
@@ -416,12 +423,11 @@ describe('case collection page styles', () => {
 
     const fixture = document.createElement('section')
     fixture.className = 'wbx-cases'
-    fixture.innerHTML = '<header class="wbx-cases-hero"><section class="wbx-cases-filter-panel"><div class="wbx-cases-gallery__topline"><label class="wbx-cases-search"><input type="search"></label></div></section></header>'
+    fixture.innerHTML = '<header class="wbx-cases-hero"><section class="wbx-cases-filter-panel"><div class="wbx-cases-filter-panel__heading"><h2>浏览案例</h2></div><div class="wbx-cases-filter-panel__controls"><label class="wbx-cases-search"><input type="search"></label><div class="wbx-cases-categories"></div></div></section></header>'
     document.body.append(fixture)
 
     try {
       expect(getComputedStyle(fixture.querySelector('.wbx-cases-search')!).width).toBe('100%')
-      expect(getComputedStyle(fixture.querySelector('.wbx-cases-gallery__topline')!).flexDirection).toBe('column')
     } finally {
       fixture.remove()
       appliedStyles.remove()
@@ -441,12 +447,20 @@ describe('case collection page styles', () => {
     expect(copyMarkup).toMatch(/wbx-cases-header__eyebrow[\s\S]*?<h1 id="case-gallery-title">/)
   })
 
-  it('contains the case submission actions within the shared page width', () => {
+  it('contains the case submission actions within the sticky tool column', () => {
     const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
 
-    expect(source).toMatch(/\.wbx-cases-submit__actions\s*\{[^}]*flex:\s*0 1 412px/s)
+    expect(source).toMatch(/\.wbx-cases-submit\s*\{[^}]*align-items:\s*flex-start/s)
+    expect(source).toMatch(/\.wbx-cases-submit__actions\s*\{[^}]*align-items:\s*flex-start/s)
     expect(source).toMatch(/\.wbx-cases-submit__actions\s*\{[^}]*width:\s*100%/s)
-    expect(source).toMatch(/\.wbx-cases-submit__actions\s*\{[^}]*max-width:\s*412px/s)
+    expect(source).toMatch(/\.wbx-cases-submit__actions\s*\{[^}]*max-width:\s*100%/s)
     expect(source).toMatch(/\.wbx-cases-submit__actions\s*\{[^}]*min-width:\s*0/s)
+  })
+
+  it('keeps the case index logo region on the same frosted navigation layer', () => {
+    const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
+
+    expect(source).toMatch(/\.wbx-cases-layout \.VPNavBar\.has-sidebar > \.wrapper > \.container > \.title\s*\{[^}]*background:\s*color-mix\([^}]*backdrop-filter:\s*blur\(16px\)/s)
+    expect(source).toMatch(/\.wbx-cases-layout \.VPNavBar\.has-sidebar > \.wrapper > \.container > \.title\s*\{[^}]*-webkit-backdrop-filter:\s*blur\(16px\)/s)
   })
 })

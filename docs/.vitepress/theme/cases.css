@@ -11,6 +11,12 @@
   padding-left: 0;
 }
 
+.wbx-cases-layout .VPNavBar.has-sidebar > .wrapper > .container > .title {
+  background: color-mix(in srgb, var(--wbx-paper) 82%, transparent);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
 .wbx-cases-layout .VPDoc .container {
   max-width: 1104px;
 }
@@ -29,13 +35,33 @@
   color: var(--wbx-ink);
 }
 
-.wbx-cases-hero {
+.wbx-cases-layout-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.7fr);
+  grid-template-columns: minmax(0, 3fr) minmax(240px, 1fr);
   gap: 44px;
   align-items: start;
+}
+
+.wbx-cases-main-column,
+.wbx-cases-tools-column {
+  min-width: 0;
+}
+
+.wbx-cases-main-column {
+  display: grid;
+  gap: 36px;
+}
+
+.wbx-cases-tools-column {
+  position: sticky;
+  top: calc(var(--vp-nav-height) + 24px);
+  display: grid;
+  gap: 36px;
+  align-self: start;
+}
+
+.wbx-cases-hero {
   padding: 26px 0 36px;
-  border-bottom: 2px solid var(--wbx-ink);
 }
 
 .wbx-cases-hero__copy,
@@ -95,11 +121,23 @@
   line-height: 1.75;
 }
 
-.wbx-cases-gallery__topline {
-  display: flex;
-  gap: 24px;
-  align-items: end;
-  justify-content: space-between;
+.wbx-cases-filter-panel {
+  min-width: 0;
+}
+
+.wbx-cases-filter-panel__heading,
+.wbx-cases-filter-panel__controls {
+  min-width: 0;
+}
+
+.wbx-cases-filter-panel__heading {
+  margin: 24px 0 0;
+}
+
+.wbx-cases-filter-panel__controls {
+  display: grid;
+  gap: 16px;
+  justify-items: start;
 }
 
 .wbx-cases-search {
@@ -109,6 +147,11 @@
   color: var(--wbx-muted);
   font-size: 13px;
   font-weight: 700;
+}
+
+.wbx-cases-filter-panel__controls .wbx-cases-categories {
+  justify-content: flex-start;
+  margin: 0;
 }
 
 .wbx-cases-search input {
@@ -287,13 +330,10 @@
 }
 
 .wbx-cases-submit {
-  display: flex;
-  gap: 32px;
-  align-items: end;
-  justify-content: space-between;
-  padding: 34px 0;
-  border-top: 2px solid var(--wbx-ink);
-  border-bottom: 1px solid var(--wbx-line);
+  display: grid;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 0;
 }
 
 .wbx-cases-submit h2 {
@@ -301,15 +341,12 @@
 }
 
 .wbx-cases-submit__actions {
-  display: flex;
+  display: grid;
   gap: 12px;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: flex-end;
+  align-items: flex-start;
   width: 100%;
-  max-width: 412px;
+  max-width: 100%;
   min-width: 0;
-  flex: 0 1 412px;
 }
 
 .wbx-cases-submit__qr-wrap {
@@ -405,11 +442,13 @@
   }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1025px) {
   .wbx-cases-layout .VPDoc .content-container {
     max-width: none;
   }
+}
 
+@media (min-width: 1280px) {
   .wbx-cases-header__eyebrow {
     position: absolute;
     top: -22px;
@@ -431,18 +470,36 @@
 }
 
 @media (max-width: 1024px) {
+  .wbx-cases {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .wbx-cases-layout-grid,
+  .wbx-cases-main-column,
+  .wbx-cases-tools-column {
+    display: contents;
+  }
+
   .wbx-cases-hero {
-    grid-template-columns: 1fr;
-    gap: 26px;
+    order: 1;
+  }
+
+  .wbx-cases-filter-panel {
+    order: 2;
+  }
+
+  .wbx-cases-gallery-results {
+    order: 3;
+  }
+
+  .wbx-cases-submit {
+    order: 4;
+    margin-top: 36px;
   }
 
   .wbx-cases-search {
     width: 100%;
-  }
-
-  .wbx-cases-gallery__topline {
-    align-items: stretch;
-    flex-direction: column;
   }
 
   .wbx-cases-gallery-results .wbx-cases-grid {
@@ -451,7 +508,6 @@
 }
 
 @media (max-width: 640px) {
-  .wbx-cases-gallery__topline,
   .wbx-cases-submit,
   .wbx-case-service-cta {
     align-items: stretch;
