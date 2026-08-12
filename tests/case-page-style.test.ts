@@ -134,6 +134,7 @@ describe('case collection page styles', () => {
     expect(source).not.toMatch(/\.wbx-cases-hero\s*\{[^}]*border-bottom:/s)
     expect(source).toMatch(/\.wbx-cases-main-column\s*\{[^}]*display:\s*flex[^}]*flex-direction:\s*column/s)
     expect(source).not.toMatch(/\.wbx-cases-main-column\s*\{[^}]*display:\s*contents/s)
+    expect(source).toMatch(/\.wbx-cases-main-column > \.wbx-cases-categories\s*\{[^}]*margin:\s*-8px 0 24px/s)
     expect(source).toMatch(/\.wbx-cases-tools-column > \.wbx-cases-search\s*\{[^}]*width:\s*100%[^}]*max-width:\s*none/s)
     expect(source).not.toMatch(/\.wbx-cases-filter-toolbar\s*\{[^}]*grid-column:\s*1\s*\/\s*-1/s)
     expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-layout-grid,\s*\.wbx-cases-main-column,\s*\.wbx-cases-tools-column\s*\{[^}]*display:\s*contents/s)
