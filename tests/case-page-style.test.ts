@@ -132,12 +132,13 @@ describe('case collection page styles', () => {
     expect(source).toMatch(/\.wbx-cases-layout-grid\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*minmax\(0, 3fr\) minmax\(240px, 1fr\)/s)
     expect(source).toMatch(/\.wbx-cases-tools-column\s*\{[^}]*position:\s*sticky[^}]*top:\s*calc\(var\(--vp-nav-height\) \+ 24px\)/s)
     expect(source).not.toMatch(/\.wbx-cases-hero\s*\{[^}]*border-bottom:/s)
-    expect(source).toMatch(/\.wbx-cases-layout-grid > \.wbx-cases-categories\s*\{[^}]*grid-column:\s*1[^}]*grid-row:\s*2/s)
+    expect(source).toMatch(/\.wbx-cases-main-column\s*\{[^}]*display:\s*flex[^}]*flex-direction:\s*column/s)
+    expect(source).not.toMatch(/\.wbx-cases-main-column\s*\{[^}]*display:\s*contents/s)
     expect(source).toMatch(/\.wbx-cases-tools-column > \.wbx-cases-search\s*\{[^}]*width:\s*100%[^}]*max-width:\s*none/s)
     expect(source).not.toMatch(/\.wbx-cases-filter-toolbar\s*\{[^}]*grid-column:\s*1\s*\/\s*-1/s)
     expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-layout-grid,\s*\.wbx-cases-main-column,\s*\.wbx-cases-tools-column\s*\{[^}]*display:\s*contents/s)
     expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-search\s*\{[^}]*order:\s*2[^}]*width:\s*100%/s)
-    expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-layout-grid > \.wbx-cases-categories\s*\{[^}]*order:\s*3/s)
+    expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-main-column > \.wbx-cases-categories\s*\{[^}]*order:\s*3/s)
   })
 
   it('registers the gallery and makes it the entire case-index body', () => {

@@ -116,7 +116,7 @@ describe('case gallery', () => {
     expect(document.body.textContent).not.toContain('CASE GALLERY')
     expect(main?.querySelector('.wbx-cases-hero__copy > p:last-child')?.textContent)
       .toBe('从真实场景出发，找到可以带走复用的工作方法。')
-    const categories = layout?.querySelector(':scope > .wbx-cases-categories')
+    const categories = main?.querySelector(':scope > .wbx-cases-categories')
     expect(categories).not.toBeNull()
     expect(
       [...(categories?.querySelectorAll<HTMLButtonElement>('button') ?? [])]
@@ -125,6 +125,8 @@ describe('case gallery', () => {
     expect(main?.querySelector('.wbx-cases-gallery-results')).not.toBeNull()
     expect(main?.querySelector('.wbx-cases-submit')).toBeNull()
     expect(tools?.firstElementChild?.classList.contains('wbx-cases-search')).toBe(true)
+    expect(tools?.querySelector('.wbx-cases-search > span')).toBeNull()
+    expect(tools?.querySelector('.wbx-cases-search input')?.getAttribute('aria-label')).toBe('搜索案例')
     expect(tools?.querySelector('.wbx-cases-categories')).toBeNull()
     expect(tools?.querySelector('#submit-case')).not.toBeNull()
     expect(document.querySelectorAll('.wbx-cases-submit')).toHaveLength(1)

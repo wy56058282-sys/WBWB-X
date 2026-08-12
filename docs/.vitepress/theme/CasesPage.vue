@@ -36,6 +36,27 @@ function resetFilters() {
           </div>
         </header>
 
+        <div id="case-gallery" class="wbx-cases-categories" aria-label="案例分类">
+          <button
+            v-for="item in categories"
+            :key="item"
+            type="button"
+            :data-category="item"
+            :aria-pressed="category === item"
+            @click="category = item"
+          >
+            <i
+              :class="[
+                'hn',
+                category === item ? 'hn-check-circle-solid' : categoryIcons[item],
+                'wbx-cases-category__indicator',
+              ]"
+              aria-hidden="true"
+            />
+            {{ item }}
+          </button>
+        </div>
+
         <section class="wbx-cases-gallery-results">
           <ul v-if="cases.length" class="wbx-cases-grid" aria-live="polite">
           <li v-for="item in cases" :key="item.route" class="wbx-case-card">
@@ -65,31 +86,9 @@ function resetFilters() {
         </section>
       </main>
 
-      <div id="case-gallery" class="wbx-cases-categories" aria-label="案例分类">
-          <button
-            v-for="item in categories"
-            :key="item"
-            type="button"
-            :data-category="item"
-            :aria-pressed="category === item"
-            @click="category = item"
-          >
-            <i
-              :class="[
-                'hn',
-                category === item ? 'hn-check-circle-solid' : categoryIcons[item],
-                'wbx-cases-category__indicator',
-              ]"
-              aria-hidden="true"
-            />
-            {{ item }}
-          </button>
-      </div>
-
       <aside class="wbx-cases-tools-column" aria-label="案例搜索与投稿">
         <label class="wbx-cases-search">
-          <span>搜索案例</span>
-          <input v-model="query" type="search" placeholder="搜索场景、成果或产品" autocomplete="off">
+          <input v-model="query" type="search" aria-label="搜索案例" placeholder="搜索场景、成果或产品" autocomplete="off">
         </label>
         <section id="submit-case" class="wbx-cases-submit" aria-labelledby="submit-case-title">
         <div>
