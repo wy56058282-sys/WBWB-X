@@ -30,7 +30,7 @@
 
 .wbx-home-analytics {
   display: grid;
-  grid-template-columns: 180px 1fr;
+  grid-template-columns: 160px 1fr;
   width: 100%;
   margin-top: 32px;
   overflow: hidden;
@@ -41,12 +41,11 @@
 }
 
 .wbx-home-analytics__status {
-  display: grid;
-  grid-template-columns: 18px 1fr;
-  align-content: center;
+  display: flex;
   align-items: center;
-  gap: 4px 12px;
-  padding: 18px 24px;
+  justify-content: center;
+  gap: 14px;
+  padding: 14px 22px;
   border-right: 1px solid var(--wbx-ink);
 }
 
@@ -60,11 +59,12 @@
 }
 
 .wbx-home-analytics__status strong {
-  font-size: 15px;
+  font-family: var(--wbx-pixel);
+  font-size: 14px;
+  line-height: 1;
 }
 
 .wbx-home-analytics small {
-  grid-column: 2;
   color: color-mix(in srgb, var(--wbx-accent) 48%, var(--wbx-ink));
   font-family: var(--wbx-pixel);
   font-size: 10px;
@@ -83,7 +83,7 @@
   align-content: center;
   gap: 4px 16px;
   min-width: 0;
-  padding: 16px 24px;
+  padding: 14px 24px;
   border-right: 1px solid var(--wbx-ink);
 }
 
@@ -93,14 +93,14 @@
 
 .wbx-home-analytics dt {
   color: var(--wbx-muted);
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .wbx-home-analytics dd {
   margin: 0;
   color: var(--wbx-ink);
   font-family: var(--wbx-pixel);
-  font-size: clamp(17px, 1.7vw, 25px);
+  font-size: clamp(18px, 1.8vw, 26px);
   line-height: 1;
 }
 
@@ -1369,15 +1369,10 @@
   }
 
   .wbx-home-analytics__status {
-    grid-template-columns: 18px auto 1fr;
+    justify-content: flex-start;
     padding: 12px 16px;
     border-right: 0;
     border-bottom: 1px solid var(--wbx-ink);
-  }
-
-  .wbx-home-analytics__status small {
-    grid-column: auto;
-    justify-self: end;
   }
 
   .wbx-home-analytics dl {

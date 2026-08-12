@@ -46,7 +46,8 @@ describe('HomeAnalyticsStrip', () => {
     resolve({ todayVisits: 1234, todayPageviews: 5678, lifetimeVisits: 9012, lifetimePageviews: 34567, fetchedAt: Date.now() })
     await Promise.resolve(); await nextTick()
     expect([...view.host.querySelectorAll('dd')].map((node) => node.textContent)).toEqual(['1,234', '5,678', '9,012', '34,567'])
-    expect(view.host.querySelector('.wbx-home-analytics__status')?.textContent).toContain('实时统计')
+    expect(view.host.querySelector('.wbx-home-analytics__status')?.textContent).toContain('LIVE')
+    expect(view.host.querySelector('[role="status"]')?.textContent).toContain('统计已同步')
     view.unmount()
   })
 
