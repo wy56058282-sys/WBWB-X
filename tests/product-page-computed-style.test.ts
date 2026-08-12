@@ -99,7 +99,6 @@ function assertCompactSurfaces(doc: Document) {
   }
 
   if (doc.querySelector('.wbx-cases')) {
-    size('.header-eyebrow', '12px')
     size('.gallery-eyebrow', '12px')
     size('.submit-eyebrow', '12px')
     size('.cta-eyebrow', '12px')
@@ -150,7 +149,6 @@ describe('product page computed styles', () => {
               <section class="wbx-cases">
                 <header class="wbx-cases-hero">
                   <div class="wbx-cases-hero__copy">
-                  <p class="wbx-cases-eyebrow wbx-cases-header__eyebrow header-eyebrow">页首标签</p>
                   <h1>案例集</h1>
                   <div class="wbx-cases-filter-panel__heading"><p class="wbx-cases-eyebrow gallery-eyebrow">画廊标签</p><h2>浏览案例</h2></div>
                   <p class="primary-copy">案例正文</p>
@@ -174,7 +172,6 @@ describe('product page computed styles', () => {
           h2: '.wbx-cases h2',
           body: '.primary-copy',
           compact: {
-            '.header-eyebrow': '12px',
             '.gallery-eyebrow': '12px',
             '.submit-eyebrow': '12px',
             '.cta-eyebrow': '12px',
@@ -249,8 +246,6 @@ describe('product page computed styles', () => {
         assertCompactSurfaces(document)
 
         if (page.css === pageStyles.cases) {
-          expect(getComputedStyle(document.querySelector('.wbx-cases-header__eyebrow')!).position)
-            .toBe(viewportWidth >= 1280 ? 'absolute' : '')
           expect(getComputedStyle(document.querySelector('.gallery-eyebrow')!).position).not.toBe('absolute')
           expect(getComputedStyle(document.querySelector('.submit-eyebrow')!).position).not.toBe('absolute')
           expect(getComputedStyle(document.querySelector('.cta-eyebrow')!).position).not.toBe('absolute')
@@ -275,7 +270,6 @@ describe('product page computed styles', () => {
     installStyles(pageStyles.cases, themes.light, 1440)
     document.body.innerHTML = `
       <div class="wbx-cases"><div class="wbx-cases-main">
-        <header><p class="wbx-cases-eyebrow header-eyebrow">页首</p></header>
         <section><p class="wbx-cases-eyebrow gallery-eyebrow">画廊</p></section>
         <section><p class="wbx-cases-eyebrow submit-eyebrow">投稿</p></section>
       </div></div>
@@ -283,7 +277,7 @@ describe('product page computed styles', () => {
     `
 
     const expectCompactEyebrows = () => {
-      for (const selector of ['.header-eyebrow', '.gallery-eyebrow', '.submit-eyebrow', '.cta-eyebrow']) {
+      for (const selector of ['.gallery-eyebrow', '.submit-eyebrow', '.cta-eyebrow']) {
         expect(getComputedStyle(document.querySelector(selector)!).fontSize).toBe('12px')
       }
     }

@@ -134,6 +134,7 @@ describe('case collection page styles', () => {
     expect(source).not.toMatch(/\.wbx-cases-hero\s*\{[^}]*border-bottom:/s)
     expect(source).toMatch(/\.wbx-cases-main-column\s*\{[^}]*display:\s*flex[^}]*flex-direction:\s*column/s)
     expect(source).not.toMatch(/\.wbx-cases-main-column\s*\{[^}]*display:\s*contents/s)
+    expect(source).not.toContain('.wbx-cases-header__eyebrow')
     expect(source).toMatch(/\.wbx-cases-main-column > \.wbx-cases-categories\s*\{[^}]*margin:\s*-8px 0 24px/s)
     expect(source).toMatch(/\.wbx-cases-tools-column > \.wbx-cases-search\s*\{[^}]*width:\s*100%[^}]*max-width:\s*none/s)
     expect(source).not.toMatch(/\.wbx-cases-filter-toolbar\s*\{[^}]*grid-column:\s*1\s*\/\s*-1/s)
@@ -155,20 +156,18 @@ describe('case collection page styles', () => {
     expect(pageSource).toContain(
       '<span class="wbx-cases-brand">WorkBuddy WB-X</span> 案例集',
     )
-    expect(pageSource).toContain('class="wbx-cases-eyebrow wbx-cases-header__eyebrow"')
+    expect(pageSource).not.toContain('wbx-cases-header__eyebrow')
     expect(styles).toMatch(
       /\.wbx-cases-brand\s*\{[^}]*font-weight:\s*850;/s,
     )
   })
 
-  it('keeps the English eyebrow above the Chinese title and excludes labels from body copy', () => {
+  it('removes the page eyebrow and excludes remaining labels from body copy', () => {
     const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
     const pageSource = readFileSync('docs/.vitepress/theme/CasesPage.vue', 'utf8')
 
     expect(source).toMatch(/\.wbx-cases-submit p:not\(\.wbx-cases-eyebrow\)/)
-    expect(pageSource.indexOf('wbx-cases-header__eyebrow')).toBeLessThan(
-      pageSource.indexOf('<h1 id="case-gallery-title">'),
-    )
+    expect(pageSource).not.toContain('wbx-cases-header__eyebrow')
   })
 
   it('keeps the shared content width and square category controls', () => {
@@ -435,17 +434,12 @@ describe('case collection page styles', () => {
     }
   })
 
-  it('anchors the desktop eyebrow to the hero copy with an explicit positioning contract', () => {
+  it('does not restore a positioned page eyebrow above the title', () => {
     const casesStyles = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
     const pageSource = readFileSync('docs/.vitepress/theme/CasesPage.vue', 'utf8')
-    const copyMarkup = pageSource.match(
-      /<div class="wbx-cases-hero__copy">([\s\S]*?)<\/div>/,
-    )?.[1]
-
     expect(casesStyles).toMatch(/\.wbx-cases-hero__copy\s*\{[^}]*position:\s*relative/s)
-    expect(casesStyles).toMatch(/\.wbx-cases-header__eyebrow\s*\{[^}]*position:\s*absolute[^}]*top:\s*-22px[^}]*left:\s*0[^}]*margin:\s*0/s)
-    expect(casesStyles).not.toMatch(/\.wbx-cases-header__eyebrow\s*\{[^}]*right:/s)
-    expect(copyMarkup).toMatch(/wbx-cases-header__eyebrow[\s\S]*?<h1 id="case-gallery-title">/)
+    expect(casesStyles).not.toContain('.wbx-cases-header__eyebrow')
+    expect(pageSource).not.toContain('wbx-cases-header__eyebrow')
   })
 
   it('contains the case submission actions within the sticky tool column', () => {

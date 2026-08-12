@@ -114,6 +114,7 @@ describe('case gallery', () => {
     expect(main?.querySelector('#case-gallery-title')).not.toBeNull()
     expect(main?.querySelector('#case-gallery-heading')).toBeNull()
     expect(document.body.textContent).not.toContain('CASE GALLERY')
+    expect(document.body.textContent).not.toContain('WORKBUDDY COMMUNITY')
     expect(main?.querySelector('.wbx-cases-hero__copy > p:last-child')?.textContent)
       .toBe('从真实场景出发，找到可以带走复用的工作方法。')
     const categories = main?.querySelector(':scope > .wbx-cases-categories')

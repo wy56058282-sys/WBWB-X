@@ -30,7 +30,6 @@ function resetFilters() {
       <main class="wbx-cases-main-column">
         <header class="wbx-cases-hero">
           <div class="wbx-cases-hero__copy">
-          <p class="wbx-cases-eyebrow wbx-cases-header__eyebrow">WORKBUDDY COMMUNITY</p>
           <h1 id="case-gallery-title"><span class="wbx-cases-brand">WorkBuddy WB-X</span> 案例集</h1>
           <p>从真实场景出发，找到可以带走复用的工作方法。</p>
           </div>

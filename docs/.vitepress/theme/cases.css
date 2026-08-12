@@ -443,16 +443,6 @@
   }
 }
 
-@media (min-width: 1280px) {
-  .wbx-cases-header__eyebrow {
-    position: absolute;
-    top: -22px;
-    left: 0;
-    margin: 0;
-  }
-
-}
-
 @media (max-width: 959px) {
   .wbx-cases {
     padding-top: 4px;
