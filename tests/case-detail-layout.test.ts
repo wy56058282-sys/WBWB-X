@@ -47,10 +47,19 @@ describe('case detail layout', () => {
       /@media \(min-width:\s*960px\)[\s\S]*?\.wbx-case-detail-layout \.VPDoc \.container\s*\{[^}]*max-width:\s*1104px[^}]*margin-left:\s*auto[^}]*margin-right:\s*auto/s,
     )
     expect(customCss).toMatch(
-      /@media \(min-width:\s*960px\)[\s\S]*?\.wbx-case-detail-layout \.VPDoc \.content\s*\{[^}]*max-width:\s*none[^}]*padding-left:\s*40px[^}]*padding-right:\s*40px/s,
+      /@media \(min-width:\s*960px\)[\s\S]*?\.wbx-case-detail-layout \.VPDoc \.content\s*\{[^}]*max-width:\s*none[^}]*padding-left:\s*0[^}]*padding-right:\s*0/s,
     )
     expect(customCss).toMatch(
       /@media \(max-width:\s*959px\)[\s\S]*?\.wbx-case-detail-layout \.VPDoc \.content\s*\{[^}]*padding-left:\s*32px[^}]*padding-right:\s*32px/s,
+    )
+    expect(customCss).toMatch(
+      /@media \(max-width:\s*640px\)[\s\S]*?\.wbx-case-detail-layout \.VPDoc \.content\s*\{[^}]*padding-left:\s*24px[^}]*padding-right:\s*24px/s,
+    )
+  })
+
+  it('reuses the case index frosted logo treatment on desktop detail pages', () => {
+    expect(customCss).toMatch(
+      /\.wbx-case-detail-layout \.VPNavBar\.has-sidebar > \.wrapper > \.container > \.title\s*\{[^}]*background:\s*color-mix\([^}]*-webkit-backdrop-filter:\s*blur\(16px\)[^}]*backdrop-filter:\s*blur\(16px\)/s,
     )
   })
 })
