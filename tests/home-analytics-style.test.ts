@@ -23,8 +23,10 @@ describe('home analytics integration', () => {
 
   it('keeps the visible status compact like the reference strip', () => {
     const source = readFileSync('docs/.vitepress/theme/HomeAnalyticsStrip.vue', 'utf8')
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     expect(source).toContain('<strong>LIVE</strong>')
     expect(source).toContain('class="wbx-sr-only"')
     expect(source).not.toContain("<small>LIVE</small>")
+    expect(css).toMatch(/\.wbx-sr-only\s*\{[^}]*position:\s*absolute[^}]*width:\s*1px[^}]*height:\s*1px[^}]*overflow:\s*hidden/s)
   })
 })

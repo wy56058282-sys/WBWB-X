@@ -49,13 +49,24 @@
   border-right: 1px solid var(--wbx-ink);
 }
 
-.wbx-home-analytics__status > span {
+.wbx-home-analytics__live-dot {
   width: 18px;
   height: 18px;
   border: 2px solid var(--wbx-ink);
   border-radius: 50%;
   background: var(--wbx-accent);
   box-shadow: inset 0 0 0 3px var(--vp-c-bg);
+}
+
+.wbx-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .wbx-home-analytics__status strong {

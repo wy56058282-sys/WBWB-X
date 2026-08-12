@@ -63,7 +63,7 @@ onBeforeUnmount(() => {
 <template>
   <section class="wbx-home-analytics" aria-label="网站访问统计">
     <div class="wbx-home-analytics__status">
-      <span aria-hidden="true" />
+      <span class="wbx-home-analytics__live-dot" aria-hidden="true" />
       <strong>LIVE</strong>
       <span class="wbx-sr-only" role="status">
         {{ state === 'ready' ? '统计已同步' : state === 'loading' ? '统计连接中' : '统计暂未同步' }}
