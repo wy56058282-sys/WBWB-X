@@ -6,6 +6,10 @@
   display: none;
 }
 
+.wbx-cases-layout .VPDocFooter {
+  display: none;
+}
+
 .wbx-cases-layout .VPContent.has-sidebar {
   padding-right: 0;
   padding-left: 0;
@@ -61,7 +65,7 @@
   align-self: stretch;
   grid-column: 2;
   grid-row: 1;
-  margin-top: 153px;
+  margin-top: 26px;
 }
 
 .wbx-cases-tools-stack {
