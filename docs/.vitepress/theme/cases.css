@@ -399,7 +399,7 @@
   margin-bottom: 8px;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1279px) {
   .wbx-cases-gallery-results .wbx-cases-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

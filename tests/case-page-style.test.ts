@@ -108,7 +108,7 @@ describe('case collection page styles', () => {
     const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
 
     expect(source).toMatch(/\.wbx-cases-gallery-results \.wbx-cases-grid\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/)
-    expect(source).toMatch(/@media \(max-width:\s*1200px\)[\s\S]*?\.wbx-cases-gallery-results \.wbx-cases-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)/)
+    expect(source).toMatch(/@media \(max-width:\s*1279px\)[\s\S]*?\.wbx-cases-gallery-results \.wbx-cases-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)/)
     expect(source).toMatch(/@media \(max-width:\s*640px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.wbx-cases-gallery-results \.wbx-cases-grid\s*\{[^}]*grid-template-columns:\s*1fr/)
     expect(source).toMatch(/\.wbx-case-card__cover\s*\{[^}]*aspect-ratio:/)
     expect(source).toMatch(/\.wbx-cases-grid\s*>\s*\.wbx-case-card\s*\{[^}]*margin:\s*0/)
@@ -361,6 +361,8 @@ describe('case collection page styles', () => {
   it.each([
     { viewportWidth: 1025, columns: 'repeat(2, minmax(0, 1fr))' },
     { viewportWidth: 1100, columns: 'repeat(2, minmax(0, 1fr))' },
+    { viewportWidth: 1201, columns: 'repeat(2, minmax(0, 1fr))' },
+    { viewportWidth: 1279, columns: 'repeat(2, minmax(0, 1fr))' },
     { viewportWidth: 1280, columns: 'repeat(3, minmax(0, 1fr))' },
   ])('uses $columns case cards at $viewportWidth px', ({ viewportWidth, columns }) => {
     const casesStyles = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
@@ -376,6 +378,30 @@ describe('case collection page styles', () => {
     try {
       expect(getComputedStyle(fixture.querySelector('.wbx-cases-grid')!).gridTemplateColumns)
         .toBe(columns)
+    } finally {
+      fixture.remove()
+      appliedStyles.remove()
+    }
+  })
+
+  it.each([1201, 1279])('keeps two-column case cards readable at %ipx', (viewportWidth) => {
+    const casesStyles = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
+    const appliedStyles = document.createElement('style')
+    appliedStyles.textContent = flattenStylesAtViewport(casesStyles, viewportWidth)
+    document.head.append(appliedStyles)
+
+    const fixture = document.createElement('section')
+    fixture.className = 'wbx-cases'
+    fixture.innerHTML = '<section class="wbx-cases-gallery-results"><ul class="wbx-cases-grid"><li class="wbx-case-card"></li></ul></section>'
+    document.body.append(fixture)
+
+    try {
+      const grid = fixture.querySelector<HTMLElement>('.wbx-cases-grid')!
+      const gridStyle = getComputedStyle(grid)
+      const cardWidth = (688 - px(gridStyle.gap)) / 2
+
+      expect(gridStyle.gridTemplateColumns).toBe('repeat(2, minmax(0, 1fr))')
+      expect(cardWidth).toBeGreaterThanOrEqual(300)
     } finally {
       fixture.remove()
       appliedStyles.remove()
