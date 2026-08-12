@@ -7,7 +7,11 @@ import {
 } from 'vue'
 import { withBase } from 'vitepress'
 import { brand } from '../brand'
+import HomeAnalyticsStrip from './HomeAnalyticsStrip.vue'
+import { readHomeAnalyticsConfig } from './homeAnalytics'
 import { homeUpdates } from './homeUpdates'
+
+const homeAnalyticsConfig = readHomeAnalyticsConfig(import.meta.env)
 
 const sortedHomeUpdates = [...homeUpdates].sort((a, b) =>
   b.date.localeCompare(a.date),
@@ -325,6 +329,11 @@ const workflowSteps = [
         </div>
       </div>
     </section>
+
+    <HomeAnalyticsStrip
+      v-if="homeAnalyticsConfig"
+      :config="homeAnalyticsConfig"
+    />
 
     <section class="wbx-section wbx-reading" aria-labelledby="wbx-reading-title">
       <div class="wbx-section__heading">
