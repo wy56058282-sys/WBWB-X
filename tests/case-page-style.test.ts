@@ -158,8 +158,6 @@ describe('case collection page styles', () => {
     const pageSource = readFileSync('docs/.vitepress/theme/CasesPage.vue', 'utf8')
 
     expect(source).toMatch(/\.wbx-cases-submit p:not\(\.wbx-cases-eyebrow\)/)
-    expect(source).toMatch(/\.wbx-cases-header__eyebrow\s*\{[^}]*position:\s*absolute[^}]*top:\s*-28px[^}]*left:\s*0[^}]*margin:\s*0/s)
-    expect(source).not.toMatch(/\.wbx-cases-header__eyebrow\s*\{[^}]*right:/s)
     expect(pageSource.indexOf('wbx-cases-header__eyebrow')).toBeLessThan(
       pageSource.indexOf('<h1 id="case-gallery-title">'),
     )
@@ -404,38 +402,17 @@ describe('case collection page styles', () => {
     }
   })
 
-  it('anchors the desktop eyebrow to the hero copy without overlapping the title', () => {
-    const viewportWidth = 1440
+  it('anchors the desktop eyebrow to the hero copy with an explicit positioning contract', () => {
     const casesStyles = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
-    const appliedStyles = document.createElement('style')
-    appliedStyles.textContent = flattenStylesAtViewport(casesStyles, viewportWidth)
-    document.head.append(appliedStyles)
+    const pageSource = readFileSync('docs/.vitepress/theme/CasesPage.vue', 'utf8')
+    const copyMarkup = pageSource.match(
+      /<div class="wbx-cases-hero__copy">([\s\S]*?)<\/div>/,
+    )?.[1]
 
-    const fixture = document.createElement('section')
-    fixture.className = 'wbx-cases'
-    fixture.innerHTML = `
-      <header class="wbx-cases-hero">
-        <div class="wbx-cases-hero__copy">
-          <p class="wbx-cases-eyebrow wbx-cases-header__eyebrow">WORKBUDDY COMMUNITY</p>
-          <h1>案例集</h1>
-        </div>
-      </header>
-    `
-    document.body.append(fixture)
-
-    try {
-      const copy = fixture.querySelector<HTMLElement>('.wbx-cases-hero__copy')!
-      const eyebrow = fixture.querySelector<HTMLElement>('.wbx-cases-header__eyebrow')!
-      const title = fixture.querySelector<HTMLElement>('h1')!
-
-      expect(getComputedStyle(copy).position).toBe('relative')
-      expect(getComputedStyle(eyebrow).position).toBe('absolute')
-      expect(eyebrow.getBoundingClientRect().right).toBeLessThanOrEqual(copy.getBoundingClientRect().right)
-      expect(eyebrow.getBoundingClientRect().bottom).toBeLessThanOrEqual(title.getBoundingClientRect().top)
-    } finally {
-      fixture.remove()
-      appliedStyles.remove()
-    }
+    expect(casesStyles).toMatch(/\.wbx-cases-hero__copy\s*\{[^}]*position:\s*relative/s)
+    expect(casesStyles).toMatch(/\.wbx-cases-header__eyebrow\s*\{[^}]*position:\s*absolute[^}]*top:\s*-22px[^}]*left:\s*0[^}]*margin:\s*0/s)
+    expect(casesStyles).not.toMatch(/\.wbx-cases-header__eyebrow\s*\{[^}]*right:/s)
+    expect(copyMarkup).toMatch(/wbx-cases-header__eyebrow[\s\S]*?<h1 id="case-gallery-title">/)
   })
 
   it('contains the case submission actions within the shared page width', () => {

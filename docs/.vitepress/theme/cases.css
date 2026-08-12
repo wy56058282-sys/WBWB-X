@@ -87,7 +87,6 @@
 }
 
 .wbx-cases-hero__copy > p:last-child,
-.wbx-cases-header > div > p:last-child,
 .wbx-cases-submit p:not(.wbx-cases-eyebrow) {
   max-width: 620px;
   margin-bottom: 0;
@@ -413,7 +412,7 @@
 
   .wbx-cases-header__eyebrow {
     position: absolute;
-    top: -28px;
+    top: -22px;
     left: 0;
     margin: 0;
   }
