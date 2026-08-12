@@ -112,7 +112,10 @@ describe('case gallery', () => {
     const tools = layout?.querySelector(':scope > .wbx-cases-tools-column')
 
     expect(main?.querySelector('#case-gallery-title')).not.toBeNull()
-    expect(main?.querySelector('#case-gallery-heading')?.textContent).toBe('浏览案例')
+    expect(main?.querySelector('#case-gallery-heading')).toBeNull()
+    expect(document.body.textContent).not.toContain('CASE GALLERY')
+    expect(main?.querySelector('.wbx-cases-hero__copy > p:last-child')?.textContent)
+      .toBe('从真实场景出发，找到可以带走复用的工作方法。')
     expect(main?.querySelector('.wbx-cases-gallery-results')).not.toBeNull()
     expect(main?.querySelector('.wbx-cases-submit')).toBeNull()
     expect(tools?.querySelector('.wbx-cases-search')).not.toBeNull()

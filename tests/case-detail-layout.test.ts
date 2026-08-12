@@ -41,4 +41,13 @@ describe('case detail layout', () => {
     )
     expect(customCss).not.toMatch(/\.vp-doc \.wbx-case-detail-back\s*\{/)
   })
+
+  it('aligns desktop detail content to the logo baseline and restores compact gutters', () => {
+    expect(customCss).toMatch(
+      /@media \(min-width:\s*960px\)[\s\S]*?\.wbx-case-detail-layout \.VPDoc \.content\s*\{[^}]*max-width:\s*none[^}]*padding-left:\s*40px[^}]*padding-right:\s*40px/s,
+    )
+    expect(customCss).toMatch(
+      /@media \(max-width:\s*959px\)[\s\S]*?\.wbx-case-detail-layout \.VPDoc \.content\s*\{[^}]*padding-left:\s*32px[^}]*padding-right:\s*32px/s,
+    )
+  })
 })

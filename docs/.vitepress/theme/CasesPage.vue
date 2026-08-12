@@ -32,10 +32,6 @@ function resetFilters() {
           <div class="wbx-cases-hero__copy">
           <p class="wbx-cases-eyebrow wbx-cases-header__eyebrow">WORKBUDDY COMMUNITY</p>
           <h1 id="case-gallery-title"><span class="wbx-cases-brand">WorkBuddy WB-X</span> 案例集</h1>
-          <div class="wbx-cases-filter-panel__heading">
-            <p class="wbx-cases-eyebrow">CASE GALLERY</p>
-            <h2 id="case-gallery-heading">浏览案例</h2>
-          </div>
           <p>从真实场景出发，找到可以带走复用的工作方法。</p>
           </div>
         </header>
@@ -70,7 +66,7 @@ function resetFilters() {
       </main>
 
       <aside class="wbx-cases-tools-column" aria-label="案例搜索、筛选与投稿">
-        <section id="case-gallery" class="wbx-cases-filter-panel" aria-labelledby="case-gallery-heading">
+        <section id="case-gallery" class="wbx-cases-filter-panel" aria-label="案例搜索与分类筛选">
           <div class="wbx-cases-filter-panel__controls">
             <label class="wbx-cases-search">
               <span>搜索案例</span>

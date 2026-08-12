@@ -125,13 +125,8 @@
   min-width: 0;
 }
 
-.wbx-cases-filter-panel__heading,
 .wbx-cases-filter-panel__controls {
   min-width: 0;
-}
-
-.wbx-cases-filter-panel__heading {
-  margin: 24px 0 0;
 }
 
 .wbx-cases-filter-panel__controls {

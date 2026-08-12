@@ -412,6 +412,21 @@ body {
   padding-left: 0;
 }
 
+@media (min-width: 960px) {
+  .wbx-case-detail-layout .VPDoc .content {
+    max-width: none;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+@media (max-width: 959px) {
+  .wbx-case-detail-layout .VPDoc .content {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
 .wbx-case-detail-layout .wbx-case-detail-back {
   display: inline-flex;
   gap: 8px;
