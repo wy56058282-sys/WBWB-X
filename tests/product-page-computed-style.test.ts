@@ -38,6 +38,7 @@ function resolveThemeTokens(css: string, theme: (typeof themes)[keyof typeof the
     .replaceAll('var(--wbx-ink)', theme.ink)
     .replaceAll('var(--wbx-surface)', theme.surface)
     .replaceAll('var(--vp-c-brand-1)', theme.vpBrand)
+    .replaceAll('var(--wbx-pixel)', 'Silkscreen')
 }
 
 function mediaMatches(media: string, viewportWidth: number) {
@@ -92,59 +93,6 @@ function installStyles(
   document.head.append(style)
 }
 
-type Specificity = readonly [number, number, number]
-
-function getSpecificity(selector: string): Specificity {
-  const ids = selector.match(/#[\w-]+/g)?.length ?? 0
-  const classesAndAttributes = selector.match(/\.[\w-]+|\[[^\]]+\]|:(?!:)[\w-]+/g)?.length ?? 0
-  const elements = selector
-    .replace(/#[\w-]+|\.[\w-]+|\[[^\]]+\]|::?[\w-]+/g, '')
-    .split(/[\s>+~]+/)
-    .filter(Boolean).length
-  return [ids, classesAndAttributes, elements]
-}
-
-function compareSpecificity(left: Specificity, right: Specificity) {
-  return left[0] - right[0] || left[1] - right[1] || left[2] - right[2]
-}
-
-function applyCascadedStyle(element: HTMLElement) {
-  const winners = new Map<string, { order: number; specificity: Specificity; value: string }>()
-  let order = 0
-
-  for (const sheet of Array.from(document.styleSheets)) {
-    for (const rule of Array.from(sheet.cssRules)) {
-      if (!(rule instanceof CSSStyleRule)) continue
-
-      for (const selector of rule.selectorText.split(',')) {
-        const normalizedSelector = selector.trim()
-        if (!element.matches(normalizedSelector)) continue
-
-        const specificity = getSpecificity(normalizedSelector)
-        for (const property of Array.from(rule.style)) {
-          const current = winners.get(property)
-          if (
-            !current ||
-            compareSpecificity(specificity, current.specificity) > 0 ||
-            (compareSpecificity(specificity, current.specificity) === 0 && order >= current.order)
-          ) {
-            winners.set(property, {
-              order,
-              specificity,
-              value: rule.style.getPropertyValue(property),
-            })
-          }
-        }
-      }
-      order += 1
-    }
-  }
-
-  for (const [property, winner] of winners) {
-    element.style.setProperty(property, winner.value)
-  }
-}
-
 afterEach(() => {
   document.head.querySelectorAll('style').forEach((style) => style.remove())
   document.body.replaceChildren()
@@ -154,7 +102,11 @@ afterEach(() => {
 describe('product page computed styles', () => {
   it.each([
     { label: 'desktop', viewportWidth: 1440, fontSize: '51.2px', lineHeight: '58.88px' },
+    { label: 'desktop boundary', viewportWidth: 960, fontSize: '51.2px', lineHeight: '58.88px' },
+    { label: 'tablet upper boundary', viewportWidth: 959, fontSize: '44px', lineHeight: '52.8px' },
     { label: 'tablet', viewportWidth: 900, fontSize: '44px', lineHeight: '52.8px' },
+    { label: 'tablet lower boundary', viewportWidth: 641, fontSize: '44px', lineHeight: '52.8px' },
+    { label: 'mobile boundary', viewportWidth: 640, fontSize: '36px', lineHeight: '43.2px' },
     { label: 'mobile', viewportWidth: 390, fontSize: '36px', lineHeight: '43.2px' },
   ])(
     'matches guide page typography at $label width without enlarging compact surfaces',
@@ -165,9 +117,13 @@ describe('product page computed styles', () => {
           markup: `
             <div class="VPDoc"><div class="vp-doc"><section class="wbx-cases">
               <header class="wbx-cases-header"><div>
+                <p class="wbx-cases-eyebrow wbx-cases-header__eyebrow">页首标签</p>
                 <h1>案例集</h1><p class="primary-copy">案例正文</p>
               </div></header>
-              <h2>浏览案例</h2>
+              <section class="wbx-cases-gallery"><p class="wbx-cases-eyebrow gallery-eyebrow">画廊标签</p><h2>浏览案例</h2></section>
+              <div class="wbx-cases-categories"><button>分类</button></div>
+              <section class="wbx-cases-submit"><div><p class="wbx-cases-eyebrow submit-eyebrow">投稿标签</p><h2>投稿</h2><p class="submit-copy">投稿正文</p></div></section>
+              <section class="wbx-case-service-cta"><div><p class="wbx-cases-eyebrow cta-eyebrow">服务标签</p><h2>服务</h2></div><a class="wbx-cases-action">操作</a></section>
               <article class="wbx-case-card">
                 <span class="wbx-case-card__meta">元数据</span>
                 <strong class="wbx-case-card__title">卡片标题</strong>
@@ -178,8 +134,12 @@ describe('product page computed styles', () => {
           `,
           h1: '.wbx-cases h1',
           h2: '.wbx-cases h2',
-          body: '.wbx-cases-header > div > p:last-child',
+          body: '.primary-copy',
           compact: {
+            '.gallery-eyebrow': '12px',
+            '.submit-eyebrow': '12px',
+            '.cta-eyebrow': '12px',
+            '.wbx-cases-categories button': '14px',
             '.wbx-case-card__meta': '12px',
             '.wbx-case-card__title': '18px',
             '.wbx-case-card__outcome': '14px',
@@ -191,9 +151,11 @@ describe('product page computed styles', () => {
           markup: `
             <div class="VPDoc"><div class="vp-doc"><section class="wbx-service">
               <div class="wbx-service-offer__copy">
-                <h1>定制服务</h1><p>服务正文</p>
+                <p class="wbx-service-eyebrow">服务标签</p><h1>定制服务</h1><p>服务正文</p>
               </div>
               <h2>服务范围</h2>
+              <dl class="wbx-service-offer__facts"><div><dt>价格</dt><dd>¥999</dd></div></dl>
+              <a class="wbx-service-action">预约</a>
               <a class="wbx-service-case">
                 <span><small>案例标签</small><strong>卡片标题</strong><span>辅助结果</span></span>
               </a>
@@ -202,8 +164,11 @@ describe('product page computed styles', () => {
           `,
           h1: '.wbx-service h1',
           h2: '.wbx-service h2',
-          body: '.wbx-service-offer__copy > p',
+          body: '.wbx-service-offer__copy > p:not(.wbx-service-eyebrow)',
           compact: {
+            '.wbx-service-eyebrow': '12px',
+            '.wbx-service-offer__facts > div:first-child dd': '24px',
+            '.wbx-service-action': '14px',
             '.wbx-service-case small': '10px',
             '.wbx-service-case strong': '15px',
             '.wbx-service-case span span': '13px',
@@ -215,9 +180,6 @@ describe('product page computed styles', () => {
       for (const page of pages) {
         installStyles(page.css, themes.light, viewportWidth)
         document.body.innerHTML = page.markup
-
-        const selectors = [page.h1, page.h2, page.body, ...Object.keys(page.compact)]
-        selectors.forEach((selector) => applyCascadedStyle(document.querySelector<HTMLElement>(selector)!))
 
         const h1Style = getComputedStyle(document.querySelector(page.h1)!)
         const h2Style = getComputedStyle(document.querySelector(page.h2)!)
@@ -251,6 +213,23 @@ describe('product page computed styles', () => {
           expect(getComputedStyle(document.querySelector(selector)!).fontSize).toBe(expectedSize)
         }
 
+        if (page.css === pageStyles.cases) {
+          expect(getComputedStyle(document.querySelector('.wbx-cases-header__eyebrow')!).position)
+            .toBe(viewportWidth >= 1280 ? 'absolute' : '')
+          expect(getComputedStyle(document.querySelector('.gallery-eyebrow')!).position).not.toBe('absolute')
+          expect(getComputedStyle(document.querySelector('.submit-eyebrow')!).position).not.toBe('absolute')
+          expect(getComputedStyle(document.querySelector('.cta-eyebrow')!).position).not.toBe('absolute')
+          expect(getComputedStyle(document.querySelector('.submit-copy')!).fontSize).toBe('16px')
+        }
+
+        const eyebrowSelector = page.css === pageStyles.cases
+          ? '.submit-eyebrow'
+          : '.wbx-service-eyebrow'
+        const eyebrowStyle = getComputedStyle(document.querySelector(eyebrowSelector)!)
+        expect(eyebrowStyle.color).toBe('rgb(23, 107, 85)')
+        expect(eyebrowStyle.fontFamily).toContain('Silkscreen')
+        expect(eyebrowStyle.fontWeight).toBe('700')
+
         document.head.querySelectorAll('style').forEach((style) => style.remove())
       }
     },
@@ -279,7 +258,6 @@ describe('product page computed styles', () => {
         document.body.innerHTML = page.markup
 
         const action = document.querySelector<HTMLElement>(page.selector)
-        applyCascadedStyle(action!)
         const computed = getComputedStyle(action!)
 
         expect(computed.color).toBe('rgb(13, 16, 13)')

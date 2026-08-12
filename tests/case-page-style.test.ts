@@ -145,9 +145,18 @@ describe('case collection page styles', () => {
     expect(pageSource).toContain(
       '<span class="wbx-cases-brand">WorkBuddy WB-X</span> 案例集',
     )
+    expect(pageSource).toContain('class="wbx-cases-eyebrow wbx-cases-header__eyebrow"')
     expect(styles).toMatch(
       /\.wbx-cases-brand\s*\{[^}]*font-weight:\s*850;/s,
     )
+  })
+
+  it('scopes desktop positioning to the page-header eyebrow and excludes labels from body copy', () => {
+    const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
+
+    expect(source).toMatch(/\.wbx-cases-submit p:not\(\.wbx-cases-eyebrow\)/)
+    expect(source).toMatch(/@media \(min-width:\s*1280px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.wbx-cases-header__eyebrow\s*\{[^}]*position:\s*absolute/s)
+    expect(source).not.toMatch(/@media \(min-width:\s*1280px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\n\s*\.wbx-cases-eyebrow\s*\{[^}]*position:\s*absolute/s)
   })
 
   it('keeps the shared content width and square category controls', () => {
@@ -216,7 +225,7 @@ describe('case collection page styles', () => {
                 <section class="wbx-cases wbx-cases-shell">
                   <div class="wbx-cases-main">
                     <header class="wbx-cases-header"><div>
-                      <p class="wbx-cases-eyebrow">WORKBUDDY COMMUNITY</p>
+                      <p class="wbx-cases-eyebrow wbx-cases-header__eyebrow">WORKBUDDY COMMUNITY</p>
                       <h1>案例集</h1><p>案例正文</p>
                     </div></header>
                   </div>
@@ -324,6 +333,21 @@ describe('case collection page styles', () => {
       expect(Math.abs(caseH1Top - guideH1Top)).toBeLessThanOrEqual(1)
       expect(Math.abs(caseOutlineLeft - guideOutlineLeft)).toBeLessThanOrEqual(1)
       expect(Math.abs(caseOutlineTop - guideOutlineTop)).toBeLessThanOrEqual(1)
+
+      const mutation = document.createElement('style')
+      mutation.textContent = `
+        .wbx-cases-layout .wbx-cases-shell { margin-top: 8px; }
+        .wbx-cases-layout .wbx-cases-main { padding-left: 56px; }
+      `
+      document.head.append(mutation)
+      const mutatedShell = getComputedStyle(fixture.querySelector('.wbx-cases-shell')!)
+      const mutatedMain = getComputedStyle(fixture.querySelector('.wbx-cases-main')!)
+      const mutatedMainLeft = caseShellLeft + px(mutatedMain.paddingLeft)
+      const mutatedH1Top = caseH1Top + px(mutatedShell.marginTop)
+
+      expect(Math.abs(mutatedMainLeft - guideMainLeft)).toBeGreaterThan(1)
+      expect(Math.abs(mutatedH1Top - guideH1Top)).toBeGreaterThan(1)
+      mutation.remove()
     } finally {
       fixture.remove()
       appliedStyles.remove()
