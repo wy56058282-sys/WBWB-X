@@ -104,4 +104,13 @@ describe('case gallery', () => {
     expect(document.querySelector<HTMLAnchorElement>('a[href="#case-gallery"]')?.textContent).toBe('浏览案例')
     expect(document.querySelector<HTMLAnchorElement>('a[href="#submit-case"]')?.textContent).toBe('提交案例')
   })
+
+  it('puts case navigation in the dedicated contents rail without duplicating it in the header', () => {
+    mountCasesPage()
+
+    expect(document.querySelector('.wbx-cases-outline')?.getAttribute('aria-label')).toBe('案例集页内目录')
+    expect(Array.from(document.querySelectorAll('.wbx-cases-outline a')).map((item) => item.getAttribute('href')))
+      .toEqual(['#case-gallery', '#submit-case'])
+    expect(document.querySelector('.wbx-cases-header__links')).toBeNull()
+  })
 })

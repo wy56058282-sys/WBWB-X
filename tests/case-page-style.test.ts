@@ -15,8 +15,19 @@ describe('case collection page styles', () => {
     expect(source).toMatch(/\.wbx-case-card__outcome\s*\{[^}]*-webkit-line-clamp:/)
     expect(source).toMatch(/\.wbx-cases-layout\s+\.VPSidebar\s*\{[^}]*display:\s*none/)
     expect(source).toMatch(/\.wbx-cases-layout\s+\.VPLocalNav\s*\{[^}]*display:\s*none/)
-    expect(source).toMatch(/\.wbx-cases-layout \.VPContent\.has-sidebar\s*\{[^}]*padding-right:\s*0;[^}]*padding-left:\s*0;/s)
+    expect(source).not.toMatch(/\.wbx-cases-layout \.VPContent\.has-sidebar/)
     expect(source).toMatch(/\.wbx-cases-layout \.VPDoc \.content\s*\{[^}]*max-width:\s*none;/s)
+  })
+
+  it('uses a guide-style contents rail and sizes cards for the available main column', () => {
+    const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
+
+    expect(source).toMatch(/\.wbx-cases-shell\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*minmax\(0, 1fr\) minmax\(180px, 220px\)/s)
+    expect(source).toMatch(/\.wbx-cases-main\s*\{[^}]*min-width:\s*0/s)
+    expect(source).toMatch(/\.wbx-cases-outline\s*\{[^}]*position:\s*sticky[^}]*top:/s)
+    expect(source).toMatch(/@media \(max-width:\s*960px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.wbx-cases-outline\s*\{[^}]*display:\s*none/s)
+    expect(source).toMatch(/@media \(max-width:\s*960px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.wbx-cases-main \.wbx-cases-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/s)
+    expect(source).toMatch(/@media \(max-width:\s*640px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.wbx-cases-main \.wbx-cases-grid\s*\{[^}]*grid-template-columns:\s*1fr/s)
   })
 
   it('registers the gallery and makes it the entire case-index body', () => {

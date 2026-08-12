@@ -180,4 +180,14 @@ describe('custom diagnostic service page', () => {
     expect(cases[0].querySelector('img')?.getAttribute('alt')).toBe('门店经营 Excel 看板')
     expect(cases[0].textContent).toContain('把门店 Excel 汇总为可复用的经营看板。')
   })
+
+  it('renders one registered pixel checklist icon for every suitable problem', () => {
+    mountServicePage()
+
+    const rows = Array.from(document.querySelectorAll('.wbx-service-checklist > li'))
+
+    expect(rows).toHaveLength(4)
+    expect(rows.every((row) => row.querySelector('.hn.hn-check-box-solid.wbx-service-checklist__icon[aria-hidden="true"]'))).toBe(true)
+    expect(rows.every((row) => row.querySelectorAll('.wbx-service-checklist__icon').length === 1)).toBe(true)
+  })
 })

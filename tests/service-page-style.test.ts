@@ -22,4 +22,15 @@ describe('custom service page styles', () => {
     expect(checklistIcon).toBe('hn-check-box-solid')
     expect(iconfont).toMatch(new RegExp(`\\.${checklistIcon}:before\\s*\\{[^}]*content:\\s*"\\\\[0-9a-f]+"`, 'i'))
   })
+
+  it('uses guide-like service rhythm without native checklist markers or repeated section dividers', () => {
+    const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
+
+    expect(styles).toMatch(/\.wbx-service h2\s*\{[^}]*font-weight:\s*600/s)
+    expect(styles).toMatch(/\.wbx-service-section\s*\{[^}]*padding:\s*48px 0/s)
+    expect(styles).not.toMatch(/\.wbx-service-section\s*\{[^}]*border-bottom:/s)
+    expect(styles).toMatch(/\.wbx-service-checklist\s*\{[^}]*list-style:\s*none/s)
+    expect(styles).toMatch(/\.wbx-service-checklist li::marker\s*\{[^}]*content:\s*""/s)
+    expect(styles).not.toMatch(/\.wbx-service-exclusions\s*\{[^}]*border-(?:top|bottom):/s)
+  })
 })
