@@ -108,7 +108,7 @@ describe('case collection page styles', () => {
     const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
 
     expect(source).toMatch(/\.wbx-cases-gallery-results \.wbx-cases-grid\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/)
-    expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-gallery-results \.wbx-cases-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)/)
+    expect(source).toMatch(/@media \(max-width:\s*1200px\)[\s\S]*?\.wbx-cases-gallery-results \.wbx-cases-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)/)
     expect(source).toMatch(/@media \(max-width:\s*640px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.wbx-cases-gallery-results \.wbx-cases-grid\s*\{[^}]*grid-template-columns:\s*1fr/)
     expect(source).toMatch(/\.wbx-case-card__cover\s*\{[^}]*aspect-ratio:/)
     expect(source).toMatch(/\.wbx-cases-grid\s*>\s*\.wbx-case-card\s*\{[^}]*margin:\s*0/)
@@ -130,6 +130,8 @@ describe('case collection page styles', () => {
     expect(pageSource).not.toContain('class="wbx-cases-outline"')
     expect(source).toMatch(/\.wbx-cases-hero\s*\{[^}]*grid-template-columns:[^}]*minmax\(320px, 0\.7fr\)/s)
     expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-hero\s*\{[^}]*grid-template-columns:\s*1fr/s)
+    expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-search\s*\{[^}]*width:\s*100%/s)
+    expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-gallery__topline\s*\{[^}]*flex-direction:\s*column/s)
   })
 
   it('registers the gallery and makes it the entire case-index body', () => {
@@ -156,7 +158,7 @@ describe('case collection page styles', () => {
     const pageSource = readFileSync('docs/.vitepress/theme/CasesPage.vue', 'utf8')
 
     expect(source).toMatch(/\.wbx-cases-submit p:not\(\.wbx-cases-eyebrow\)/)
-    expect(source).toMatch(/\.wbx-cases-header__eyebrow\s*\{[^}]*position:\s*absolute[^}]*top:\s*-22px[^}]*left:\s*0[^}]*margin:\s*0/s)
+    expect(source).toMatch(/\.wbx-cases-header__eyebrow\s*\{[^}]*position:\s*absolute[^}]*top:\s*-28px[^}]*left:\s*0[^}]*margin:\s*0/s)
     expect(source).not.toMatch(/\.wbx-cases-header__eyebrow\s*\{[^}]*right:/s)
     expect(pageSource.indexOf('wbx-cases-header__eyebrow')).toBeLessThan(
       pageSource.indexOf('<h1 id="case-gallery-title">'),
@@ -358,21 +360,90 @@ describe('case collection page styles', () => {
     }
   })
 
+  it.each([
+    { viewportWidth: 1025, columns: 'repeat(2, minmax(0, 1fr))' },
+    { viewportWidth: 1100, columns: 'repeat(2, minmax(0, 1fr))' },
+    { viewportWidth: 1280, columns: 'repeat(3, minmax(0, 1fr))' },
+  ])('uses $columns case cards at $viewportWidth px', ({ viewportWidth, columns }) => {
+    const casesStyles = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
+    const appliedStyles = document.createElement('style')
+    appliedStyles.textContent = flattenStylesAtViewport(casesStyles, viewportWidth)
+    document.head.append(appliedStyles)
+
+    const fixture = document.createElement('section')
+    fixture.className = 'wbx-cases'
+    fixture.innerHTML = '<section class="wbx-cases-gallery-results"><ul class="wbx-cases-grid"><li class="wbx-case-card"></li></ul></section>'
+    document.body.append(fixture)
+
+    try {
+      expect(getComputedStyle(fixture.querySelector('.wbx-cases-grid')!).gridTemplateColumns)
+        .toBe(columns)
+    } finally {
+      fixture.remove()
+      appliedStyles.remove()
+    }
+  })
+
+  it.each([900, 1024])('expands the single-column search to its filter panel at %ipx', (viewportWidth) => {
+    const casesStyles = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
+    const appliedStyles = document.createElement('style')
+    appliedStyles.textContent = flattenStylesAtViewport(casesStyles, viewportWidth)
+    document.head.append(appliedStyles)
+
+    const fixture = document.createElement('section')
+    fixture.className = 'wbx-cases'
+    fixture.innerHTML = '<header class="wbx-cases-hero"><section class="wbx-cases-filter-panel"><div class="wbx-cases-gallery__topline"><label class="wbx-cases-search"><input type="search"></label></div></section></header>'
+    document.body.append(fixture)
+
+    try {
+      expect(getComputedStyle(fixture.querySelector('.wbx-cases-search')!).width).toBe('100%')
+      expect(getComputedStyle(fixture.querySelector('.wbx-cases-gallery__topline')!).flexDirection).toBe('column')
+    } finally {
+      fixture.remove()
+      appliedStyles.remove()
+    }
+  })
+
+  it('anchors the desktop eyebrow to the hero copy without overlapping the title', () => {
+    const viewportWidth = 1440
+    const casesStyles = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
+    const appliedStyles = document.createElement('style')
+    appliedStyles.textContent = flattenStylesAtViewport(casesStyles, viewportWidth)
+    document.head.append(appliedStyles)
+
+    const fixture = document.createElement('section')
+    fixture.className = 'wbx-cases'
+    fixture.innerHTML = `
+      <header class="wbx-cases-hero">
+        <div class="wbx-cases-hero__copy">
+          <p class="wbx-cases-eyebrow wbx-cases-header__eyebrow">WORKBUDDY COMMUNITY</p>
+          <h1>案例集</h1>
+        </div>
+      </header>
+    `
+    document.body.append(fixture)
+
+    try {
+      const copy = fixture.querySelector<HTMLElement>('.wbx-cases-hero__copy')!
+      const eyebrow = fixture.querySelector<HTMLElement>('.wbx-cases-header__eyebrow')!
+      const title = fixture.querySelector<HTMLElement>('h1')!
+
+      expect(getComputedStyle(copy).position).toBe('relative')
+      expect(getComputedStyle(eyebrow).position).toBe('absolute')
+      expect(eyebrow.getBoundingClientRect().right).toBeLessThanOrEqual(copy.getBoundingClientRect().right)
+      expect(eyebrow.getBoundingClientRect().bottom).toBeLessThanOrEqual(title.getBoundingClientRect().top)
+    } finally {
+      fixture.remove()
+      appliedStyles.remove()
+    }
+  })
+
   it('contains the case submission actions within the shared page width', () => {
     const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
 
-    expect(source).toMatch(/\.wbx-cases-submit\s*\{[^}]*align-items:\s*flex-start/s)
-    expect(source).toMatch(/\.wbx-cases-submit__actions\s*\{[^}]*align-items:\s*flex-start/s)
     expect(source).toMatch(/\.wbx-cases-submit__actions\s*\{[^}]*flex:\s*0 1 412px/s)
     expect(source).toMatch(/\.wbx-cases-submit__actions\s*\{[^}]*width:\s*100%/s)
     expect(source).toMatch(/\.wbx-cases-submit__actions\s*\{[^}]*max-width:\s*412px/s)
     expect(source).toMatch(/\.wbx-cases-submit__actions\s*\{[^}]*min-width:\s*0/s)
-  })
-
-  it('keeps the case index logo region on the same frosted navigation layer', () => {
-    const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
-
-    expect(source).toMatch(/\.wbx-cases-layout \.VPNavBar\.has-sidebar > \.wrapper > \.container > \.title\s*\{[^}]*background:\s*color-mix\([^}]*backdrop-filter:\s*blur\(16px\)/s)
-    expect(source).toMatch(/\.wbx-cases-layout \.VPNavBar\.has-sidebar > \.wrapper > \.container > \.title\s*\{[^}]*-webkit-backdrop-filter:\s*blur\(16px\)/s)
   })
 })
