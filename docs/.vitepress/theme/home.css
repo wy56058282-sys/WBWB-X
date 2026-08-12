@@ -30,12 +30,12 @@
 
 .wbx-home-analytics {
   display: grid;
-  grid-template-columns: 160px 1fr;
-  width: 100%;
-  margin-top: 32px;
+  grid-template-columns: 190px 1fr;
+  width: 82%;
+  margin: 32px auto 0;
   overflow: hidden;
   border: 2px solid var(--wbx-ink);
-  border-radius: 0;
+  border-radius: 8px;
   background: var(--vp-c-bg);
   box-shadow: 0 8px 0 var(--wbx-ink);
 }
@@ -44,14 +44,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
-  padding: 14px 22px;
+  gap: 16px;
+  padding: 16px 28px;
   border-right: 1px solid var(--wbx-ink);
 }
 
 .wbx-home-analytics__status > span {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   border: 2px solid var(--wbx-ink);
   border-radius: 50%;
   background: var(--wbx-accent);
@@ -60,7 +60,7 @@
 
 .wbx-home-analytics__status strong {
   font-family: var(--wbx-pixel);
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1;
 }
 
@@ -83,7 +83,7 @@
   align-content: center;
   gap: 4px 16px;
   min-width: 0;
-  padding: 14px 24px;
+  padding: 16px 26px;
   border-right: 1px solid var(--wbx-ink);
 }
 
@@ -1365,7 +1365,8 @@
 @media (max-width: 640px) {
   .wbx-home-analytics {
     grid-template-columns: 1fr;
-    margin-top: 22px;
+    width: 100%;
+    margin: 22px auto 0;
   }
 
   .wbx-home-analytics__status {
