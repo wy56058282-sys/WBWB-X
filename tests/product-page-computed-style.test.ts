@@ -116,19 +116,24 @@ describe('product page computed styles', () => {
           css: pageStyles.cases,
           markup: `
             <div class="VPDoc"><div class="vp-doc">
-              <section class="wbx-cases wbx-cases-shell"><div class="wbx-cases-main">
-                <header class="wbx-cases-header"><div>
+              <section class="wbx-cases">
+                <header class="wbx-cases-hero">
+                  <div class="wbx-cases-hero__copy">
                   <p class="wbx-cases-eyebrow wbx-cases-header__eyebrow header-eyebrow">页首标签</p>
                   <h1>案例集</h1><p class="primary-copy">案例正文</p>
-                </div></header>
-                <section class="wbx-cases-gallery"><div class="wbx-cases-gallery__topline"><div><p class="wbx-cases-eyebrow gallery-eyebrow">画廊标签</p><h2>浏览案例</h2></div></div></section>
-                <div class="wbx-cases-categories"><button>分类</button></div>
-                <section class="wbx-cases-submit"><div><p class="wbx-cases-eyebrow submit-eyebrow">投稿标签</p><h2>投稿</h2><p class="submit-copy">投稿正文</p></div></section>
-                <article class="wbx-case-card">
-                  <span class="wbx-case-card__meta">元数据</span><strong class="wbx-case-card__title">卡片标题</strong>
-                  <span class="wbx-case-card__outcome">辅助结果</span><span class="wbx-case-card__product">产品标签</span>
-                </article>
-              </div></section>
+                  </div>
+                  <section class="wbx-cases-filter-panel"><div class="wbx-cases-gallery__topline"><div><p class="wbx-cases-eyebrow gallery-eyebrow">画廊标签</p><h2>浏览案例</h2></div></div>
+                  <div class="wbx-cases-categories"><button>分类</button></div>
+                  </section>
+                </header>
+                <section class="wbx-cases-gallery-results">
+                  <ul class="wbx-cases-grid"><li class="wbx-case-card"><a class="wbx-case-card__link"><span class="wbx-case-card__content">
+                    <span class="wbx-case-card__meta">元数据</span><strong class="wbx-case-card__title">卡片标题</strong>
+                    <span class="wbx-case-card__outcome">辅助结果</span><span class="wbx-case-card__product">产品标签</span>
+                  </span></a></li></ul>
+                </section>
+                <section class="wbx-cases-submit"><div><p class="wbx-cases-eyebrow submit-eyebrow">投稿标签</p><h2>投稿</h2><p class="submit-copy">投稿正文</p></div><div class="wbx-cases-submit__actions"><a class="wbx-cases-action">投稿</a></div></section>
+              </section>
               <section class="wbx-case-service-cta"><div><p class="wbx-cases-eyebrow cta-eyebrow">服务标签</p><h2>服务</h2></div><a class="wbx-cases-action">操作</a></section>
             </div></div>
           `,
