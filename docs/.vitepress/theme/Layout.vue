@@ -10,7 +10,7 @@ import {
 } from '../route-state'
 import CommunityQr, {
   cancelCommunityQrClose,
-  pinCommunityQr,
+  openCommunityQr,
   previewCommunityQr,
   scheduleCommunityQrClose,
 } from './CommunityQr.vue'
@@ -46,10 +46,11 @@ function handleCommunityQrTrigger(event: MouseEvent) {
 
   const trigger = communityQrTrigger(event.target)
   if (!trigger) return
+  if (hoverMedia?.matches) return
 
   event.preventDefault()
   event.stopPropagation()
-  pinCommunityQr(trigger)
+  openCommunityQr(trigger)
 }
 
 function handleCommunityQrPointerOver(event: PointerEvent) {
