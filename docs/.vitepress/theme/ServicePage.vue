@@ -36,7 +36,6 @@ const process = [
   <div class="wbx-service">
     <header class="wbx-service-offer">
       <div class="wbx-service-offer__copy">
-        <p class="wbx-service-eyebrow">CUSTOM SERVICE</p>
         <h1>WorkBuddy 需求诊断</h1>
         <p>用一次结构化沟通，把模糊需求变成可判断、可估算、可交付的项目范围。</p>
         <a class="wbx-service-action wbx-service-action--primary" href="#payment-and-application">查看付款与申请步骤</a>
