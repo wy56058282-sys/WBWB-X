@@ -204,4 +204,33 @@ describe('case gallery', () => {
     expect(tools.style.getPropertyValue('--wbx-cases-sticky-top')).toBe(initialOffset)
     expect(initialOffset).toBe('104px')
   })
+
+  it('recomputes the sticky safe area when the rendered navigation changes while scrolling', async () => {
+    let resizeCallback: ResizeObserverCallback | undefined
+    globalThis.ResizeObserver = class {
+      constructor(callback: ResizeObserverCallback) { resizeCallback = callback }
+      observe() {}
+      disconnect() {}
+      unobserve() {}
+    }
+    Object.defineProperty(window, 'innerWidth', { configurable: true, value: 1440 })
+    Object.defineProperty(window, 'innerHeight', { configurable: true, value: 900 })
+    let navBottom = 64
+    const nav = document.createElement('header')
+    nav.className = 'VPNavBar'
+    nav.getBoundingClientRect = () => ({ top: 0, bottom: navBottom, height: navBottom } as DOMRect)
+    document.body.append(nav)
+    mountCasesPage()
+
+    const tools = document.querySelector<HTMLElement>('.wbx-cases-tools-stack')!
+    tools.getBoundingClientRect = () => ({ top: 220, bottom: 740, height: 520 } as DOMRect)
+    resizeCallback?.([], {} as ResizeObserver)
+    await nextTick()
+    expect(tools.style.getPropertyValue('--wbx-cases-sticky-top')).toBe('88px')
+
+    navBottom = 80
+    window.dispatchEvent(new Event('scroll'))
+    await nextTick()
+    expect(tools.style.getPropertyValue('--wbx-cases-sticky-top')).toBe('104px')
+  })
 })

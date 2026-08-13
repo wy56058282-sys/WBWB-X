@@ -48,6 +48,7 @@ function updateToolsSticky() {
 onMounted(() => {
   void nextTick(updateToolsSticky)
   window.addEventListener('resize', updateToolsSticky)
+  window.addEventListener('scroll', updateToolsSticky, { passive: true })
 
   if (typeof ResizeObserver === 'function' && toolsColumn.value) {
     toolsResizeObserver = new ResizeObserver(updateToolsSticky)
@@ -63,6 +64,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', updateToolsSticky)
+  window.removeEventListener('scroll', updateToolsSticky)
   toolsResizeObserver?.disconnect()
   navResizeObserver?.disconnect()
 })
