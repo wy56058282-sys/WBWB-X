@@ -281,6 +281,10 @@ body {
     backdrop-filter: none;
   }
 
+  .VPNavBar > .wrapper > .container .content-body {
+    background: transparent;
+  }
+
   .VPNavBar.has-sidebar .wrapper {
     padding: 0 32px !important;
   }

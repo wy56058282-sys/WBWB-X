@@ -11,6 +11,9 @@ describe('shared desktop navigation geometry', () => {
     expect(customCss).toMatch(
       /\.VPNavBar > \.wrapper > \.container > \.title\s*\{[^}]*background:\s*transparent/s,
     )
+    expect(customCss).toMatch(
+      /\.VPNavBar > \.wrapper > \.container \.content-body\s*\{[^}]*background:\s*transparent/s,
+    )
   })
 
   it('normalizes the has-sidebar wrapper, container, title and content to the shared nav grid', () => {
