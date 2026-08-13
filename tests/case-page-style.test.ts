@@ -119,6 +119,7 @@ describe('case collection page styles', () => {
     expect(source).toMatch(/\.wbx-cases-layout\s+\.VPLocalNav\s*\{[^}]*display:\s*none/)
     expect(source).toMatch(/\.wbx-cases-layout \.VPContent\.has-sidebar\s*\{[^}]*padding-right:\s*0;[^}]*padding-left:\s*0;/s)
     expect(source).toMatch(/\.wbx-cases-layout \.VPDoc \.content\s*\{[^}]*max-width:\s*none;/s)
+    expect(source).toMatch(/@media \(min-width:\s*1025px\)[\s\S]*?\.wbx-cases-gallery-results\s*\{[^}]*min-height:\s*996px/)
   })
 
   it('places cases and tools in a responsive 3:1 layout with a sticky desktop sidebar', () => {
@@ -131,7 +132,7 @@ describe('case collection page styles', () => {
     expect(pageSource).toContain("'wbx-cases-tools-stack'")
     expect(pageSource).not.toContain('class="wbx-cases-outline"')
     expect(source).toMatch(/\.wbx-cases-layout-grid\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*minmax\(0, 3fr\) minmax\(240px, 1fr\)/s)
-    expect(source).toMatch(/\.wbx-cases-tools-stack\.is-sticky\s*\{[^}]*position:\s*sticky/s)
+    expect(source).toMatch(/\.wbx-cases-tools-stack\.is-sticky\s*\{[^}]*position:\s*sticky[^}]*top:\s*var\(--wbx-cases-sticky-top\)/s)
     expect(source).toMatch(/\.wbx-cases-tools-column\s*\{[^}]*align-self:\s*stretch/s)
     expect(source).toMatch(/\.wbx-cases-tools-column\s*\{[^}]*margin-top:\s*26px/s)
     expect(source).toMatch(/\.wbx-cases-layout \.VPDocFooter\s*\{[^}]*display:\s*none/s)
@@ -458,10 +459,9 @@ describe('case collection page styles', () => {
     expect(source).toMatch(/\.wbx-cases-submit__actions\s*\{[^}]*min-width:\s*0/s)
   })
 
-  it('keeps the case index logo region on the same frosted navigation layer', () => {
+  it('does not carry a case-only navigation geometry patch', () => {
     const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
 
-    expect(source).toMatch(/\.wbx-cases-layout \.VPNavBar\.has-sidebar > \.wrapper > \.container > \.title\s*\{[^}]*background:\s*color-mix\([^}]*backdrop-filter:\s*blur\(16px\)/s)
-    expect(source).toMatch(/\.wbx-cases-layout \.VPNavBar\.has-sidebar > \.wrapper > \.container > \.title\s*\{[^}]*-webkit-backdrop-filter:\s*blur\(16px\)/s)
+    expect(source).not.toContain('.wbx-cases-layout .VPNavBar.has-sidebar')
   })
 })

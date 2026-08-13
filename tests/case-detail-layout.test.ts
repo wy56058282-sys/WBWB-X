@@ -57,9 +57,7 @@ describe('case detail layout', () => {
     )
   })
 
-  it('reuses the case index frosted logo treatment on desktop detail pages', () => {
-    expect(customCss).toMatch(
-      /\.wbx-case-detail-layout \.VPNavBar\.has-sidebar > \.wrapper > \.container > \.title\s*\{[^}]*background:\s*color-mix\([^}]*-webkit-backdrop-filter:\s*blur\(16px\)[^}]*backdrop-filter:\s*blur\(16px\)/s,
-    )
+  it('does not carry a detail-only navigation geometry patch', () => {
+    expect(customCss).not.toContain('.wbx-case-detail-layout .VPNavBar.has-sidebar')
   })
 })

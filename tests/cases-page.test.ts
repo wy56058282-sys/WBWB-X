@@ -153,12 +153,17 @@ describe('case gallery', () => {
 
     Object.defineProperty(window, 'innerWidth', { configurable: true, value: 1440 })
     Object.defineProperty(window, 'innerHeight', { configurable: true, value: 900 })
+    const nav = document.createElement('header')
+    nav.className = 'VPNavBar'
+    nav.getBoundingClientRect = () => ({ top: 0, bottom: 96, height: 96 } as DOMRect)
+    document.body.append(nav)
     mountCasesPage()
     const tools = document.querySelector<HTMLElement>('.wbx-cases-tools-stack')!
     tools.getBoundingClientRect = () => ({ top: 260, bottom: 800, height: 540 } as DOMRect)
     resizeCallback?.([], {} as ResizeObserver)
     await nextTick()
     expect(tools.classList.contains('is-sticky')).toBe(true)
+    expect(tools.style.getPropertyValue('--wbx-cases-sticky-top')).toBe('120px')
 
     tools.getBoundingClientRect = () => ({ top: 260, bottom: 1080, height: 820 } as DOMRect)
     resizeCallback?.([], {} as ResizeObserver)
@@ -170,5 +175,33 @@ describe('case gallery', () => {
     resizeCallback?.([], {} as ResizeObserver)
     await nextTick()
     expect(tools.classList.contains('is-sticky')).toBe(false)
+  })
+
+  it('keeps the measured sticky offset stable while filtering cases', async () => {
+    let resizeCallback: ResizeObserverCallback | undefined
+    globalThis.ResizeObserver = class {
+      constructor(callback: ResizeObserverCallback) { resizeCallback = callback }
+      observe() {}
+      disconnect() {}
+      unobserve() {}
+    }
+    Object.defineProperty(window, 'innerWidth', { configurable: true, value: 1440 })
+    Object.defineProperty(window, 'innerHeight', { configurable: true, value: 900 })
+    const nav = document.createElement('header')
+    nav.className = 'VPNavBar'
+    nav.getBoundingClientRect = () => ({ top: 0, bottom: 80, height: 80 } as DOMRect)
+    document.body.append(nav)
+    mountCasesPage()
+
+    const tools = document.querySelector<HTMLElement>('.wbx-cases-tools-stack')!
+    tools.getBoundingClientRect = () => ({ top: 220, bottom: 740, height: 520 } as DOMRect)
+    resizeCallback?.([], {} as ResizeObserver)
+    await nextTick()
+    const initialOffset = tools.style.getPropertyValue('--wbx-cases-sticky-top')
+
+    document.querySelector<HTMLButtonElement>('[data-category="内容创作"]')?.click()
+    await nextTick()
+    expect(tools.style.getPropertyValue('--wbx-cases-sticky-top')).toBe(initialOffset)
+    expect(initialOffset).toBe('104px')
   })
 })

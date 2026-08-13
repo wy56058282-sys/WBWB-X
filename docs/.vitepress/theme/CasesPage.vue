@@ -10,6 +10,7 @@ const category = ref('全部')
 const toolsColumn = ref<HTMLElement | null>(null)
 const toolsSticky = ref(false)
 let toolsResizeObserver: ResizeObserver | undefined
+let navResizeObserver: ResizeObserver | undefined
 
 const categories = computed(() => caseCategories(data))
 const cases = computed(() => filterCaseCatalog(data, query.value, category.value))
@@ -29,11 +30,16 @@ function resetFilters() {
 function updateToolsSticky() {
   if (!toolsColumn.value || typeof window === 'undefined') return
 
-  const navHeight = Number.parseFloat(
+  const fallbackNavHeight = Number.parseFloat(
     getComputedStyle(document.documentElement).getPropertyValue('--vp-nav-height'),
   ) || 64
-  const stickyTop = navHeight + 24
+  const nav = document.querySelector<HTMLElement>('.VPNavBar')
+  const navRect = nav?.getBoundingClientRect()
+  const renderedNavBottom = Math.max(navRect?.bottom ?? 0, navRect?.height ?? 0)
+  const stickyTop = Math.max(renderedNavBottom, fallbackNavHeight) + 24
   const availableHeight = window.innerHeight - stickyTop - 24
+
+  toolsColumn.value.style.setProperty('--wbx-cases-sticky-top', `${stickyTop}px`)
 
   toolsSticky.value = window.innerWidth > 1024
     && toolsColumn.value.getBoundingClientRect().height <= availableHeight
@@ -46,12 +52,19 @@ onMounted(() => {
   if (typeof ResizeObserver === 'function' && toolsColumn.value) {
     toolsResizeObserver = new ResizeObserver(updateToolsSticky)
     toolsResizeObserver.observe(toolsColumn.value)
+
+    const nav = document.querySelector<HTMLElement>('.VPNavBar')
+    if (nav) {
+      navResizeObserver = new ResizeObserver(updateToolsSticky)
+      navResizeObserver.observe(nav)
+    }
   }
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', updateToolsSticky)
   toolsResizeObserver?.disconnect()
+  navResizeObserver?.disconnect()
 })
 </script>
 

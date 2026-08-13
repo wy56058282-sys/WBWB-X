@@ -15,12 +15,6 @@
   padding-left: 0;
 }
 
-.wbx-cases-layout .VPNavBar.has-sidebar > .wrapper > .container > .title {
-  background: color-mix(in srgb, var(--wbx-paper) 82%, transparent);
-  -webkit-backdrop-filter: blur(16px);
-  backdrop-filter: blur(16px);
-}
-
 .wbx-cases-layout .VPDoc .container {
   max-width: 1104px;
 }
@@ -75,7 +69,7 @@
 
 .wbx-cases-tools-stack.is-sticky {
   position: sticky;
-  top: calc(var(--vp-nav-height) + 24px);
+  top: var(--wbx-cases-sticky-top);
 }
 
 .wbx-cases-hero {
@@ -451,6 +445,10 @@
 @media (min-width: 1025px) {
   .wbx-cases-layout .VPDoc .content-container {
     max-width: none;
+  }
+
+  .wbx-cases-gallery-results {
+    min-height: 996px;
   }
 }
 
