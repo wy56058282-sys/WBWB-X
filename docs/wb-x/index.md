@@ -58,11 +58,29 @@ WorkBuddy 国际版｜[更新日志](https://www.workbuddy.ai/docs/zh/workbuddy/
     </a>
   </li>
   <li class="wbx-book-index__entry wbx-book-index__entry--appendix">
-    <a href="/wb-x/%E9%99%84%E5%BD%95/">
+    <a href="/wb-x/%E9%99%84%E5%BD%95/%E9%99%84%E5%BD%95%20A%20%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E6%A8%A1%E6%9D%BF/">
       <span class="wbx-book-index__number">A</span>
       <span class="wbx-book-index__content">
-        <strong class="wbx-book-index__title">附录 · 补充资料</strong>
-        <span class="wbx-book-index__description">常用指令模板与场景速查表</span>
+        <strong class="wbx-book-index__title">附录 A · 常用指令模板</strong>
+        <span class="wbx-book-index__description">整理可直接复用的常用指令</span>
+      </span>
+    </a>
+  </li>
+  <li class="wbx-book-index__entry wbx-book-index__entry--appendix">
+    <a href="/wb-x/%E9%99%84%E5%BD%95/%E9%99%84%E5%BD%95%20B%20%E5%9C%BA%E6%99%AF%E9%80%9F%E6%9F%A5%E8%A1%A8/">
+      <span class="wbx-book-index__number">B</span>
+      <span class="wbx-book-index__content">
+        <strong class="wbx-book-index__title">附录 B · 场景速查表</strong>
+        <span class="wbx-book-index__description">按工作场景快速找到实践路径</span>
+      </span>
+    </a>
+  </li>
+  <li class="wbx-book-index__entry wbx-book-index__entry--appendix">
+    <a href="/wb-x/%E9%99%84%E5%BD%95/%E9%99%84%E5%BD%95%20C%20%E4%B8%AA%E4%BA%BA%E7%89%88%E4%B8%8E%E4%BC%81%E4%B8%9A%E7%89%88%E5%AF%B9%E6%AF%94/">
+      <span class="wbx-book-index__number">C</span>
+      <span class="wbx-book-index__content">
+        <strong class="wbx-book-index__title">附录 C · 个人版与企业版对比</strong>
+        <span class="wbx-book-index__description">对比版本能力、适用对象与选择方式</span>
       </span>
     </a>
   </li>

@@ -32,12 +32,12 @@ describe('small-book reading index', () => {
     expect(text).toContain('WorkBuddy 国际版｜更新日志｜v5.2.7')
   })
 
-  it('renders the four reading parts and appendix as a semantic book index', () => {
+  it('renders the four reading parts and three appendices as a semantic book index', () => {
     const index = document.querySelector('.wbx-book-index')
     const entries = index?.querySelectorAll('.wbx-book-index__entry')
 
     expect(index?.tagName).toBe('OL')
-    expect(entries).toHaveLength(5)
+    expect(entries).toHaveLength(7)
   })
 
   it('gives every destination an index label, title, and reading description', () => {
@@ -46,7 +46,9 @@ describe('small-book reading index', () => {
       ['02', '第二篇 · 实战案例', '从一项真实任务到一支 AI 团队'],
       ['03', '第三篇 · 系统进阶', '把案例沉淀成可复用的工作系统'],
       ['04', '第四篇 · 行业落地', '面向岗位与行业的实践路径'],
-      ['A', '附录 · 补充资料', '常用指令模板与场景速查表'],
+      ['A', '附录 A · 常用指令模板', '整理可直接复用的常用指令'],
+      ['B', '附录 B · 场景速查表', '按工作场景快速找到实践路径'],
+      ['C', '附录 C · 个人版与企业版对比', '对比版本能力、适用对象与选择方式'],
     ]
 
     const entries = [
@@ -72,7 +74,9 @@ describe('small-book reading index', () => {
       '/wb-x/%E7%AC%AC%E4%BA%8C%E7%AF%87%20%E6%A1%88%E4%BE%8B%E7%AF%87%EF%BC%9A%E4%BB%8E%E4%B8%80%E9%A1%B9%E4%BB%BB%E5%8A%A1%E5%88%B0%E4%B8%80%E6%94%AF%20AI%20%E5%9B%A2%E9%98%9F/',
       '/wb-x/%E7%AC%AC%E4%B8%89%E7%AF%87%20%E8%BF%9B%E9%98%B6%E7%AF%87%EF%BC%9A%E6%8A%8A%E6%A1%88%E4%BE%8B%E5%8F%98%E6%88%90%E8%87%AA%E5%B7%B1%E7%9A%84%E5%B7%A5%E4%BD%9C%E7%B3%BB%E7%BB%9F/',
       '/wb-x/%E7%AC%AC%E5%9B%9B%E7%AF%87%20%E5%B2%97%E4%BD%8D%E4%B8%8E%E8%A1%8C%E4%B8%9A%E8%90%BD%E5%9C%B0/',
-      '/wb-x/%E9%99%84%E5%BD%95/',
+      '/wb-x/%E9%99%84%E5%BD%95/%E9%99%84%E5%BD%95%20A%20%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E6%A8%A1%E6%9D%BF/',
+      '/wb-x/%E9%99%84%E5%BD%95/%E9%99%84%E5%BD%95%20B%20%E5%9C%BA%E6%99%AF%E9%80%9F%E6%9F%A5%E8%A1%A8/',
+      '/wb-x/%E9%99%84%E5%BD%95/%E9%99%84%E5%BD%95%20C%20%E4%B8%AA%E4%BA%BA%E7%89%88%E4%B8%8E%E4%BC%81%E4%B8%9A%E7%89%88%E5%AF%B9%E6%AF%94/',
     ]
 
     const links = [
