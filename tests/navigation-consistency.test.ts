@@ -12,7 +12,7 @@ describe('shared desktop navigation geometry', () => {
       /\.VPNavBar > \.wrapper > \.container > \.title\s*\{[^}]*background:\s*transparent/s,
     )
     expect(customCss).toMatch(
-      /\.VPNavBar > \.wrapper > \.container \.content-body\s*\{[^}]*background:\s*transparent/s,
+      /\.VPNavBar > \.wrapper > \.container \.content-body\s*\{[^}]*background:\s*transparent\s*!important/s,
     )
   })
 

@@ -282,7 +282,7 @@ body {
   }
 
   .VPNavBar > .wrapper > .container .content-body {
-    background: transparent;
+    background: transparent !important;
   }
 
   .VPNavBar.has-sidebar .wrapper {
