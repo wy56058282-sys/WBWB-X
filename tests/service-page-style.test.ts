@@ -39,7 +39,7 @@ describe('custom service page styles', () => {
     expect(styles).toMatch(/\.wbx-service-offer__facts > div\s*\{[^}]*border-bottom:\s*1px solid var\(--wbx-line\)/s)
     expect(styles).toMatch(/\.wbx-service-checklist li\s*\{[^}]*border-top:\s*1px solid var\(--wbx-line\)/s)
     expect(styles).toMatch(/\.wbx-service-output-list > div\s*\{[^}]*border-top:\s*1px solid var\(--wbx-line\)/s)
-    expect(styles).not.toMatch(/\.wbx-service \.wbx-service-process li\s*\{[^}]*border-top:/s)
+    expect(styles).toMatch(/\.wbx-service \.wbx-service-process li\s*\{[^}]*border-top:\s*0/s)
     expect(styles).toMatch(/\.wbx-service \.wbx-service-process li\s*\{[^}]*margin:\s*0/s)
     expect(styles).toMatch(/\.wbx-service-rules dl > div\s*\{[^}]*border-bottom:\s*1px solid var\(--wbx-line\)/s)
   })
