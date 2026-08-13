@@ -281,8 +281,7 @@
 .wbx-service .wbx-service-process li {
   min-width: 0;
   margin: 0;
-  padding-top: 16px;
-  border-top: 2px solid var(--wbx-ink);
+  padding-top: 0;
 }
 
 .wbx-service-process h3 {
