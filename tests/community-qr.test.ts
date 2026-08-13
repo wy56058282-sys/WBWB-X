@@ -36,6 +36,22 @@ vi.mock('vitepress/theme', async () => {
 
 const apps: App[] = []
 
+function mockHoverCapability(matches: boolean) {
+  Object.defineProperty(window, 'matchMedia', {
+    configurable: true,
+    value: vi.fn(() => ({
+      matches,
+      media: '(hover: hover) and (pointer: fine)',
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  })
+}
+
 function mountCommunityQr() {
   const host = document.createElement('div')
   document.body.append(host)
@@ -252,6 +268,74 @@ describe('CommunityQr', () => {
 })
 
 describe('Layout community triggers', () => {
+  it('previews on capable pointer hover and closes after leaving', async () => {
+    vi.useFakeTimers()
+    mockHoverCapability(true)
+    mountLayout()
+
+    const before = document.createElement('button')
+    const trigger = document.createElement('a')
+    trigger.href = '#community'
+    trigger.innerHTML = '<span>交流群</span>'
+    document.body.append(before, trigger)
+    before.focus()
+
+    trigger.querySelector('span')?.dispatchEvent(
+      new MouseEvent('pointerover', { bubbles: true, relatedTarget: document.body }),
+    )
+    await nextTick()
+    expect(document.querySelector('[role="dialog"]')).not.toBeNull()
+    expect(document.activeElement).toBe(before)
+
+    trigger.dispatchEvent(
+      new MouseEvent('pointerout', { bubbles: true, relatedTarget: document.body }),
+    )
+    vi.advanceTimersByTime(180)
+    await nextTick()
+    expect(document.querySelector('[role="dialog"]')).toBeNull()
+  })
+
+  it('ignores internal pointer movement and hover on touch-only devices', async () => {
+    mockHoverCapability(true)
+    mountLayout()
+    const trigger = document.createElement('a')
+    const child = document.createElement('span')
+    trigger.href = '#community'
+    child.textContent = '交流群'
+    trigger.append(child)
+    document.body.append(trigger)
+
+    child.dispatchEvent(
+      new MouseEvent('pointerover', { bubbles: true, relatedTarget: trigger }),
+    )
+    await nextTick()
+    expect(document.querySelector('[role="dialog"]')).toBeNull()
+
+    apps.splice(0).forEach((app) => app.unmount())
+    mockHoverCapability(false)
+    mountLayout()
+    child.dispatchEvent(new MouseEvent('pointerover', { bubbles: true }))
+    await nextTick()
+    expect(document.querySelector('[role="dialog"]')).toBeNull()
+  })
+
+  it('pins on click so pointer leave cannot close it', async () => {
+    vi.useFakeTimers()
+    mockHoverCapability(true)
+    mountLayout()
+    const trigger = document.createElement('a')
+    trigger.href = '#community'
+    trigger.textContent = '交流群'
+    document.body.append(trigger)
+
+    trigger.click()
+    await nextTick()
+    trigger.dispatchEvent(new MouseEvent('pointerout', { bubbles: true }))
+    vi.advanceTimersByTime(180)
+    await nextTick()
+    expect(document.querySelector('[role="dialog"]')).not.toBeNull()
+  })
+
   it('opens after VitePress has already prevented the navigation click', async () => {
     const vitePressNavigationHandler = (event: MouseEvent) => event.preventDefault()
     document.addEventListener('click', vitePressNavigationHandler, true)

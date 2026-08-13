@@ -8,7 +8,12 @@ import {
   isHomeRoute,
   isReadingRoute,
 } from '../route-state'
-import CommunityQr, { openCommunityQr } from './CommunityQr.vue'
+import CommunityQr, {
+  cancelCommunityQrClose,
+  pinCommunityQr,
+  previewCommunityQr,
+  scheduleCommunityQrClose,
+} from './CommunityQr.vue'
 import DocImageLightbox from './DocImageLightbox.vue'
 import FloatingQuickAccess from './FloatingQuickAccess.vue'
 import HomePage from './HomePage.vue'
@@ -19,6 +24,13 @@ const isHome = computed(() => isHomeRoute(route.path, site.value.base))
 const isReading = computed(() => isReadingRoute(route.path, site.value.base))
 const isCaseIndex = computed(() => isCaseIndexRoute(route.path, site.value.base))
 const isCaseDetail = computed(() => isCaseDetailRoute(route.path, site.value.base))
+let hoverMedia: MediaQueryList | null = null
+
+function communityQrTrigger(target: EventTarget | null) {
+  if (!(target instanceof Element)) return null
+  const trigger = target.closest<HTMLAnchorElement>('a[href="#community"]')
+  return trigger?.textContent?.trim() === '交流群' ? trigger : null
+}
 
 function handleCommunityQrTrigger(event: MouseEvent) {
   if (
@@ -27,25 +39,52 @@ function handleCommunityQrTrigger(event: MouseEvent) {
     event.ctrlKey ||
     event.shiftKey ||
     event.altKey ||
-    !(event.target instanceof Element)
+    !communityQrTrigger(event.target)
   ) {
     return
   }
 
-  const trigger = event.target.closest<HTMLAnchorElement>('a[href="#community"]')
-  if (!trigger || trigger.textContent?.trim() !== '交流群') return
+  const trigger = communityQrTrigger(event.target)
+  if (!trigger) return
 
   event.preventDefault()
   event.stopPropagation()
-  openCommunityQr(trigger)
+  pinCommunityQr(trigger)
+}
+
+function handleCommunityQrPointerOver(event: PointerEvent) {
+  if (!hoverMedia?.matches) return
+  const trigger = communityQrTrigger(event.target)
+  if (!trigger || (event.relatedTarget instanceof Node && trigger.contains(event.relatedTarget))) {
+    return
+  }
+
+  cancelCommunityQrClose()
+  previewCommunityQr(trigger)
+}
+
+function handleCommunityQrPointerOut(event: PointerEvent) {
+  if (!hoverMedia?.matches) return
+  const trigger = communityQrTrigger(event.target)
+  if (!trigger || (event.relatedTarget instanceof Node && trigger.contains(event.relatedTarget))) {
+    return
+  }
+
+  scheduleCommunityQrClose()
 }
 
 onMounted(() => {
+  hoverMedia = window.matchMedia('(hover: hover) and (pointer: fine)')
   document.addEventListener('click', handleCommunityQrTrigger, true)
+  document.addEventListener('pointerover', handleCommunityQrPointerOver, true)
+  document.addEventListener('pointerout', handleCommunityQrPointerOut, true)
 })
 
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleCommunityQrTrigger, true)
+  document.removeEventListener('pointerover', handleCommunityQrPointerOver, true)
+  document.removeEventListener('pointerout', handleCommunityQrPointerOut, true)
+  hoverMedia = null
 })
 </script>
 
