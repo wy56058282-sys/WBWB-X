@@ -22,9 +22,6 @@ describe('neutral hover color system', () => {
     expect(customCss).toMatch(
       /\.VPSidebarItem \.link:hover,\s*\.VPSidebarItem \.link:focus-visible\s*\{[^{}]*background:\s*var\(--wbx-sidebar-hover-surface\);[^{}]*\}/,
     )
-    expect(customCss).toMatch(
-      /\.wbx-community-qr__close:hover\s*{[\s\S]*?background:\s*var\(--wbx-hover-surface\);/,
-    )
     expect(homeCss).toMatch(
       /\.wbx-task-grid a:hover,[\s\S]*?background:\s*var\(--wbx-hover-surface\);/,
     )

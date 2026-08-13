@@ -168,21 +168,20 @@ describe('brand configuration', () => {
     expect(source).toContain('withBase(brand.qrPath)')
     expect(source).not.toContain('aria-modal=')
     expect(source).toContain('欢迎创客一起共创')
+    expect(source).toContain('二维码有效期至 8 月 20 日')
     expect(source).not.toContain('二维码过期后')
     expect(source).toContain('aria-describedby="wbx-community-qr-help"')
     expect(source).not.toContain('wbx-community-qr-maintenance')
     expect(css).not.toContain('.wbx-community-qr__maintenance')
   })
 
-  it('keeps the QR close control named when mobile hides its visible label', () => {
+  it('keeps the hover popover free of a pinned close control', () => {
     const component = readFileSync('docs/.vitepress/theme/CommunityQr.vue', 'utf8')
     const css = readFileSync('docs/.vitepress/theme/custom.css', 'utf8')
-    const closeButton = component.match(/<button class="wbx-community-qr__close"[^>]*>/)
 
-    expect(css).toMatch(
-      /@media \(max-width: 760px\)\s*\{[\s\S]*\.wbx-community-qr__close-label\s*\{\s*display:\s*none;/,
-    )
-    expect(closeButton?.[0]).toContain('aria-label="关闭"')
+    expect(component).not.toContain('wbx-community-qr__close')
+    expect(component).not.toContain('aria-label="关闭"')
+    expect(css).not.toContain('.wbx-community-qr__close')
   })
 
   it('positions the compact community QR popover inside the viewport', () => {
