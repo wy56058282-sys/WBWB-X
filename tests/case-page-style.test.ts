@@ -160,7 +160,7 @@ describe('case collection page styles', () => {
     expect(indexSource).toContain('<CasesPage />')
     expect(indexSource).not.toContain('# WorkBuddy WB-X 案例集')
     expect(pageSource).toContain(
-      '<span class="wbx-cases-brand">WorkBuddy</span><span class="wbx-cases-title-line">WB-X 案例集</span>',
+      '<span class="wbx-cases-brand">WorkBuddy WB-X</span><span class="wbx-cases-title-line">案例集</span>',
     )
     expect(pageSource).not.toContain('wbx-cases-header__eyebrow')
     expect(pageSource).not.toContain('CONTRIBUTE A CASE')
