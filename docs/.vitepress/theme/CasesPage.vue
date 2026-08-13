@@ -74,7 +74,7 @@ onBeforeUnmount(() => {
       <main class="wbx-cases-main-column">
         <header class="wbx-cases-hero">
           <div class="wbx-cases-hero__copy">
-          <h1 id="case-gallery-title"><span class="wbx-cases-brand">WorkBuddy WB-X</span> 案例集</h1>
+          <h1 id="case-gallery-title"><span class="wbx-cases-brand">WorkBuddy</span><span class="wbx-cases-title-line">WB-X 案例集</span></h1>
           <p>从真实场景出发，找到可以带走复用的工作方法。</p>
           </div>
         </header>

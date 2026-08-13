@@ -114,6 +114,10 @@
   font-weight: 850;
 }
 
+.wbx-cases-title-line {
+  display: block;
+}
+
 .wbx-cases h2 {
   margin-bottom: 0;
   border: 0;
