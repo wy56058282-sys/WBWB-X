@@ -1,11 +1,28 @@
 <script lang="ts">
-type CommunityQrListener = (trigger: HTMLElement | null) => void
+type CommunityQrAction = 'preview' | 'pin' | 'schedule-close' | 'cancel-close'
+type CommunityQrListener = (action: CommunityQrAction, trigger?: HTMLElement | null) => void
 
 const listeners = new Set<CommunityQrListener>()
 
 /** Opens the globally mounted community dialog from a VitePress nav control. */
 export function openCommunityQr(trigger: HTMLElement | null = null) {
-  listeners.forEach((listener) => listener(trigger))
+  pinCommunityQr(trigger)
+}
+
+export function previewCommunityQr(trigger: HTMLElement | null = null) {
+  listeners.forEach((listener) => listener('preview', trigger))
+}
+
+export function pinCommunityQr(trigger: HTMLElement | null = null) {
+  listeners.forEach((listener) => listener('pin', trigger))
+}
+
+export function scheduleCommunityQrClose() {
+  listeners.forEach((listener) => listener('schedule-close'))
+}
+
+export function cancelCommunityQrClose() {
+  listeners.forEach((listener) => listener('cancel-close'))
 }
 </script>
 
@@ -18,7 +35,10 @@ import { computeCommunityPopoverPosition } from '../community-popover-position'
 const isOpen = ref(false)
 const dialog = ref<HTMLElement | null>(null)
 const position = ref({ left: 12, top: 12, placement: 'below' as const })
+const mode = ref<'closed' | 'preview' | 'pinned'>('closed')
+const CLOSE_DELAY_MS = 180
 let activeTrigger: HTMLElement | null = null
+let closeTimer: ReturnType<typeof setTimeout> | null = null
 
 function updatePosition() {
   if (!isOpen.value || !activeTrigger || !dialog.value) return
@@ -30,16 +50,34 @@ function updatePosition() {
   })
 }
 
-function open(trigger: HTMLElement | null) {
+function cancelClose() {
+  if (closeTimer === null) return
+  clearTimeout(closeTimer)
+  closeTimer = null
+}
+
+function preview(trigger: HTMLElement | null) {
+  cancelClose()
+  if (mode.value === 'pinned') return
+
+  activeTrigger = trigger
+  mode.value = 'preview'
+  isOpen.value = true
+  void nextTick(updatePosition)
+}
+
+function pin(trigger: HTMLElement | null) {
+  cancelClose()
   const nextTrigger =
     trigger ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null)
 
-  if (isOpen.value && nextTrigger === activeTrigger) {
+  if (mode.value === 'pinned' && nextTrigger === activeTrigger) {
     close()
     return
   }
 
   activeTrigger = nextTrigger
+  mode.value = 'pinned'
   isOpen.value = true
   void nextTick(() => {
     updatePosition()
@@ -50,10 +88,26 @@ function open(trigger: HTMLElement | null) {
 function close() {
   if (!isOpen.value) return
 
+  cancelClose()
   const triggerToRestore = activeTrigger
+  const shouldRestoreFocus = mode.value === 'pinned'
   isOpen.value = false
+  mode.value = 'closed'
   activeTrigger = null
-  triggerToRestore?.focus()
+  if (shouldRestoreFocus && triggerToRestore?.isConnected) triggerToRestore.focus()
+}
+
+function scheduleClose() {
+  cancelClose()
+  if (mode.value !== 'preview') return
+  closeTimer = setTimeout(close, CLOSE_DELAY_MS)
+}
+
+function handleAction(action: CommunityQrAction, trigger?: HTMLElement | null) {
+  if (action === 'preview') preview(trigger ?? null)
+  else if (action === 'pin') pin(trigger ?? null)
+  else if (action === 'schedule-close') scheduleClose()
+  else cancelClose()
 }
 
 function handleDocumentClick(event: MouseEvent) {
@@ -109,14 +163,15 @@ function handleKeydown(event: KeyboardEvent) {
 }
 
 onMounted(() => {
-  listeners.add(open)
+  listeners.add(handleAction)
   document.addEventListener('click', handleDocumentClick)
   document.addEventListener('scroll', updatePosition, true)
   window.addEventListener('resize', updatePosition)
 })
 
 onBeforeUnmount(() => {
-  listeners.delete(open)
+  cancelClose()
+  listeners.delete(handleAction)
   document.removeEventListener('click', handleDocumentClick)
   document.removeEventListener('scroll', updatePosition, true)
   window.removeEventListener('resize', updatePosition)
@@ -135,6 +190,8 @@ onBeforeUnmount(() => {
         tabindex="-1"
         :data-placement="position.placement"
         :style="{ left: `${position.left}px`, top: `${position.top}px` }"
+        @pointerenter="cancelClose"
+        @pointerleave="scheduleClose"
         @keydown="handleKeydown"
       >
         <div class="wbx-community-qr__heading">

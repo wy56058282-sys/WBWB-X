@@ -1,6 +1,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createApp, nextTick, type App } from 'vue'
-import CommunityQr, { openCommunityQr } from '../docs/.vitepress/theme/CommunityQr.vue'
+import CommunityQr, {
+  cancelCommunityQrClose,
+  openCommunityQr,
+  pinCommunityQr,
+  previewCommunityQr,
+  scheduleCommunityQrClose,
+} from '../docs/.vitepress/theme/CommunityQr.vue'
 import Layout from '../docs/.vitepress/theme/Layout.vue'
 
 vi.mock('vitepress', () => ({
@@ -55,12 +61,81 @@ async function openFrom(trigger: HTMLElement) {
 }
 
 afterEach(() => {
+  vi.useRealTimers()
   apps.splice(0).forEach((app) => app.unmount())
   document.body.replaceChildren()
   document.body.style.overflow = ''
 })
 
 describe('CommunityQr', () => {
+  it('previews without stealing focus and pins without closing', async () => {
+    const before = document.createElement('button')
+    const trigger = document.createElement('a')
+    document.body.append(before, trigger)
+    mountCommunityQr()
+    before.focus()
+
+    previewCommunityQr(trigger)
+    await nextTick()
+
+    const dialog = document.querySelector<HTMLElement>('[role="dialog"]')
+    expect(dialog).not.toBeNull()
+    expect(document.activeElement).toBe(before)
+
+    pinCommunityQr(trigger)
+    await nextTick()
+
+    expect(document.querySelector('[role="dialog"]')).toBe(dialog)
+    expect(document.activeElement).toBe(dialog)
+  })
+
+  it('does not restore focus when a hover preview closes', async () => {
+    const before = document.createElement('button')
+    const trigger = document.createElement('a')
+    document.body.append(before, trigger)
+    mountCommunityQr()
+    before.focus()
+
+    previewCommunityQr(trigger)
+    await nextTick()
+    document.querySelector<HTMLButtonElement>('[aria-label="关闭"]')?.click()
+    await nextTick()
+
+    expect(document.querySelector('[role="dialog"]')).toBeNull()
+    expect(document.activeElement).toBe(before)
+  })
+
+  it('delays preview close, cancels it on re-entry, and ignores it while pinned', async () => {
+    vi.useFakeTimers()
+    const trigger = document.createElement('a')
+    document.body.append(trigger)
+    mountCommunityQr()
+
+    previewCommunityQr(trigger)
+    await nextTick()
+    scheduleCommunityQrClose()
+    vi.advanceTimersByTime(179)
+    await nextTick()
+    expect(document.querySelector('[role="dialog"]')).not.toBeNull()
+
+    cancelCommunityQrClose()
+    vi.advanceTimersByTime(1)
+    await nextTick()
+    expect(document.querySelector('[role="dialog"]')).not.toBeNull()
+
+    scheduleCommunityQrClose()
+    vi.advanceTimersByTime(180)
+    await nextTick()
+    expect(document.querySelector('[role="dialog"]')).toBeNull()
+
+    pinCommunityQr(trigger)
+    await nextTick()
+    scheduleCommunityQrClose()
+    vi.advanceTimersByTime(180)
+    await nextTick()
+    expect(document.querySelector('[role="dialog"]')).not.toBeNull()
+  })
+
   it('renders a labelled non-modal QR popover without locking background scrolling', async () => {
     const trigger = document.createElement('button')
     document.body.append(trigger)
