@@ -72,6 +72,13 @@
   top: var(--wbx-cases-sticky-top);
 }
 
+.wbx-cases-tools-stack.is-fixed {
+  position: fixed;
+  top: var(--wbx-cases-sticky-top);
+  left: var(--wbx-cases-fixed-left);
+  width: var(--wbx-cases-fixed-width);
+}
+
 .wbx-cases-hero {
   padding: 26px 0 36px;
 }

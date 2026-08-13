@@ -233,4 +233,38 @@ describe('case gallery', () => {
     await nextTick()
     expect(tools.style.getPropertyValue('--wbx-cases-sticky-top')).toBe('104px')
   })
+
+  it('fixes the tools to the viewport after its anchor reaches the nav safe area', async () => {
+    let resizeCallback: ResizeObserverCallback | undefined
+    globalThis.ResizeObserver = class {
+      constructor(callback: ResizeObserverCallback) { resizeCallback = callback }
+      observe() {}
+      disconnect() {}
+      unobserve() {}
+    }
+    Object.defineProperty(window, 'innerWidth', { configurable: true, value: 1440 })
+    Object.defineProperty(window, 'innerHeight', { configurable: true, value: 900 })
+    const nav = document.createElement('header')
+    nav.className = 'VPNavBar'
+    nav.getBoundingClientRect = () => ({ top: 0, bottom: 64, height: 64 } as DOMRect)
+    document.body.append(nav)
+    mountCasesPage()
+
+    const column = document.querySelector<HTMLElement>('.wbx-cases-tools-column')!
+    const tools = document.querySelector<HTMLElement>('.wbx-cases-tools-stack')!
+    let columnTop = 180
+    column.getBoundingClientRect = () => ({ top: columnTop, left: 980, width: 280, height: 1200 } as DOMRect)
+    tools.getBoundingClientRect = () => ({ top: columnTop, left: 980, width: 280, height: 540 } as DOMRect)
+    resizeCallback?.([], {} as ResizeObserver)
+    await nextTick()
+    expect(tools.classList.contains('is-fixed')).toBe(false)
+
+    columnTop = 40
+    window.dispatchEvent(new Event('scroll'))
+    await nextTick()
+    expect(tools.classList.contains('is-fixed')).toBe(true)
+    expect(tools.style.getPropertyValue('--wbx-cases-fixed-left')).toBe('980px')
+    expect(tools.style.getPropertyValue('--wbx-cases-fixed-width')).toBe('280px')
+    expect(tools.style.getPropertyValue('--wbx-cases-sticky-top')).toBe('88px')
+  })
 })
