@@ -269,10 +269,16 @@ body {
 }
 
 @media (min-width: 960px) {
-  .VPNavBar > .wrapper > .container > .title {
+  .VPNavBar {
     background: color-mix(in srgb, var(--wbx-paper) 82%, transparent);
     -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
+  }
+
+  .VPNavBar > .wrapper > .container > .title {
+    background: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
 
   .VPNavBar.has-sidebar .wrapper {

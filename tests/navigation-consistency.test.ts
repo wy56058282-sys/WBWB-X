@@ -4,9 +4,12 @@ import { describe, expect, it } from 'vitest'
 const customCss = readFileSync('docs/.vitepress/theme/custom.css', 'utf8')
 
 describe('shared desktop navigation geometry', () => {
-  it('uses one frosted title surface for sidebar and non-sidebar pages', () => {
+  it('uses one continuous frosted navbar without a title seam', () => {
     expect(customCss).toMatch(
-      /@media \(min-width:\s*960px\)[\s\S]*?\.VPNavBar > \.wrapper > \.container > \.title\s*\{[^}]*background:\s*color-mix\([^}]*-webkit-backdrop-filter:\s*blur\(16px\)[^}]*backdrop-filter:\s*blur\(16px\)/s,
+      /@media \(min-width:\s*960px\)[\s\S]*?\.VPNavBar\s*\{[^}]*background:\s*color-mix\([^}]*-webkit-backdrop-filter:\s*blur\(16px\)[^}]*backdrop-filter:\s*blur\(16px\)/s,
+    )
+    expect(customCss).toMatch(
+      /\.VPNavBar > \.wrapper > \.container > \.title\s*\{[^}]*background:\s*transparent/s,
     )
   })
 
