@@ -15,6 +15,7 @@ const umamiWebsiteId = process.env.VITE_WBX_UMAMI_WEBSITE_ID?.trim()
 const umamiShareUrl = process.env.VITE_WBX_UMAMI_SHARE_URL?.trim()
 const umamiCollectionStartedAt = process.env.VITE_WBX_UMAMI_COLLECTION_STARTED_AT?.trim()
 const umamiTrackingEnabled = Boolean(umamiWebsiteId && umamiShareUrl && umamiCollectionStartedAt)
+const BAIDU_ANALYTICS_URL = 'https://hm.baidu.com/hm.js?7a23a8966a0536ac9ba595d6a0544f07'
 
 function canonicalPath(relativePath: string) {
   const normalized = relativePath.replace(/\\/g, '/')
@@ -39,6 +40,7 @@ export default withMermaid(defineConfig({
   cleanUrls: true,
   lastUpdated: true,
   head: [
+    ['script', { src: BAIDU_ANALYTICS_URL, async: '' }],
     ['meta', { name: 'author', content: brand.author }],
     ['meta', { name: 'keywords', content: brand.seo.keywords }],
     ['meta', { property: 'og:title', content: brand.seo.title }],
