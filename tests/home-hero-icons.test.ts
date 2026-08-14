@@ -887,7 +887,7 @@ describe('home hero icon navigation', () => {
 
     expect(download?.textContent).toBe('教学资料')
     expect(download?.getAttribute('href')).toBe(
-      'https://pan.quark.cn/s/ca7b76d97d59?pwd=WPc9',
+      'https://pan.quark.cn/s/4b2488289c79',
     )
     expect(download?.getAttribute('target')).toBe('_blank')
     expect(download?.getAttribute('rel')).toBe('noopener noreferrer')
