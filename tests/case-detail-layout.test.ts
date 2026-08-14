@@ -16,11 +16,18 @@ const customCss = readFileSync(
 describe('case detail layout', () => {
   it('adds a base-aware back link before case detail documents', () => {
     expect(layoutSource).toContain("'wbx-case-detail-layout': isCaseDetail")
+    expect(layoutSource).toContain('isCaseContribution')
     expect(layoutSource).toContain('<template #doc-before>')
-    expect(layoutSource).toContain('v-if="isCaseDetail"')
+    expect(layoutSource).toContain('v-if="isCaseDetail || isCaseContribution"')
     expect(layoutSource).toContain(':href="withBase(\'/cases/\')"')
     expect(layoutSource).toContain('返回案例集')
     expect(layoutSource).toContain('hn-arrow-left-solid')
+  })
+
+  it('shares the sidebar-free case detail shell with the contribution guide', () => {
+    expect(layoutSource).toContain(
+      "'wbx-case-detail-layout': isCaseDetail || isCaseContribution",
+    )
   })
 
   it('removes only the case detail sidebar slot and restores document width', () => {

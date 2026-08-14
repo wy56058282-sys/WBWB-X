@@ -18,7 +18,7 @@ export interface BrandConfig {
 }
 
 export const brand: BrandConfig = {
-  siteName: 'WorkBuddy WB-X',
+  siteName: 'WorkBuddy-X',
   contentName: 'WorkBuddy 实战小白书',
   contentShortName: 'WorkBuddy小白书',
   shortMark: 'WB-X',

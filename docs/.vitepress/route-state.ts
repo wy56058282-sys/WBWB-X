@@ -24,6 +24,10 @@ export function isCaseIndexRoute(path: string, base: string) {
   return stripBase(path, base) === '/cases/'
 }
 
+export function isCaseContributionRoute(path: string, base: string) {
+  return stripBase(path, base) === '/community/case-contributing/'
+}
+
 export function isCaseDetailRoute(path: string, base: string) {
   return stripBase(path, base).startsWith('/cases/submissions/')
 }

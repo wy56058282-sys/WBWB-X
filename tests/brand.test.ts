@@ -22,7 +22,7 @@ function readPngDimensions(path: string) {
 
 describe('brand configuration', () => {
   it('contains the approved WB-X identity', () => {
-    expect(brand.siteName).toBe('WorkBuddy WB-X')
+    expect(brand.siteName).toBe('WorkBuddy-X')
     expect(brand.contentName).toBe('WorkBuddy 实战小白书')
     expect(brand.contentShortName).toBe('WorkBuddy小白书')
     expect(brand.shortMark).toBe('WB-X')

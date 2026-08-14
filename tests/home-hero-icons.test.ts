@@ -958,7 +958,8 @@ describe('home hero icon navigation', () => {
     expect(css).toMatch(
       /\.wbx-community \.wbx-button\.wbx-community__download:(?:hover|focus-visible)[^{]*\{[^}]*color:\s*#0d100d !important;[^}]*border-color:\s*var\(--wbx-accent\);/s,
     )
-    expect(ip).toMatch(/width:\s*min\(100%, 424px\);/)
+    expect(stage).toMatch(/width:\s*min\(92%, 374px\);/)
+    expect(ip).toMatch(/width:\s*min\(100%, 374px\);/)
     expect(ip).not.toMatch(/animation:/)
     expect(ip).not.toMatch(/clip-path:/)
     expect(ip).not.toMatch(/filter:/)

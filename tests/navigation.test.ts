@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest'
 import config from '../docs/.vitepress/config.mts'
 import { nav } from '../docs/.vitepress/navigation'
 import {
+  isCaseContributionRoute,
   isCaseDetailRoute,
   isCaseIndexRoute,
   isHomeRoute,
@@ -91,5 +92,17 @@ describe('site navigation', () => {
     ).toBe(true)
     expect(isCaseDetailRoute('/cases/', '/')).toBe(false)
     expect(isCaseDetailRoute('/community/case-contributing/', '/')).toBe(false)
+  })
+
+  it('recognizes the case contribution guide at root and under the configured base', () => {
+    expect(isCaseContributionRoute('/community/case-contributing/', '/')).toBe(true)
+    expect(
+      isCaseContributionRoute(
+        '/WBWB-X/community/case-contributing/',
+        '/WBWB-X/',
+      ),
+    ).toBe(true)
+    expect(isCaseContributionRoute('/community/contributing/', '/')).toBe(false)
+    expect(isCaseContributionRoute('/cases/submissions/daily-ai-news/', '/')).toBe(false)
   })
 })

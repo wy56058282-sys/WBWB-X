@@ -991,13 +991,13 @@
   position: absolute;
   bottom: -24px;
   left: 50%;
-  width: min(92%, 424px);
+  width: min(92%, 374px);
   transform: translateX(-50%);
 }
 
 .wbx-community__ip {
   display: block;
-  width: min(100%, 424px);
+  width: min(100%, 374px);
   height: auto;
 }
 
