@@ -1278,13 +1278,16 @@
 
   .wbx-reading-card {
     grid-template-columns: 70px minmax(0, 1fr) auto;
+    align-items: start;
     gap: 18px;
     padding: 18px;
   }
 
   .wbx-reading-card__icon {
+    align-self: start;
     width: 70px;
     height: 70px;
+    margin-top: 32px;
   }
 
   .wbx-reading-card__icon .hn {
@@ -1293,7 +1296,7 @@
 
   .wbx-reading-card__arrow {
     display: block;
-    align-self: center;
+    align-self: end;
     justify-self: end;
   }
 
@@ -1421,7 +1424,7 @@
 
   .wbx-reading-card__arrow {
     display: block;
-    align-self: center;
+    align-self: end;
     justify-self: end;
   }
 

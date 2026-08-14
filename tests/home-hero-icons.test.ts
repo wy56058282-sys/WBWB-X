@@ -685,7 +685,7 @@ describe('home hero icon navigation', () => {
     )
   })
 
-  it('keeps mobile reading arrows in a right-aligned third column', () => {
+  it('aligns mobile reading icons with titles and arrows with tags', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const mobileStart = css.indexOf('@media (max-width: 760px)')
     const narrowStart = css.indexOf('@media (max-width: 420px)')
@@ -693,16 +693,19 @@ describe('home hero icon navigation', () => {
     const narrow = css.slice(narrowStart)
 
     expect(mobile).toMatch(
-      /\.wbx-reading-card\s*\{[^}]*grid-template-columns:\s*70px minmax\(0, 1fr\) auto;/s,
+      /\.wbx-reading-card\s*\{[^}]*grid-template-columns:\s*70px minmax\(0, 1fr\) auto;[^}]*align-items:\s*start;/s,
     )
     expect(mobile).toMatch(
-      /\.wbx-reading-card__arrow\s*\{[^}]*display:\s*block;[^}]*align-self:\s*center;[^}]*justify-self:\s*end;/s,
+      /\.wbx-reading-card__icon\s*\{[^}]*align-self:\s*start;[^}]*margin-top:\s*32px;/s,
+    )
+    expect(mobile).toMatch(
+      /\.wbx-reading-card__arrow\s*\{[^}]*display:\s*block;[^}]*align-self:\s*end;[^}]*justify-self:\s*end;/s,
     )
     expect(narrow).toMatch(
       /\.wbx-reading-card\s*\{[^}]*grid-template-columns:\s*56px minmax\(0, 1fr\) auto;/s,
     )
     expect(narrow).toMatch(
-      /\.wbx-reading-card__arrow\s*\{[^}]*display:\s*block;[^}]*align-self:\s*center;[^}]*justify-self:\s*end;/s,
+      /\.wbx-reading-card__arrow\s*\{[^}]*display:\s*block;[^}]*align-self:\s*end;[^}]*justify-self:\s*end;/s,
     )
   })
 
