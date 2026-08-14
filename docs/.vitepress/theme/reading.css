@@ -84,6 +84,7 @@
 .wbx-reading-layout .wbx-book-index__entry--appendix:first-of-type {
   margin-top: 20px;
   padding-top: 20px;
+  border-top: 1px solid var(--wbx-line);
 }
 
 .wbx-reading-layout
