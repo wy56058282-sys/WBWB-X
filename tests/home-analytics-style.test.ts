@@ -29,4 +29,13 @@ describe('home analytics integration', () => {
     expect(source).not.toContain("<small>LIVE</small>")
     expect(css).toMatch(/\.wbx-sr-only\s*\{[^}]*position:\s*absolute[^}]*width:\s*1px[^}]*height:\s*1px[^}]*overflow:\s*hidden/s)
   })
+
+  it('animates changed digits with stable columns and respects reduced motion', () => {
+    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    expect(css).toMatch(/\.wbx-flip-value__digit\s*\{[^}]*width:\s*1ch[^}]*overflow:\s*hidden/s)
+    expect(css).toMatch(/\.wbx-digit-enter-active[^}]*\{[^}]*var\(--wbx-digit-duration\)[^}]*var\(--wbx-digit-delay\)/s)
+    expect(css).toMatch(/\.wbx-digit-enter-from\s*\{[^}]*(?:translateY\(100%\)[^}]*opacity:\s*0|opacity:\s*0[^}]*translateY\(100%\))/s)
+    expect(css).toMatch(/\.wbx-digit-leave-to\s*\{[^}]*(?:translateY\(-100%\)[^}]*opacity:\s*0|opacity:\s*0[^}]*translateY\(-100%\))/s)
+    expect(css).toMatch(/@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.wbx-digit-enter-active[^}]*\{[^}]*transition:\s*none/s)
+  })
 })

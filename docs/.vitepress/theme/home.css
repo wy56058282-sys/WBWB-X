@@ -115,6 +115,47 @@
   line-height: 1;
 }
 
+.wbx-flip-value,
+.wbx-flip-value__visual {
+  display: inline-flex;
+  align-items: baseline;
+  white-space: nowrap;
+}
+
+.wbx-flip-value__digit {
+  position: relative;
+  display: inline-block;
+  flex: 0 0 1ch;
+  width: 1ch;
+  height: 1em;
+  overflow: hidden;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.wbx-flip-value__glyph {
+  position: absolute;
+  inset: 0;
+  text-align: center;
+}
+
+.wbx-digit-enter-active,
+.wbx-digit-leave-active {
+  transition:
+    transform var(--wbx-digit-duration) cubic-bezier(.22, 1, .36, 1) var(--wbx-digit-delay),
+    opacity var(--wbx-digit-duration) ease var(--wbx-digit-delay);
+}
+
+.wbx-digit-enter-from {
+  opacity: 0;
+  transform: translateY(100%);
+}
+
+.wbx-digit-leave-to {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
 .wbx-home-analytics dl small {
   grid-column: 1 / -1;
 }
@@ -1404,6 +1445,13 @@
 
   .wbx-home-analytics dl > div:nth-child(-n + 2) {
     border-bottom: 1px solid var(--wbx-ink);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wbx-digit-enter-active,
+  .wbx-digit-leave-active {
+    transition: none;
   }
 }
 

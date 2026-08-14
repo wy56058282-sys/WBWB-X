@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
+import AnalyticsFlipValue from './AnalyticsFlipValue.vue'
 import {
   fetchHomeAnalytics,
   type HomeAnalyticsConfig,
@@ -72,7 +73,7 @@ onBeforeUnmount(() => {
     <dl>
       <div v-for="([label, key]) in metrics" :key="key">
         <dt>{{ label }}</dt>
-        <dd>{{ displayValue(key) }}</dd>
+        <dd><AnalyticsFlipValue :value="displayValue(key)" /></dd>
         <small>{{ key.includes('Pageviews') ? 'PV' : 'VISITS' }}</small>
       </div>
     </dl>
