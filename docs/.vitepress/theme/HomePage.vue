@@ -401,7 +401,7 @@ const workflowSteps = [
         <div class="wbx-community__actions">
           <a
             class="wbx-button wbx-button--primary wbx-community__download"
-            href="https://pan.quark.cn/s/ca7b76d97d59?pwd=WPc9"
+            href="https://pan.quark.cn/s/4b2488289c79"
             target="_blank"
             rel="noopener noreferrer"
           >教学资料</a>
