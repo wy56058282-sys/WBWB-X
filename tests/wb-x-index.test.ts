@@ -135,7 +135,7 @@ describe('small-book reading index', () => {
     ).toBe(true)
 
     expect(readingCss).toMatch(
-      /\.wbx-reading-layout \.wbx-book-index__entry--appendix:first-of-type\s*{[^}]*margin-top:\s*20px[^}]*border-top:\s*1px solid var\(--wbx-line\)/,
+      /\.wbx-reading-layout\s+\.wbx-book-index__entry:not\(\.wbx-book-index__entry--appendix\)\s+\+ \.wbx-book-index__entry--appendix\s*{[^}]*margin-top:\s*20px[^}]*border-top:\s*1px solid var\(--wbx-line\)/,
     )
     expect(readingCss).not.toMatch(
       /\.wbx-reading-layout \.wbx-book-index__entry--appendix\s*{[^}]*border-top/,
