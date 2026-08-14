@@ -81,10 +81,15 @@
   background: var(--wbx-ink);
 }
 
-.wbx-reading-layout .wbx-book-index__entry--appendix {
-  margin-top: 24px;
-  padding-top: 24px;
-  border-top: 1px solid var(--wbx-line);
+.wbx-reading-layout .wbx-book-index__entry--appendix:first-of-type {
+  margin-top: 20px;
+  padding-top: 20px;
+}
+
+.wbx-reading-layout
+  .wbx-book-index__entry--appendix
+  + .wbx-book-index__entry--appendix {
+  margin-top: -4px;
 }
 
 .wbx-reading-layout .vp-doc h2 {

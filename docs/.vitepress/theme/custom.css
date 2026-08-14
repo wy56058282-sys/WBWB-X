@@ -216,12 +216,6 @@ body {
   line-height: 1.6;
 }
 
-.vp-doc .wbx-book-index__entry--appendix {
-  margin-top: 18px;
-  padding-top: 18px;
-  border-top: 1px solid var(--wbx-line);
-}
-
 @media (max-width: 640px) {
   .vp-doc .wbx-book-index__entry > a {
     grid-template-columns: 44px minmax(0, 1fr);
