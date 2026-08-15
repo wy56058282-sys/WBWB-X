@@ -22,12 +22,14 @@ const themes = {
     accent: '#32e6b9',
     ink: '#0d100d',
     surface: '#ffffff',
+    hoverSurface: '#eceee9',
     vpBrand: '#176b55',
   },
   dark: {
     accent: '#32e6b9',
     ink: '#f3f5ed',
     surface: '#181b15',
+    hoverSurface: '#252922',
     vpBrand: '#32e6b9',
   },
 } as const
@@ -37,6 +39,7 @@ function resolveThemeTokens(css: string, theme: (typeof themes)[keyof typeof the
     .replaceAll('var(--wbx-accent)', theme.accent)
     .replaceAll('var(--wbx-ink)', theme.ink)
     .replaceAll('var(--wbx-surface)', theme.surface)
+    .replaceAll('var(--wbx-hover-surface)', theme.hoverSurface)
     .replaceAll('var(--vp-c-brand-1)', theme.vpBrand)
     .replaceAll('var(--wbx-pixel)', 'Silkscreen')
 }
@@ -115,7 +118,7 @@ function assertCompactSurfaces(doc: Document) {
     size('.wbx-service-eyebrow', '12px')
     size('.wbx-service-offer__facts > div:first-child dd', '24px')
     size('.wbx-service-offer__copy .wbx-service-action', '14px')
-    size('.wbx-service-payment__notice', '14px')
+    size('.wbx-service-enterprise__channel', '14px')
     size('.wbx-service-case small', '10px')
     size('.wbx-service-case strong', '15px')
     size('.wbx-service-case span span', '13px')
@@ -190,7 +193,7 @@ describe('product page computed styles', () => {
                 <p class="wbx-service-eyebrow">服务标签</p><h1>定制服务</h1><p>服务正文</p><a class="wbx-service-action">预约</a>
               </div><dl class="wbx-service-offer__facts"><div><dt>价格</dt><dd>¥999</dd></div></dl></section>
               <section class="wbx-service-section wbx-service-deliverables"><div class="wbx-service-section__heading"><h2>服务范围</h2></div><dl class="wbx-service-output-list"><div><dt>输出</dt><dd>辅助说明</dd></div></dl></section>
-              <section class="wbx-service-section wbx-service-payment"><div class="wbx-service-payment__instructions"><p class="wbx-service-payment__notice">辅助提示</p></div></section>
+              <section class="wbx-service-section wbx-service-enterprise"><div><div class="wbx-service-enterprise__channel">辅助提示</div></div></section>
               <section class="wbx-service-section wbx-service-related"><div class="wbx-service-related__grid"><a class="wbx-service-case">
                 <span><small>案例标签</small><strong>卡片标题</strong><span>辅助结果</span></span>
               </a></div></section>
@@ -341,4 +344,46 @@ describe('product page computed styles', () => {
     expect(computed.outlineWidth).toBe('2px')
     expect(computed.boxShadow).toMatch(/(?:rgb\(13, 16, 13\)|#0d100d)/)
   })
+
+  it.each([
+    { viewportWidth: 1440, ladderColumns: 'repeat(3, minmax(0, 1fr))' },
+    { viewportWidth: 900, ladderColumns: 'repeat(2, minmax(0, 1fr))' },
+    { viewportWidth: 390, ladderColumns: '1fr' },
+  ])(
+    'keeps the production service conversion hierarchy readable at $viewportWidth px',
+    ({ viewportWidth, ladderColumns }) => {
+      installStyles(pageStyles.service, themes.light, viewportWidth)
+      document.body.innerHTML = `
+        <div class="vp-doc"><section class="wbx-service">
+          <header class="wbx-service-offer">
+            <div class="wbx-service-offer__copy"><p class="wbx-service-eyebrow">CUSTOM SERVICE</p><h1>WorkBuddy 需求诊断</h1><a class="wbx-service-action wbx-service-action--primary">开始需求沟通</a></div>
+            <dl class="wbx-service-offer__facts"><div><dt>价格</dt><dd>¥399</dd></div></dl>
+            <div class="wbx-service-business-wechat"><span aria-disabled="true">商务微信即将开放</span></div>
+          </header>
+          <section class="wbx-service-section wbx-service-ladder"><div class="wbx-service-section__heading"><p class="wbx-service-eyebrow">SERVICE LADDER</p><h2>从诊断到持续支持</h2></div><ol class="wbx-service-ladder__list"><li><span>01</span><h3>需求诊断</h3><p>¥399</p></li><li><span>02</span><h3>定制培训</h3><p>¥2,999 起</p></li><li><span>03</span><h3>FDE 现场支持</h3><p>¥5,999 起</p></li></ol></section>
+          <section class="wbx-service-section wbx-service-enterprise"><div class="wbx-service-section__heading"><p class="wbx-service-eyebrow">ENTERPRISE PURCHASE</p><h2>腾讯云企业版购买</h2></div><div><div class="wbx-service-enterprise__channel"><button type="button" disabled>企业采购通道准备中</button></div></div></section>
+          <section class="wbx-service-section wbx-service-process"><div class="wbx-service-section__heading"><h2>先沟通，再确认服务</h2></div><div><button type="button" disabled>报名表准备中</button></div></section>
+        </section></div>
+      `
+
+      const ladder = getComputedStyle(document.querySelector('.wbx-service-ladder__list')!)
+      const enterprise = getComputedStyle(document.querySelector('.wbx-service-enterprise')!)
+      const enterpriseChannel = getComputedStyle(document.querySelector('.wbx-service-enterprise__channel')!)
+      const disabled = getComputedStyle(document.querySelector('.wbx-service-enterprise button')!)
+      const application = getComputedStyle(document.querySelector('.wbx-service-process button')!)
+
+      expect(ladder.gridTemplateColumns).toBe(ladderColumns)
+      expect(enterprise.backgroundColor).toBe('rgb(236, 238, 233)')
+      expect(enterpriseChannel.borderLeftWidth).toBe('6px')
+      expect(disabled.minHeight).toBe('44px')
+      expect(disabled.borderTopWidth).toBe('2px')
+      expect(disabled.opacity).toBe('1')
+
+      if (viewportWidth === 390) {
+        expect(application.width).toBe('100%')
+        expect(getComputedStyle(document.querySelector('.wbx-service-offer')!).minWidth).toBe('0')
+        expect(getComputedStyle(document.querySelector('.wbx-service-section')!).minWidth).toBe('0')
+      }
+    },
+  )
 })

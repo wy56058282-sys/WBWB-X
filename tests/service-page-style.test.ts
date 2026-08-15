@@ -14,7 +14,7 @@ describe('custom service page styles', () => {
     expect(styles).toMatch(/\.wbx-service \.wbx-service-action\s*\{[^}]*border:\s*2px solid var\(--wbx-ink\)[^}]*border-radius:\s*0/s)
     expect(styles).toMatch(/\.wbx-service \.wbx-service-action--primary\s*\{[^}]*background:\s*var\(--wbx-accent\)/)
     expect(styles).toMatch(/\.wbx-service \.wbx-service-action:hover,\s*\.wbx-service \.wbx-service-action:focus-visible\s*\{[^}]*color:\s*#0d100d[^}]*background:\s*var\(--wbx-accent\)/s)
-    expect(styles).toMatch(/\.wbx-service-action:focus-visible,\s*\.wbx-service-case:focus-visible,\s*\.wbx-service-survey__media:focus-visible\s*\{[^}]*outline:\s*2px solid var\(--wbx-accent\)/s)
+    expect(styles).toMatch(/\.wbx-service-action:focus-visible,\s*\.wbx-service-case:focus-visible,\s*\.wbx-service-business-wechat span:focus-visible,\s*\.wbx-service button:focus-visible\s*\{[^}]*outline:\s*2px solid var\(--wbx-accent\)/s)
     expect(styles).toMatch(/\.wbx-service-related__grid\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/)
     expect(styles).toMatch(/@media \(max-width:\s*1200px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.wbx-service-related__grid\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/)
     expect(styles).not.toMatch(/@media \(max-width:\s*900px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.wbx-service-related__grid\s*\{/)
@@ -42,5 +42,32 @@ describe('custom service page styles', () => {
     expect(styles).toMatch(/\.wbx-service \.wbx-service-process li\s*\{[^}]*border-top:\s*2px solid var\(--wbx-ink\)/s)
     expect(styles).toMatch(/\.wbx-service \.wbx-service-process li\s*\{[^}]*margin:\s*0/s)
     expect(styles).toMatch(/\.wbx-service-rules dl > div\s*\{[^}]*border-bottom:\s*1px solid var\(--wbx-line\)/s)
+  })
+
+  it('styles the service ladder and enterprise channel as distinct, unframed conversion surfaces', () => {
+    const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
+
+    expect(styles).toMatch(/\.wbx-service-ladder__list\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/s)
+    expect(styles).toMatch(/\.wbx-service-ladder__list\s*>\s*li\s*\{[^}]*border-top:\s*2px solid var\(--wbx-ink\)[^}]*border-radius:\s*0[^}]*background:\s*transparent/s)
+    expect(styles).toMatch(/\.wbx-service-enterprise\s*\{[^}]*background:\s*var\(--wbx-hover-surface\)/s)
+    expect(styles).toMatch(/\.wbx-service-enterprise__channel\s*\{[^}]*border-left:\s*6px solid var\(--wbx-accent\)/s)
+    expect(styles).not.toMatch(/\.wbx-service-ladder__list\s*>\s*li\s*\{[^}]*border-radius:\s*[1-9]/s)
+  })
+
+  it('keeps controls square, high-contrast, and unmistakably unavailable when disabled', () => {
+    const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
+
+    expect(styles).toMatch(/\.wbx-service button\s*\{[^}]*min-height:\s*44px[^}]*border:\s*2px solid var\(--wbx-ink\)[^}]*border-radius:\s*0/s)
+    expect(styles).toMatch(/\.wbx-service button:disabled\s*\{[^}]*color:\s*var\(--wbx-ink\)[^}]*background:\s*var\(--wbx-hover-surface\)[^}]*opacity:\s*1[^}]*cursor:\s*not-allowed/s)
+    expect(styles).toMatch(/\.wbx-service-action:focus-visible,[\s\S]*?\.wbx-service button:focus-visible\s*\{[^}]*outline:\s*2px solid var\(--wbx-accent\)[^}]*outline-offset:\s*3px/s)
+  })
+
+  it('defines the 3/2/1 service ladder and related-case grids without mobile overflow escapes', () => {
+    const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
+
+    expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service-ladder__list\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/s)
+    expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-ladder__list\s*\{[^}]*grid-template-columns:\s*1fr/s)
+    expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service button,[\s\S]*?\.wbx-service-application-link\s*\{[^}]*width:\s*100%/s)
+    expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-offer,[\s\S]*?\.wbx-service-section\s*\{[^}]*min-width:\s*0/s)
   })
 })
