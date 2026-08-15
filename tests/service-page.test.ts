@@ -180,14 +180,15 @@ describe('custom diagnostic service page', () => {
       expect.stringContaining('提交需求'),
       expect.stringContaining('确认范围与时间'),
       expect.stringContaining('报名表'),
-      expect.stringContaining('发送付款方式'),
+      expect.stringContaining('发送付款二维码'),
       expect.stringContaining('完成诊断'),
       expect.stringContaining('收到结论'),
     ]))
-    expect(process.findIndex((item) => item.includes('发送付款方式'))).toBeGreaterThan(
+    expect(process.findIndex((item) => item.includes('发送付款二维码'))).toBeGreaterThan(
       process.findIndex((item) => item.includes('确认范围与时间')),
     )
-    expect(text).toContain('付款方式仅在范围与时间确认后私下发送')
+    expect(text).toContain('报名表收集需求与背景、联系方式和 3 个候选时间')
+    expect(text).toContain('服务方确认候选时间后，私下发送 ¥399 付款二维码；完成付款后，预约才锁定')
     expect(document.querySelector('img[alt*="支付"]')).toBeNull()
     expect(text).not.toContain('微信支付')
     expect(text).not.toContain('先支付')
