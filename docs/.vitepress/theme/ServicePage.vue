@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
 import { data } from '../case-catalog.data'
-import { isPaidServiceReady, serviceConfig } from '../service-config'
+import { getServiceChannelState, serviceCatalog, serviceConfig } from '../service-config'
 
-const paidServiceReady = isPaidServiceReady(serviceConfig)
+const channelState = getServiceChannelState(serviceConfig)
 const relatedCases = data.slice(0, 4)
+
+const serviceLadder = [
+  ['需求诊断', `¥${serviceCatalog.diagnosis.price}`, serviceCatalog.diagnosis.duration, '把目标、边界、材料和风险整理成一份固定诊断结论摘要。'],
+  ['定制培训', `¥${serviceCatalog.training.priceFrom.toLocaleString()} 起`, serviceCatalog.training.duration, '围绕团队的真实工作流设计线上或线下培训。'],
+  ['FDE 现场支持', `¥${serviceCatalog.fde.priceFrom.toLocaleString()} 起`, serviceCatalog.fde.duration, '在约定场景中协助验证工具、资料与协作方式。'],
+  ['项目实施', `¥${serviceCatalog.implementation.priceFrom.toLocaleString()} 起`, '', '按确认后的范围交付工作流、资料处理或系统对接成果。'],
+  ['持续支持', '', serviceCatalog.ongoingSupport.billing, '为已落地的团队提供复盘、优化和日常答疑支持。'],
+] as const
 
 const suitableProblems = [
   '需求还很模糊，需要先理清目标、边界和验收方式',
@@ -19,16 +27,16 @@ const deliverables = [
   ['建议交付物', '列出适合验收的文件、工作流或可运行成果。'],
   ['预估周期', '给出合理的实施阶段与时间预估。'],
   ['关键风险', '提前标记账号、数据、外部系统和结果验证风险。'],
-  ['项目报价', '对可承接的后续项目提供正式范围与报价。'],
+  ['后续建议', '说明适合继续实施、培训或自行完成的下一步。'],
 ] as const
 
 const process = [
-  ['阅读规则', '确认服务范围、不包含内容与预约规则。'],
-  ['微信支付', '预约开放后，扫码支付 ¥399 并按要求备注。'],
-  ['填写表单', '提交联系方式、需求背景、现有材料和付款截图。'],
-  ['确认时间', '我们核对信息，并从你提供的候选时段中确认一个。'],
+  ['提交需求', '通过商务微信或现有公开入口说明想解决的问题和已有材料。'],
+  ['确认范围与时间', '先沟通是否适合承接，再确认服务范围和候选时间。'],
+  ['填写报名表', '确认可进入诊断后，补充联系方式、背景、目标和材料。'],
+  ['发送付款方式', '付款方式仅在范围与时间确认后私下发送。'],
   ['完成诊断', '围绕真实需求进行 45 分钟在线诊断。'],
-  ['收到结论', '收到诊断结论；如适合继续，同时收到后续项目报价。'],
+  ['收到结论', '收到固定诊断结论摘要；如适合继续，同时说明下一步选择。'],
 ] as const
 </script>
 
@@ -39,57 +47,130 @@ const process = [
         <p class="wbx-service-eyebrow">CUSTOM SERVICE</p>
         <h1>WorkBuddy 需求诊断</h1>
         <p>用一次结构化沟通，把模糊需求变成可判断、可估算、可交付的项目范围。</p>
-        <a class="wbx-service-action wbx-service-action--primary" href="#payment-and-application">查看付款与申请步骤</a>
+        <p>¥{{ serviceCatalog.diagnosis.price }} · {{ serviceCatalog.diagnosis.duration }} · 固定诊断结论摘要</p>
+        <a class="wbx-service-action wbx-service-action--primary" href="#service-application">开始需求沟通</a>
       </div>
-      <dl class="wbx-service-offer__facts" aria-label="服务信息">
+      <dl class="wbx-service-offer__facts" aria-label="需求诊断服务信息">
         <div>
           <dt>价格</dt>
-          <dd>¥399 / 次</dd>
+          <dd>¥{{ serviceCatalog.diagnosis.price }}</dd>
         </div>
         <div>
           <dt>时长</dt>
-          <dd>45 分钟</dd>
+          <dd>{{ serviceCatalog.diagnosis.duration }}</dd>
         </div>
         <div>
-          <dt>项目抵扣</dt>
-          <dd>诊断完成后 7 个自然日内确认同一需求并支付后续项目首款，¥399 全额抵扣项目费用。</dd>
+          <dt>固定交付</dt>
+          <dd>需求边界、可行性、建议交付物、周期、风险和后续建议的诊断结论摘要。</dd>
         </div>
       </dl>
+      <div class="wbx-service-business-wechat" aria-label="商务微信渠道">
+        <img
+          v-if="channelState.businessWechatReady"
+          :src="withBase(serviceConfig.businessWechatQrPath)"
+          alt="WorkBuddy 商务微信二维码"
+          width="180"
+          height="180"
+        >
+        <span v-if="!channelState.businessWechatReady" aria-disabled="true">
+          商务微信即将开放
+        </span>
+      </div>
     </header>
+
+    <section class="wbx-service-section wbx-service-ladder" aria-labelledby="service-ladder-title">
+      <div class="wbx-service-section__heading">
+        <p class="wbx-service-eyebrow">SERVICE LADDER</p>
+        <h2 id="service-ladder-title">从诊断到持续支持</h2>
+      </div>
+      <ol class="wbx-service-ladder__list">
+        <li v-for="([title, price, duration, description], index) in serviceLadder" :key="title">
+          <span>{{ String(index + 1).padStart(2, '0') }}</span>
+          <h3>{{ title }}</h3>
+          <p v-if="price || duration"><strong v-if="price">{{ price }}</strong><span v-if="price && duration"> · </span>{{ duration }}</p>
+          <p>{{ description }}</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="enterprise-purchase" class="wbx-service-section wbx-service-enterprise" aria-labelledby="enterprise-purchase-title">
+      <div class="wbx-service-section__heading">
+        <p class="wbx-service-eyebrow">ENTERPRISE PURCHASE</p>
+        <h2 id="enterprise-purchase-title">腾讯云企业版购买</h2>
+      </div>
+      <div>
+        <p>请先完成腾讯云账号注册及个人实名认证，再通过企业采购渠道咨询适合团队的席位方案。</p>
+        <p>企业席位费由腾讯云侧收取，本网站不收取席位费，也不代收工具侧费用。</p>
+        <p>购买 20 个及以上席位的团队，可获得一场或两场 90 分钟线上工作坊；无需部署基础设施。简单任务可能获得免费协助，是否提供以实际需求判断为准。</p>
+        <div class="wbx-service-enterprise__channel" aria-label="企业采购渠道">
+          <img
+            v-if="channelState.enterpriseChannelReady"
+            :src="withBase(serviceConfig.enterpriseChannelQrPath)"
+            alt="WorkBuddy 企业采购渠道二维码"
+            width="180"
+            height="180"
+          >
+          <button v-if="!channelState.enterpriseChannelReady" type="button" disabled>企业采购通道准备中</button>
+        </div>
+      </div>
+    </section>
 
     <section class="wbx-service-section wbx-service-problems" aria-labelledby="service-problems-title">
       <div class="wbx-service-section__heading">
         <p class="wbx-service-eyebrow">SUITABLE PROBLEMS</p>
         <h2 id="service-problems-title">适合带着这些问题来</h2>
       </div>
-      <ul class="wbx-service-checklist">
-        <li v-for="problem in suitableProblems" :key="problem">
-          <i class="hn hn-check-box-solid wbx-service-checklist__icon" aria-hidden="true" />
-          <span>{{ problem }}</span>
-        </li>
-      </ul>
+      <div>
+        <ul class="wbx-service-checklist">
+          <li v-for="problem in suitableProblems" :key="problem">
+            <i class="hn hn-check-box-solid wbx-service-checklist__icon" aria-hidden="true" />
+            <span>{{ problem }}</span>
+          </li>
+        </ul>
+        <h3 id="service-deliverables-title">诊断输出</h3>
+        <dl class="wbx-service-output-list" aria-labelledby="service-deliverables-title">
+          <div v-for="([title, description], index) in deliverables" :key="title">
+            <dt><span>{{ String(index + 1).padStart(2, '0') }}</span>{{ title }}</dt>
+            <dd>{{ description }}</dd>
+          </div>
+        </dl>
+      </div>
     </section>
 
-    <section class="wbx-service-section wbx-service-deliverables" aria-labelledby="service-deliverables-title">
+    <section id="service-application" class="wbx-service-section wbx-service-process" aria-labelledby="service-process-title">
       <div class="wbx-service-section__heading">
-        <p class="wbx-service-eyebrow">DIAGNOSTIC OUTPUT</p>
-        <h2 id="service-deliverables-title">45 分钟诊断会带走什么</h2>
+        <p class="wbx-service-eyebrow">HOW IT WORKS</p>
+        <h2 id="service-process-title">先沟通，再确认服务</h2>
       </div>
-      <dl class="wbx-service-output-list">
-        <div v-for="([title, description], index) in deliverables" :key="title">
-          <dt><span>{{ String(index + 1).padStart(2, '0') }}</span>{{ title }}</dt>
-          <dd>{{ description }}</dd>
-        </div>
-      </dl>
+      <div>
+        <ol>
+          <li v-for="([title, description], index) in process" :key="title">
+            <span>{{ String(index + 1).padStart(2, '0') }}</span>
+            <h3>{{ title }}</h3>
+            <p>{{ description }}</p>
+          </li>
+        </ol>
+        <a
+          v-if="channelState.applicationFormReady"
+          class="wbx-service-action wbx-service-action--primary wbx-service-application-link"
+          :href="serviceConfig.applicationFormUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="打开需求诊断报名表（在新页面打开）"
+        >填写需求诊断报名表</a>
+        <button v-if="!channelState.applicationFormReady" type="button" disabled>
+          报名表准备中
+        </button>
+      </div>
     </section>
 
     <section class="wbx-service-section wbx-service-exclusions" aria-labelledby="service-exclusions-title">
       <div class="wbx-service-section__heading">
         <p class="wbx-service-eyebrow">NOT INCLUDED</p>
-        <h2 id="service-exclusions-title">本次诊断不包含</h2>
+        <h2 id="service-exclusions-title">服务边界</h2>
       </div>
       <div>
-        <p>诊断是范围与可行性判断，不是当场实施。服务不包含：</p>
+        <p>诊断用于范围与可行性判断，不是当场实施。服务不包含：</p>
         <ul>
           <li>完整解决方案或已完成的项目成果</li>
           <li>可直接执行的提示词、代码或 Skill 文件</li>
@@ -98,80 +179,23 @@ const process = [
       </div>
     </section>
 
-    <section class="wbx-service-section wbx-service-process" aria-labelledby="service-process-title">
-      <div class="wbx-service-section__heading">
-        <p class="wbx-service-eyebrow">HOW IT WORKS</p>
-        <h2 id="service-process-title">从申请到收到结论</h2>
-      </div>
-      <ol>
-        <li v-for="([title, description], index) in process" :key="title">
-          <span>{{ String(index + 1).padStart(2, '0') }}</span>
-          <h3>{{ title }}</h3>
-          <p>{{ description }}</p>
-        </li>
-      </ol>
-    </section>
-
-    <section id="payment-and-application" class="wbx-service-section wbx-service-payment" aria-labelledby="service-payment-title">
-      <div class="wbx-service-section__heading">
-        <p class="wbx-service-eyebrow">PAYMENT &amp; APPLICATION</p>
-        <h2 id="service-payment-title">付款与申请</h2>
-      </div>
-      <div v-if="paidServiceReady" class="wbx-service-payment__ready">
-        <figure class="wbx-service-payment__qr-wrap">
-          <img
-            class="wbx-service-payment-qr"
-            :src="withBase(serviceConfig.paymentQrPath)"
-            alt="微信支付 WorkBuddy 需求诊断费用二维码"
-            width="280"
-            height="280"
-          >
-          <figcaption>扫码支付 ¥399，付款备注请填写申请人姓名与手机号后四位。同设备访问时，保存二维码，在微信“扫一扫”中从相册识别；无法完成时联系支持人员。</figcaption>
-        </figure>
-        <div class="wbx-service-payment__instructions">
-          <h3>付款后填写诊断申请表</h3>
-          <p>表单需要联系方式、需求背景、目标、现有材料、付款截图和 3 个候选时段。</p>
-          <a
-            class="wbx-service-action wbx-service-action--primary wbx-service-application-link"
-            :href="serviceConfig.paidDiagnosticFormUrl"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="打开付费诊断申请表（在新页面打开）"
-          >打开付费诊断申请表</a>
-          <p class="wbx-service-payment__notice">预计 {{ serviceConfig.confirmationWindow }}；如需核对，请联系 {{ serviceConfig.supportContact }}。</p>
-        </div>
-      </div>
-      <div v-else class="wbx-service-payment__closed" role="status">
-        <strong>暂未开放预约</strong>
-        <p>付款二维码、独立申请表与确认联系方式尚未全部就绪。在这些生产资料经运营方确认前，不接收付款或预约申请。</p>
-      </div>
-    </section>
-
     <section class="wbx-service-section wbx-service-rules" aria-labelledby="service-rules-title">
       <div class="wbx-service-section__heading">
         <p class="wbx-service-eyebrow">SERVICE RULES</p>
-        <h2 id="service-rules-title">预约前请确认这些规则</h2>
+        <h2 id="service-rules-title">服务规则与隐私</h2>
       </div>
       <dl>
         <div>
-          <dt>退款边界</dt>
-          <dd>如服务方在诊断开始前确认需求明显不适合承接，可原路退还诊断费；诊断已经开始或完成后不退款。</dd>
+          <dt>确认方式</dt>
+          <dd>是否承接、服务范围、时间和费用均以双方确认的信息为准。</dd>
         </div>
         <div>
           <dt>改期</dt>
           <dd>需要改期时，请至少在约定时间前 24 小时提出，并重新确认可用时段。</dd>
         </div>
         <div>
-          <dt>迟到</dt>
-          <dd>迟到不延长预约结束时间；迟到超过 15 分钟，视为放弃当次服务。</dd>
-        </div>
-        <div>
-          <dt>项目抵扣</dt>
-          <dd>仅适用于诊断完成后 7 个自然日内确认并支付后续项目首款的同一需求，诊断费 ¥399 全额抵扣。</dd>
-        </div>
-        <div>
           <dt>资料与隐私</dt>
-          <dd>付款截图仅供服务人员核对订单；需求资料仅供服务人员进行需求诊断。未成交项目在诊断完成后 30 天删除，成交项目按交付周期保留。请勿提交密码、密钥或无关敏感数据。</dd>
+          <dd>资料仅用于本次沟通与服务评估。未完成签约或未进入实施的资料将在 30 天后删除；请勿提交密码、密钥或无关敏感数据。</dd>
         </div>
       </dl>
     </section>
@@ -198,6 +222,5 @@ const process = [
         </a>
       </div>
     </section>
-
   </div>
 </template>

@@ -75,8 +75,8 @@ describe('low-friction case submission flow', () => {
     expect(fallback?.getAttribute('href')).not.toMatch(/^\/help\//)
   })
 
-  it('keeps paid diagnostics separate from the free case path', () => {
-    expect(serviceConfig.paidDiagnosticFormUrl).toBe('')
+  it('keeps consult-first diagnostics separate from the free case path', () => {
+    expect(serviceConfig.applicationFormUrl).toBe('')
     expect(cases).not.toContain('本地构建通过后提交 Pull Request')
 
     expect(guide).toContain('## 默认方式：填写问卷')

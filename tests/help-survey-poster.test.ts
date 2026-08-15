@@ -25,6 +25,8 @@ describe('help survey poster layout', () => {
     expect(casesPage).toContain('【案例投稿】')
     expect(servicePage).not.toContain('FREE CASE SUBMISSION')
     expect(servicePage).not.toContain('scenario-survey')
+    expect(servicePage).not.toContain('微信支付')
+    expect(servicePage).not.toContain('paymentQrPath')
   })
 
   it('renders the survey poster full width without a fixed height cap', () => {

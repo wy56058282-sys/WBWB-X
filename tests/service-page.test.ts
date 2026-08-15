@@ -85,89 +85,124 @@ function mountServicePage() {
 }
 
 describe('custom diagnostic service page', () => {
-  it('renders the complete offer, boundaries, process, and rules', () => {
+  it('renders the five-offer ladder and separate enterprise purchase boundary', () => {
     mountServicePage()
 
     const text = document.body.textContent ?? ''
     const sectionOrder = [
       '.wbx-service-offer',
+      '.wbx-service-ladder',
+      '.wbx-service-enterprise',
       '.wbx-service-problems',
-      '.wbx-service-deliverables',
-      '.wbx-service-exclusions',
       '.wbx-service-process',
-      '#payment-and-application',
+      '.wbx-service-exclusions',
       '.wbx-service-rules',
       '.wbx-service-related',
     ].map((selector) => document.querySelector(selector))
     const pageBands = Array.from(document.querySelectorAll('.wbx-service > header, .wbx-service > section'))
 
     expect(text).toContain('WorkBuddy 需求诊断')
-    expect(text).toContain('¥399 / 次')
+    expect(text).toContain('¥399')
     expect(text).toContain('45 分钟')
-    expect(text).toContain('7 个自然日')
-    expect(text).toContain('24 小时')
-    expect(text).toContain('15 分钟')
-    expect(text).toContain('诊断已经开始或完成后不退款')
-    expect(text).toContain('可直接执行的提示词')
-    expect(text).toContain('Skill 文件')
-    expect(text).toContain('实施交付')
-    expect(document.querySelector('.wbx-service-offer a')?.getAttribute('href')).toBe('#payment-and-application')
-    expect(document.querySelectorAll('.wbx-service-process li')).toHaveLength(6)
+    expect(text).toContain('固定诊断结论摘要')
+    expect(text).toContain('需求诊断')
+    expect(text).toContain('定制培训')
+    expect(text).toContain('FDE 现场支持')
+    expect(text).toContain('项目实施')
+    expect(text).toContain('持续支持')
+    expect(text).toContain('¥2,999 起')
+    expect(text).toContain('约 2 小时')
+    expect(text).toContain('¥5,999 起')
+    expect(text).toContain('半天')
+    expect(text).toContain('¥12,800 起')
+    expect(text).toContain('按月')
+    expect(text).toContain('腾讯云企业版购买')
+    expect(text).toContain('腾讯云账号注册及个人实名认证')
+    expect(text).toContain('本网站不收取席位费')
+    expect(text).toContain('20 个及以上席位')
+    expect(text).toContain('一场或两场 90 分钟线上工作坊')
+    expect(text).toContain('无需部署基础设施')
+    expect(text).toContain('简单任务可能获得免费协助')
     expect(sectionOrder.every(Boolean)).toBe(true)
     expect(sectionOrder.map((element) => pageBands.indexOf(element!))).toEqual([0, 1, 2, 3, 4, 5, 6, 7])
     expect(document.querySelector('.wbx-service')?.tagName).not.toBe('MAIN')
-    expect(document.querySelector('#scenario-survey')).toBeNull()
-    expect(text).not.toContain('免费案例投稿')
   })
 
-  it('fails closed without production payment inputs', () => {
+  it('keeps every public channel independently unavailable by default', () => {
     mountServicePage()
 
-    const payment = document.querySelector('#payment-and-application')
+    const businessWechat = document.querySelector('.wbx-service-business-wechat')
+    const application = document.querySelector('#service-application')
+    const enterprise = document.querySelector('#enterprise-purchase')
 
-    expect(payment?.textContent).toContain('暂未开放预约')
-    expect(payment?.querySelector('.wbx-service-application-link')).toBeNull()
-    expect(payment?.querySelector('img[alt*="支付"]')).toBeNull()
-    expect(payment?.querySelector('a[href^="http"]')).toBeNull()
+    expect(businessWechat?.textContent).toContain('商务微信即将开放')
+    expect(businessWechat?.querySelector('img')).toBeNull()
+    expect(application?.querySelector('button[disabled]')?.textContent).toContain('报名表准备中')
+    expect(application?.querySelector('a[href^="http"]')).toBeNull()
+    expect(enterprise?.querySelector('button[disabled]')?.textContent).toContain('企业采购通道准备中')
+    expect(enterprise?.querySelector('img')).toBeNull()
   })
 
-  it('shows the production QR and secure external form link only when ready', () => {
+  it('renders each ready channel without enabling the others', () => {
     Object.assign(serviceConfig, {
-      freeCaseFormUrl: 'https://forms.example.com/free-case-submission',
-      paidDiagnosticFormUrl: 'https://forms.example.com/paid-diagnostic',
-      paymentQrPath: '/article-assets/service/wechat-payment-qr.png',
-      confirmationWindow: '1 个工作日内确认',
-      supportContact: 'support@example.com',
+      businessWechatQrPath: '/article-assets/service/business-wechat.png',
+      applicationFormUrl: 'https://forms.example.com/diagnosis',
+      enterpriseChannelQrPath: '/article-assets/service/enterprise-channel.png',
     })
     mountServicePage()
 
-    const payment = document.querySelector('#payment-and-application')
-    const qr = payment?.querySelector<HTMLImageElement>('.wbx-service-payment-qr')
-    const form = payment?.querySelector<HTMLAnchorElement>('.wbx-service-application-link')
+    const businessWechat = document.querySelector('.wbx-service-business-wechat')
+    const application = document.querySelector('#service-application')
+    const enterprise = document.querySelector('#enterprise-purchase')
+    const businessQr = businessWechat?.querySelector<HTMLImageElement>('img')
+    const applicationForm = application?.querySelector<HTMLAnchorElement>('a.wbx-service-application-link')
+    const enterpriseQr = enterprise?.querySelector<HTMLImageElement>('img')
 
-    expect(qr?.getAttribute('src')).toBe('/WBWB-X/article-assets/service/wechat-payment-qr.png')
-    expect(qr?.getAttribute('alt')).toContain('微信支付')
-    expect(form?.getAttribute('href')).toBe('https://forms.example.com/paid-diagnostic')
-    expect(form?.getAttribute('target')).toBe('_blank')
-    expect(form?.getAttribute('rel')).toBe('noopener noreferrer')
-    expect(form?.getAttribute('aria-label')).toContain('在新页面打开')
-    expect(payment?.textContent).toContain('1 个工作日内确认')
-    expect(payment?.textContent).toContain('support@example.com')
-    expect(payment?.textContent).toContain('同设备访问时，保存二维码，在微信“扫一扫”中从相册识别')
-    expect(payment?.textContent).toContain('无法完成时联系支持人员')
-    expect(payment?.textContent).not.toMatch(/支付宝|银行转账|银行卡/)
-    expect(payment?.textContent).not.toContain('暂未开放预约')
+    expect(businessQr?.getAttribute('src')).toBe('/WBWB-X/article-assets/service/business-wechat.png')
+    expect(businessWechat?.textContent).not.toContain('商务微信即将开放')
+    expect(applicationForm?.getAttribute('href')).toBe('https://forms.example.com/diagnosis')
+    expect(applicationForm?.getAttribute('target')).toBe('_blank')
+    expect(applicationForm?.getAttribute('rel')).toBe('noopener noreferrer')
+    expect(application?.querySelector('button[disabled]')).toBeNull()
+    expect(enterpriseQr?.getAttribute('src')).toBe('/WBWB-X/article-assets/service/enterprise-channel.png')
+    expect(enterprise?.querySelector('a[href="https://forms.example.com/diagnosis"]')).toBeNull()
+    expect(enterprise?.querySelector('button[disabled]')).toBeNull()
   })
 
-  it('states who can use submitted materials and how long they are retained', () => {
+  it('uses the consult-first order and never exposes a public payment flow', () => {
     mountServicePage()
 
-    const privacyRule = document.querySelector('.wbx-service-rules')?.textContent ?? ''
+    const text = document.body.textContent ?? ''
+    const process = Array.from(document.querySelectorAll('.wbx-service-process li')).map((item) => item.textContent ?? '')
 
-    expect(privacyRule).toContain('付款截图仅供服务人员核对订单')
-    expect(privacyRule).toContain('需求资料仅供服务人员进行需求诊断')
-    expect(privacyRule).toContain('未成交项目在诊断完成后 30 天删除')
-    expect(privacyRule).toContain('成交项目按交付周期保留')
+    expect(process).toHaveLength(6)
+    expect(process).toEqual(expect.arrayContaining([
+      expect.stringContaining('提交需求'),
+      expect.stringContaining('确认范围与时间'),
+      expect.stringContaining('报名表'),
+      expect.stringContaining('发送付款方式'),
+      expect.stringContaining('完成诊断'),
+      expect.stringContaining('收到结论'),
+    ]))
+    expect(process.findIndex((item) => item.includes('发送付款方式'))).toBeGreaterThan(
+      process.findIndex((item) => item.includes('确认范围与时间')),
+    )
+    expect(text).toContain('付款方式仅在范围与时间确认后私下发送')
+    expect(document.querySelector('img[alt*="支付"]')).toBeNull()
+    expect(text).not.toContain('微信支付')
+    expect(text).not.toContain('先支付')
+  })
+
+  it('states service exclusions and deletes unclosed materials after 30 days', () => {
+    mountServicePage()
+
+    const text = document.body.textContent ?? ''
+
+    expect(text).toContain('不包含')
+    expect(text).toContain('可直接执行的提示词')
+    expect(text).toContain('Skill 文件')
+    expect(text).toContain('资料仅用于本次沟通与服务评估')
+    expect(text).toContain('未完成签约或未进入实施的资料将在 30 天后删除')
   })
 
   it('uses four catalog entries as accessible related-case links', () => {
