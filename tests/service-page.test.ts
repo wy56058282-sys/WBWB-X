@@ -230,7 +230,7 @@ describe('custom diagnostic service page', () => {
     expect(text).not.toContain('先支付')
   })
 
-  it('states service exclusions and deletes unclosed materials after 30 days', () => {
+  it('states service, refund, rescheduling, deduction, and privacy boundaries', () => {
     mountServicePage()
 
     const text = document.body.textContent ?? ''
@@ -238,6 +238,12 @@ describe('custom diagnostic service page', () => {
     expect(text).toContain('不包含')
     expect(text).toContain('可直接执行的提示词')
     expect(text).toContain('Skill 文件')
+    expect(text).toContain('诊断开始前确认需求明显不适合承接时，可原路退还诊断费')
+    expect(text).toContain('诊断开始或完成后不退款')
+    expect(text).toContain('至少在约定时间前 24 小时提出')
+    expect(text).toContain('超过 15 分钟视为放弃当次服务')
+    expect(text).toContain('7 个自然日内确认同一需求并支付后续项目首款')
+    expect(text).toContain('¥399 可全额抵扣项目费用')
     expect(text).toContain('资料仅用于本次沟通与服务评估')
     expect(text).toContain('未完成签约或未进入实施的资料将在 30 天后删除')
   })
