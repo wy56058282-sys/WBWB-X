@@ -10,18 +10,16 @@ import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
 import type { CaseCatalogItem } from '../docs/.vitepress/case-catalog'
-import type { ServiceConfig } from '../docs/.vitepress/service-config'
+import type { ServiceChannelConfig } from '../docs/.vitepress/service-config'
 import {
   assertCaseCatalogCovers,
-  assertPaidServiceAsset,
+  assertServiceChannelAssets,
 } from '../docs/.vitepress/build-data-boundaries'
 
-const readyConfig: ServiceConfig = {
-  freeCaseFormUrl: 'https://forms.example.com/free',
-  paidDiagnosticFormUrl: 'https://forms.example.com/paid',
-  paymentQrPath: '/article-assets/service/payment.png',
-  confirmationWindow: '1 个工作日内确认',
-  supportContact: 'support@example.com',
+const configuredChannels: ServiceChannelConfig = {
+  businessWechatQrPath: '/article-assets/service/business-wechat.png',
+  applicationFormUrl: 'https://forms.example.com/diagnosis',
+  enterpriseChannelQrPath: '/article-assets/service/enterprise-channel.png',
 }
 
 const validCase: CaseCatalogItem = {
@@ -57,51 +55,44 @@ afterEach(() => {
 })
 
 describe('structured build data boundaries', () => {
-  it('provides file-backed service and catalog asset validators', async () => {
-    const boundaryModule = '../docs/.vitepress/build-data-boundaries'
-    const boundaries = await import(/* @vite-ignore */ boundaryModule).catch(() => undefined)
-
-    expect(boundaries).toBeDefined()
-  })
-
-  it('accepts a ready paid service only when its QR is a regular supported image below article-assets', () => {
+  it('allows empty channel placeholders without requiring QR assets', () => {
     const { publicRoot } = makePublicRoot()
-    writeAsset(publicRoot, readyConfig.paymentQrPath)
 
-    expect(() => assertPaidServiceAsset(readyConfig, publicRoot)).not.toThrow()
-
-    for (const paymentQrPath of [
-      '/article-assets/service/missing.png',
-      '/article-assets/service/payment.gif',
-    ]) {
-      expect(
-        () => assertPaidServiceAsset({ ...readyConfig, paymentQrPath }, publicRoot),
-        paymentQrPath,
-      ).toThrow(/payment QR/i)
-    }
-
-    mkdirSync(join(publicRoot, 'article-assets/service/directory.png'), { recursive: true })
-    expect(() => assertPaidServiceAsset({
-      ...readyConfig,
-      paymentQrPath: '/article-assets/service/directory.png',
-    }, publicRoot)).toThrow(/payment QR/i)
+    expect(() => assertServiceChannelAssets({
+      businessWechatQrPath: '',
+      applicationFormUrl: '',
+      enterpriseChannelQrPath: '',
+    }, publicRoot)).not.toThrow()
   })
 
-  it('rejects a paid QR symlink that resolves outside article-assets', () => {
+  it('requires each configured local QR asset to be a supported image below article-assets', () => {
+    const { publicRoot } = makePublicRoot()
+    writeAsset(publicRoot, configuredChannels.businessWechatQrPath)
+    writeAsset(publicRoot, configuredChannels.enterpriseChannelQrPath)
+
+    expect(() => assertServiceChannelAssets(configuredChannels, publicRoot)).not.toThrow()
+
+    expect(() => assertServiceChannelAssets({
+      ...configuredChannels,
+      businessWechatQrPath: '/article-assets/service/missing.png',
+    }, publicRoot)).toThrow(/business WeChat QR/i)
+
+    expect(() => assertServiceChannelAssets({
+      ...configuredChannels,
+      enterpriseChannelQrPath: '/article-assets/service/enterprise-channel.gif',
+    }, publicRoot)).toThrow(/enterprise channel QR/i)
+  })
+
+  it('rejects configured QR symlinks that resolve outside article-assets', () => {
     const { publicRoot, root } = makePublicRoot()
+    writeAsset(publicRoot, configuredChannels.enterpriseChannelQrPath)
     const outside = join(root, 'outside.png')
     writeFileSync(outside, 'outside')
-    const link = join(publicRoot, 'article-assets/service/payment.png')
+    const link = join(publicRoot, 'article-assets/service/business-wechat.png')
     mkdirSync(dirname(link), { recursive: true })
     symlinkSync(outside, link)
 
-    expect(() => assertPaidServiceAsset(readyConfig, publicRoot)).toThrow(/payment QR/i)
-  })
-
-  it('does not require a QR file while the paid service remains closed', () => {
-    const { publicRoot } = makePublicRoot()
-
-    expect(() => assertPaidServiceAsset({ ...readyConfig, freeCaseFormUrl: '' }, publicRoot)).not.toThrow()
+    expect(() => assertServiceChannelAssets(configuredChannels, publicRoot)).toThrow(/business WeChat QR/i)
   })
 
   it('requires every catalog cover to resolve to a regular file below docs/public', () => {
@@ -119,11 +110,11 @@ describe('structured build data boundaries', () => {
     ], publicRoot)).toThrow(/cover/i)
   })
 
-  it('wires both validators into their structured VitePress build boundaries', () => {
+  it('wires channel asset validation into the structured VitePress build boundary', () => {
     const config = readFileSync('docs/.vitepress/config.mts', 'utf8')
     const catalogLoader = readFileSync('docs/.vitepress/case-catalog.data.ts', 'utf8')
 
-    expect(config).toContain('assertPaidServiceAsset(serviceConfig')
+    expect(config).toContain('assertServiceChannelAssets(serviceConfig')
     expect(catalogLoader).toContain('assertCaseCatalogCovers(catalog')
   })
 })

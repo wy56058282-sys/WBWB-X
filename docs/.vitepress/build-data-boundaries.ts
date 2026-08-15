@@ -2,12 +2,11 @@ import { realpathSync, statSync } from 'node:fs'
 import { extname, isAbsolute, relative, resolve, sep } from 'node:path'
 import { normalizeLocalPath, type CaseCatalogItem } from './case-catalog'
 import {
-  isPaidServiceReady,
   normalizeLocalArticleAssetPath,
-  type ServiceConfig,
+  type ServiceChannelConfig,
 } from './service-config'
 
-const paidQrExtensions = new Set(['.png', '.jpg', '.jpeg', '.webp'])
+const qrImageExtensions = new Set(['.png', '.jpg', '.jpeg', '.webp'])
 
 function assertRegularFileBelow(
   assetPath: string,
@@ -34,20 +33,27 @@ function assertRegularFileBelow(
   }
 }
 
-export function assertPaidServiceAsset(config: ServiceConfig, publicRoot: string) {
-  if (!isPaidServiceReady(config)) return
+export function assertServiceChannelAssets(config: ServiceChannelConfig, publicRoot: string) {
+  const configuredQrAssets = [
+    { path: config.businessWechatQrPath, label: 'business WeChat QR' },
+    { path: config.enterpriseChannelQrPath, label: 'enterprise channel QR' },
+  ]
 
-  const paymentQrPath = normalizeLocalArticleAssetPath(config.paymentQrPath)
-  if (!paymentQrPath || !paidQrExtensions.has(extname(paymentQrPath).toLowerCase())) {
-    throw new Error('payment QR must use a local .png, .jpg, .jpeg, or .webp file')
+  for (const { path, label } of configuredQrAssets) {
+    if (!path) continue
+
+    const qrPath = normalizeLocalArticleAssetPath(path)
+    if (!qrPath || !qrImageExtensions.has(extname(qrPath).toLowerCase())) {
+      throw new Error(`${label} must use a local .png, .jpg, .jpeg, or .webp file`)
+    }
+
+    assertRegularFileBelow(
+      qrPath,
+      publicRoot,
+      resolve(publicRoot, 'article-assets'),
+      label,
+    )
   }
-
-  assertRegularFileBelow(
-    paymentQrPath,
-    publicRoot,
-    resolve(publicRoot, 'article-assets'),
-    'payment QR',
-  )
 }
 
 export function assertCaseCatalogCovers(

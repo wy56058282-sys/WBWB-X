@@ -2,14 +2,14 @@ import { resolve } from 'node:path'
 import { defineConfig } from 'vitepress'
 import { withMermaid } from 'vitepress-plugin-mermaid'
 import { brand } from './brand'
-import { assertPaidServiceAsset } from './build-data-boundaries'
+import { assertServiceChannelAssets } from './build-data-boundaries'
 import { discoverCaseSidebar } from './case-sidebar'
 import { legacyRouteRedirectPlugin } from './legacy-routes'
 import { nav } from './navigation'
 import { serviceConfig } from './service-config'
 import { sidebar } from './sidebar'
 
-assertPaidServiceAsset(serviceConfig, resolve('docs/public'))
+assertServiceChannelAssets(serviceConfig, resolve('docs/public'))
 const casesSidebar = discoverCaseSidebar(resolve('docs/cases/submissions'))
 const BAIDU_ANALYTICS_URL = 'https://hm.baidu.com/hm.js?7a23a8966a0536ac9ba595d6a0544f07'
 

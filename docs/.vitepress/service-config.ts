@@ -1,18 +1,28 @@
-export interface ServiceConfig {
+export interface ServiceChannelConfig {
+  businessWechatQrPath: string
+  applicationFormUrl: string
+  enterpriseChannelQrPath: string
+}
+
+export interface ServiceConfig extends ServiceChannelConfig {
   freeCaseFormUrl: string
-  paidDiagnosticFormUrl: string
-  paymentQrPath: string
-  confirmationWindow: string
-  supportContact: string
 }
 
 export const serviceConfig: ServiceConfig = {
   freeCaseFormUrl: '',
-  paidDiagnosticFormUrl: '',
-  paymentQrPath: '',
-  confirmationWindow: '',
-  supportContact: '',
+  businessWechatQrPath: '',
+  applicationFormUrl: '',
+  enterpriseChannelQrPath: '',
 }
+
+export const serviceCatalog = {
+  diagnosis: { price: 399, duration: '45 分钟' },
+  training: { priceFrom: 2999, duration: '约 2 小时' },
+  fde: { priceFrom: 5999, duration: '半天' },
+  implementation: { priceFrom: 12800 },
+  ongoingSupport: { billing: '按月' },
+  enterpriseSeatPrice: { sourceUrl: '', verifiedAt: '' },
+} as const
 
 export function normalizeServiceFormUrl(value: string) {
   try {
@@ -56,26 +66,10 @@ export function normalizeLocalArticleAssetPath(value: string) {
   return undefined
 }
 
-export function isPaidServiceReady(config: ServiceConfig) {
-  const freeForm = normalizeServiceFormUrl(config.freeCaseFormUrl)
-  const paidForm = normalizeServiceFormUrl(config.paidDiagnosticFormUrl)
-
-  if (
-    !freeForm
-    || !paidForm
-    || freeForm.href === paidForm.href
-    || !normalizeLocalArticleAssetPath(config.paymentQrPath)
-    || !config.confirmationWindow.trim()
-    || !config.supportContact.trim()
-  ) {
-    return false
-  }
-
-  return true
-}
-
-export function assertPaidServiceReady(config: ServiceConfig) {
-  if (!isPaidServiceReady(config)) {
-    throw new Error('Paid diagnostic service configuration is incomplete or invalid.')
+export function getServiceChannelState(config: ServiceChannelConfig) {
+  return {
+    businessWechatReady: normalizeLocalArticleAssetPath(config.businessWechatQrPath) !== undefined,
+    applicationFormReady: isServiceFormUrl(config.applicationFormUrl),
+    enterpriseChannelReady: normalizeLocalArticleAssetPath(config.enterpriseChannelQrPath) !== undefined,
   }
 }
