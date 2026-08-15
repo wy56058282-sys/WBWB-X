@@ -143,30 +143,66 @@ describe('custom diagnostic service page', () => {
     expect(enterprise?.querySelector('img')).toBeNull()
   })
 
-  it('renders each ready channel without enabling the others', () => {
-    Object.assign(serviceConfig, {
-      businessWechatQrPath: '/article-assets/service/business-wechat.png',
-      applicationFormUrl: 'https://forms.example.com/diagnosis',
-      enterpriseChannelQrPath: '/article-assets/service/enterprise-channel.png',
-    })
+  it('renders only the configured business WeChat QR', () => {
+    serviceConfig.businessWechatQrPath = '/article-assets/service/business-wechat.png'
     mountServicePage()
 
     const businessWechat = document.querySelector('.wbx-service-business-wechat')
     const application = document.querySelector('#service-application')
     const enterprise = document.querySelector('#enterprise-purchase')
     const businessQr = businessWechat?.querySelector<HTMLImageElement>('img')
-    const applicationForm = application?.querySelector<HTMLAnchorElement>('a.wbx-service-application-link')
-    const enterpriseQr = enterprise?.querySelector<HTMLImageElement>('img')
 
     expect(businessQr?.getAttribute('src')).toBe('/WBWB-X/article-assets/service/business-wechat.png')
-    expect(businessWechat?.textContent).not.toContain('商务微信即将开放')
+    expect(businessQr?.getAttribute('alt')).toBe('WorkBuddy 商务微信二维码')
+    expect(application?.querySelector('button[disabled]')?.textContent).toContain('报名表准备中')
+    expect(enterprise?.querySelector('button[disabled]')?.textContent).toContain('企业采购通道准备中')
+  })
+
+  it('renders only the configured HTTPS application form', () => {
+    serviceConfig.applicationFormUrl = 'https://forms.example.com/diagnosis'
+    mountServicePage()
+
+    const businessWechat = document.querySelector('.wbx-service-business-wechat')
+    const application = document.querySelector('#service-application')
+    const enterprise = document.querySelector('#enterprise-purchase')
+    const applicationForm = application?.querySelector<HTMLAnchorElement>('a.wbx-service-application-link')
+
     expect(applicationForm?.getAttribute('href')).toBe('https://forms.example.com/diagnosis')
     expect(applicationForm?.getAttribute('target')).toBe('_blank')
     expect(applicationForm?.getAttribute('rel')).toBe('noopener noreferrer')
-    expect(application?.querySelector('button[disabled]')).toBeNull()
+    expect(businessWechat?.querySelector('img')).toBeNull()
+    expect(businessWechat?.textContent).toContain('商务微信即将开放')
+    expect(enterprise?.querySelector('img')).toBeNull()
+    expect(enterprise?.querySelector('button[disabled]')?.textContent).toContain('企业采购通道准备中')
+  })
+
+  it('renders only the configured enterprise-channel QR', () => {
+    serviceConfig.enterpriseChannelQrPath = '/article-assets/service/enterprise-channel.png'
+    mountServicePage()
+
+    const businessWechat = document.querySelector('.wbx-service-business-wechat')
+    const application = document.querySelector('#service-application')
+    const enterprise = document.querySelector('#enterprise-purchase')
+    const enterpriseQr = enterprise?.querySelector<HTMLImageElement>('img')
+
     expect(enterpriseQr?.getAttribute('src')).toBe('/WBWB-X/article-assets/service/enterprise-channel.png')
-    expect(enterprise?.querySelector('a[href="https://forms.example.com/diagnosis"]')).toBeNull()
-    expect(enterprise?.querySelector('button[disabled]')).toBeNull()
+    expect(enterpriseQr?.getAttribute('alt')).toBe('WorkBuddy 企业采购渠道二维码')
+    expect(businessWechat?.querySelector('img')).toBeNull()
+    expect(businessWechat?.textContent).toContain('商务微信即将开放')
+    expect(application?.querySelector('button[disabled]')?.textContent).toContain('报名表准备中')
+  })
+
+  it('returns to disabled placeholders after ready-state fixtures reset', () => {
+    serviceConfig.businessWechatQrPath = '/article-assets/service/business-wechat.png'
+    mountServicePage()
+    apps.pop()?.unmount()
+    document.body.replaceChildren()
+    Object.assign(serviceConfig, initialConfig)
+    mountServicePage()
+
+    expect(document.querySelector('.wbx-service-business-wechat')?.textContent).toContain('商务微信即将开放')
+    expect(document.querySelector('#service-application button[disabled]')?.textContent).toContain('报名表准备中')
+    expect(document.querySelector('#enterprise-purchase button[disabled]')?.textContent).toContain('企业采购通道准备中')
   })
 
   it('uses the consult-first order and never exposes a public payment flow', () => {
