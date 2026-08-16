@@ -14,6 +14,26 @@ const serviceLadder = [
   ['持续支持', '', serviceCatalog.ongoingSupport.billing, '为已落地的团队提供复盘、优化和日常答疑支持。'],
 ] as const
 
+const fdeObstacles = [
+  ['不会用', '团队知道工具，却还没有把能力映射到岗位任务和日常工作流。'],
+  ['跑不通', '场景、资料、权限与协作链路没有形成可验证的完整闭环。'],
+  ['管不住', '成果缺少验收标准、权限边界、复盘机制和持续治理。'],
+] as const
+
+const fdeLevels = [
+  ['WorkBuddy 入门培训', '统一工具认知，结合真实岗位任务完成首次上手。'],
+  ['业务场景陪跑', '围绕一个明确场景，从拆解、配置到验证共同跑通。'],
+  ['AI 资产治理', '沉淀可复用的工作流、规范、权限和运营机制。'],
+] as const
+
+const fdeMethod = [
+  ['岗位任务梳理', '从岗位目标和高频任务中识别值得改造的问题。'],
+  ['首批场景筛选', '按价值、可行性、数据与协作条件确定优先级。'],
+  ['配置与开发', '组合工具、资料和流程，完成可运行的方案。'],
+  ['测试与上线', '用明确验收标准验证结果，再交付真实团队使用。'],
+  ['推广与运营', '复盘使用效果，把有效做法沉淀为团队资产。'],
+] as const
+
 const suitableProblems = [
   '需求还很模糊，需要先理清目标、边界和验收方式',
   '不确定 WorkBuddy 是否能完成，或应该如何拆分任务',
@@ -42,55 +62,86 @@ const process = [
 
 <template>
   <div class="wbx-service">
-    <header class="wbx-service-offer">
+    <header id="service-offer" class="wbx-service-offer">
       <div class="wbx-service-offer__copy">
-        <p class="wbx-service-eyebrow">CUSTOM SERVICE</p>
         <h1>WorkBuddy 需求诊断</h1>
         <p>用一次结构化沟通，把模糊需求变成可判断、可估算、可交付的项目范围。</p>
-        <p>¥{{ serviceCatalog.diagnosis.price }} · {{ serviceCatalog.diagnosis.duration }} · 固定诊断结论摘要</p>
         <a class="wbx-service-action wbx-service-action--primary" href="#service-application">开始需求沟通</a>
-      </div>
-      <dl class="wbx-service-offer__facts" aria-label="需求诊断服务信息">
-        <div>
-          <dt>价格</dt>
-          <dd>¥{{ serviceCatalog.diagnosis.price }}</dd>
+        <div class="wbx-service-diagnostic-summary">
+          <dl class="wbx-service-offer__facts" aria-label="需求诊断服务信息">
+            <div>
+              <dt>价格</dt>
+              <dd>¥{{ serviceCatalog.diagnosis.price }}</dd>
+            </div>
+            <div>
+              <dt>时长</dt>
+              <dd>{{ serviceCatalog.diagnosis.duration }}</dd>
+            </div>
+            <div>
+              <dt>固定交付</dt>
+              <dd>需求边界、可行性、建议交付物、周期、风险和后续建议的诊断结论摘要。</dd>
+            </div>
+          </dl>
+          <div class="wbx-service-business-wechat" data-service-channel="business-wechat" aria-label="商务微信渠道">
+            <img
+              v-if="channelState.businessWechatReady"
+              :src="withBase(serviceConfig.businessWechatQrPath)"
+              alt="WorkBuddy 商务微信二维码"
+              width="180"
+              height="180"
+            >
+            <span v-if="!channelState.businessWechatReady" aria-disabled="true">
+              商务微信即将开放
+            </span>
+          </div>
         </div>
-        <div>
-          <dt>时长</dt>
-          <dd>{{ serviceCatalog.diagnosis.duration }}</dd>
-        </div>
-        <div>
-          <dt>固定交付</dt>
-          <dd>需求边界、可行性、建议交付物、周期、风险和后续建议的诊断结论摘要。</dd>
-        </div>
-      </dl>
-      <div class="wbx-service-business-wechat" data-service-channel="business-wechat" aria-label="商务微信渠道">
-        <img
-          v-if="channelState.businessWechatReady"
-          :src="withBase(serviceConfig.businessWechatQrPath)"
-          alt="WorkBuddy 商务微信二维码"
-          width="180"
-          height="180"
-        >
-        <span v-if="!channelState.businessWechatReady" aria-disabled="true">
-          商务微信即将开放
-        </span>
       </div>
     </header>
 
-    <section class="wbx-service-section wbx-service-ladder" aria-labelledby="service-ladder-title">
+    <div class="wbx-service-main">
+    <section id="service-fde-model" class="wbx-service-section wbx-service-fde-model" aria-labelledby="service-fde-model-title">
+      <div class="wbx-service-section__heading">
+        <h2 id="service-fde-model-title">从工具采购到业务落地</h2>
+        <p>先判断卡点，再选择培训、陪跑或治理，不把所有需求都包装成实施项目。</p>
+      </div>
+      <div class="wbx-service-fde-model__content">
+        <ul class="wbx-service-fde-obstacles" aria-label="企业 AI 落地的三类障碍">
+          <li v-for="([title, description], index) in fdeObstacles" :key="title">
+            <span>{{ String(index + 1).padStart(2, '0') }}</span>
+            <h3>{{ title }}</h3>
+            <p>{{ description }}</p>
+          </li>
+        </ul>
+        <h3 class="wbx-service-fde-model__subtitle">三层服务</h3>
+        <ol class="wbx-service-fde-levels">
+          <li v-for="([title, description], index) in fdeLevels" :key="title">
+            <span>{{ String(index + 1).padStart(2, '0') }}</span>
+            <div><h4>{{ title }}</h4><p>{{ description }}</p></div>
+          </li>
+        </ol>
+        <h3 class="wbx-service-fde-model__subtitle">五步实施方法</h3>
+        <ol class="wbx-service-fde-method">
+          <li v-for="([title, description], index) in fdeMethod" :key="title">
+            <span>{{ String(index + 1).padStart(2, '0') }}</span>
+            <div><h4>{{ title }}</h4><p>{{ description }}</p></div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="service-ladder" class="wbx-service-section wbx-service-ladder" aria-labelledby="service-ladder-title">
       <div class="wbx-service-section__heading">
         <p class="wbx-service-eyebrow">SERVICE LADDER</p>
         <h2 id="service-ladder-title">从诊断到持续支持</h2>
       </div>
-      <ol class="wbx-service-ladder__list">
+      <ul class="wbx-service-ladder__list">
         <li v-for="([title, price, duration, description], index) in serviceLadder" :key="title">
           <span>{{ String(index + 1).padStart(2, '0') }}</span>
           <h3>{{ title }}</h3>
           <p v-if="price || duration"><strong v-if="price">{{ price }}</strong><span v-if="price && duration"> · </span>{{ duration }}</p>
           <p>{{ description }}</p>
         </li>
-      </ol>
+      </ul>
     </section>
 
     <section id="enterprise-purchase" class="wbx-service-section wbx-service-enterprise" data-service-channel="enterprise-purchase" aria-labelledby="enterprise-purchase-title">
@@ -115,7 +166,7 @@ const process = [
       </div>
     </section>
 
-    <section class="wbx-service-section wbx-service-problems" aria-labelledby="service-problems-title">
+    <section id="service-problems" class="wbx-service-section wbx-service-problems" aria-labelledby="service-problems-title">
       <div class="wbx-service-section__heading">
         <p class="wbx-service-eyebrow">SUITABLE PROBLEMS</p>
         <h2 id="service-problems-title">适合带着这些问题来</h2>
@@ -164,7 +215,7 @@ const process = [
       </div>
     </section>
 
-    <section class="wbx-service-section wbx-service-exclusions" aria-labelledby="service-exclusions-title">
+    <section id="service-exclusions" class="wbx-service-section wbx-service-exclusions" aria-labelledby="service-exclusions-title">
       <div class="wbx-service-section__heading">
         <p class="wbx-service-eyebrow">NOT INCLUDED</p>
         <h2 id="service-exclusions-title">服务边界</h2>
@@ -179,7 +230,7 @@ const process = [
       </div>
     </section>
 
-    <section class="wbx-service-section wbx-service-rules" aria-labelledby="service-rules-title">
+    <section id="service-rules" class="wbx-service-section wbx-service-rules" aria-labelledby="service-rules-title">
       <div class="wbx-service-section__heading">
         <p class="wbx-service-eyebrow">SERVICE RULES</p>
         <h2 id="service-rules-title">服务规则与隐私</h2>
@@ -204,7 +255,7 @@ const process = [
       </dl>
     </section>
 
-    <section class="wbx-service-section wbx-service-related" aria-labelledby="service-related-title">
+    <section id="service-related" class="wbx-service-section wbx-service-related" aria-labelledby="service-related-title">
       <div class="wbx-service-section__heading">
         <p class="wbx-service-eyebrow">RELATED CASES</p>
         <h2 id="service-related-title">先看看真实交付结果</h2>
@@ -226,5 +277,6 @@ const process = [
         </a>
       </div>
     </section>
+    </div>
   </div>
 </template>

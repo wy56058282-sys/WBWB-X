@@ -91,6 +91,7 @@ describe('custom diagnostic service page', () => {
     const text = document.body.textContent ?? ''
     const sectionOrder = [
       '.wbx-service-offer',
+      '.wbx-service-fde-model',
       '.wbx-service-ladder',
       '.wbx-service-enterprise',
       '.wbx-service-problems',
@@ -99,7 +100,7 @@ describe('custom diagnostic service page', () => {
       '.wbx-service-rules',
       '.wbx-service-related',
     ].map((selector) => document.querySelector(selector))
-    const pageBands = Array.from(document.querySelectorAll('.wbx-service > header, .wbx-service > section'))
+    const pageBands = Array.from(document.querySelectorAll('.wbx-service > header, .wbx-service-main > section'))
 
     expect(text).toContain('WorkBuddy 需求诊断')
     expect(text).toContain('¥399')
@@ -124,8 +125,99 @@ describe('custom diagnostic service page', () => {
     expect(text).toContain('无需部署基础设施')
     expect(text).toContain('简单任务可能获得免费协助')
     expect(sectionOrder.every(Boolean)).toBe(true)
-    expect(sectionOrder.map((element) => pageBands.indexOf(element!))).toEqual([0, 1, 2, 3, 4, 5, 6, 7])
+    expect(sectionOrder.map((element) => pageBands.indexOf(element!))).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8])
     expect(document.querySelector('.wbx-service')?.tagName).not.toBe('MAIN')
+  })
+
+  it('keeps the diagnostic summary inside the offer copy', () => {
+    mountServicePage()
+
+    const offer = document.querySelector('.wbx-service-offer')
+    const copy = offer?.querySelector('.wbx-service-offer__copy')
+    const summary = copy?.querySelector('.wbx-service-diagnostic-summary')
+    const facts = summary?.querySelector('.wbx-service-offer__facts')
+    const channel = summary?.querySelector('.wbx-service-business-wechat')
+
+    expect(summary?.parentElement).toBe(copy)
+    expect(facts?.parentElement).toBe(summary)
+    expect(channel?.parentElement).toBe(summary)
+    expect(offer?.children).toHaveLength(1)
+  })
+
+  it('shows diagnostic pricing only in the detailed summary', () => {
+    mountServicePage()
+
+    const copy = document.querySelector('.wbx-service-offer__copy')
+    const facts = copy?.querySelector('.wbx-service-offer__facts')
+    const duplicatedSummary = Array.from(copy?.children ?? []).find(
+      (element) => element.textContent?.trim() === '¥399 · 45 分钟 · 固定诊断结论摘要',
+    )
+
+    expect(facts?.textContent).toContain('¥399')
+    expect(facts?.textContent).toContain('45 分钟')
+    expect(facts?.textContent).toContain('固定交付')
+    expect(duplicatedSummary).toBeUndefined()
+  })
+
+  it('renders one full-width content flow without a section outline', () => {
+    mountServicePage()
+
+    const page = document.querySelector('.wbx-service')
+    const anchorOrder = [
+      'service-offer',
+      'service-fde-model',
+      'service-ladder',
+      'enterprise-purchase',
+      'service-problems',
+      'service-application',
+      'service-exclusions',
+      'service-rules',
+      'service-related',
+    ]
+    const pageBands = Array.from(page?.querySelectorAll(':scope > header, :scope > .wbx-service-main > .wbx-service-section') ?? [])
+    const offer = page?.querySelector<HTMLElement>('.wbx-service-offer')
+    const facts = offer?.querySelector('.wbx-service-offer__facts')
+
+    expect(pageBands.map((band) => band.id)).toEqual(anchorOrder)
+    expect(anchorOrder.every((id) => document.querySelectorAll(`#${id}`).length === 1)).toBe(true)
+    expect(page?.querySelector('.wbx-service-outline')).toBeNull()
+    expect(page?.querySelector('.wbx-service-body-layout')).toBeNull()
+    expect(page?.querySelector('.wbx-service-body-layout__main')).toBeNull()
+    expect(page?.querySelectorAll('.wbx-service-main > .wbx-service-section').length).toBeGreaterThan(0)
+    expect(offer?.querySelectorAll('h1')).toHaveLength(1)
+    expect(Array.from(offer?.querySelectorAll('p') ?? []).filter((element) => element.textContent?.trim() === '用一次结构化沟通，把模糊需求变成可判断、可估算、可交付的项目范围。')).toHaveLength(1)
+    expect(Array.from(facts?.querySelectorAll('dt') ?? []).filter((element) => element.textContent?.trim() === '价格')).toHaveLength(1)
+    expect(Array.from(facts?.querySelectorAll('dt') ?? []).filter((element) => element.textContent?.trim() === '时长')).toHaveLength(1)
+    expect(Array.from(facts?.querySelectorAll('dt') ?? []).filter((element) => element.textContent?.trim() === '固定交付')).toHaveLength(1)
+    expect(page?.querySelector('.wbx-service-ladder__list')?.tagName).toBe('UL')
+  })
+
+  it('translates the FDE material into obstacles, service levels, and a five-step delivery method', () => {
+    mountServicePage()
+
+    const model = document.querySelector('.wbx-service-fde-model')
+    const obstacles = model?.querySelectorAll('.wbx-service-fde-obstacles > li') ?? []
+    const levels = model?.querySelectorAll('.wbx-service-fde-levels > li') ?? []
+    const method = model?.querySelectorAll('.wbx-service-fde-method > li') ?? []
+    const text = model?.textContent ?? ''
+
+    expect(obstacles).toHaveLength(3)
+    expect(text).toContain('不会用')
+    expect(text).toContain('跑不通')
+    expect(text).toContain('管不住')
+    expect(levels).toHaveLength(3)
+    expect(text).toContain('WorkBuddy 入门培训')
+    expect(text).toContain('业务场景陪跑')
+    expect(text).toContain('AI 资产治理')
+    expect(method).toHaveLength(5)
+    expect(text).toContain('岗位任务梳理')
+    expect(text).toContain('首批场景筛选')
+    expect(text).toContain('配置与开发')
+    expect(text).toContain('测试与上线')
+    expect(text).toContain('推广与运营')
+    expect(text).not.toContain('核心合作伙伴')
+    expect(text).not.toContain('成功率')
+    expect(text).not.toContain('零风险')
   })
 
   it('keeps every public channel independently unavailable by default', () => {
