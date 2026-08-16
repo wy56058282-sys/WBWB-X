@@ -15,6 +15,13 @@ const configuredChannels: ServiceChannelConfig = {
 }
 
 describe('service operations configuration', () => {
+  it('defines the three distinct public service channels without a payment-form field', () => {
+    expect(serviceConfig).toHaveProperty('businessWechatQrPath')
+    expect(serviceConfig).toHaveProperty('applicationFormUrl')
+    expect(serviceConfig).toHaveProperty('enterpriseChannelQrPath')
+    expect(serviceConfig).not.toHaveProperty('paidDiagnosticFormUrl')
+  })
+
   it('defaults every public service channel to a safe unavailable state', () => {
     expect(serviceConfig.freeCaseFormUrl).toBe('')
     expect(getServiceChannelState(serviceConfig)).toEqual({

@@ -77,6 +77,7 @@ describe('low-friction case submission flow', () => {
 
   it('keeps consult-first diagnostics separate from the free case path', () => {
     expect(serviceConfig.applicationFormUrl).toBe('')
+    expect(serviceConfig).not.toHaveProperty('paidDiagnosticFormUrl')
     expect(cases).not.toContain('本地构建通过后提交 Pull Request')
 
     expect(guide).toContain('## 默认方式：填写问卷')

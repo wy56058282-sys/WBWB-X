@@ -64,7 +64,7 @@ const process = [
           <dd>需求边界、可行性、建议交付物、周期、风险和后续建议的诊断结论摘要。</dd>
         </div>
       </dl>
-      <div class="wbx-service-business-wechat" aria-label="商务微信渠道">
+      <div class="wbx-service-business-wechat" data-service-channel="business-wechat" aria-label="商务微信渠道">
         <img
           v-if="channelState.businessWechatReady"
           :src="withBase(serviceConfig.businessWechatQrPath)"
@@ -93,7 +93,7 @@ const process = [
       </ol>
     </section>
 
-    <section id="enterprise-purchase" class="wbx-service-section wbx-service-enterprise" aria-labelledby="enterprise-purchase-title">
+    <section id="enterprise-purchase" class="wbx-service-section wbx-service-enterprise" data-service-channel="enterprise-purchase" aria-labelledby="enterprise-purchase-title">
       <div class="wbx-service-section__heading">
         <p class="wbx-service-eyebrow">ENTERPRISE PURCHASE</p>
         <h2 id="enterprise-purchase-title">腾讯云企业版购买</h2>
@@ -137,7 +137,7 @@ const process = [
       </div>
     </section>
 
-    <section id="service-application" class="wbx-service-section wbx-service-process" aria-labelledby="service-process-title">
+    <section id="service-application" class="wbx-service-section wbx-service-process" data-service-channel="application-form" aria-labelledby="service-process-title">
       <div class="wbx-service-section__heading">
         <p class="wbx-service-eyebrow">HOW IT WORKS</p>
         <h2 id="service-process-title">先沟通，再确认服务</h2>

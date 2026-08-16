@@ -143,6 +143,27 @@ describe('custom diagnostic service page', () => {
     expect(enterprise?.querySelector('img')).toBeNull()
   })
 
+  it('renders three distinct, non-nested channel roles without conflating their copy', () => {
+    mountServicePage()
+
+    const businessWechat = document.querySelector<HTMLElement>('[data-service-channel="business-wechat"]')
+    const enterprisePurchase = document.querySelector<HTMLElement>('[data-service-channel="enterprise-purchase"]')
+    const applicationForm = document.querySelector<HTMLElement>('[data-service-channel="application-form"]')
+
+    expect(document.querySelectorAll('[data-service-channel="business-wechat"]')).toHaveLength(1)
+    expect(document.querySelectorAll('[data-service-channel="enterprise-purchase"]')).toHaveLength(1)
+    expect(document.querySelectorAll('[data-service-channel="application-form"]')).toHaveLength(1)
+    expect(businessWechat?.contains(enterprisePurchase ?? document.createElement('div'))).toBe(false)
+    expect(businessWechat?.contains(applicationForm ?? document.createElement('div'))).toBe(false)
+    expect(enterprisePurchase?.contains(businessWechat ?? document.createElement('div'))).toBe(false)
+    expect(enterprisePurchase?.contains(applicationForm ?? document.createElement('div'))).toBe(false)
+    expect(applicationForm?.contains(businessWechat ?? document.createElement('div'))).toBe(false)
+    expect(applicationForm?.contains(enterprisePurchase ?? document.createElement('div'))).toBe(false)
+    expect(enterprisePurchase?.textContent).toContain('企业席位费')
+    expect(enterprisePurchase?.textContent).not.toContain('服务费')
+    expect(businessWechat?.textContent).not.toContain('付款二维码')
+  })
+
   it('renders only the configured business WeChat QR', () => {
     serviceConfig.businessWechatQrPath = '/article-assets/service/business-wechat.png'
     mountServicePage()
