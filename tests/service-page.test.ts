@@ -84,6 +84,10 @@ function mountServicePage() {
   apps.push(app)
 }
 
+function countOccurrences(text: string, target: string) {
+  return text.split(target).length - 1
+}
+
 describe('custom diagnostic service page', () => {
   it('renders the five-offer ladder and separate enterprise purchase boundary', () => {
     mountServicePage()
@@ -147,16 +151,17 @@ describe('custom diagnostic service page', () => {
   it('shows diagnostic pricing only in the detailed summary', () => {
     mountServicePage()
 
-    const copy = document.querySelector('.wbx-service-offer__copy')
-    const facts = copy?.querySelector('.wbx-service-offer__facts')
-    const duplicatedSummary = Array.from(copy?.children ?? []).find(
-      (element) => element.textContent?.trim() === '¥399 · 45 分钟 · 固定诊断结论摘要',
-    )
+    const offer = document.querySelector<HTMLElement>('.wbx-service-offer')
+    const facts = offer?.querySelector('.wbx-service-offer__facts')
+    const fixedSummary = '需求边界、可行性、建议交付物、周期、风险和后续建议的诊断结论摘要。'
 
     expect(facts?.textContent).toContain('¥399')
     expect(facts?.textContent).toContain('45 分钟')
     expect(facts?.textContent).toContain('固定交付')
-    expect(duplicatedSummary).toBeUndefined()
+    expect(countOccurrences(offer?.textContent ?? '', '¥399')).toBe(1)
+    expect(countOccurrences(offer?.textContent ?? '', '45 分钟')).toBe(1)
+    expect(countOccurrences(offer?.textContent ?? '', '固定交付')).toBe(1)
+    expect(countOccurrences(offer?.textContent ?? '', fixedSummary)).toBe(1)
   })
 
   it('renders one full-width content flow without a section outline', () => {
@@ -188,9 +193,6 @@ describe('custom diagnostic service page', () => {
     expect(offer?.querySelectorAll('h1')).toHaveLength(1)
     expect(Array.from(offer?.querySelectorAll('*') ?? []).filter((element) => element.textContent?.trim() === 'WorkBuddy 需求诊断')).toHaveLength(1)
     expect(Array.from(offer?.querySelectorAll('*') ?? []).filter((element) => element.textContent?.trim() === '用一次结构化沟通，把模糊需求变成可判断、可估算、可交付的项目范围。')).toHaveLength(1)
-    expect(Array.from(offer?.querySelectorAll('*') ?? []).filter((element) => element.textContent?.trim() === '¥399')).toHaveLength(1)
-    expect(Array.from(offer?.querySelectorAll('*') ?? []).filter((element) => element.textContent?.trim() === '45 分钟')).toHaveLength(1)
-    expect(Array.from(offer?.querySelectorAll('*') ?? []).filter((element) => element.textContent?.trim() === '需求边界、可行性、建议交付物、周期、风险和后续建议的诊断结论摘要。')).toHaveLength(1)
     expect(Array.from(facts?.querySelectorAll('dt') ?? []).filter((element) => element.textContent?.trim() === '价格')).toHaveLength(1)
     expect(Array.from(facts?.querySelectorAll('dt') ?? []).filter((element) => element.textContent?.trim() === '时长')).toHaveLength(1)
     expect(Array.from(facts?.querySelectorAll('dt') ?? []).filter((element) => element.textContent?.trim() === '固定交付')).toHaveLength(1)
