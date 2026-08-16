@@ -107,7 +107,7 @@ const process = [
       <div class="wbx-service-fde-model__content">
         <ul class="wbx-service-fde-obstacles" aria-label="企业 AI 落地的三类障碍">
           <li v-for="([title, description], index) in fdeObstacles" :key="title">
-            <span>{{ String(index + 1).padStart(2, '0') }}</span>
+            <span aria-hidden="true">{{ String(index + 1).padStart(2, '0') }}</span>
             <h3>{{ title }}</h3>
             <p>{{ description }}</p>
           </li>
@@ -115,14 +115,14 @@ const process = [
         <h3 class="wbx-service-fde-model__subtitle">三层服务</h3>
         <ol class="wbx-service-fde-levels">
           <li v-for="([title, description], index) in fdeLevels" :key="title">
-            <span>{{ String(index + 1).padStart(2, '0') }}</span>
+            <span aria-hidden="true">{{ String(index + 1).padStart(2, '0') }}</span>
             <div><h4>{{ title }}</h4><p>{{ description }}</p></div>
           </li>
         </ol>
         <h3 class="wbx-service-fde-model__subtitle">五步实施方法</h3>
         <ol class="wbx-service-fde-method">
           <li v-for="([title, description], index) in fdeMethod" :key="title">
-            <span>{{ String(index + 1).padStart(2, '0') }}</span>
+            <span aria-hidden="true">{{ String(index + 1).padStart(2, '0') }}</span>
             <div><h4>{{ title }}</h4><p>{{ description }}</p></div>
           </li>
         </ol>

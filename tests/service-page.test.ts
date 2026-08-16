@@ -184,8 +184,13 @@ describe('custom diagnostic service page', () => {
     expect(page?.querySelector('.wbx-service-body-layout')).toBeNull()
     expect(page?.querySelector('.wbx-service-body-layout__main')).toBeNull()
     expect(page?.querySelectorAll('.wbx-service-main > .wbx-service-section').length).toBeGreaterThan(0)
+    expect(offer?.querySelectorAll('.wbx-service-offer__facts')).toHaveLength(1)
     expect(offer?.querySelectorAll('h1')).toHaveLength(1)
-    expect(Array.from(offer?.querySelectorAll('p') ?? []).filter((element) => element.textContent?.trim() === '用一次结构化沟通，把模糊需求变成可判断、可估算、可交付的项目范围。')).toHaveLength(1)
+    expect(Array.from(offer?.querySelectorAll('*') ?? []).filter((element) => element.textContent?.trim() === 'WorkBuddy 需求诊断')).toHaveLength(1)
+    expect(Array.from(offer?.querySelectorAll('*') ?? []).filter((element) => element.textContent?.trim() === '用一次结构化沟通，把模糊需求变成可判断、可估算、可交付的项目范围。')).toHaveLength(1)
+    expect(Array.from(offer?.querySelectorAll('*') ?? []).filter((element) => element.textContent?.trim() === '¥399')).toHaveLength(1)
+    expect(Array.from(offer?.querySelectorAll('*') ?? []).filter((element) => element.textContent?.trim() === '45 分钟')).toHaveLength(1)
+    expect(Array.from(offer?.querySelectorAll('*') ?? []).filter((element) => element.textContent?.trim() === '需求边界、可行性、建议交付物、周期、风险和后续建议的诊断结论摘要。')).toHaveLength(1)
     expect(Array.from(facts?.querySelectorAll('dt') ?? []).filter((element) => element.textContent?.trim() === '价格')).toHaveLength(1)
     expect(Array.from(facts?.querySelectorAll('dt') ?? []).filter((element) => element.textContent?.trim() === '时长')).toHaveLength(1)
     expect(Array.from(facts?.querySelectorAll('dt') ?? []).filter((element) => element.textContent?.trim() === '固定交付')).toHaveLength(1)
@@ -199,6 +204,7 @@ describe('custom diagnostic service page', () => {
     const obstacles = model?.querySelectorAll('.wbx-service-fde-obstacles > li') ?? []
     const levels = model?.querySelectorAll('.wbx-service-fde-levels > li') ?? []
     const method = model?.querySelectorAll('.wbx-service-fde-method > li') ?? []
+    const manualIndexes = Array.from(model?.querySelectorAll('.wbx-service-fde-obstacles > li > span, .wbx-service-fde-levels > li > span, .wbx-service-fde-method > li > span') ?? [])
     const text = model?.textContent ?? ''
 
     expect(obstacles).toHaveLength(3)
@@ -210,6 +216,8 @@ describe('custom diagnostic service page', () => {
     expect(text).toContain('业务场景陪跑')
     expect(text).toContain('AI 资产治理')
     expect(method).toHaveLength(5)
+    expect(manualIndexes).toHaveLength(11)
+    expect(manualIndexes.every((index) => index.getAttribute('aria-hidden') === 'true')).toBe(true)
     expect(text).toContain('岗位任务梳理')
     expect(text).toContain('首批场景筛选')
     expect(text).toContain('配置与开发')
