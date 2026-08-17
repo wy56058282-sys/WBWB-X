@@ -11,6 +11,10 @@ import { sidebar } from './sidebar'
 
 assertServiceChannelAssets(serviceConfig, resolve('docs/public'))
 const casesSidebar = discoverCaseSidebar(resolve('docs/cases/submissions'))
+const umamiWebsiteId = process.env.VITE_WBX_UMAMI_WEBSITE_ID?.trim()
+const umamiShareUrl = process.env.VITE_WBX_UMAMI_SHARE_URL?.trim()
+const umamiCollectionStartedAt = process.env.VITE_WBX_UMAMI_COLLECTION_STARTED_AT?.trim()
+const umamiTrackingEnabled = Boolean(umamiWebsiteId && umamiShareUrl && umamiCollectionStartedAt)
 const BAIDU_ANALYTICS_URL = 'https://hm.baidu.com/hm.js?7a23a8966a0536ac9ba595d6a0544f07'
 
 function canonicalPath(relativePath: string) {
@@ -49,6 +53,16 @@ export default withMermaid(defineConfig({
     ['meta', { name: 'twitter:title', content: brand.seo.title }],
     ['meta', { name: 'twitter:description', content: brand.seo.description }],
     ['meta', { name: 'twitter:image', content: `${brand.origin}${brand.ogImagePath}` }],
+    ...(umamiTrackingEnabled
+      ? [[
+          'script',
+          {
+            defer: '',
+            src: 'https://cloud.umami.is/analytics/eu/script.js',
+            'data-website-id': umamiWebsiteId,
+          },
+        ] as [string, Record<string, string>]]
+      : []),
   ],
   transformHead({ pageData }) {
     return [

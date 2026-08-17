@@ -17,6 +17,10 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      VITE_WBX_UMAMI_WEBSITE_ID: ${{ vars.VITE_WBX_UMAMI_WEBSITE_ID }}
+      VITE_WBX_UMAMI_SHARE_URL: ${{ vars.VITE_WBX_UMAMI_SHARE_URL }}
+      VITE_WBX_UMAMI_COLLECTION_STARTED_AT: ${{ vars.VITE_WBX_UMAMI_COLLECTION_STARTED_AT }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5

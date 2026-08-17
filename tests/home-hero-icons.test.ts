@@ -154,6 +154,16 @@ function cardClearance(
 }
 
 describe('home hero icon navigation', () => {
+  it('opens the canonical reading guide from the secondary hero action', () => {
+    mountHomePage()
+
+    const route = [...document.querySelectorAll<HTMLAnchorElement>('a')].find(
+      (link) => link.textContent?.trim() === '查看阅读路线',
+    )
+
+    expect(route?.getAttribute('href')).toBe('/wb-x/reading-guide/')
+  })
+
   it('rotates one synchronized update link every six seconds and loops a full cycle', async () => {
     vi.useFakeTimers()
     mountHomePage()
@@ -602,9 +612,9 @@ describe('home hero icon navigation', () => {
     expect(official?.getAttribute('href')).toBe('https://www.workbuddy.ai/')
     expect(official?.getAttribute('target')).toBe('_blank')
     expect(official?.getAttribute('rel')).toBe('noopener noreferrer')
-    expect(official?.getAttribute('aria-label')).toBe('访问 WorkBuddy 官网')
+    expect(official?.getAttribute('aria-label')).toBe('访问 WorkBuddy 国际版 v5.2.7')
     expect(official?.querySelector('.wbx-hero__official-label')?.textContent).toBe(
-      'workbuddy.ai',
+      '国际版 v5.2.7',
     )
     expect(image?.getAttribute('src')).toBe('/brand/workbuddy-official-ip.png')
     expect(image?.getAttribute('alt')).toBe('')
@@ -618,9 +628,9 @@ describe('home hero icon navigation', () => {
     expect(cn?.getAttribute('href')).toBe('https://www.workbuddy.cn/')
     expect(cn?.getAttribute('target')).toBe('_blank')
     expect(cn?.getAttribute('rel')).toBe('noopener noreferrer')
-    expect(cn?.getAttribute('aria-label')).toBe('访问 WorkBuddy 中国站')
+    expect(cn?.getAttribute('aria-label')).toBe('访问 WorkBuddy 中国版 v5.3.13')
     expect(cn?.querySelector('.wbx-hero__official-label')?.textContent).toBe(
-      'workbuddy.cn',
+      '中国版 v5.3.13',
     )
   })
 
@@ -685,7 +695,7 @@ describe('home hero icon navigation', () => {
     )
   })
 
-  it('keeps mobile reading arrows in a right-aligned third column', () => {
+  it('aligns mobile reading icons with titles and arrows with tags', () => {
     const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
     const mobileStart = css.indexOf('@media (max-width: 760px)')
     const narrowStart = css.indexOf('@media (max-width: 420px)')
@@ -693,16 +703,19 @@ describe('home hero icon navigation', () => {
     const narrow = css.slice(narrowStart)
 
     expect(mobile).toMatch(
-      /\.wbx-reading-card\s*\{[^}]*grid-template-columns:\s*70px minmax\(0, 1fr\) auto;/s,
+      /\.wbx-reading-card\s*\{[^}]*grid-template-columns:\s*70px minmax\(0, 1fr\) auto;[^}]*align-items:\s*start;/s,
     )
     expect(mobile).toMatch(
-      /\.wbx-reading-card__arrow\s*\{[^}]*display:\s*block;[^}]*align-self:\s*center;[^}]*justify-self:\s*end;/s,
+      /\.wbx-reading-card__icon\s*\{[^}]*align-self:\s*start;[^}]*margin-top:\s*32px;/s,
+    )
+    expect(mobile).toMatch(
+      /\.wbx-reading-card__arrow\s*\{[^}]*display:\s*block;[^}]*align-self:\s*end;[^}]*justify-self:\s*end;/s,
     )
     expect(narrow).toMatch(
       /\.wbx-reading-card\s*\{[^}]*grid-template-columns:\s*56px minmax\(0, 1fr\) auto;/s,
     )
     expect(narrow).toMatch(
-      /\.wbx-reading-card__arrow\s*\{[^}]*display:\s*block;[^}]*align-self:\s*center;[^}]*justify-self:\s*end;/s,
+      /\.wbx-reading-card__arrow\s*\{[^}]*display:\s*block;[^}]*align-self:\s*end;[^}]*justify-self:\s*end;/s,
     )
   })
 
@@ -884,7 +897,7 @@ describe('home hero icon navigation', () => {
 
     expect(download?.textContent).toBe('教学资料')
     expect(download?.getAttribute('href')).toBe(
-      'https://pan.quark.cn/s/ca7b76d97d59?pwd=WPc9',
+      'https://pan.quark.cn/s/4b2488289c79',
     )
     expect(download?.getAttribute('target')).toBe('_blank')
     expect(download?.getAttribute('rel')).toBe('noopener noreferrer')
@@ -958,7 +971,8 @@ describe('home hero icon navigation', () => {
     expect(css).toMatch(
       /\.wbx-community \.wbx-button\.wbx-community__download:(?:hover|focus-visible)[^{]*\{[^}]*color:\s*#0d100d !important;[^}]*border-color:\s*var\(--wbx-accent\);/s,
     )
-    expect(ip).toMatch(/width:\s*min\(100%, 424px\);/)
+    expect(stage).toMatch(/width:\s*min\(92%, 374px\);/)
+    expect(ip).toMatch(/width:\s*min\(100%, 374px\);/)
     expect(ip).not.toMatch(/animation:/)
     expect(ip).not.toMatch(/clip-path:/)
     expect(ip).not.toMatch(/filter:/)

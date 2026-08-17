@@ -7,7 +7,11 @@ import {
 } from 'vue'
 import { withBase } from 'vitepress'
 import { brand } from '../brand'
+import HomeAnalyticsStrip from './HomeAnalyticsStrip.vue'
+import { readHomeAnalyticsConfig } from './homeAnalytics'
 import { homeUpdates } from './homeUpdates'
+
+const homeAnalyticsConfig = readHomeAnalyticsConfig(import.meta.env)
 
 const sortedHomeUpdates = [...homeUpdates].sort((a, b) =>
   b.date.localeCompare(a.date),
@@ -248,7 +252,7 @@ const workflowSteps = [
                 <i class="hn hn-arrow-right wbx-hero-cta__arrow--in" aria-hidden="true" />
               </span>
             </a>
-            <a class="wbx-button wbx-button--outline" :href="withBase('/reading-guide')">查看阅读路线</a>
+            <a class="wbx-button wbx-button--outline" :href="withBase('/wb-x/reading-guide/')">查看阅读路线</a>
           </div>
         </div>
 
@@ -294,18 +298,18 @@ const workflowSteps = [
             href="https://www.workbuddy.cn/"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="访问 WorkBuddy 中国站"
+            aria-label="访问 WorkBuddy 中国版 v5.3.13"
           >
-            <span class="wbx-hero__official-label">workbuddy.cn</span>
+            <span class="wbx-hero__official-label">中国版 v5.3.13</span>
           </a>
           <a
             class="wbx-hero__official"
             href="https://www.workbuddy.ai/"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="访问 WorkBuddy 官网"
+            aria-label="访问 WorkBuddy 国际版 v5.2.7"
           >
-            <span class="wbx-hero__official-label">workbuddy.ai</span>
+            <span class="wbx-hero__official-label">国际版 v5.2.7</span>
             <img
               class="wbx-hero__official-ip"
               :src="withBase('/brand/workbuddy-official-ip.png')"
@@ -325,6 +329,11 @@ const workflowSteps = [
         </div>
       </div>
     </section>
+
+    <HomeAnalyticsStrip
+      v-if="homeAnalyticsConfig"
+      :config="homeAnalyticsConfig"
+    />
 
     <section class="wbx-section wbx-reading" aria-labelledby="wbx-reading-title">
       <div class="wbx-section__heading">
@@ -392,7 +401,7 @@ const workflowSteps = [
         <div class="wbx-community__actions">
           <a
             class="wbx-button wbx-button--primary wbx-community__download"
-            href="https://pan.quark.cn/s/ca7b76d97d59?pwd=WPc9"
+            href="https://pan.quark.cn/s/4b2488289c79"
             target="_blank"
             rel="noopener noreferrer"
           >教学资料</a>

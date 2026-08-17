@@ -107,6 +107,7 @@ describe('custom diagnostic service page', () => {
     const pageBands = Array.from(document.querySelectorAll('.wbx-service > header, .wbx-service-main > section'))
 
     expect(text).toContain('WorkBuddy 需求诊断')
+    expect(text).not.toContain('CUSTOM SERVICE')
     expect(text).toContain('¥399')
     expect(text).toContain('45 分钟')
     expect(text).toContain('固定诊断结论摘要')

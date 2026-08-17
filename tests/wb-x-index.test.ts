@@ -28,7 +28,7 @@ describe('small-book reading index', () => {
   it('shows the latest official WorkBuddy release versions', () => {
     const text = document.body.textContent
 
-    expect(text).toContain('WorkBuddy 中国版｜更新日志｜v5.3.11')
+    expect(text).toContain('WorkBuddy 中国版｜更新日志｜v5.3.13')
     expect(text).toContain('WorkBuddy 国际版｜更新日志｜v5.2.7')
   })
 
@@ -113,12 +113,38 @@ describe('small-book reading index', () => {
     )
   })
 
-  it('keeps the 50 pixel index badge and a single appendix separator', () => {
+  it('groups appendix entries with one outer gap and no internal dividers', () => {
     expect(readingCss).toMatch(
       /\.wbx-reading-layout \.wbx-book-index__number[\s\S]*?width:\s*50px[\s\S]*?height:\s*50px/,
     )
+
+    const appendixEntries = [
+      ...document.querySelectorAll<HTMLLIElement>(
+        '.wbx-book-index__entry--appendix',
+      ),
+    ]
+
+    expect(appendixEntries).toHaveLength(3)
+    expect(
+      appendixEntries.every(
+        (entry, index) =>
+          entry.querySelectorAll(':scope > a').length === 1 &&
+          (index === 0 ||
+            appendixEntries[index - 1]?.nextElementSibling === entry),
+      ),
+    ).toBe(true)
+
     expect(readingCss).toMatch(
-      /\.wbx-reading-layout \.wbx-book-index__entry--appendix[\s\S]*?border-top:\s*1px solid var\(--wbx-line\)/,
+      /\.wbx-reading-layout\s+\.wbx-book-index__entry:not\(\.wbx-book-index__entry--appendix\)\s+\+ \.wbx-book-index__entry--appendix\s*{[^}]*margin-top:\s*20px[^}]*border-top:\s*1px solid var\(--wbx-line\)/,
+    )
+    expect(readingCss).not.toMatch(
+      /\.wbx-reading-layout \.wbx-book-index__entry--appendix\s*{[^}]*border-top/,
+    )
+    expect(customCss).not.toMatch(
+      /\.vp-doc \.wbx-book-index__entry--appendix\s*{[^}]*border-top/,
+    )
+    expect(readingCss).toMatch(
+      /\.wbx-reading-layout\s+\.wbx-book-index__entry--appendix\s+\+ \.wbx-book-index__entry--appendix\s*{[^}]*margin-top:\s*-4px/,
     )
   })
 })

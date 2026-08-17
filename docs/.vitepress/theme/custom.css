@@ -216,12 +216,6 @@ body {
   line-height: 1.6;
 }
 
-.vp-doc .wbx-book-index__entry--appendix {
-  margin-top: 18px;
-  padding-top: 18px;
-  border-top: 1px solid var(--wbx-line);
-}
-
 @media (max-width: 640px) {
   .vp-doc .wbx-book-index__entry > a {
     grid-template-columns: 44px minmax(0, 1fr);
@@ -266,6 +260,44 @@ body {
   border: 1px solid var(--wbx-line);
   border-radius: 4px !important;
   background: var(--wbx-surface);
+}
+
+@media (min-width: 960px) {
+  .VPNavBar {
+    background: color-mix(in srgb, var(--wbx-paper) 82%, transparent);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+  }
+
+  .VPNavBar > .wrapper > .container > .title {
+    background: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .VPNavBar > .wrapper > .container .content-body {
+    background: transparent !important;
+  }
+
+  .VPNavBar.has-sidebar .wrapper {
+    padding: 0 32px !important;
+  }
+
+  .VPNavBar.has-sidebar .container {
+    max-width: calc(var(--vp-layout-max-width) - 64px) !important;
+  }
+
+  .VPNavBar.has-sidebar .container > .title {
+    position: static !important;
+    padding: 0 !important;
+    width: auto !important;
+    height: calc(var(--vp-nav-height) - 1px) !important;
+  }
+
+  .VPNavBar.has-sidebar .content {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
 }
 
 .VPSidebar {
@@ -413,10 +445,16 @@ body {
 }
 
 @media (min-width: 960px) {
+  .wbx-case-detail-layout .VPDoc .container {
+    max-width: 1104px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .wbx-case-detail-layout .VPDoc .content {
     max-width: none;
-    padding-left: 40px;
-    padding-right: 40px;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 
@@ -424,6 +462,13 @@ body {
   .wbx-case-detail-layout .VPDoc .content {
     padding-left: 32px;
     padding-right: 32px;
+  }
+}
+
+@media (max-width: 640px) {
+  .wbx-case-detail-layout .VPDoc .content {
+    padding-left: 24px;
+    padding-right: 24px;
   }
 }
 
@@ -541,7 +586,7 @@ body {
 .wb-contact-card {
   display: grid;
   gap: 8px;
-  width: 140px;
+  width: 170px;
   color: var(--wbx-ink);
   text-align: center;
   text-decoration: none;
@@ -549,7 +594,7 @@ body {
 
 .wb-contact-card img {
   display: block;
-  width: 140px;
+  width: 170px;
   height: auto;
   margin: 0;
 }

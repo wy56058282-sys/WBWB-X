@@ -3,6 +3,7 @@ import DefaultTheme from 'vitepress/theme'
 import { useData, useRoute, withBase } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted } from 'vue'
 import {
+  isCaseContributionRoute,
   isCaseDetailRoute,
   isCaseIndexRoute,
   isHomeRoute,
@@ -24,6 +25,9 @@ const isHome = computed(() => isHomeRoute(route.path, site.value.base))
 const isReading = computed(() => isReadingRoute(route.path, site.value.base))
 const isCaseIndex = computed(() => isCaseIndexRoute(route.path, site.value.base))
 const isCaseDetail = computed(() => isCaseDetailRoute(route.path, site.value.base))
+const isCaseContribution = computed(() =>
+  isCaseContributionRoute(route.path, site.value.base),
+)
 let hoverMedia: MediaQueryList | null = null
 
 function communityQrTrigger(target: EventTarget | null) {
@@ -95,7 +99,7 @@ onBeforeUnmount(() => {
       'wbx-home-layout': isHome,
       'wbx-reading-layout': isReading,
       'wbx-cases-layout': isCaseIndex,
-      'wbx-case-detail-layout': isCaseDetail,
+      'wbx-case-detail-layout': isCaseDetail || isCaseContribution,
     }"
   >
     <template #home-hero-before>
@@ -104,7 +108,7 @@ onBeforeUnmount(() => {
 
     <template #doc-before>
       <a
-        v-if="isCaseDetail"
+        v-if="isCaseDetail || isCaseContribution"
         class="wbx-case-detail-back"
         :href="withBase('/cases/')"
       >
