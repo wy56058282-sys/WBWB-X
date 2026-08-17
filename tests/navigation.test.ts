@@ -19,10 +19,11 @@ describe('site navigation', () => {
       '开始阅读',
       '案例集',
       '定制服务',
-      '指南',
+      '资料',
       '交流群',
     ])
     expect(nav.find((item) => item.text === '定制服务')?.link).toBe('/help/')
+    expect(nav.find((item) => item.text === '资料')?.link).toBe('/resources/')
   })
 
   it('documents /help/ as paid custom service rather than a free questionnaire', () => {
@@ -43,7 +44,10 @@ describe('site navigation', () => {
   })
 
   it('uses the approved content brand in the sidebar overview', () => {
-    expect(sidebar[0]).toEqual({ text: '小白书总览', link: '/wb-x/' })
+    expect(sidebar.slice(0, 2)).toEqual([
+      { text: '小白书总览', link: '/wb-x/' },
+      { text: '阅读指南', link: '/wb-x/reading-guide/' },
+    ])
   })
 
   it('uses /wb-x/ for every small-book sidebar route', () => {

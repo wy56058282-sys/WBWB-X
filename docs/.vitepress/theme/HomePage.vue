@@ -252,7 +252,7 @@ const workflowSteps = [
                 <i class="hn hn-arrow-right wbx-hero-cta__arrow--in" aria-hidden="true" />
               </span>
             </a>
-            <a class="wbx-button wbx-button--outline" :href="withBase('/reading-guide')">查看阅读路线</a>
+            <a class="wbx-button wbx-button--outline" :href="withBase('/wb-x/reading-guide/')">查看阅读路线</a>
           </div>
         </div>
 

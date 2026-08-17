@@ -13,7 +13,8 @@ import { sidebar } from '../docs/.vitepress/sidebar'
 
 const required = [
   'docs/index.md',
-  'docs/reading-guide.md',
+  'docs/wb-x/reading-guide/index.md',
+  'docs/resources/index.md',
   'docs/cases/index.md',
   'docs/help/index.md',
   'docs/community/contributing.md',
@@ -62,7 +63,10 @@ describe('content inventory', () => {
   })
 
   it('uses the approved contribution guidance in the reading guide', () => {
-    const readingGuide = readFileSync('docs/reading-guide.md', 'utf8')
+    const readingGuide = readFileSync(
+      'docs/wb-x/reading-guide/index.md',
+      'utf8',
+    )
 
     expect(readingGuide).toContain(
       '欢迎阅读[参与共创](/community/contributing)，添加发起人的企业微信或微信，提出问题，或直接提交修改错误页面。',
@@ -72,7 +76,10 @@ describe('content inventory', () => {
   })
 
   it('uses the approved part labels without changing their routes', () => {
-    const readingGuide = readFileSync('docs/reading-guide.md', 'utf8')
+    const readingGuide = readFileSync(
+      'docs/wb-x/reading-guide/index.md',
+      'utf8',
+    )
 
     expect(readingGuide).toContain(
       '[第一篇：基础篇《从0到1：先把 WorkBuddy 用起来》](/wb-x/%E7%AC%AC%E4%B8%80%E7%AF%87%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C%EF%BC%9A%E5%85%88%E6%8A%8A%20WorkBuddy%20%E7%94%A8%E8%B5%B7%E6%9D%A5/)',

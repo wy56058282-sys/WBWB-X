@@ -75,7 +75,7 @@ docs/.vitepress/navigation.ts
 | 开始阅读 | `/wb-x/` | 小白书总览及 27 章目录 |
 | 案例集 | `/cases/` | 社区真实案例及投稿入口 |
 | 定制服务 | `/help/` | 说明付费需求诊断与预约状态 |
-| 指南 | `/reading-guide` | 按新手、任务、团队三条路线导读 |
+| 资料 | `/resources/` | 资料整理页 |
 | 交流群 | 自定义弹窗 | 展示可定期替换的交流群二维码 |
 
 ### 3.2 小白书侧边栏
@@ -86,7 +86,8 @@ docs/.vitepress/navigation.ts
 docs/.vitepress/sidebar.ts
 ```
 
-侧边栏仅在 `/wb-x/` 路径下显示。社区、投稿、帮助和阅读指南页面不显示小白书侧边栏。
+侧边栏仅在 `/wb-x/` 路径下显示。`小白书总览`之后紧接`阅读指南`，其页面为
+`/wb-x/reading-guide/`；社区、投稿和帮助页面不显示小白书侧边栏。
 
 ### 3.3 旧路径兼容现状
 
@@ -344,7 +345,7 @@ Case 正文应覆盖：
 
 | 页面 | 文件 | 作用 |
 | --- | --- | --- |
-| 阅读与学习指南 | `docs/reading-guide.md` | 为新手、任务实践者和团队负责人提供阅读路线 |
+| 阅读与学习指南 | `docs/wb-x/reading-guide/index.md` | 小白书侧边栏中紧随总览，为新手、任务实践者和团队负责人提供阅读路线 |
 | 定制服务 | `docs/help/index.md` | 说明付费需求诊断与预约状态 |
 | 参与共创 | `docs/community/contributing.md` | 说明可贡献的内容和联系方式 |
 | Case 投稿指南 | `docs/community/case-contributing.md` | 定义社区案例结构、字段和审核标准 |

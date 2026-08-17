@@ -154,6 +154,16 @@ function cardClearance(
 }
 
 describe('home hero icon navigation', () => {
+  it('opens the canonical reading guide from the secondary hero action', () => {
+    mountHomePage()
+
+    const route = [...document.querySelectorAll<HTMLAnchorElement>('a')].find(
+      (link) => link.textContent?.trim() === '查看阅读路线',
+    )
+
+    expect(route?.getAttribute('href')).toBe('/wb-x/reading-guide/')
+  })
+
   it('rotates one synchronized update link every six seconds and loops a full cycle', async () => {
     vi.useFakeTimers()
     mountHomePage()
