@@ -91,16 +91,17 @@ docs/.vitepress/sidebar.ts
 
 ### 3.3 旧路径兼容现状
 
-仓库中保留了旧 `/bluebook/` 路径的兼容逻辑：
+仓库为旧 `/bluebook/` 路径及旧 `/reading-guide`、`/guide/reading-guide`
+路径保留兼容逻辑：
 
 ```text
 docs/public/_redirects
 docs/.vitepress/legacy-routes.ts
 ```
 
-其中 `legacy-routes.ts` 只在 Vite 开发服务器中生效；GitHub Pages 不支持
-`_redirects` 规则。2026-07-31 实测
-`https://wbwbx.sparkx.zone/bluebook/` 返回 404，因此公网旧路径目前并未真正兼容。
+其中 `legacy-routes.ts` 在 Vite 开发服务器中返回 302；构建脚本生成旧路径的静态
+HTML 跳转页，并保留 query/hash。`_redirects` 为支持该文件的托管平台提供 301 规则，
+但 GitHub Pages 不读取该规则，因此静态跳转页仍是公网兼容的必要兜底。
 
 ## 4. 首页内容盘点
 

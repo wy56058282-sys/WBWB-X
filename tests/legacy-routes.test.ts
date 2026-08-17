@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest'
 import { legacyRouteTarget } from '../docs/.vitepress/legacy-routes'
 import {
   generateLegacyRedirects,
+  generateReadingGuideRedirects,
   legacyTargetForBuiltFile,
   writeLegacyMappings,
 } from '../scripts/generate-legacy-redirects.mjs'
@@ -19,7 +20,29 @@ describe('legacy small-book routes', () => {
 
   it('leaves unrelated routes unchanged', () => {
     expect(legacyRouteTarget('/cases/')).toBeNull()
+    expect(legacyRouteTarget('/resources/')).toBeNull()
     expect(legacyRouteTarget('/bluebookish/')).toBeNull()
+  })
+
+  it('redirects every former reading-guide alias and preserves URL suffixes', () => {
+    expect(legacyRouteTarget('/reading-guide')).toBe('/wb-x/reading-guide/')
+    expect(legacyRouteTarget('/reading-guide/')).toBe('/wb-x/reading-guide/')
+    expect(legacyRouteTarget('/guide/reading-guide')).toBe(
+      '/wb-x/reading-guide/',
+    )
+    expect(legacyRouteTarget('/guide/reading-guide/?from=nav#team')).toBe(
+      '/wb-x/reading-guide/?from=nav#team',
+    )
+  })
+
+  it('redirects reading-guide aliases beneath a normalized site base', () => {
+    expect(legacyRouteTarget('/WBWB-X/reading-guide', 'WBWB-X')).toBe(
+      '/WBWB-X/wb-x/reading-guide/',
+    )
+    expect(
+      legacyRouteTarget('/WBWB-X/guide/reading-guide/', '//WBWB-X//'),
+    ).toBe('/WBWB-X/wb-x/reading-guide/')
+    expect(legacyRouteTarget('/reading-guide', '/WBWB-X/')).toBeNull()
   })
 
   it('maps only built wb-x HTML files to clean public targets', () => {
@@ -70,6 +93,39 @@ describe('legacy small-book routes', () => {
     )
     expect(readFileSync(redirect, 'utf8')).toContain('location.search + location.hash')
     expect(readFileSync(built, 'utf8')).toContain('<title>chapter</title>')
+  })
+
+  it('prefixes generated bluebook redirects with the site base', () => {
+    const dist = mkdtempSync(join(tmpdir(), 'wbx-legacy-base-'))
+    const root = join(dist, 'wb-x/index.html')
+    mkdirSync(dirname(root), { recursive: true })
+    writeFileSync(root, '<!doctype html><title>root</title>')
+
+    generateLegacyRedirects(dist, '/WBWB-X/')
+
+    const html = readFileSync(join(dist, 'bluebook/index.html'), 'utf8')
+    expect(html).toContain('/WBWB-X/wb-x/')
+    expect(html).toContain('https://wbx.sparkx.zone/WBWB-X/wb-x/')
+    expect(html).toContain('location.replace("/WBWB-X/wb-x/"')
+  })
+
+  it('writes base-aware static redirects for every former reading-guide alias', () => {
+    const dist = mkdtempSync(join(tmpdir(), 'reading-guide-legacy-'))
+    const written = generateReadingGuideRedirects(dist, '/WBWB-X/')
+    const expected = [
+      join(dist, 'reading-guide.html'),
+      join(dist, 'reading-guide/index.html'),
+      join(dist, 'guide/reading-guide.html'),
+      join(dist, 'guide/reading-guide/index.html'),
+    ]
+
+    expect(written).toEqual(expected)
+    for (const path of written) {
+      const html = readFileSync(path, 'utf8')
+      expect(html).toContain('/WBWB-X/wb-x/reading-guide/')
+      expect(html).toContain('location.search + location.hash')
+      expect(html).toContain('rel="canonical"')
+    }
   })
 
   it('fails when the wb-x build root is missing or empty', () => {
