@@ -7,7 +7,7 @@ afterEach(() => {
 })
 
 describe('community contact QR thumbnails', () => {
-  it('keeps contact images at 140px wide with automatic proportional height', () => {
+  it('renders 170px contact cards with automatic proportional image height', () => {
     const style = document.createElement('style')
     style.textContent = readFileSync('docs/.vitepress/theme/custom.css', 'utf8')
     document.head.append(style)
@@ -18,8 +18,8 @@ describe('community contact QR thumbnails', () => {
     card.append(image)
     document.body.append(card)
 
-    const computed = getComputedStyle(image)
-    expect(computed.width).toBe('140px')
-    expect(computed.height).toBe('auto')
+    expect(getComputedStyle(card).width).toBe('170px')
+    expect(getComputedStyle(image).width).toBe('170px')
+    expect(getComputedStyle(image).height).toBe('auto')
   })
 })

@@ -7,9 +7,12 @@ import { isServiceFormUrl, serviceConfig } from '../service-config'
 
 const query = ref('')
 const category = ref('全部')
+const toolsColumnAnchor = ref<HTMLElement | null>(null)
 const toolsColumn = ref<HTMLElement | null>(null)
 const toolsSticky = ref(false)
+const toolsFixed = ref(false)
 let toolsResizeObserver: ResizeObserver | undefined
+let navResizeObserver: ResizeObserver | undefined
 
 const categories = computed(() => caseCategories(data))
 const cases = computed(() => filterCaseCatalog(data, query.value, category.value))
@@ -27,31 +30,50 @@ function resetFilters() {
 }
 
 function updateToolsSticky() {
-  if (!toolsColumn.value || typeof window === 'undefined') return
+  if (!toolsColumn.value || !toolsColumnAnchor.value || typeof window === 'undefined') return
 
-  const navHeight = Number.parseFloat(
+  const fallbackNavHeight = Number.parseFloat(
     getComputedStyle(document.documentElement).getPropertyValue('--vp-nav-height'),
   ) || 64
-  const stickyTop = navHeight + 24
+  const nav = document.querySelector<HTMLElement>('.VPNavBar')
+  const navRect = nav?.getBoundingClientRect()
+  const renderedNavBottom = Math.max(navRect?.bottom ?? 0, navRect?.height ?? 0)
+  const stickyTop = Math.max(renderedNavBottom, fallbackNavHeight) + 24
   const availableHeight = window.innerHeight - stickyTop - 24
+  const columnRect = toolsColumnAnchor.value.getBoundingClientRect()
+  const fitsViewport = toolsColumn.value.getBoundingClientRect().height <= availableHeight
+
+  toolsColumn.value.style.setProperty('--wbx-cases-sticky-top', `${stickyTop}px`)
+  toolsColumn.value.style.setProperty('--wbx-cases-fixed-left', `${columnRect.left}px`)
+  toolsColumn.value.style.setProperty('--wbx-cases-fixed-width', `${columnRect.width}px`)
 
   toolsSticky.value = window.innerWidth > 1024
-    && toolsColumn.value.getBoundingClientRect().height <= availableHeight
+    && fitsViewport
+  toolsFixed.value = toolsSticky.value && columnRect.top <= stickyTop
 }
 
 onMounted(() => {
   void nextTick(updateToolsSticky)
   window.addEventListener('resize', updateToolsSticky)
+  window.addEventListener('scroll', updateToolsSticky, { passive: true })
 
   if (typeof ResizeObserver === 'function' && toolsColumn.value) {
     toolsResizeObserver = new ResizeObserver(updateToolsSticky)
     toolsResizeObserver.observe(toolsColumn.value)
+
+    const nav = document.querySelector<HTMLElement>('.VPNavBar')
+    if (nav) {
+      navResizeObserver = new ResizeObserver(updateToolsSticky)
+      navResizeObserver.observe(nav)
+    }
   }
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', updateToolsSticky)
+  window.removeEventListener('scroll', updateToolsSticky)
   toolsResizeObserver?.disconnect()
+  navResizeObserver?.disconnect()
 })
 </script>
 
@@ -61,7 +83,7 @@ onBeforeUnmount(() => {
       <main class="wbx-cases-main-column">
         <header class="wbx-cases-hero">
           <div class="wbx-cases-hero__copy">
-          <h1 id="case-gallery-title"><span class="wbx-cases-brand">WorkBuddy WB-X</span> 案例集</h1>
+          <h1 id="case-gallery-title"><span class="wbx-cases-brand">WorkBuddy-X</span><span class="wbx-cases-title-line">案例集</span></h1>
           <p>从真实场景出发，找到可以带走复用的工作方法。</p>
           </div>
         </header>
@@ -116,10 +138,10 @@ onBeforeUnmount(() => {
         </section>
       </main>
 
-      <aside class="wbx-cases-tools-column" aria-label="案例搜索与投稿">
+      <aside ref="toolsColumnAnchor" class="wbx-cases-tools-column" aria-label="案例搜索与投稿">
         <div
           ref="toolsColumn"
-          :class="['wbx-cases-tools-stack', { 'is-sticky': toolsSticky }]"
+          :class="['wbx-cases-tools-stack', { 'is-sticky': toolsSticky, 'is-fixed': toolsFixed }]"
         >
         <label class="wbx-cases-search">
           <input v-model="query" type="search" aria-label="搜索案例" placeholder="搜索场景、成果或产品" autocomplete="off">

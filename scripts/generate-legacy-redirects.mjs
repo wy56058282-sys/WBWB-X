@@ -5,6 +5,19 @@ import { pathToFileURL } from 'node:url'
 const LEGACY_ROOT = 'bluebook'
 const CURRENT_ROOT = 'wb-x'
 const CANONICAL_ORIGIN = 'https://wbx.sparkx.zone'
+const READING_GUIDE_TARGET = '/wb-x/reading-guide/'
+
+function normalizeBase(base = '/') {
+  const normalized = base.replace(/^\/+|\/+$/g, '')
+  return normalized ? `/${normalized}/` : '/'
+}
+
+function withBase(base, path) {
+  const normalizedBase = normalizeBase(base)
+  return normalizedBase === '/'
+    ? path
+    : `${normalizedBase.slice(0, -1)}${path}`
+}
 
 function escapeHtml(value) {
   return value.replace(/[&<>"']/g, (character) => {
@@ -51,7 +64,7 @@ function isUnsafePathSegment(segment) {
   }
 }
 
-export function legacyTargetForBuiltFile(relativePath) {
+export function legacyTargetForBuiltFile(relativePath, base = '/') {
   const segments = relativePath.split(/[\\/]/)
   const fileName = segments.at(-1)
   if (
@@ -68,7 +81,7 @@ export function legacyTargetForBuiltFile(relativePath) {
   const routeSegments = isDirectoryPage ? pageSegments.slice(0, -1) : pageSegments
   const encodedPath = routeSegments.map(encodeURIComponent).join('/')
   const target = `/${CURRENT_ROOT}/${encodedPath}${encodedPath && isDirectoryPage ? '/' : ''}`
-  return target.startsWith(`/${CURRENT_ROOT}/`) ? target : null
+  return target.startsWith(`/${CURRENT_ROOT}/`) ? withBase(base, target) : null
 }
 
 function redirectDocument(target) {
@@ -125,7 +138,7 @@ export function writeLegacyMappings(mappings, legacyRoot, sourceCount) {
   })
 }
 
-export function generateLegacyRedirects(distRoot) {
+export function generateLegacyRedirects(distRoot, base = '/') {
   const currentRoot = join(distRoot, CURRENT_ROOT)
   if (!existsSync(currentRoot)) {
     throw new Error(`wb-x build root is missing: ${currentRoot}`)
@@ -144,7 +157,7 @@ export function generateLegacyRedirects(distRoot) {
   const legacyRoot = resolve(distRoot, LEGACY_ROOT)
   const mappings = builtFiles.map((builtFile) => {
     const relativePath = relative(distRoot, builtFile)
-    const target = legacyTargetForBuiltFile(relativePath)
+    const target = legacyTargetForBuiltFile(relativePath, base)
     const redirectPath = resolve(
       distRoot,
       LEGACY_ROOT,
@@ -157,6 +170,25 @@ export function generateLegacyRedirects(distRoot) {
   return writeLegacyMappings(mappings, legacyRoot, builtFiles.length)
 }
 
+export function generateReadingGuideRedirects(distRoot, base = '/') {
+  const resolvedDistRoot = resolve(distRoot)
+  const routeFiles = [
+    'reading-guide.html',
+    'reading-guide/index.html',
+    'guide/reading-guide.html',
+    'guide/reading-guide/index.html',
+  ]
+  const mappings = routeFiles.map((relativePath) => ({
+    redirectPath: resolve(resolvedDistRoot, relativePath),
+    target: withBase(base, READING_GUIDE_TARGET),
+  }))
+
+  return writeLegacyMappings(mappings, resolvedDistRoot, mappings.length)
+}
+
 if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {
-  generateLegacyRedirects(process.argv[2] ?? 'docs/.vitepress/dist')
+  const distRoot = resolve(process.argv[2] ?? 'docs/.vitepress/dist')
+  const base = process.env.SITE_BASE ?? '/'
+  generateLegacyRedirects(distRoot, base)
+  generateReadingGuideRedirects(distRoot, base)
 }

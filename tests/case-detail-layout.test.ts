@@ -16,11 +16,18 @@ const customCss = readFileSync(
 describe('case detail layout', () => {
   it('adds a base-aware back link before case detail documents', () => {
     expect(layoutSource).toContain("'wbx-case-detail-layout': isCaseDetail")
+    expect(layoutSource).toContain('isCaseContribution')
     expect(layoutSource).toContain('<template #doc-before>')
-    expect(layoutSource).toContain('v-if="isCaseDetail"')
+    expect(layoutSource).toContain('v-if="isCaseDetail || isCaseContribution"')
     expect(layoutSource).toContain(':href="withBase(\'/cases/\')"')
     expect(layoutSource).toContain('返回案例集')
     expect(layoutSource).toContain('hn-arrow-left-solid')
+  })
+
+  it('shares the sidebar-free case detail shell with the contribution guide', () => {
+    expect(layoutSource).toContain(
+      "'wbx-case-detail-layout': isCaseDetail || isCaseContribution",
+    )
   })
 
   it('removes only the case detail sidebar slot and restores document width', () => {
@@ -44,10 +51,20 @@ describe('case detail layout', () => {
 
   it('aligns desktop detail content to the logo baseline and restores compact gutters', () => {
     expect(customCss).toMatch(
-      /@media \(min-width:\s*960px\)[\s\S]*?\.wbx-case-detail-layout \.VPDoc \.content\s*\{[^}]*max-width:\s*none[^}]*padding-left:\s*40px[^}]*padding-right:\s*40px/s,
+      /@media \(min-width:\s*960px\)[\s\S]*?\.wbx-case-detail-layout \.VPDoc \.container\s*\{[^}]*max-width:\s*1104px[^}]*margin-left:\s*auto[^}]*margin-right:\s*auto/s,
+    )
+    expect(customCss).toMatch(
+      /@media \(min-width:\s*960px\)[\s\S]*?\.wbx-case-detail-layout \.VPDoc \.content\s*\{[^}]*max-width:\s*none[^}]*padding-left:\s*0[^}]*padding-right:\s*0/s,
     )
     expect(customCss).toMatch(
       /@media \(max-width:\s*959px\)[\s\S]*?\.wbx-case-detail-layout \.VPDoc \.content\s*\{[^}]*padding-left:\s*32px[^}]*padding-right:\s*32px/s,
     )
+    expect(customCss).toMatch(
+      /@media \(max-width:\s*640px\)[\s\S]*?\.wbx-case-detail-layout \.VPDoc \.content\s*\{[^}]*padding-left:\s*24px[^}]*padding-right:\s*24px/s,
+    )
+  })
+
+  it('does not carry a detail-only navigation geometry patch', () => {
+    expect(customCss).not.toContain('.wbx-case-detail-layout .VPNavBar.has-sidebar')
   })
 })

@@ -6,6 +6,7 @@ const appendix = '/wb-x/附录/'
 
 export const sidebar = [
   { text: '小白书总览', link: '/wb-x/' },
+  { text: '阅读指南', link: '/wb-x/reading-guide/' },
   {
     text: '第一篇 · 使用手册',
     items: [
