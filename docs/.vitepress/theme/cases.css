@@ -499,6 +499,7 @@
     order: 2;
     width: 100%;
     max-width: none;
+    margin-bottom: 16px;
   }
 
   .wbx-cases-gallery-results {

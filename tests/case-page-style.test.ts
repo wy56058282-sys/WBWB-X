@@ -443,6 +443,26 @@ describe('case collection page styles', () => {
     }
   })
 
+  it('keeps the mobile search visually separated from the category filters', () => {
+    const casesStyles = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
+    const appliedStyles = document.createElement('style')
+    appliedStyles.textContent = flattenStylesAtViewport(casesStyles, 390)
+    document.head.append(appliedStyles)
+
+    const fixture = document.createElement('section')
+    fixture.className = 'wbx-cases'
+    fixture.innerHTML = '<label class="wbx-cases-search"><input type="search"></label><div class="wbx-cases-categories"><button type="button">全部</button></div>'
+    document.body.append(fixture)
+
+    try {
+      const searchStyles = getComputedStyle(fixture.querySelector('.wbx-cases-search')!)
+      expect(px(searchStyles.marginBottom)).toBeGreaterThanOrEqual(16)
+    } finally {
+      fixture.remove()
+      appliedStyles.remove()
+    }
+  })
+
   it('does not restore a positioned page eyebrow above the title', () => {
     const casesStyles = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
     const pageSource = readFileSync('docs/.vitepress/theme/CasesPage.vue', 'utf8')
