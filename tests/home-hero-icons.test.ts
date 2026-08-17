@@ -628,9 +628,9 @@ describe('home hero icon navigation', () => {
     expect(cn?.getAttribute('href')).toBe('https://www.workbuddy.cn/')
     expect(cn?.getAttribute('target')).toBe('_blank')
     expect(cn?.getAttribute('rel')).toBe('noopener noreferrer')
-    expect(cn?.getAttribute('aria-label')).toBe('访问 WorkBuddy 中国版 v5.3.12')
+    expect(cn?.getAttribute('aria-label')).toBe('访问 WorkBuddy 中国版 v5.3.13')
     expect(cn?.querySelector('.wbx-hero__official-label')?.textContent).toBe(
-      '中国版 v5.3.12',
+      '中国版 v5.3.13',
     )
   })
 
