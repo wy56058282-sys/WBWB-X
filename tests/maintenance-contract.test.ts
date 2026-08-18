@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 
 const requiredMaintenanceFiles = [
@@ -84,5 +84,31 @@ describe('maintenance CI contract', () => {
       '`community/002.jpg` 的 replacement 文件与清单均标记为 `replaced`',
     )
     expect(inventory).toContain('统一运行 `pnpm run check`')
+  })
+
+  it('derives current inventory counts and homepage test coverage from repository sources', () => {
+    const inventory = readFileSync('CONTENT_INVENTORY.md', 'utf8')
+    const appendixCount = readdirSync('docs/wb-x/附录', {
+      withFileTypes: true,
+    }).filter((entry) => entry.isDirectory() && entry.name.startsWith('附录 '))
+      .length
+    const manifest = JSON.parse(
+      readFileSync('docs/.vitepress/image-manifest.generated.json', 'utf8'),
+    )
+    const manifestPageCount = new Set(manifest.map(({ page }) => page)).size
+    const homepageSuites = [
+      'tests/home-update-ticker.test.ts',
+      'tests/home-hero-layout.test.ts',
+      'tests/home-content-sections.test.ts',
+      'tests/home-community-footer.test.ts',
+    ]
+
+    expect(inventory).toContain(`| 附录 | ${appendixCount} 篇 |`)
+    expect(inventory).toContain(`| 图片清单条目 | 270 | 覆盖 ${manifestPageCount} 个页面 |`)
+    for (const path of homepageSuites) {
+      expect(existsSync(path), path).toBe(true)
+      expect(inventory).toContain(path)
+    }
+    expect(inventory).not.toContain('tests/home-hero-icons.test.ts')
   })
 })

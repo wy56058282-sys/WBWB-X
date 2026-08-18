@@ -43,10 +43,10 @@ docs/.vitepress/brand.ts
 | 对外 Markdown 页面 | 52 | 不含内部设计与实施记录 |
 | 小白书正文 | 27 章 | 第一篇 10 章、第二篇 11 章、第三篇 4 章、第四篇 2 章 |
 | 额外阅读 | 1 篇 | 《一章看懂 AI 工作系统》 |
-| 附录 | 2 篇 | 常用指令模板、场景速查表 |
+| 附录 | 3 篇 | 常用指令模板、场景速查表、个人版与企业版对比 |
 | 社区案例 | 7 个 | 涵盖资讯、简历、公众号、知识管理、创意开发和数据分析 |
 | 支持与共创页面 | 4 个 | 阅读指南、定制服务、参与共创、Case 投稿指南 |
-| 图片清单条目 | 270 | 覆盖 35 个页面 |
+| 图片清单条目 | 270 | 覆盖 34 个页面 |
 | 原始校准素材 | 272 个 | 位于 `source-calibration` |
 | 替换素材文件 | 1 个 | 位于 `replacements` |
 
@@ -295,6 +295,7 @@ docs/wb-x/附录/
 | --- | --- |
 | 附录 A | 常用指令模板 |
 | 附录 B | 场景速查表 |
+| 附录 C | 个人版与企业版对比 |
 
 ## 6. 社区案例盘点
 
@@ -499,7 +500,10 @@ docs/.vitepress/theme/home/home-foundation.css
 docs/.vitepress/theme/home/home-hero.css
 docs/.vitepress/theme/home/home-sections.css
 docs/.vitepress/theme/home/home-responsive.css
-tests/home-hero-icons.test.ts
+tests/home-update-ticker.test.ts
+tests/home-hero-layout.test.ts
+tests/home-content-sections.test.ts
+tests/home-community-footer.test.ts
 ```
 
 ### 10.5 更新正文
