@@ -51,3 +51,25 @@ describe('maintenance documentation contract', () => {
     )
   })
 })
+
+describe('maintenance CI contract', () => {
+  it('runs the same complete check locally and before Pages upload', () => {
+    const packageJson = JSON.parse(readFileSync('package.json', 'utf8'))
+    const workflow = readFileSync(
+      '.github/workflows/deploy-pages.yml',
+      'utf8',
+    )
+    expect(packageJson.packageManager).toBe('pnpm@11.9.0')
+    expect(packageJson.engines.node).toBe('>=20')
+    expect(packageJson.scripts.check).toBe(
+      'pnpm test && pnpm run check:repo && pnpm run check:links && pnpm run check:assets && pnpm run build',
+    )
+    expect(workflow).toContain('version: 11.9.0')
+    expect(workflow).toContain('node-version: 24')
+    expect(workflow).toMatch(
+      /- name: Verify\s+run: pnpm run check[\s\S]*- name: Upload Pages artifact/,
+    )
+    expect(workflow).not.toContain('- name: Test\n')
+    expect(workflow).not.toContain('- name: Build\n')
+  })
+})
