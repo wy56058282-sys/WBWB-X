@@ -73,6 +73,7 @@
 - 已有根目录截图和未跟踪审计截图按日期及主题归档，不直接删除。
 - `.qoder` 中已跟踪的报告整体归档到 `audit/archive/`，随后将 `.qoder/` 作为本地工具输出忽略。
 - `.superpowers/sdd` 中唯一已跟踪的报告迁移到 `docs/superpowers/reports/`；其余本地执行状态继续忽略。
+- 当前未跟踪的服务诊断计划 `docs/superpowers/plans/2026-08-16-service-diagnostic-summary-layout.md` 必须单独复核：仍有效则保留在 plans，已完成或失效则归入 reports；两种情况都不得删除。
 - 未被代码或脚本引用的 `WB-X LOGO.png` 作为历史源资产归档，不删除。
 
 ### 5.4 本地或生成内容
@@ -111,11 +112,11 @@ package.json + pnpm-lock.yaml
 `docs/.vitepress/theme/home.css` 保留为稳定入口，只按现有级联顺序导入：
 
 1. `home/home-foundation.css`：页面骨架、可访问性辅助类和数据条。
-2. `home/home-hero.css`：首屏、更新条、按钮、图标卡及官方站点入口。
+2. `home/home-hero.css`：首屏、更新条、按钮、图标卡、官方站点入口，以及这些功能当前紧邻的 reduced-motion 覆盖。
 3. `home/home-sections.css`：价值条、阅读路线、任务、系统、社区和页脚。
-4. `home/home-responsive.css`：当前文件后半段的全部断点与 reduced-motion 覆盖。
+4. `home/home-responsive.css`：当前文件尾部从宽屏到窄屏的全局断点覆盖；不把较早出现的功能局部规则移动到这里。
 
-拆分必须保持原始规则顺序，不调整选择器、声明、数值或特异性。`index.ts` 仍只导入 `home.css`。
+拆分必须保持原始规则顺序，不调整选择器、声明、数值或特异性。实施时将四个拆分文件按导入顺序连接，其内容必须与拆分前的 `home.css` 字节一致；`index.ts` 仍只导入 `home.css`。
 
 ### 7.2 图片清单生成器
 
@@ -179,6 +180,7 @@ GitHub Actions 继续使用 Node 24 与 pnpm 11.9.0，通过 frozen lockfile 安
 ### 11.1 自动验证
 
 - 每次结构拆分运行对应聚焦测试。
+- 首页 CSS 拆分后，将四个文件按入口顺序连接并与拆分前基线做字节级比较。
 - 图片清单生成器拆分前后比较生成内容和错误路径。
 - 最终运行 `pnpm check`，要求单元测试、仓库卫生、链接、资源和生产构建全部通过。
 - 检查构建产物中的路由、重定向和公开资源路径没有变化。
