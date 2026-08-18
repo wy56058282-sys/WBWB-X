@@ -166,8 +166,8 @@ final result: passed
 
 ## 自动验证
 
-- 标准命令 `pnpm run check` 无环境前缀通过，且没有依赖状态警告：Vitest `59` 个测试文件、`372` 个测试全部通过；仓库卫生检查通过；`17` 个内部 Markdown 链接、`0` 个失效链接；批准的替代资产齐全且无源站热链；VitePress 构建、兼容跳转和发布边界检查全部通过，构建用时 `6.24s`。
-- 标准命令 `pnpm exec vitest run tests/publish-boundary.test.ts tests/maintenance-contract.test.ts` 通过 `2` 个测试文件、`15` 个测试；标准命令 `pnpm run check:repo` 亦通过。本机 pnpm 为 `11.19`，仓库源码与 CI 继续固定为 `11.9.0`；唯一运行警告是 Vite/Rollup 对大于 `500 kB` chunk 的建议。
+- 标准命令 `pnpm run check` 无环境前缀通过，且没有依赖状态警告：Vitest `59` 个测试文件、`373` 个测试全部通过；仓库卫生检查通过；`17` 个内部 Markdown 链接、`0` 个失效链接；批准的替代资产齐全且无源站热链；VitePress 构建、兼容跳转和发布边界检查全部通过。
+- 标准命令 `pnpm exec vitest run tests/publish-boundary.test.ts tests/maintenance-contract.test.ts` 通过 `2` 个测试文件、`16` 个测试；标准命令 `pnpm run check:repo` 亦通过。本机 pnpm 为 `11.19`，仓库源码与 CI 继续固定为 `11.9.0`；唯一运行警告是 Vite/Rollup 对大于 `500 kB` chunk 的建议。
 
 ## 仓库治理
 

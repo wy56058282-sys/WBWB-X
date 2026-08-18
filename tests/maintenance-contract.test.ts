@@ -72,4 +72,17 @@ describe('maintenance CI contract', () => {
     expect(workflow).not.toContain('- name: Test\n')
     expect(workflow).not.toContain('- name: Build\n')
   })
+
+  it('keeps the inventory aligned with generated redirects, the replacement manifest, and unified CI', () => {
+    const inventory = readFileSync('CONTENT_INVENTORY.md', 'utf8')
+
+    expect(inventory).not.toContain('公网 GitHub Pages 当前返回 404')
+    expect(inventory).not.toContain('replacement 文件与清单状态不一致')
+    expect(inventory).not.toContain('运行测试。\n4. 构建 VitePress。')
+    expect(inventory).toContain('静态跳转页仍是公网兼容的必要兜底')
+    expect(inventory).toContain(
+      '`community/002.jpg` 的 replacement 文件与清单均标记为 `replaced`',
+    )
+    expect(inventory).toContain('统一运行 `pnpm run check`')
+  })
 })

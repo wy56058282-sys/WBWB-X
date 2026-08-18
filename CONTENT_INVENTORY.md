@@ -413,7 +413,7 @@ scripts/lib/image-manifest/*.mjs
 - `awaiting-replacement`：269 条。
 - `replaced`：1 条。
 
-仓库中已经存在 1 个 replacement 文件，说明“文件实际替换情况”和“清单状态”尚未完全同步。后续图片更新应同时检查文件和清单状态。
+`community/002.jpg` 的 replacement 文件与清单均标记为 `replaced`；其余 269 条仍待替换。后续图片更新应同时检查文件和清单状态。
 
 ## 9. SEO、搜索与分享
 
@@ -576,9 +576,8 @@ pnpm run check
 
 1. 安装 pnpm 和 Node。
 2. 安装依赖。
-3. 运行测试。
-4. 构建 VitePress。
-5. 发布到 GitHub Pages。
+3. 统一运行 `pnpm run check`，依次执行测试、仓库卫生、内部 Markdown 链接、资产、VitePress 构建、旧路径兼容与发布边界检查。
+4. 发布到 GitHub Pages。
 
 部署完成后应检查：
 
@@ -626,20 +625,19 @@ pnpm run build
 
 - 旧产品界面可能快速过时。
 - 原站校准素材不应长期作为最终品牌内容。
-- replacement 文件与清单状态不一致。
+- 已替换条目需要持续保持 replacement 文件和清单状态一致。
 
 建议按“第一篇入门 → 首页和支持页 → 热门案例 → 第二篇 → 第三、四篇”的顺序替换。
 
-#### 4. 补齐公网旧路径兼容
+#### 4. 维护公网旧路径兼容
 
-旧 `/bluebook/` 仅在本地开发服务器中重写，公网 GitHub Pages 当前返回 404。
-如果旧链接已经被分享或被搜索引擎收录，应生成对应的静态兼容页面，在页面中：
+旧 `/bluebook/`、`/reading-guide` 和 `/guide/reading-guide` 已由构建脚本生成静态兼容页面；GitHub Pages 不读取 `docs/public/_redirects`，因此这些页面是公网兼容的必要兜底。后续变更旧链接时，应确认每个兼容页面：
 
 - 保留旧路径。
 - 使用 canonical 指向 `/wb-x/` 新路径。
 - 自动跳转并提供可点击的新地址。
 
-不能只依赖 `docs/public/_redirects`，因为 GitHub Pages 不读取该规则。
+并运行 `pnpm run check`，确认生成的跳转页和发布边界仍然通过。
 
 ### P1：增强核心内容
 
@@ -754,7 +752,7 @@ WorkBuddy 界面和能力会持续变化，但网站目前没有公开的内容�
 
 1. 补齐 `CONTRIBUTING.md` 和 PR/Issue 模板。
 2. 保持贡献页面中的 pnpm/build 命令与 `package.json` 同步。
-3. 为公网生成 `/bluebook/` 静态兼容页。
+3. 变更旧路径时运行 `pnpm run check`，确认 `/bluebook/` 静态兼容页仍然生成。
 4. 建立图片替换进度表，先处理第一篇和支持页。
 5. 扩写第 9、12、26、27 章与附录 A。
 6. 增加更新日志和过时内容标记。
