@@ -1,5 +1,13 @@
-import { readFileSync } from 'node:fs'
-import { describe, expect, it } from 'vitest'
+import {
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { afterEach, describe, expect, it } from 'vitest'
+import { replaceCandidatesAtomically } from '../scripts/lib/image-manifest/atomic-replace.mjs'
 import {
   csvColumns,
   csvFor,
@@ -19,6 +27,14 @@ import {
 import {
   preservedWorkflowState,
 } from '../scripts/lib/image-manifest/workflow-state.mjs'
+
+const atomicFixtureRoots: string[] = []
+
+afterEach(() => {
+  while (atomicFixtureRoots.length > 0) {
+    rmSync(atomicFixtureRoots.pop()!, { recursive: true, force: true })
+  }
+})
 
 describe('image manifest CSV primitives', () => {
   it('round-trips quoted notes using the production schema', () => {
@@ -113,5 +129,25 @@ describe('image manifest workflow state', () => {
       replacementPath: '/article-assets/replacements/custom/001.png',
       notes: 'reviewed',
     })
+  })
+})
+
+describe('image manifest atomic replacement', () => {
+  it('restores an earlier target when a later candidate cannot be renamed', async () => {
+    const root = mkdtempSync(join(tmpdir(), 'workbuddy-atomic-'))
+    atomicFixtureRoots.push(root)
+    const firstCandidate = join(root, 'first-candidate.txt')
+    const firstTarget = join(root, 'first-target.txt')
+    const missingCandidate = join(root, 'missing.txt')
+    const secondTarget = join(root, 'second-target.txt')
+    writeFileSync(firstCandidate, 'new first')
+    writeFileSync(firstTarget, 'old first')
+
+    await expect(replaceCandidatesAtomically([
+      { candidate: firstCandidate, target: firstTarget },
+      { candidate: missingCandidate, target: secondTarget },
+    ], root)).rejects.toThrow()
+
+    expect(readFileSync(firstTarget, 'utf8')).toBe('old first')
   })
 })

@@ -3,7 +3,6 @@ import {
   mkdir,
   mkdtemp,
   readFile,
-  rename,
   rm,
   stat,
   writeFile,
@@ -30,6 +29,9 @@ import {
   stagedCalibrationPath,
   stagedReplacementPath,
 } from './lib/image-manifest/paths.mjs'
+import {
+  replaceCandidatesAtomically,
+} from './lib/image-manifest/atomic-replace.mjs'
 import {
   allowedStatuses,
   loadWorkflowState,
@@ -141,35 +143,6 @@ function publicPage(markdownPath) {
     .replace(/\.md$/, '')
 
   return `/${route}${route ? '/' : ''}`
-}
-
-async function replaceCandidatesAtomically(candidates, stagingRoot) {
-  const backupRoot = join(stagingRoot, 'backups')
-  await mkdir(backupRoot, { recursive: true })
-  const applied = []
-
-  try {
-    for (const [index, { candidate, target }] of candidates.entries()) {
-      await mkdir(dirname(target), { recursive: true })
-      const backup = join(backupRoot, String(index))
-      const hadTarget = await pathExists(target)
-      if (hadTarget) await rename(target, backup)
-
-      try {
-        await rename(candidate, target)
-      } catch (error) {
-        if (hadTarget) await rename(backup, target)
-        throw error
-      }
-      applied.push({ backup, hadTarget, target })
-    }
-  } catch (error) {
-    for (const { backup, hadTarget, target } of applied.reverse()) {
-      await rm(target, { recursive: true, force: true })
-      if (hadTarget) await rename(backup, target)
-    }
-    throw error
-  }
 }
 
 const sourceRootStats = await stat(sourceDocsRoot)
