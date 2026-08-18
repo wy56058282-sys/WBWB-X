@@ -18,16 +18,37 @@ const duplicateLockfiles = new Set([
   'yarn.lock',
 ])
 
+const requiredRepositoryPaths = [
+  'pnpm-lock.yaml',
+  'README.md',
+  'docs/maintenance/README.md',
+  'docs/maintenance/repository-layout.md',
+  'docs/maintenance/assets-and-audits.md',
+  'docs/maintenance/future-optimizations.md',
+  'WB-X LOGO.svg',
+  '二维码.png',
+  'article-image-replacement-manifest.csv',
+]
+
 function isGovernedAuditPath(path) {
   return path === 'audit/README.md'
     || /^audit\/\d{4}-\d{2}-\d{2}-[^/]+\/.+/.test(path)
     || /^audit\/archive\/[^/]+\/.+/.test(path)
 }
 
-export function findRepositoryHygieneViolations(trackedPaths) {
+function isBlockedTrackedPath(path) {
+  return blockedTrackedRoots.some((root) => (
+    path === root.slice(0, -1) || path.startsWith(root)
+  ))
+}
+
+export function findRepositoryHygieneViolations(
+  trackedPaths,
+  existingPaths,
+) {
   const violations = []
   for (const path of [...trackedPaths].sort()) {
-    if (blockedTrackedRoots.some((root) => path.startsWith(root))) {
+    if (isBlockedTrackedPath(path)) {
       violations.push(`tracked local/generated path: ${path}`)
     }
     if (duplicateLockfiles.has(path)) {
@@ -37,6 +58,13 @@ export function findRepositoryHygieneViolations(trackedPaths) {
       violations.push(
         `audit evidence must use a dated topic or archive directory: ${path}`,
       )
+    }
+  }
+  if (existingPaths) {
+    for (const path of requiredRepositoryPaths) {
+      if (!existingPaths.has(path)) {
+        violations.push(`required repository file is missing: ${path}`)
+      }
     }
   }
   return violations
@@ -55,7 +83,8 @@ function trackedPaths(repositoryRoot) {
 }
 
 export function checkRepositoryHygiene(repositoryRoot = process.cwd()) {
-  return findRepositoryHygieneViolations(trackedPaths(repositoryRoot))
+  const paths = trackedPaths(repositoryRoot)
+  return findRepositoryHygieneViolations(paths, new Set(paths))
 }
 
 if (
