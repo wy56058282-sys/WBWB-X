@@ -159,3 +159,33 @@ final result: passed
 - 修复后对比：同视口、同状态实测间距约为 16px；无横向溢出，其他可见元素无漂移。
 
 final result: passed
+
+---
+
+# 2026-08-18 仓库全面整理 Design QA
+
+## 自动验证
+
+- `pnpm_config_verify_deps_before_run=warn pnpm run check` 通过：Vitest `59` 个测试文件、`372` 个测试全部通过；仓库卫生检查通过；`17` 个内部 Markdown 链接、`0` 个失效链接；批准的替代资产齐全且无源站热链；VitePress 构建、兼容跳转和发布边界检查全部通过，首次完整构建用时 `7.33s`。
+- 本机安装的 pnpm 为 `11.19`，仓库源码与 CI 继续固定为 `11.9.0`。完整检查只出现两类已知警告：`[WARN] Your node_modules are out of sync with your lockfile. The workspace structure has changed since last install`，以及 Vite/Rollup 对大于 `500 kB` chunk 的建议；均未导致失败。
+
+## 仓库治理
+
+- 当前分支为 `codex/repository-maintenance`；验收前工作树干净，`git diff --check` 无输出，共 `657` 个受跟踪文件。`.pnpm-store/**`、`.qoder/**`、`.tools/**`、`package-lock.json` 的受跟踪路径查询结果为空。
+- 工作树中的 `.pnpm-store` 目录和 `.tools/bin/gh` 文件均保留。主检出目录中的 `.vercel`、`.vercel-tmp`、`node_modules.preview-backup` 以及 `.pnpm-store/v11/projects/` 下三个指定项目入口 `21e594b3af70d7f363c4142ec7d6ed70`、`add1f5404edf33ca6ceb79373cf56984`、`d4f1c45e2db7cb95bfbc810a77abe0d2` 均以只读方式确认存在；其中前两个入口指向已不存在的旧工作树，但符号链接本身按要求完整保留。
+- 主检出目录中的 Qoder harness 三个源文件、案例二维码报告、两张 WorkBuddy Guide 参考图、`WB-X LOGO.png`、四张 adversarial 截图和四张根目录截图均保留；工作树内相应的 `audit/archive/`、`audit/2026-07-30-homepage-clone/`、`audit/2026-08-10-adversarial/` 与 `docs/superpowers/reports/` 归档目标全部存在。
+- 最新 stash 保持为 `stash@{0} On codex/service-page-polish: pre-live-alignment-2026-08-18`，且仍包含且仅包含 `.gitignore`、`docs/.vitepress/theme/HomePage.vue`、`docs/.vitepress/theme/service.css`、`package-lock.json`、`tests/home-hero-icons.test.ts`、`tests/service-page-style.test.ts`、`tests/service-page.test.ts`；主检出目录与 stash 均未修改。
+
+## 浏览器回归
+
+- 本工作树的生产预览运行于 `http://127.0.0.1:4173/`。仅使用 Codex 应用内浏览器，对线上 `https://wbx.sparkx.zone` 与本地预览的 `/`、`/wb-x/`、`/resources/`、`/help/`、`/wb-x/reading-guide/` 完成桌面与移动端共 `20` 个页面样本的逐项对比。
+- 桌面目标 CSS 视口为 `1440 × 900`。滚动页面的线上 raw viewport 为 `1455 × 900`、本地为 `1311 × 810`；不滚动的 `/resources/` 分别为 `1440 × 900` 与 `1296 × 810`。校准后每个样本均实测 `clientWidth=1440`、`scrollWidth=1440`、`innerHeight=900`，横向溢出均为 `0`。
+- 移动端目标 CSS 视口为 `390 × 844`。滚动页面的线上 raw viewport 为 `405 × 844`、本地为 `366 × 760`；不滚动的 `/resources/` 分别为 `390 × 844` 与 `351 × 760`。校准后每个样本均实测 `clientWidth=390`、`scrollWidth=390`、`innerHeight=844`，横向溢出均为 `0`。
+- 五组线上/本地页面的标题、H1、H2/必需页面标记、语义导航和主要链接目标全部匹配：首页的 `WorkBuddy小白书`、中国版 `v5.3.13`、国际版 `v5.2.7` 与四段路径；小白书目录的 `27` 章、四部分和附录；资料页的 `资料整理中。`；帮助页的 `¥399`、`45 分钟`、`不会用`、`跑不通`、`管不住`；阅读指南的入门、真实任务、团队落地与改进内容均已确认。首页 ticker 独立轮播造成采样瞬间的当前条目可能不同，但稳定 CTA、卡片和目标地址一致。
+- 每个页面样本的页面控制台错误数均为 `0`。本地 `/reading-guide` 精确跳转至 `http://127.0.0.1:4173/wb-x/reading-guide/`，目标标题正确且控制台错误数为 `0`。预览最终保留在应用内浏览器的本地首页。
+
+## 结论
+
+- 完整自动验证、仓库/归档/本地状态保留检查、线上与本地双视口浏览器回归、兼容跳转、链接、横向溢出和控制台检查均通过；未发现 P0、P1 或 P2 验收问题。
+
+final result: passed
