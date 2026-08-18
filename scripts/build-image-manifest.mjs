@@ -3,7 +3,6 @@ import {
   mkdir,
   mkdtemp,
   readFile,
-  readdir,
   rename,
   rm,
   stat,
@@ -12,7 +11,6 @@ import {
 import { readFileSync } from 'node:fs'
 import { dirname, join, posix, relative, resolve } from 'node:path'
 import {
-  csvColumns,
   csvFor,
   parseCsv,
 } from './lib/image-manifest/csv.mjs'
@@ -25,6 +23,19 @@ import {
   videoPattern,
   videoReferences,
 } from './lib/image-manifest/media.mjs'
+import {
+  assertManagedPath,
+  filesUnder,
+  pathExists,
+  stagedCalibrationPath,
+  stagedReplacementPath,
+} from './lib/image-manifest/paths.mjs'
+import {
+  allowedStatuses,
+  loadWorkflowState,
+  preservedWorkflowState,
+  supplementalRecordsForPage,
+} from './lib/image-manifest/workflow-state.mjs'
 
 const repositoryRoot = process.cwd()
 const contentRoot = join(repositoryRoot, 'docs')
@@ -53,28 +64,6 @@ const jsonPath = join(
 )
 const csvPath = join(repositoryRoot, 'article-image-replacement-manifest.csv')
 const sourceOrigin = 'https://workbuddy.homes'
-
-const allowedStatuses = new Set([
-  'awaiting-replacement',
-  'replaced',
-  'approved',
-])
-const userProvidedSourcePattern =
-  /^user-provided:\/\/[A-Za-z0-9][A-Za-z0-9._-]*\.(?:png|jpg|gif)$/
-
-
-async function filesUnder(directory) {
-  const entries = await readdir(directory, { withFileTypes: true })
-  const files = []
-
-  for (const entry of entries) {
-    const filePath = join(directory, entry.name)
-    if (entry.isDirectory()) files.push(...(await filesUnder(filePath)))
-    else files.push(filePath)
-  }
-
-  return files
-}
 
 function pageDetails(markdownPath) {
   const relativePath = relative(contentRoot, markdownPath).split('/').join(posix.sep)
@@ -154,219 +143,6 @@ function publicPage(markdownPath) {
   return `/${route}${route ? '/' : ''}`
 }
 
-async function pathExists(path) {
-  try {
-    await stat(path)
-    return true
-  } catch (error) {
-    if (error.code === 'ENOENT') return false
-    throw error
-  }
-}
-
-function assertManagedPath(path, prefix, label) {
-  const relativePath = posix.relative(prefix, path)
-  if (
-    !path.startsWith('/')
-    || relativePath === ''
-    || relativePath.startsWith('..')
-    || posix.isAbsolute(relativePath)
-  ) {
-    throw new Error(`${label} escapes ${prefix}: ${path}`)
-  }
-}
-
-function localPublicAssetPath(publicPath, prefix, label) {
-  assertManagedPath(publicPath, prefix, label)
-  return join(contentRoot, 'public', posix.relative('/', publicPath))
-}
-
-function supplementalRecordsForPage(
-  page,
-  pagePrefix,
-  { manifestById, csvById },
-) {
-  return [...manifestById.values()]
-    .filter(
-      (record) =>
-        record.page === page
-        && userProvidedSourcePattern.test(record.sourceUrl ?? ''),
-    )
-    .map((record) => {
-      if (!new RegExp(`^${pagePrefix}-\\d{3}$`).test(record.id)) {
-        throw new Error(`Invalid user-provided image ID for ${page}: ${record.id}`)
-      }
-
-      const existingCsv = csvById.get(record.id)
-      if (existingCsv && existingCsv.sourceUrl !== record.sourceUrl) {
-        throw new Error(
-          `Conflicting user-provided provenance for ${record.id}: ${existingCsv.sourceUrl}`,
-        )
-      }
-
-      const sourcePath = localPublicAssetPath(
-        record.calibrationPath,
-        '/article-assets/source-calibration',
-        `User-provided calibration path for ${record.id}`,
-      )
-      const sourceBuffer = readFileSync(sourcePath)
-      const format = imageFormat(sourceBuffer, sourcePath)
-      const [sourceWidth, sourceHeight] = imageDimensions(
-        sourceBuffer,
-        format,
-        sourcePath,
-      )
-      if (
-        record.format !== format
-        || record.sourceWidth !== sourceWidth
-        || record.sourceHeight !== sourceHeight
-      ) {
-        throw new Error(`User-provided image metadata mismatch for ${record.id}`)
-      }
-      const stableOrder = record.id.slice(pagePrefix.length + 1)
-      const expectedCalibrationPath =
-        `/article-assets/source-calibration/${pagePrefix}/${stableOrder}.${format}`
-      if (record.calibrationPath !== expectedCalibrationPath) {
-        throw new Error(`User-provided calibration format/path mismatch for ${record.id}`)
-      }
-      if (!record.sourceUrl.endsWith(`.${format}`)) {
-        throw new Error(`User-provided provenance format mismatch for ${record.id}`)
-      }
-
-      const preservedState = preservedWorkflowState(
-        record,
-        record.replacementPath,
-        { manifestById, csvById },
-      )
-      return {
-        ...record,
-        status: preservedState.status,
-        replacementPath: preservedState.replacementPath,
-        sourcePath,
-        generatedReplacementPath: record.replacementPath,
-        notes: preservedState.notes,
-      }
-    })
-}
-
-async function loadWorkflowState() {
-  const manifestById = new Map()
-  const csvById = new Map()
-
-  if (await pathExists(jsonPath)) {
-    const existingManifest = JSON.parse(await readFile(jsonPath, 'utf8'))
-    if (!Array.isArray(existingManifest)) {
-      throw new Error(`Existing image manifest must be an array: ${jsonPath}`)
-    }
-    for (const record of existingManifest) {
-      if (!record?.id || manifestById.has(record.id)) {
-        throw new Error(`Invalid or duplicate existing manifest ID: ${record?.id}`)
-      }
-      manifestById.set(record.id, record)
-    }
-  }
-
-  if (await pathExists(csvPath)) {
-    const rows = parseCsv(await readFile(csvPath, 'utf8'), csvPath)
-    const [header, ...dataRows] = rows
-    if (JSON.stringify(header) !== JSON.stringify(csvColumns)) {
-      throw new Error(`Existing CSV columns do not match the manifest schema: ${csvPath}`)
-    }
-
-    for (const row of dataRows) {
-      if (row.length !== csvColumns.length) {
-        throw new Error(`Existing CSV row has ${row.length} columns in ${csvPath}`)
-      }
-      const record = Object.fromEntries(
-        csvColumns.map((column, index) => [column, row[index]]),
-      )
-      if (!record.id || csvById.has(record.id)) {
-        throw new Error(`Invalid or duplicate existing CSV ID: ${record.id}`)
-      }
-      csvById.set(record.id, record)
-    }
-  }
-
-  return { manifestById, csvById }
-}
-
-function preservedWorkflowState(
-  record,
-  defaultReplacementPath,
-  { manifestById, csvById },
-) {
-  const existingManifest = manifestById.get(record.id)
-  const existingCsv = csvById.get(record.id)
-  const statusCandidates = [existingManifest?.status, existingCsv?.status]
-    .filter((status) => status && status !== 'awaiting-replacement')
-
-  for (const status of statusCandidates) {
-    if (!allowedStatuses.has(status)) {
-      throw new Error(`Invalid preserved status for ${record.id}: ${status}`)
-    }
-  }
-  const distinctStatuses = [...new Set(statusCandidates)]
-  if (distinctStatuses.length > 1) {
-    throw new Error(
-      `Conflicting preserved statuses for ${record.id}: ${distinctStatuses.join(', ')}`,
-    )
-  }
-
-  const replacementCandidates = [
-    existingManifest?.replacementPath,
-    existingCsv?.replacementPath,
-  ].filter(Boolean)
-  for (const replacementPath of replacementCandidates) {
-    assertManagedPath(
-      replacementPath,
-      '/article-assets/replacements',
-      `Preserved replacement path for ${record.id}`,
-    )
-  }
-  const customReplacementPaths = [
-    ...new Set(
-      replacementCandidates.filter(
-        (replacementPath) => replacementPath !== defaultReplacementPath,
-      ),
-    ),
-  ]
-  if (customReplacementPaths.length > 1) {
-    throw new Error(
-      `Conflicting preserved replacement paths for ${record.id}: ${customReplacementPaths.join(', ')}`,
-    )
-  }
-
-  return {
-    status: distinctStatuses[0] ?? 'awaiting-replacement',
-    replacementPath: customReplacementPaths[0] ?? defaultReplacementPath,
-    notes: existingCsv?.notes ?? '',
-  }
-}
-
-function stagedCalibrationPath(stagedCalibrationRoot, publicPath) {
-  assertManagedPath(
-    publicPath,
-    '/article-assets/source-calibration',
-    'Calibration path',
-  )
-  return join(
-    stagedCalibrationRoot,
-    posix.relative('/article-assets/source-calibration', publicPath),
-  )
-}
-
-function stagedReplacementPath(stagedReplacementRoot, publicPath) {
-  assertManagedPath(
-    publicPath,
-    '/article-assets/replacements',
-    'Replacement path',
-  )
-  return join(
-    stagedReplacementRoot,
-    posix.relative('/article-assets/replacements', publicPath),
-  )
-}
-
 async function replaceCandidatesAtomically(candidates, stagingRoot) {
   const backupRoot = join(stagingRoot, 'backups')
   await mkdir(backupRoot, { recursive: true })
@@ -401,7 +177,7 @@ if (!sourceRootStats.isDirectory()) {
   throw new Error(`Source docs root is not a directory: ${sourceDocsRoot}`)
 }
 
-const workflowState = await loadWorkflowState()
+const workflowState = await loadWorkflowState({ jsonPath, csvPath })
 const stagingRoot = await mkdtemp(join(repositoryRoot, '.image-manifest-staging-'))
 const stagedCalibrationRoot = join(stagingRoot, 'source-calibration')
 const stagedReplacementRoot = join(stagingRoot, 'replacements')
@@ -450,11 +226,12 @@ try {
       currentMarkdown.match(/^#\s+(.+)$/m)?.[1].trim()
       ?? pagePrefix
     const page = publicPage(markdownPath)
-    const supplementalRecords = supplementalRecordsForPage(
+    const supplementalRecords = supplementalRecordsForPage({
       page,
       pagePrefix,
       workflowState,
-    )
+      contentRoot,
+    })
     const supplementalByTarget = new Map()
     for (const record of supplementalRecords) {
       for (const target of [record.calibrationPath, record.replacementPath]) {

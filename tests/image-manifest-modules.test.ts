@@ -12,6 +12,13 @@ import {
   purposeFor,
   videoReferences,
 } from '../scripts/lib/image-manifest/media.mjs'
+import {
+  assertManagedPath,
+  stagedCalibrationPath,
+} from '../scripts/lib/image-manifest/paths.mjs'
+import {
+  preservedWorkflowState,
+} from '../scripts/lib/image-manifest/workflow-state.mjs'
 
 describe('image manifest CSV primitives', () => {
   it('round-trips quoted notes using the production schema', () => {
@@ -62,5 +69,49 @@ describe('image manifest media primitives', () => {
   it('uses alt text before the generated purpose fallback', () => {
     expect(purposeFor('Chapter', ' Diagram ', 2)).toBe('Diagram')
     expect(purposeFor('Chapter', '', 2)).toBe('Chapter — image 2')
+  })
+})
+
+describe('image manifest path boundaries', () => {
+  it('maps a managed calibration URL under the staging root', () => {
+    expect(stagedCalibrationPath(
+      '/tmp/staging',
+      '/article-assets/source-calibration/ch01/001.png',
+    )).toBe('/tmp/staging/ch01/001.png')
+  })
+
+  it('rejects public paths that escape the managed prefix', () => {
+    expect(() => assertManagedPath(
+      '/article-assets/other/001.png',
+      '/article-assets/source-calibration',
+      'Calibration path',
+    )).toThrow(
+      'Calibration path escapes /article-assets/source-calibration',
+    )
+  })
+})
+
+describe('image manifest workflow state', () => {
+  it('preserves one approved status, custom path, and CSV notes', () => {
+    const record = { id: 'ch01-001' }
+    const state = {
+      manifestById: new Map([['ch01-001', {
+        id: 'ch01-001', status: 'approved',
+        replacementPath: '/article-assets/replacements/custom/001.png',
+      }]]),
+      csvById: new Map([['ch01-001', {
+        id: 'ch01-001', status: 'approved', notes: 'reviewed',
+        replacementPath: '/article-assets/replacements/custom/001.png',
+      }]]),
+    }
+    expect(preservedWorkflowState(
+      record,
+      '/article-assets/replacements/ch01/001.png',
+      state,
+    )).toEqual({
+      status: 'approved',
+      replacementPath: '/article-assets/replacements/custom/001.png',
+      notes: 'reviewed',
+    })
   })
 })
