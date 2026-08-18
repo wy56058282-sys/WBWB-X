@@ -166,14 +166,20 @@ final result: passed
 
 ## 自动验证
 
-- `pnpm_config_verify_deps_before_run=warn pnpm run check` 通过：Vitest `59` 个测试文件、`372` 个测试全部通过；仓库卫生检查通过；`17` 个内部 Markdown 链接、`0` 个失效链接；批准的替代资产齐全且无源站热链；VitePress 构建、兼容跳转和发布边界检查全部通过，首次完整构建用时 `7.33s`。
-- 本机安装的 pnpm 为 `11.19`，仓库源码与 CI 继续固定为 `11.9.0`。完整检查只出现两类已知警告：`[WARN] Your node_modules are out of sync with your lockfile. The workspace structure has changed since last install`，以及 Vite/Rollup 对大于 `500 kB` chunk 的建议；均未导致失败。
+- 标准命令 `pnpm run check` 无环境前缀通过，且没有依赖状态警告：Vitest `59` 个测试文件、`372` 个测试全部通过；仓库卫生检查通过；`17` 个内部 Markdown 链接、`0` 个失效链接；批准的替代资产齐全且无源站热链；VitePress 构建、兼容跳转和发布边界检查全部通过，构建用时 `6.24s`。
+- 标准命令 `pnpm exec vitest run tests/publish-boundary.test.ts tests/maintenance-contract.test.ts` 通过 `2` 个测试文件、`15` 个测试；标准命令 `pnpm run check:repo` 亦通过。本机 pnpm 为 `11.19`，仓库源码与 CI 继续固定为 `11.9.0`；唯一运行警告是 Vite/Rollup 对大于 `500 kB` chunk 的建议。
 
 ## 仓库治理
 
 - 当前分支为 `codex/repository-maintenance`；验收前工作树干净，`git diff --check` 无输出，共 `657` 个受跟踪文件。`.pnpm-store/**`、`.qoder/**`、`.tools/**`、`package-lock.json` 的受跟踪路径查询结果为空。
 - 工作树中的 `.pnpm-store` 目录和 `.tools/bin/gh` 文件均保留。主检出目录中的 `.vercel`、`.vercel-tmp`、`node_modules.preview-backup` 以及 `.pnpm-store/v11/projects/` 下三个指定项目入口 `21e594b3af70d7f363c4142ec7d6ed70`、`add1f5404edf33ca6ceb79373cf56984`、`d4f1c45e2db7cb95bfbc810a77abe0d2` 均以只读方式确认存在；其中前两个入口指向已不存在的旧工作树，但符号链接本身按要求完整保留。
-- 主检出目录中的 Qoder harness 三个源文件、案例二维码报告、两张 WorkBuddy Guide 参考图、`WB-X LOGO.png`、四张 adversarial 截图和四张根目录截图均保留；工作树内相应的 `audit/archive/`、`audit/2026-07-30-homepage-clone/`、`audit/2026-08-10-adversarial/` 与 `docs/superpowers/reports/` 归档目标全部存在。
+- 主检出目录中的 Qoder harness 三个源文件、案例二维码报告、两张 WorkBuddy Guide 参考图、`WB-X LOGO.png`、四张 adversarial 截图和四张根目录截图均保留；工作树内逐项确认以下具体归档目标存在：
+  - `audit/archive/2026-08-05-qoder-harness/canvas.json`、`findings.json`、`report.canvas.tsx`；
+  - `docs/superpowers/reports/2026-08-02-case-qr-left-alignment-task-1.md`；
+  - `audit/2026-07-30-homepage-clone/workbuddy-guide-desktop-reference.png`、`workbuddy-guide-mobile-reference.png`；
+  - `audit/archive/source-assets/WB-X-LOGO-legacy.png`；
+  - `audit/2026-08-10-adversarial/01-home.png`、`02-book-index.png`、`03-public-internal-plan.png`、`04-stale-part-two-index.png`；
+  - `audit/archive/2026-08-18-unclassified-screenshots/screenshot-full-page.png`、`screenshot-page1-cover.png`、`screenshot-page2.png`、`screenshot-right-panel.png`。
 - 最新 stash 保持为 `stash@{0} On codex/service-page-polish: pre-live-alignment-2026-08-18`，且仍包含且仅包含 `.gitignore`、`docs/.vitepress/theme/HomePage.vue`、`docs/.vitepress/theme/service.css`、`package-lock.json`、`tests/home-hero-icons.test.ts`、`tests/service-page-style.test.ts`、`tests/service-page.test.ts`；主检出目录与 stash 均未修改。
 
 ## 浏览器回归
