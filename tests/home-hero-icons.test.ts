@@ -3,6 +3,7 @@ import { createApp, nextTick, type App } from 'vue'
 import { readFileSync } from 'node:fs'
 import HomePage from '../docs/.vitepress/theme/HomePage.vue'
 import { homeUpdates } from '../docs/.vitepress/theme/homeUpdates'
+import { readHomeStyle } from './helpers/read-theme-style'
 
 vi.mock('vitepress', () => ({
   withBase: (path: string) => path,
@@ -326,7 +327,7 @@ describe('home hero icon navigation', () => {
   })
 
   it('styles the synchronized update ticker as a vertically changing date with a persistent title marquee', () => {
-    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const css = readHomeStyle()
     const ticker = baseRule(css, '.wbx-update-ticker')
     const date = baseRule(css, '.wbx-update-ticker__date')
     const titleLink = baseRule(css, '.wbx-update-ticker__link')
@@ -386,7 +387,7 @@ describe('home hero icon navigation', () => {
   })
 
   it('keeps the mobile ticker inside the hero without moving subsequent copy content', () => {
-    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const css = readHomeStyle()
     const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
     const mobileCopy = mobile.match(/\.wbx-hero__copy\s*\{([^}]*)\}/)?.[1]
     const mobileTicker = mobile.match(/\.wbx-update-ticker\s*\{([^}]*)\}/)?.[1]
@@ -417,7 +418,7 @@ describe('home hero icon navigation', () => {
   })
 
   it('keeps the desktop hero copy boundary on the card centerline', () => {
-    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const css = readHomeStyle()
     const stage = baseRule(css, '.wbx-hero__stage')
     const compactDesktop = css.slice(
       css.indexOf('@media (max-width: 1200px)'),
@@ -438,7 +439,7 @@ describe('home hero icon navigation', () => {
       'docs/.vitepress/theme/HomePage.vue',
       'utf8',
     )
-    const homeCss = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const homeCss = readHomeStyle()
 
     expect(homeSource).not.toContain('HeroStickerPage')
     expect(homeSource).not.toContain('heroPartners')
@@ -447,7 +448,7 @@ describe('home hero icon navigation', () => {
   })
 
   it('uses black icon cards with green pixel icons', () => {
-    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const css = readHomeStyle()
 
     expect(css).not.toMatch(
       /\.wbx-hero__art\s*\{[^}]*background:\s*#0d100d;/s,
@@ -488,7 +489,7 @@ describe('home hero icon navigation', () => {
   })
 
   it('keeps the value strip green with black icons and text in both themes', () => {
-    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const css = readHomeStyle()
 
     expect(css).toMatch(
       /\.wbx-value-strip\s*\{[^}]*color:\s*#0d100d;[^}]*background:\s*var\(--wbx-accent\);/s,
@@ -502,7 +503,7 @@ describe('home hero icon navigation', () => {
   })
 
   it('uses only the outer hero border', () => {
-    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const css = readHomeStyle()
 
     expect(css).toMatch(
       /\.wbx-hero\s*\{[^}]*border:\s*2px solid #0d100d;/s,
@@ -519,7 +520,7 @@ describe('home hero icon navigation', () => {
     mountHomePage()
 
     const cta = document.querySelector<HTMLAnchorElement>('.wbx-hero-cta')
-    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const css = readHomeStyle()
 
     expect(cta?.getAttribute('href')).toBe('/wb-x/')
     expect(cta?.textContent).toContain('开始阅读')
@@ -562,7 +563,7 @@ describe('home hero icon navigation', () => {
   })
 
   it('uses the WorkBuddy Team lift and shadow on reading-path cards', () => {
-    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const css = readHomeStyle()
     const card = baseRule(css, '.wbx-reading-card')
     const interaction = css.match(
       /\.wbx-reading-card:hover,\s*\.wbx-reading-card:focus-visible\s*\{([^}]*)\}/s,
@@ -635,7 +636,7 @@ describe('home hero icon navigation', () => {
   })
 
   it('positions the official-site IP link without duplicate hero metrics', () => {
-    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const css = readHomeStyle()
     const official = baseRule(css, '.wbx-hero__official')
     const label = baseRule(css, '.wbx-hero__official-label')
     const image = baseRule(css, '.wbx-hero__official-ip')
@@ -681,7 +682,7 @@ describe('home hero icon navigation', () => {
   })
 
   it('uses the approved mobile hero card placement', () => {
-    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const css = readHomeStyle()
     const mobile = css.slice(
       css.indexOf('@media (max-width: 760px)'),
       css.indexOf('@media (max-width: 444px)'),
@@ -696,7 +697,7 @@ describe('home hero icon navigation', () => {
   })
 
   it('aligns mobile reading icons with titles and arrows with tags', () => {
-    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const css = readHomeStyle()
     const mobileStart = css.indexOf('@media (max-width: 760px)')
     const narrowStart = css.indexOf('@media (max-width: 420px)')
     const mobile = css.slice(mobileStart, css.indexOf('@media (max-width: 444px)'))
@@ -720,7 +721,7 @@ describe('home hero icon navigation', () => {
   })
 
   it('positions the Part 4 people icon safely at every hero breakpoint', () => {
-    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const css = readHomeStyle()
     const people = baseRule(css, '.wbx-icon-card--people')
     const work = baseRule(css, '.wbx-icon-card--work')
     const boundaryStart = css.indexOf('@media (max-width: 444px)')
@@ -789,7 +790,7 @@ describe('home hero icon navigation', () => {
   it('renders the approved borderless homepage product footer', () => {
     mountHomePage()
 
-    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const css = readHomeStyle()
     const footer = document.querySelector('.wbx-home-footer')
     const attribution = footer?.querySelector<HTMLAnchorElement>('a')
     const footerRule = baseRule(css, '.wbx-home-footer')
@@ -813,7 +814,7 @@ describe('home hero icon navigation', () => {
   })
 
   it('runs the community callout viewport-wide without an outer border', () => {
-    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const css = readHomeStyle()
     const community = baseRule(css, '.wbx-community')
     const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
 
@@ -828,7 +829,7 @@ describe('home hero icon navigation', () => {
   })
 
   it('aligns the system panel with the reading cards and rounds it by 20px', () => {
-    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const css = readHomeStyle()
     const system = baseRule(css, '.wbx-system')
     const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
 
@@ -840,7 +841,7 @@ describe('home hero icon navigation', () => {
   })
 
   it('uses the approved light-gray system panel palette', () => {
-    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const css = readHomeStyle()
     const system = baseRule(css, '.wbx-system')
     const introLabel = baseRule(css, '.wbx-system__intro .wbx-pixel-label')
     const introCopy = baseRule(css, '.wbx-system__intro > p:last-child')
@@ -910,7 +911,7 @@ describe('home hero icon navigation', () => {
   })
 
   it('renders the complete IP as one static image', () => {
-    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const css = readHomeStyle()
     const community = baseRule(css, '.wbx-community')
     const copy = baseRule(css, '.wbx-community__copy')
     const communityTitle = baseRule(css, '.wbx-community h2')
@@ -1007,7 +1008,7 @@ describe('home hero icon navigation', () => {
   })
 
   it('removes the task heading divider while keeping the task-grid border', () => {
-    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const css = readHomeStyle()
     const heading = baseRule(css, '.wbx-section__heading--compact')
     const taskGrid = baseRule(css, '.wbx-task-grid')
 

@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
+import { readHomeStyle } from './helpers/read-theme-style'
 
 describe('home analytics integration', () => {
   it('places the strip between hero and reading path', () => {
@@ -9,7 +10,7 @@ describe('home analytics integration', () => {
   })
 
   it('uses the homepage visual language and mobile 2x2 layout', () => {
-    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const css = readHomeStyle()
     expect(css).toMatch(/\.wbx-home-analytics\s*\{[^}]*border:\s*2px solid/s)
     expect(css).toMatch(/\.wbx-home-analytics\s*\{[^}]*width:\s*82%/s)
     expect(css).toMatch(/\.wbx-home-analytics\s*\{[^}]*margin:\s*32px auto 0/s)
@@ -23,7 +24,7 @@ describe('home analytics integration', () => {
 
   it('keeps the visible status compact like the reference strip', () => {
     const source = readFileSync('docs/.vitepress/theme/HomeAnalyticsStrip.vue', 'utf8')
-    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const css = readHomeStyle()
     expect(source).toContain('<strong>LIVE</strong>')
     expect(source).toContain('class="wbx-sr-only"')
     expect(source).not.toContain("<small>LIVE</small>")
@@ -31,7 +32,7 @@ describe('home analytics integration', () => {
   })
 
   it('animates changed digits with stable columns and respects reduced motion', () => {
-    const css = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const css = readHomeStyle()
     expect(css).toMatch(/\.wbx-flip-value__digit\s*\{[^}]*width:\s*1ch[^}]*overflow:\s*hidden/s)
     expect(css).toMatch(/\.wbx-digit-enter-active[^}]*\{[^}]*var\(--wbx-digit-duration\)[^}]*var\(--wbx-digit-delay\)/s)
     expect(css).toMatch(/\.wbx-digit-enter-from\s*\{[^}]*(?:translateY\(100%\)[^}]*opacity:\s*0|opacity:\s*0[^}]*translateY\(100%\))/s)

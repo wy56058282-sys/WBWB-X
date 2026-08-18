@@ -1,7 +1,7 @@
-import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
+import { readHomeStyle } from './helpers/read-theme-style'
 
-const homeCss = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+const homeCss = readHomeStyle()
 
 describe('homepage reading heading tablet layout', () => {
   it('stacks the heading and keeps its text on one line from 761px to 900px', () => {

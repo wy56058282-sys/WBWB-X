@@ -1,8 +1,9 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
+import { readHomeStyle } from './helpers/read-theme-style'
 
 const customCss = readFileSync('docs/.vitepress/theme/custom.css', 'utf8')
-const homeCss = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+const homeCss = readHomeStyle()
 
 describe('neutral hover color system', () => {
   it('defines dedicated light and dark neutral hover surfaces', () => {

@@ -5,6 +5,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { brand } from '../docs/.vitepress/brand'
 import vitepressConfig from '../docs/.vitepress/config'
+import { readHomeStyle } from './helpers/read-theme-style'
 
 function readPngDimensions(path: string) {
   const png = readFileSync(path)
@@ -113,8 +114,10 @@ describe('brand configuration', () => {
   })
 
   it('derives branded greens from the approved accent token', () => {
-    const css = ['custom.css', 'home.css']
-      .map((file) => readFileSync(`docs/.vitepress/theme/${file}`, 'utf8'))
+    const css = [
+      readFileSync('docs/.vitepress/theme/custom.css', 'utf8'),
+      readHomeStyle(),
+    ]
       .join('\n')
     const hexColors = css.match(/#[0-9a-f]{6}\b/gi) ?? []
     const offBrandGreens = [
@@ -146,7 +149,7 @@ describe('brand configuration', () => {
   })
 
   it('keeps the 390px hero within the viewport', () => {
-    const source = readFileSync('docs/.vitepress/theme/home.css', 'utf8')
+    const source = readHomeStyle()
     const narrowRules = source.slice(source.indexOf('@media (max-width: 420px)'))
 
     expect(source).toMatch(
