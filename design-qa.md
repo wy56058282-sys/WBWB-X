@@ -3,8 +3,8 @@
 ## Comparison target
 
 - Source visual truth:
-  - `/Users/nick/Desktop/WORKBUDDY WB/audit/01-workbuddy-guide-desktop.png`
-  - `/Users/nick/Desktop/WORKBUDDY WB/audit/02-workbuddy-guide-mobile.png`
+  - `audit/2026-07-30-homepage-clone/workbuddy-guide-desktop-reference.png`
+  - `audit/2026-07-30-homepage-clone/workbuddy-guide-mobile-reference.png`
 - Source pixels:
   - Desktop: `1280 × 2847`
   - Mobile: `390 × 5366`

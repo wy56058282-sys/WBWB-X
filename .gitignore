@@ -1,8 +1,25 @@
+# Operating-system files
 .DS_Store
+
+# Dependencies and package-manager state
+node_modules/
+node_modules.preview-backup/
+.pnpm-store/
+
+# Local worktrees and agent/tool state
 .worktrees/
 .superpowers/
-node_modules/
+.qoder/
+.tools/
+
+# Local deployment state
+.vercel/
+.vercel-tmp/
+
+# Generated build and test output
 docs/.vitepress/cache/
 docs/.vitepress/dist/
 coverage/
-node_modules
+
+# Unclassified local captures must be moved into audit/ before tracking
+/screenshot-*.png

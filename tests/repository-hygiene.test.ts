@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { findRepositoryHygieneViolations } from '../scripts/check-repository-hygiene.mjs'
+import {
+  checkRepositoryHygiene,
+  findRepositoryHygieneViolations,
+} from '../scripts/check-repository-hygiene.mjs'
 
 describe('repository hygiene rules', () => {
   it('accepts pnpm-owned source and dated audit evidence', () => {
@@ -26,5 +29,11 @@ describe('repository hygiene rules', () => {
       'audit evidence must use a dated topic or archive directory: audit/loose.png',
       'duplicate package-manager lockfile: package-lock.json',
     ])
+  })
+})
+
+describe('current repository hygiene', () => {
+  it('tracks only governed project files', () => {
+    expect(checkRepositoryHygiene()).toEqual([])
   })
 })

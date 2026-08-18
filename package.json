@@ -11,9 +11,10 @@
     "build": "vitepress build docs && node scripts/generate-legacy-redirects.mjs && node scripts/verify-publish-boundary.mjs",
     "preview": "vitepress preview docs",
     "test": "vitest run",
+    "check:repo": "node scripts/check-repository-hygiene.mjs",
     "check:links": "node scripts/check-content-links.mjs",
     "check:assets": "node scripts/check-replacement-assets.mjs",
-    "check": "npm test && npm run check:links && npm run check:assets && npm run build"
+    "check": "pnpm test && pnpm run check:repo && pnpm run check:links && pnpm run check:assets && pnpm run build"
   },
   "devDependencies": {
     "@braintree/sanitize-url": "^7.1.2",
