@@ -73,20 +73,26 @@ function findSearchIndexes(files, distRoot) {
 
 export function verifyPublishBoundary(
   distRoot,
-  internalDocsRoot = 'docs/superpowers',
+  internalDocsRoots = ['docs/superpowers', 'docs/maintenance'],
 ) {
   if (!distRoot || !existsSync(distRoot)) {
     throw new Error(`build output is missing: ${distRoot}`)
   }
-  if (!existsSync(internalDocsRoot)) {
-    throw new Error(`internal documents are missing: ${internalDocsRoot}`)
-  }
-  if (existsSync(join(distRoot, 'superpowers'))) {
-    throw new Error('published output contains a superpowers directory')
+  const roots = Array.isArray(internalDocsRoots)
+    ? internalDocsRoots
+    : [internalDocsRoots]
+  for (const root of roots) {
+    if (!existsSync(root)) {
+      throw new Error(`internal documents are missing: ${root}`)
+    }
+    const directory = basename(root)
+    if (existsSync(join(distRoot, directory))) {
+      throw new Error(`published output contains a ${directory} directory`)
+    }
   }
 
   const files = walkFiles(distRoot)
-  const titles = readInternalTitles(internalDocsRoot)
+  const titles = roots.flatMap(readInternalTitles)
   const htmlLeak = findLeakedTitle(
     files.filter((file) => file.endsWith('.html')),
     titles,
@@ -105,9 +111,13 @@ export function verifyPublishBoundary(
   }
 }
 
-if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {
+if (
+  process.argv[1]
+  && pathToFileURL(resolve(process.argv[1])).href === import.meta.url
+) {
+  const internalRoots = process.argv.slice(3)
   verifyPublishBoundary(
     process.argv[2] ?? 'docs/.vitepress/dist',
-    process.argv[3] ?? 'docs/superpowers',
+    internalRoots.length > 0 ? internalRoots : undefined,
   )
 }

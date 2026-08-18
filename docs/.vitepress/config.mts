@@ -27,7 +27,7 @@ function canonicalPath(relativePath: string) {
 
 export default withMermaid(defineConfig({
   base: process.env.SITE_BASE ?? '/',
-  srcExclude: ['superpowers/**'],
+  srcExclude: ['superpowers/**', 'maintenance/**'],
   vite: {
     plugins: [legacyRouteRedirectPlugin()],
     server: {

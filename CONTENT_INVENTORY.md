@@ -1,12 +1,12 @@
 # WorkBuddy WB-X 网站内容资产与更新手册
 
-> 盘点日期：2026-07-31
+> 盘点日期：2026-08-18
 >
-> 线上地址：<https://wbwbx.sparkx.zone/>
+> 线上地址：<https://wbx.sparkx.zone/>
 >
 > GitHub 仓库：<https://github.com/wy56058282-sys/WBWB-X>
 >
-> 本次盘点基线：`cd9e1f8`
+> 本次盘点基线：与本文件所在提交一致
 >
 > 用途：记录网站现有内容、内容文件位置、更新方法和后续补充优先级。每次完成较大范围更新后，应同步维护本文件。
 
@@ -24,7 +24,7 @@ WorkBuddy WB-X 是一本以真实任务为主线的 WorkBuddy 中文社区实战
 | 品牌短标 | WB-X |
 | 品牌色 | `#32E6B9` |
 | 内容作者 | WorkBuddy WB-X Contributors |
-| 公网域名 | `https://wbwbx.sparkx.zone` |
+| 公网域名 | `https://wbx.sparkx.zone` |
 | GitHub | `wy56058282-sys/WBWB-X` |
 | 技术框架 | VitePress 1.6.4、Vue 3、TypeScript |
 
@@ -40,7 +40,7 @@ docs/.vitepress/brand.ts
 
 | 内容类型 | 数量 | 说明 |
 | --- | ---: | --- |
-| 对外 Markdown 页面 | 49 | 不含内部设计与实施记录 |
+| 对外 Markdown 页面 | 52 | 不含内部设计与实施记录 |
 | 小白书正文 | 27 章 | 第一篇 10 章、第二篇 11 章、第三篇 4 章、第四篇 2 章 |
 | 额外阅读 | 1 篇 | 《一章看懂 AI 工作系统》 |
 | 附录 | 2 篇 | 常用指令模板、场景速查表 |
@@ -48,7 +48,7 @@ docs/.vitepress/brand.ts
 | 支持与共创页面 | 4 个 | 阅读指南、定制服务、参与共创、Case 投稿指南 |
 | 图片清单条目 | 270 | 覆盖 35 个页面 |
 | 原始校准素材 | 272 个 | 位于 `source-calibration` |
-| 替换素材文件 | 36 个 | 位于 `replacements` |
+| 替换素材文件 | 1 个 | 位于 `replacements` |
 
 按去除 Markdown 标记后的字符量粗略统计：
 
@@ -110,6 +110,10 @@ HTML 跳转页，并保留 query/hash。`_redirects` 为支持该文件的托管
 ```text
 docs/.vitepress/theme/HomePage.vue
 docs/.vitepress/theme/home.css
+docs/.vitepress/theme/home/home-foundation.css
+docs/.vitepress/theme/home/home-hero.css
+docs/.vitepress/theme/home/home-sections.css
+docs/.vitepress/theme/home/home-responsive.css
 ```
 
 首页包含以下模块：
@@ -400,6 +404,8 @@ docs/public/article-assets/replacements/
 ```text
 article-image-replacement-manifest.csv
 docs/.vitepress/image-manifest.generated.json
+scripts/build-image-manifest.mjs
+scripts/lib/image-manifest/*.mjs
 ```
 
 清单当前有 270 条记录，其中：
@@ -407,7 +413,7 @@ docs/.vitepress/image-manifest.generated.json
 - `awaiting-replacement`：269 条。
 - `replaced`：1 条。
 
-仓库中已经存在 36 个 replacement 文件，说明“文件实际替换情况”和“清单状态”尚未完全同步。后续图片更新应同时检查文件和清单状态。
+仓库中已经存在 1 个 replacement 文件，说明“文件实际替换情况”和“清单状态”尚未完全同步。后续图片更新应同时检查文件和清单状态。
 
 ## 9. SEO、搜索与分享
 
@@ -431,6 +437,21 @@ docs/.vitepress/config.mts
 - GitHub 社交链接。
 
 ## 10. 日常更新操作手册
+
+### 10.0 维护资料与审计证据
+
+长期维护规则位于：
+
+```text
+README.md
+docs/maintenance/README.md
+docs/maintenance/repository-layout.md
+docs/maintenance/assets-and-audits.md
+docs/maintenance/future-optimizations.md
+audit/README.md
+```
+
+`.pnpm-store/`、`.tools/`、`.qoder/`、`.vercel/` 和依赖备份均为本地内容，不进入 Git。
 
 ### 10.1 更新品牌名称、域名、仓库或 SEO
 
@@ -474,6 +495,10 @@ docs/.vitepress/sidebar.ts
 ```text
 docs/.vitepress/theme/HomePage.vue
 docs/.vitepress/theme/home.css
+docs/.vitepress/theme/home/home-foundation.css
+docs/.vitepress/theme/home/home-hero.css
+docs/.vitepress/theme/home/home-sections.css
+docs/.vitepress/theme/home/home-responsive.css
 tests/home-hero-icons.test.ts
 ```
 
@@ -538,10 +563,7 @@ pnpm preview
 ### 10.9 发布前检查
 
 ```bash
-pnpm test
-pnpm run check:links
-pnpm run check:assets
-pnpm run build
+pnpm run check
 ```
 
 当前自动部署工作流：
@@ -560,7 +582,7 @@ pnpm run build
 
 部署完成后应检查：
 
-- `https://wbwbx.sparkx.zone/`
+- `https://wbx.sparkx.zone/`
 - 首页导航与主视觉。
 - 任意一篇中文长路径章节。
 - 搜索。

@@ -15,6 +15,7 @@ function createFixture() {
   const root = mkdtempSync(join(tmpdir(), 'publish-boundary-'))
   const dist = join(root, 'dist')
   const internalDocs = join(root, 'docs/superpowers')
+  const maintenanceDocs = join(root, 'docs/maintenance')
   const searchIndex = join(
     dist,
     'assets/chunks/@localSearchIndexroot.fixture.js',
@@ -23,6 +24,7 @@ function createFixture() {
 
   mkdirSync(dirname(searchIndex), { recursive: true })
   mkdirSync(internalDocs, { recursive: true })
+  mkdirSync(maintenanceDocs, { recursive: true })
   writeFileSync(join(dist, 'index.html'), '<title>Public home</title>')
   writeFileSync(searchIndex, 'export default { public: "Public home" }')
   writeFileSync(
@@ -30,8 +32,12 @@ function createFixture() {
     'const index = () => import("./@localSearchIndexroot.fixture.js")',
   )
   writeFileSync(join(internalDocs, 'plan.md'), '# Internal Build Plan\n')
+  writeFileSync(
+    join(maintenanceDocs, 'guide.md'),
+    '# Internal Maintenance Guide\n',
+  )
 
-  return { dist, internalDocs, searchIndex, searchLoader }
+  return { dist, internalDocs, maintenanceDocs, searchIndex, searchLoader }
 }
 
 describe('production content boundary', () => {
@@ -43,7 +49,10 @@ describe('production content boundary', () => {
     const fixture = createFixture()
 
     expect(() =>
-      verifyPublishBoundary(fixture.dist, fixture.internalDocs),
+      verifyPublishBoundary(
+        fixture.dist,
+        [fixture.internalDocs, fixture.maintenanceDocs],
+      ),
     ).not.toThrow()
   })
 
@@ -52,7 +61,10 @@ describe('production content boundary', () => {
     mkdirSync(join(fixture.dist, 'superpowers'))
 
     expect(() =>
-      verifyPublishBoundary(fixture.dist, fixture.internalDocs),
+      verifyPublishBoundary(
+        fixture.dist,
+        [fixture.internalDocs, fixture.maintenanceDocs],
+      ),
     ).toThrow(/superpowers directory/i)
   })
 
@@ -64,7 +76,10 @@ describe('production content boundary', () => {
     )
 
     expect(() =>
-      verifyPublishBoundary(fixture.dist, fixture.internalDocs),
+      verifyPublishBoundary(
+        fixture.dist,
+        [fixture.internalDocs, fixture.maintenanceDocs],
+      ),
     ).toThrow(/HTML.*Internal Build Plan/i)
   })
 
@@ -73,7 +88,10 @@ describe('production content boundary', () => {
     writeFileSync(fixture.searchIndex, 'export default "Internal Build Plan"')
 
     expect(() =>
-      verifyPublishBoundary(fixture.dist, fixture.internalDocs),
+      verifyPublishBoundary(
+        fixture.dist,
+        [fixture.internalDocs, fixture.maintenanceDocs],
+      ),
     ).toThrow(/search index.*Internal Build Plan/i)
   })
 
@@ -82,7 +100,10 @@ describe('production content boundary', () => {
     rmSync(fixture.searchIndex)
 
     expect(() =>
-      verifyPublishBoundary(fixture.dist, fixture.internalDocs),
+      verifyPublishBoundary(
+        fixture.dist,
+        [fixture.internalDocs, fixture.maintenanceDocs],
+      ),
     ).toThrow(/search index.*missing/i)
   })
 
@@ -97,8 +118,34 @@ describe('production content boundary', () => {
     )
 
     expect(() =>
-      verifyPublishBoundary(fixture.dist, fixture.internalDocs),
+      verifyPublishBoundary(
+        fixture.dist,
+        [fixture.internalDocs, fixture.maintenanceDocs],
+      ),
     ).toThrow(/search index.*Internal Build Plan/i)
+  })
+
+  it('rejects a published maintenance directory', () => {
+    const fixture = createFixture()
+    mkdirSync(join(fixture.dist, 'maintenance'))
+
+    expect(() => verifyPublishBoundary(
+      fixture.dist,
+      [fixture.internalDocs, fixture.maintenanceDocs],
+    )).toThrow(/maintenance directory/i)
+  })
+
+  it('rejects maintenance titles in generated HTML', () => {
+    const fixture = createFixture()
+    writeFileSync(
+      join(fixture.dist, 'leaked.html'),
+      '<title>Internal Maintenance Guide</title>',
+    )
+
+    expect(() => verifyPublishBoundary(
+      fixture.dist,
+      [fixture.internalDocs, fixture.maintenanceDocs],
+    )).toThrow(/HTML.*Internal Maintenance Guide/i)
   })
 
   it('runs the verifier after building pages and legacy redirects', () => {
