@@ -65,7 +65,7 @@ const problems = [
           <h2 id="service-path-title">从一次体验，到一个可落地项目</h2>
         </div>
         <ol class="wbx-service-path">
-          <li v-for="item in path" :key="item.title" class="wbx-service-path__item">
+          <li v-for="item in path" :key="item.title" class="wbx-service-path__item" tabindex="0">
             <span>{{ item.index }}</span><h3>{{ item.title }}</h3><strong>{{ item.price }}</strong><p>{{ item.description }}</p>
             <p v-if="'benefit' in item" class="wbx-service-path__benefit">{{ item.benefit }}</p>
           </li>

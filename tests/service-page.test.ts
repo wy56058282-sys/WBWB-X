@@ -60,6 +60,7 @@ describe('custom service conversion page', () => {
     const stages = Array.from(document.querySelectorAll('.wbx-service-path__item'))
     const text = document.body.textContent ?? ''
     expect(stages).toHaveLength(3)
+    expect(stages.map((stage) => stage.getAttribute('tabindex'))).toEqual(['0', '0', '0'])
     expect(stages.map((stage) => stage.querySelector('h3')?.textContent?.trim())).toEqual(['参加实战工作坊', '完成需求诊断', '进入企业定制项目'])
     expect(stages[0].textContent).toContain('¥39')
     expect(stages[1].textContent).toContain('¥399')

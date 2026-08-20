@@ -11,13 +11,16 @@ describe('custom service conversion styles', () => {
 
   it('uses a three-column funnel and removes horizontal overflow at mobile width', () => {
     const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
-    expect(styles).toMatch(/\.wbx-service-path\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/s)
+    expect(styles).toMatch(/\.wbx-service-path\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)[^}]*gap:\s*16px/s)
     expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service \.wbx-service-path\s*\{[^}]*grid-template-columns:\s*1fr[^}]*padding-bottom:\s*0/s)
     expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-hero,[\s\S]*?\.wbx-service-section\s*\{[^}]*min-width:\s*0/s)
-    expect(styles).toMatch(/\.wbx-service-path__item:nth-child\(1\)\s*\{[^}]*transform:\s*translateY\(28px\)/s)
-    expect(styles).toMatch(/\.wbx-service-path__item:nth-child\(2\)\s*\{[^}]*transform:\s*translateY\(14px\)/s)
+    expect(styles).toMatch(/\.wbx-service \.wbx-service-path__item\s*\{[^}]*margin:\s*0[^}]*border:\s*2px solid var\(--wbx-ink\)[^}]*transition:[^}]*transform/s)
+    expect(styles).not.toMatch(/\.wbx-service-path__item \+ \.wbx-service-path__item\s*\{[^}]*border-left:\s*0/s)
+    expect(styles).toMatch(/\.wbx-service-path__item:hover,[\s\S]*?\.wbx-service-path__item:focus-visible\s*\{[^}]*transform:\s*scale\(1\.03\)/s)
+    expect(styles).toMatch(/\.wbx-service-path__item:hover,[\s\S]*?\.wbx-service-path__item:focus-visible\s*\{[^}]*box-shadow:[^}]*var\(--wbx-accent\)/s)
+    expect(styles).toMatch(/\.wbx-service-path__item:hover,[\s\S]*?\.wbx-service-path__item:focus-visible\s*\{[^}]*z-index:\s*1/s)
     expect(styles).toMatch(/\.wbx-service-path__item > span\s*\{[^}]*font-size:\s*calc\(12px \+ 4pt\)/s)
-    expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service-path__item:nth-child\(1\),[\s\S]*?\.wbx-service-path__item:nth-child\(2\)\s*\{[^}]*transform:\s*none/s)
+    expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service \.wbx-service-path__item,[\s\S]*?\.wbx-service \.wbx-service-path__item:hover,[\s\S]*?\.wbx-service \.wbx-service-path__item:focus-visible\s*\{[^}]*transform:\s*none[^}]*transition:\s*none/s)
   })
 
   it('matches the case-gallery title hierarchy and exposes the registration QR on hover or focus', () => {

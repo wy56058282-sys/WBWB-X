@@ -46,11 +46,10 @@
 .wbx-service-section { display: grid; grid-template-columns: minmax(220px, .38fr) minmax(0, 1fr); gap: 48px; min-width: 0; padding: 64px 0; }
 .wbx-service-section__heading { min-width: 0; }
 .wbx-service-journey { border-block: 2px solid var(--wbx-ink); }
-.wbx-service .wbx-service-path { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin: 0; padding: 0 0 28px; list-style: none; list-style-type: none; }
-.wbx-service-path__item { min-width: 0; padding: 18px 22px 22px; border: 2px solid var(--wbx-ink); background: var(--wbx-surface); }
-.wbx-service-path__item:nth-child(1) { transform: translateY(28px); }
-.wbx-service-path__item:nth-child(2) { transform: translateY(14px); }
-.wbx-service-path__item + .wbx-service-path__item { border-left: 0; }
+.wbx-service .wbx-service-path { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 0; padding: 0; list-style: none; list-style-type: none; }
+.wbx-service .wbx-service-path__item { position: relative; min-width: 0; margin: 0; padding: 18px 22px 22px; border: 2px solid var(--wbx-ink); background: var(--wbx-surface); transition: box-shadow 160ms ease, transform 160ms ease; }
+.wbx-service-path__item:hover,
+.wbx-service-path__item:focus-visible { z-index: 1; outline: 2px solid var(--wbx-accent); outline-offset: 3px; box-shadow: 8px 8px 0 var(--wbx-accent); transform: scale(1.03); }
 .wbx-service-path__item > span { color: var(--vp-c-brand-1); font-family: var(--wbx-pixel); font-size: calc(12px + 4pt); }
 .wbx-service-path__item h3 { margin: 14px 0 10px; }
 .wbx-service-path__item strong { display: block; margin-bottom: 14px; font-size: 20px; }
@@ -100,9 +99,9 @@
   .wbx-service-registration { grid-template-columns: 1fr; }
   .wbx-service-registration__copy { position: static; }
   .wbx-service .wbx-service-path { grid-template-columns: 1fr; padding-bottom: 0; }
-  .wbx-service-path__item:nth-child(1),
-  .wbx-service-path__item:nth-child(2) { transform: none; }
-  .wbx-service-path__item + .wbx-service-path__item { border-top: 0; border-left: 2px solid var(--wbx-ink); }
+  .wbx-service .wbx-service-path__item,
+  .wbx-service .wbx-service-path__item:hover,
+  .wbx-service .wbx-service-path__item:focus-visible { box-shadow: none; transform: none; transition: none; }
 }
 
 @media (max-width: 959px) {
