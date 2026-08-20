@@ -114,6 +114,33 @@ final result: passed
 
 ---
 
+# 2026-08-21 工作坊海报切换 Design QA
+
+## 验收范围与证据
+
+- 页面：`/help/`；默认状态为第二期（08.29）选中。
+- 对照素材：`/Users/wangyi/Desktop/815/815.png`、`docs/public/article-assets/service/workshop-cover.png`、`/Users/wangyi/Desktop/815/912.png`。
+- 实现截图：`/private/tmp/workshop-selector-desktop.png`、`/private/tmp/workshop-selector-mobile.png`。
+- 素材与实现截图已在同一视觉比较输入中并排检查；海报内容、3:4 比例、裁切和色彩与原图一致，缩略图和主海报均清晰，无需额外局部截图。
+
+## 功能与视觉检查
+
+- 默认 `aria-pressed` 为 `[false, true, false]`；右侧显示第二期海报及公众号链接。
+- 选择第一期后为 `[true, false, false]`，显示 `workshop-815.png`，链接为 `https://mp.weixin.qq.com/s/q7Bq2kEmsYlgI4pTZ59srw`。
+- 选择第三期后为 `[false, false, true]`，显示 `workshop-912.png`，不渲染外链。
+- 字体、间距、薄荷绿选中态、黑色边框与页面现有系统一致；文案清晰，第二期显示“当前”。
+- 桌面端三个缩略图横排；移动端 DOM 实测宽度 `416px`，三列同排、按钮均可见，横向溢出为 `0`。移动截图画布受浏览器按域缩放影响，但 DOM 尺寸和布局检查通过。
+- 键盘焦点、悬停和选中态均有可见反馈；页面控制台仅有 Vite 开发连接与热更新 debug 日志，无 warning 或 error。
+
+## Findings
+
+- 无 P0、P1、P2 视觉、交互或响应式问题。
+- 首次实现对照检查未发现需要返工的问题。
+
+final result: passed
+
+---
+
 # 2026-08-21 定制服务主标题 Design QA
 
 ## 对比目标与证据
