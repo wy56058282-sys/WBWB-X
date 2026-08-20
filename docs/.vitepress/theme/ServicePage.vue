@@ -12,7 +12,7 @@ const partnershipBenefit = '企业认证为合作伙伴将免费诊断 3 次。'
 
 const path = [
   { index: '01', title: '参加实战工作坊', price: `¥${workshop.price} / 人`, description: '带着真实办公场景来，在半天内完成一次 AI 智能体实战，先判断方法是否适合你。', benefit: workshopBenefit },
-  { index: '02', title: '完成需求诊断', price: `¥${diagnosis.price} / 次`, description: '把目标、边界、交付物和风险说清楚。', benefit: partnershipBenefit },
+  { index: '02', title: '完成需求诊断', price: `¥${diagnosis.price} / 次`, description: '围绕真实业务场景，把目标、使用对象、流程边界、交付标准和实施风险逐项说清，形成可评估、可执行的需求方案。', benefit: partnershipBenefit },
   { index: '03', title: '进入企业定制项目', price: '按项目评估', description: '针对已确认的业务场景，提供培训、陪跑、实施与持续支持。' },
 ] as const
 

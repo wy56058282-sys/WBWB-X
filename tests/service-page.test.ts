@@ -87,6 +87,7 @@ describe('custom service conversion page', () => {
     expect(stages.map((stage) => stage.querySelector('h3')?.textContent?.trim())).toEqual(['参加实战工作坊', '完成需求诊断', '进入企业定制项目'])
     expect(stages[0].textContent).toContain('¥39')
     expect(stages[1].textContent).toContain('¥399')
+    expect(stages[1].textContent).toContain('围绕真实业务场景，把目标、使用对象、流程边界、交付标准和实施风险逐项说清，形成可评估、可执行的需求方案。')
     expect(stages[0].querySelector('.wbx-service-path__benefit')?.textContent).toContain('每 2 周线下面对面交流，收集场景痛点。')
     expect(stages[1].querySelector('.wbx-service-path__benefit')?.textContent).toContain('企业认证为合作伙伴将免费诊断 3 次。')
     expect(document.querySelector('.wbx-service-enterprise__benefit')?.textContent).toContain('企业认证为合作伙伴将免费诊断 3 次。')
