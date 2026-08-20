@@ -32,7 +32,7 @@
 .wbx-service-section { display: grid; grid-template-columns: minmax(220px, .38fr) minmax(0, 1fr); gap: 48px; min-width: 0; padding: 64px 0; }
 .wbx-service-section__heading { min-width: 0; }
 .wbx-service-journey { border-block: 2px solid var(--wbx-ink); }
-.wbx-service-path { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin: 0; padding: 0; list-style: none; }
+.wbx-service .wbx-service-path { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin: 0; padding: 0; list-style: none; list-style-type: none; }
 .wbx-service-path__item { min-width: 0; padding: 18px 22px 22px; border: 2px solid var(--wbx-ink); background: var(--wbx-surface); }
 .wbx-service-path__item + .wbx-service-path__item { border-left: 0; }
 .wbx-service-path__item > span { color: var(--vp-c-brand-1); font-family: var(--wbx-pixel); font-size: 12px; }

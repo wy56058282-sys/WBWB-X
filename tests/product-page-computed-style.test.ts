@@ -368,6 +368,7 @@ describe('product page computed styles', () => {
       const action = getComputedStyle(document.querySelector('.wbx-service-enterprise .wbx-service-action')!)
 
       expect(path.gridTemplateColumns).toBe(pathColumns)
+      expect(path.listStyleType).toBe('none')
       expect(enterprise.backgroundColor).toBe('rgb(13, 16, 13)')
       expect(benefit.borderLeftWidth).toBe('6px')
       expect(action.minHeight).toBe('48px')

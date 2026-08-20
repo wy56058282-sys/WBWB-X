@@ -120,9 +120,9 @@ final result: passed
 
 - 视觉源：`/Users/wangyi/Desktop/829/001.png` 与 `/Users/wangyi/Desktop/829/007.png`，均为 `1800 × 2400`。
 - 实现页面：`http://127.0.0.1:4174/help/`，浅色模式。
-- 桌面证据：`audit/service-page-conversion/desktop-exact.png`，目标 CSS 视口 `1440 × 900`。
-- 手机首屏：`audit/service-page-conversion/mobile-exact.png`，CSS 视口 `390 × 844`。
-- 手机报名区：`audit/service-page-conversion/registration-mobile-exact.png`，CSS 视口 `390 × 844`，锚点 `#workshop-registration`。
+- 桌面证据：`audit/2026-08-20-service-page-conversion/desktop-exact.png`，目标 CSS 视口 `1440 × 900`。
+- 手机首屏：`audit/2026-08-20-service-page-conversion/mobile-exact.png`，CSS 视口 `390 × 844`。
+- 手机报名区：`audit/2026-08-20-service-page-conversion/registration-mobile-exact.png`，CSS 视口 `390 × 844`，锚点 `#workshop-registration`。
 - 源图与实现截图已在同一比较输入中打开检查；源图作为海报资产原样保留，网页负责补充成交路径和响应式信息层级。
 
 ## 必需视觉表面
