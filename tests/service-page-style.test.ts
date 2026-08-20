@@ -11,6 +11,7 @@ describe('custom service conversion styles', () => {
 
   it('uses a three-column funnel and removes horizontal overflow at mobile width', () => {
     const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
+    expect(styles).toMatch(/\.wbx-service-journey\s*\{[^}]*grid-template-columns:\s*1fr[^}]*gap:\s*30px[^}]*border-block:/s)
     expect(styles).toMatch(/\.wbx-service-path\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)[^}]*gap:\s*16px/s)
     expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service \.wbx-service-path\s*\{[^}]*grid-template-columns:\s*1fr[^}]*padding-bottom:\s*0/s)
     expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-hero,[\s\S]*?\.wbx-service-section\s*\{[^}]*min-width:\s*0/s)
