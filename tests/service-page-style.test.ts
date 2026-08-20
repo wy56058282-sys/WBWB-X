@@ -43,9 +43,14 @@ describe('custom service conversion styles', () => {
     expect(styles).toMatch(/@media \(hover:\s*none\)[\s\S]*?\.wbx-service-registration-popover\s*\{[^}]*display:\s*none/s)
   })
 
-  it('keeps the supplied registration poster readable and the primary action touch-sized', () => {
+  it('lays out guest teacher images in three desktop columns and one mobile column', () => {
     const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
-    expect(styles).toMatch(/\.wbx-service-registration__poster img\s*\{[^}]*width:\s*100%[^}]*height:\s*auto/s)
+    expect(styles).toMatch(/\.wbx-service-guests\s*\{[^}]*grid-template-columns:\s*1fr/s)
+    expect(styles).toMatch(/\.wbx-service-guests__grid\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/s)
+    expect(styles).toMatch(/\.wbx-service-guest\s*\{[^}]*border:\s*2px solid var\(--wbx-ink\)[^}]*transition:[^}]*transform/s)
+    expect(styles).toMatch(/\.wbx-service-guest:hover,[\s\S]*?\.wbx-service-guest:focus-visible\s*\{[^}]*transform:\s*scale\(1\.03\)[^}]*box-shadow:[^}]*var\(--wbx-accent\)/s)
+    expect(styles).toMatch(/\.wbx-service-guest img\s*\{[^}]*width:\s*100%[^}]*height:\s*auto[^}]*object-fit:\s*contain/s)
+    expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-guests__grid\s*\{[^}]*grid-template-columns:\s*1fr/s)
     expect(styles).toMatch(/\.wbx-service \.wbx-service-action\s*\{[^}]*min-height:\s*48px/s)
     expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-action\s*\{[^}]*width:\s*100%/s)
   })

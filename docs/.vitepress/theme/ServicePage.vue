@@ -10,6 +10,14 @@ const relatedCases = data.slice(0, 2)
 const [workshopVenue, workshopArea] = workshop.location.split(' · ')
 const workshopBenefit = '每 2 周线下面对面交流，收集场景痛点。'
 const partnershipBenefit = '企业认证为合作伙伴将免费诊断 3 次。'
+const guestTeachers = [
+  { name: '王翔旭', image: '/article-assets/service/guest-wang-xiangxu.png' },
+  { name: '黄学铃', image: '/article-assets/service/guest-huang-xueling.png' },
+  { name: '丁怡豪', image: '/article-assets/service/guest-ding-yihao.png' },
+  { name: '刘鹏振', image: '/article-assets/service/guest-liu-pengzhen.png' },
+  { name: '李泽慧', image: '/article-assets/service/guest-li-zehui.png' },
+  { name: '王劲松', image: '/article-assets/service/guest-wang-jinsong.png' },
+] as const
 
 const workshopEditions = [
   { id: '815', name: '第一期', date: '08.15', coverPath: '/article-assets/service/workshop-815.png', activityDetailUrl: 'https://mp.weixin.qq.com/s/q7Bq2kEmsYlgI4pTZ59srw' },
@@ -110,22 +118,16 @@ const problems = [
         </figure>
       </section>
 
-      <section id="workshop-registration" class="wbx-service-section wbx-service-registration" aria-labelledby="registration-title">
-        <div class="wbx-service-registration__copy">
-          <p class="wbx-service-eyebrow">NEXT WORKSHOP</p>
-          <h2 id="registration-title">微信扫码报名并支付</h2>
-          <p>小程序将显示本期报名信息与 ¥{{ workshop.price }} 支付入口。席位有限，满员后进入下一期通知。</p>
-          <dl>
-            <div><dt>日期</dt><dd>{{ workshop.date }}</dd></div>
-            <div><dt>时间</dt><dd>{{ workshop.time }}</dd></div>
-            <div><dt>人数</dt><dd>{{ workshop.capacity }}</dd></div>
-            <div><dt>地点</dt><dd>{{ workshop.location }}</dd></div>
-          </dl>
+      <section id="workshop-registration" class="wbx-service-section wbx-service-guests" aria-labelledby="guests-title">
+        <div class="wbx-service-section__heading">
+          <p class="wbx-service-eyebrow">GUEST TEACHERS</p>
+          <h2 id="guests-title">嘉宾老师</h2>
         </div>
-        <figure class="wbx-service-registration__poster">
-          <img :src="withBase(workshop.registrationPosterPath)" alt="WorkBuddy 工作坊报名海报，含微信小程序二维码" width="1800" height="2400">
-          <figcaption>请使用微信扫码，完成报名与支付</figcaption>
-        </figure>
+        <div class="wbx-service-guests__grid">
+          <figure v-for="guest in guestTeachers" :key="guest.name" class="wbx-service-guest" tabindex="0">
+            <img :src="withBase(guest.image)" :alt="`嘉宾老师${guest.name}`" loading="lazy">
+          </figure>
+        </div>
       </section>
 
       <section class="wbx-service-section wbx-service-problems" aria-labelledby="problems-title">

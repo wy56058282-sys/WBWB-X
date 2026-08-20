@@ -77,16 +77,12 @@
 .wbx-service-path__item p { margin-bottom: 0; color: var(--wbx-muted); font-size: 14px; line-height: 1.7; }
 .wbx-service-path__item .wbx-service-path__benefit { margin-top: 12px; color: var(--vp-c-brand-1); font-weight: 800; }
 
-.wbx-service-registration { grid-template-columns: minmax(0, .78fr) minmax(360px, 1.22fr); align-items: start; background: var(--wbx-hover-surface); box-shadow: 48px 0 0 var(--wbx-hover-surface), -48px 0 0 var(--wbx-hover-surface); }
-.wbx-service-registration__copy { position: sticky; top: 92px; }
-.wbx-service-registration__copy > p:not(.wbx-service-eyebrow) { color: var(--wbx-muted); font-size: 16px; line-height: 1.75; }
-.wbx-service-registration__copy dl { margin-bottom: 0; border-top: 2px solid var(--wbx-ink); }
-.wbx-service-registration__copy dl > div { display: grid; grid-template-columns: 72px 1fr; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--wbx-line); }
-.wbx-service-registration__copy dt { color: var(--wbx-muted); font-size: 13px; font-weight: 700; }
-.wbx-service-registration__copy dd { margin: 0; font-size: 14px; font-weight: 750; }
-.wbx-service-registration__poster { margin: 0; overflow: hidden; border: 3px solid var(--wbx-ink); background: #fff; }
-.wbx-service-registration__poster img { display: block; width: 100%; height: auto; }
-.wbx-service-registration__poster figcaption { padding: 12px 16px; color: #fff; background: #0d100d; font-size: 13px; font-weight: 700; text-align: center; }
+.wbx-service-guests { grid-template-columns: 1fr; gap: 30px; background: var(--wbx-hover-surface); box-shadow: 48px 0 0 var(--wbx-hover-surface), -48px 0 0 var(--wbx-hover-surface); }
+.wbx-service-guests__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.wbx-service-guest { min-width: 0; margin: 0; overflow: hidden; border: 2px solid var(--wbx-ink); background: #fff; transition: box-shadow 160ms ease, transform 160ms ease; }
+.wbx-service-guest:hover,
+.wbx-service-guest:focus-visible { z-index: 1; outline: 2px solid var(--wbx-accent); outline-offset: 3px; transform: scale(1.03); box-shadow: 8px 8px 0 var(--wbx-accent); }
+.wbx-service-guest img { display: block; width: 100%; height: auto; object-fit: contain; }
 
 .wbx-service-problem { display: grid; margin: 0; padding: 0; list-style: none; }
 .wbx-service-problem__item { display: grid; grid-template-columns: 48px minmax(180px, .6fr) minmax(0, 1fr); gap: 20px; align-items: baseline; padding: 22px 0; border-top: 1px solid var(--wbx-line); }
@@ -118,8 +114,6 @@
   .wbx-service-hero { grid-template-columns: 1fr; }
   .wbx-service-hero__media { max-width: 620px; }
   .wbx-service-section { grid-template-columns: 1fr; gap: 30px; }
-  .wbx-service-registration { grid-template-columns: 1fr; }
-  .wbx-service-registration__copy { position: static; }
   .wbx-service .wbx-service-path { grid-template-columns: 1fr; padding-bottom: 0; }
   .wbx-service .wbx-service-path__item,
   .wbx-service .wbx-service-path__item:hover,
@@ -146,9 +140,10 @@
   .wbx-service-editions { gap: 8px; }
   .wbx-service-edition { grid-template-columns: 1fr; gap: 6px; padding: 5px; text-align: center; }
   .wbx-service-section { padding: 46px 0; }
-  .wbx-service-registration,
+  .wbx-service-guests,
   .wbx-service-enterprise { box-shadow: 24px 0 0 currentColor, -24px 0 0 currentColor; }
-  .wbx-service-registration { box-shadow: 24px 0 0 var(--wbx-hover-surface), -24px 0 0 var(--wbx-hover-surface); }
+  .wbx-service-guests { box-shadow: 24px 0 0 var(--wbx-hover-surface), -24px 0 0 var(--wbx-hover-surface); }
+  .wbx-service-guests__grid { grid-template-columns: 1fr; }
   .wbx-service-enterprise { box-shadow: 24px 0 0 #0d100d, -24px 0 0 #0d100d; }
   .wbx-service-problem__item { grid-template-columns: 36px minmax(0, 1fr); }
   .wbx-service-problem__item p { grid-column: 2; }
@@ -165,5 +160,6 @@
 @media (prefers-reduced-motion: reduce) {
   .wbx-service .wbx-service-action,
   .wbx-service-case,
-  .wbx-service-hero__poster-link { transition: none; }
+  .wbx-service-hero__poster-link,
+  .wbx-service-guest { transition: none; }
 }

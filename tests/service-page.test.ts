@@ -98,7 +98,7 @@ describe('custom service conversion page', () => {
     expect(Array.from(main?.children ?? []).slice(0, 3).map((item) => item.className)).toEqual([
       'wbx-service-section wbx-service-journey',
       'wbx-service-hero',
-      'wbx-service-section wbx-service-registration',
+      'wbx-service-section wbx-service-guests',
     ])
   })
 
@@ -133,19 +133,24 @@ describe('custom service conversion page', () => {
     expect(values[2].textContent).not.toContain('·')
   })
 
-  it('uses the supplied registration poster as the live WeChat mini-program payment entry', () => {
+  it('replaces the repeated registration panel with all six supplied guest teachers', () => {
     mountServicePage()
-    const registration = document.querySelector('#workshop-registration')
-    const poster = registration?.querySelector<HTMLImageElement>('img')
-    expect(registration?.textContent).toContain('微信扫码报名并支付')
-    expect(registration?.textContent).toContain('2026 年 8 月 29 日')
-    expect(registration?.textContent).toContain('14:00–18:00')
-    expect(registration?.textContent).toContain('15–25 人')
-    expect(registration?.textContent).toContain('星辉 OPC · 人工智能产业园')
-    expect(poster?.getAttribute('src')).toBe('/WBWB-X/article-assets/service/workshop-registration.png')
-    expect(poster?.getAttribute('alt')).toContain('小程序二维码')
-    expect(poster?.getAttribute('width')).toBe('1800')
-    expect(poster?.getAttribute('height')).toBe('2400')
+    const guests = document.querySelector('#workshop-registration')
+    const images = Array.from(guests?.querySelectorAll<HTMLImageElement>('.wbx-service-guest img') ?? [])
+    expect(guests?.querySelector('h2')?.textContent).toBe('嘉宾老师')
+    expect(guests?.textContent).not.toContain('微信扫码报名并支付')
+    expect(images.map((image) => image.getAttribute('src'))).toEqual([
+      '/WBWB-X/article-assets/service/guest-wang-xiangxu.png',
+      '/WBWB-X/article-assets/service/guest-huang-xueling.png',
+      '/WBWB-X/article-assets/service/guest-ding-yihao.png',
+      '/WBWB-X/article-assets/service/guest-liu-pengzhen.png',
+      '/WBWB-X/article-assets/service/guest-li-zehui.png',
+      '/WBWB-X/article-assets/service/guest-wang-jinsong.png',
+    ])
+    expect(images.map((image) => image.getAttribute('alt'))).toEqual([
+      '嘉宾老师王翔旭', '嘉宾老师黄学铃', '嘉宾老师丁怡豪', '嘉宾老师刘鹏振', '嘉宾老师李泽慧', '嘉宾老师王劲松',
+    ])
+    expect(images.every((image) => image.getAttribute('loading') === 'lazy')).toBe(true)
   })
 
   it('keeps business logic concise and repeats meaningful conversion actions', () => {
