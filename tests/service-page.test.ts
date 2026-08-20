@@ -27,10 +27,12 @@ describe('custom service conversion page', () => {
   it('leads with the paid biweekly workshop and a working registration jump', () => {
     mountServicePage()
     const hero = document.querySelector('.wbx-service-hero')
+    const eyebrow = hero?.querySelector('.wbx-service-eyebrow')
     const primary = hero?.querySelector<HTMLAnchorElement>('.wbx-service-action--primary')
     const poster = hero?.querySelector<HTMLImageElement>('.wbx-service-hero__poster')
     const posterLink = hero?.querySelector<HTMLAnchorElement>('.wbx-service-hero__poster-link')
     expect(hero?.querySelector('h1')?.textContent).toContain('先用一场工作坊')
+    expect(eyebrow?.textContent?.trim()).toBe('WORKBUDDY CUSTOM SERVICE · WorkBuddy X 计划')
     expect(hero?.textContent).toContain('每 2 周一期')
     expect(hero?.textContent).toContain('¥39')
     expect(primary?.getAttribute('href')).toBe('#workshop-registration')

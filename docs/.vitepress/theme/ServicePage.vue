@@ -24,7 +24,7 @@ const problems = [
   <div class="wbx-service">
     <header class="wbx-service-hero">
       <div class="wbx-service-hero__copy">
-        <p class="wbx-service-eyebrow">WORKBUDDY CUSTOM SERVICE</p>
+        <p class="wbx-service-eyebrow">WORKBUDDY CUSTOM SERVICE · WorkBuddy X 计划</p>
         <h1>先用一场工作坊，找到值得定制的真问题</h1>
         <p class="wbx-service-hero__lead">每 2 周一期，从 ¥{{ workshop.price }} 的场景实战开始。验证方向后，再进入 ¥{{ diagnosis.price }} 需求诊断与企业定制项目。</p>
         <dl class="wbx-service-hero__facts" aria-label="最近一期工作坊信息">
