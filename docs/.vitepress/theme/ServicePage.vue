@@ -28,8 +28,8 @@ const problems = [
       <div class="wbx-service-header__title">
         <p class="wbx-service-header__eyebrow">WORKBUDDY CUSTOM SERVICE</p>
         <h1 class="wbx-service-brand-title"><span>WorkBuddy-X</span><span>定制服务</span></h1>
+        <p class="wbx-service-header__summary">从一场工作坊验证真实问题，再进入需求诊断与企业定制落地。</p>
       </div>
-      <p class="wbx-service-header__summary">从一场工作坊验证真实问题，再进入需求诊断与企业定制落地。</p>
     </header>
 
     <main class="wbx-service-main">
