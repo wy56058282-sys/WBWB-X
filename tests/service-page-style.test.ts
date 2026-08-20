@@ -11,7 +11,8 @@ describe('custom service conversion styles', () => {
 
   it('uses a three-column funnel and removes horizontal overflow at mobile width', () => {
     const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
-    expect(styles).toMatch(/\.wbx-service-journey\s*\{[^}]*grid-template-columns:\s*1fr[^}]*gap:\s*30px[^}]*border-block:/s)
+    expect(styles).toMatch(/\.wbx-service-journey\s*\{[^}]*grid-template-columns:\s*1fr[^}]*gap:\s*30px[^}]*border-top:\s*2px solid var\(--wbx-ink\)/s)
+    expect(styles).not.toMatch(/\.wbx-service-journey\s*\{[^}]*border-(?:block|bottom):/s)
     expect(styles).toMatch(/\.wbx-service-journey \.wbx-service-section__heading\s*\{[^}]*display:\s*flex[^}]*align-items:\s*end[^}]*justify-content:\s*space-between[^}]*gap:\s*40px/s)
     expect(styles).toMatch(/\.wbx-service-journey \.wbx-service-section__heading h2\s*\{[^}]*margin:\s*0[^}]*border:\s*0[^}]*padding:\s*0/s)
     expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service-journey \.wbx-service-section__heading\s*\{[^}]*align-items:\s*start[^}]*flex-direction:\s*column/s)

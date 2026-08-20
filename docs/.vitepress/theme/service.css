@@ -50,7 +50,7 @@
 
 .wbx-service-section { display: grid; grid-template-columns: minmax(220px, .38fr) minmax(0, 1fr); gap: 48px; min-width: 0; padding: 64px 0; }
 .wbx-service-section__heading { min-width: 0; }
-.wbx-service-journey { grid-template-columns: 1fr; gap: 30px; border-block: 2px solid var(--wbx-ink); }
+.wbx-service-journey { grid-template-columns: 1fr; gap: 30px; border-top: 2px solid var(--wbx-ink); }
 .wbx-service-journey .wbx-service-section__heading { display: flex; align-items: end; justify-content: space-between; gap: 40px; }
 .wbx-service-journey .wbx-service-section__title-group { min-width: 0; }
 .wbx-service-journey .wbx-service-section__heading h2 { margin: 0; border: 0; padding: 0; }
