@@ -28,7 +28,7 @@ describe('custom service conversion styles', () => {
     expect(styles).toMatch(/\.wbx-service-header\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:[^}]*min-height:\s*220px[^}]*padding:\s*26px 0 36px/s)
     expect(styles).toMatch(/\.wbx-service-brand-title\s*\{[^}]*font-size:\s*51\.2px[^}]*line-height:\s*58\.88px/s)
     expect(styles).toMatch(/\.wbx-service-brand-title > span\s*\{[^}]*display:\s*block/s)
-    expect(styles).toMatch(/\.wbx-service-header__summary\s*\{[^}]*max-width:\s*540px[^}]*font-size:\s*15px[^}]*line-height:\s*1\.7/s)
+    expect(styles).toMatch(/\.wbx-service \.wbx-service-header__summary\s*\{[^}]*max-width:\s*540px[^}]*margin:\s*0 0 4px[^}]*font-size:\s*15px[^}]*line-height:\s*1\.7/s)
     expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service-header\s*\{[^}]*grid-template-columns:\s*1fr/s)
     expect(styles).toMatch(/\.wbx-service-registration-trigger:hover[\s\S]*?\.wbx-service-registration-popover,[\s\S]*?\.wbx-service-registration-trigger:focus-within[\s\S]*?\.wbx-service-registration-popover\s*\{[^}]*opacity:\s*1[^}]*visibility:\s*visible/s)
     expect(styles).toMatch(/@media \(hover:\s*none\)[\s\S]*?\.wbx-service-registration-popover\s*\{[^}]*display:\s*none/s)

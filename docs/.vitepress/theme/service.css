@@ -12,8 +12,8 @@
 
 .wbx-service-header { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, .72fr); gap: 48px; align-items: end; min-height: 220px; padding: 26px 0 36px; }
 .wbx-service-header__title { min-width: 0; }
-.wbx-service-header__eyebrow { margin-bottom: 9px; color: color-mix(in srgb, var(--wbx-accent) 50%, var(--wbx-ink)); font-family: var(--wbx-pixel); font-size: 12px; font-weight: 700; letter-spacing: .09em; }
-.wbx-service-header__summary { max-width: 540px; margin: 0 0 4px; color: var(--wbx-muted); font-size: 15px; line-height: 1.7; }
+.wbx-service .wbx-service-header__eyebrow { margin: 0 0 9px; color: color-mix(in srgb, var(--wbx-accent) 50%, var(--wbx-ink)); font-family: var(--wbx-pixel); font-size: 12px; font-weight: 700; letter-spacing: .09em; }
+.wbx-service .wbx-service-header__summary { max-width: 540px; margin: 0 0 4px; color: var(--wbx-muted); font-size: 15px; line-height: 1.7; }
 .wbx-service-header .wbx-service-brand-title { margin-bottom: 0; }
 .wbx-service-hero { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr); gap: 48px; align-items: center; padding: 36px 0 64px; }
 .wbx-service-hero__copy { min-width: 0; }
