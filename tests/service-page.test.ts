@@ -26,7 +26,8 @@ function mountServicePage() {
 describe('custom service conversion page', () => {
   it('leads with the paid biweekly workshop and a working registration jump', () => {
     mountServicePage()
-    const brandTitle = document.querySelector('.wbx-service > .wbx-service-header > .wbx-service-brand-title')
+    const brandTitle = document.querySelector('.wbx-service > .wbx-service-header .wbx-service-brand-title')
+    const header = document.querySelector('.wbx-service > .wbx-service-header')
     const hero = document.querySelector('.wbx-service-hero')
     const promise = hero?.querySelector('.wbx-service-hero__promise')
     const primary = hero?.querySelector<HTMLAnchorElement>('.wbx-service-action--primary')
@@ -35,6 +36,8 @@ describe('custom service conversion page', () => {
     const poster = hero?.querySelector<HTMLImageElement>('.wbx-service-hero__poster')
     const posterLink = hero?.querySelector<HTMLAnchorElement>('.wbx-service-hero__poster-link')
     expect(Array.from(brandTitle?.querySelectorAll('span') ?? []).map((item) => item.textContent?.trim())).toEqual(['WorkBuddy-X', '定制服务'])
+    expect(header?.querySelector('.wbx-service-header__eyebrow')?.textContent).toBe('WORKBUDDY CUSTOM SERVICE')
+    expect(header?.querySelector('.wbx-service-header__summary')?.textContent).toBe('从一场工作坊验证真实问题，再进入需求诊断与企业定制落地。')
     expect(hero?.querySelector('.wbx-service-brand-title')).toBeNull()
     expect(promise?.textContent).toContain('先用一场工作坊')
     expect(hero?.querySelector('.wbx-service-eyebrow')).toBeNull()
