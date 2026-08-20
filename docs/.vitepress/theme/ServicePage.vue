@@ -6,11 +6,13 @@ import { serviceCatalog, serviceConfig } from '../service-config'
 const workshop = serviceConfig.workshop
 const diagnosis = serviceCatalog.diagnosis
 const relatedCases = data.slice(0, 2)
+const [workshopVenue, workshopArea] = workshop.location.split(' · ')
+const partnershipBenefit = '企业认证为合作伙伴将免费诊断 3 次。'
 
 const path = [
-  ['01', '参加实战工作坊', `¥${workshop.price} / 人`, '带着真实办公场景来，在半天内完成一次 AI 智能体实战，先判断方法是否适合你。'],
-  ['02', '完成需求诊断', `¥${diagnosis.price} / 次`, `把目标、边界、交付物和风险说清楚。采购 WorkBuddy ${diagnosis.waivedWithSeatCount} 个席位，诊断免费。`],
-  ['03', '进入企业定制项目', '按项目评估', '针对已确认的业务场景，提供培训、陪跑、实施与持续支持。'],
+  { index: '01', title: '参加实战工作坊', price: `¥${workshop.price} / 人`, description: '带着真实办公场景来，在半天内完成一次 AI 智能体实战，先判断方法是否适合你。' },
+  { index: '02', title: '完成需求诊断', price: `¥${diagnosis.price} / 次`, description: '把目标、边界、交付物和风险说清楚。', benefit: partnershipBenefit },
+  { index: '03', title: '进入企业定制项目', price: '按项目评估', description: '针对已确认的业务场景，提供培训、陪跑、实施与持续支持。' },
 ] as const
 
 const problems = [
@@ -24,16 +26,22 @@ const problems = [
   <div class="wbx-service">
     <header class="wbx-service-hero">
       <div class="wbx-service-hero__copy">
-        <p class="wbx-service-eyebrow">WORKBUDDY CUSTOM SERVICE · WorkBuddy X 计划</p>
-        <h1>先用一场工作坊，找到值得定制的真问题</h1>
+        <h1 class="wbx-service-brand-title"><span>WorkBuddy-X</span><span>定制服务</span></h1>
+        <h2 class="wbx-service-hero__promise">先用一场工作坊，找到值得定制的真问题</h2>
         <p class="wbx-service-hero__lead">每 2 周一期，从 ¥{{ workshop.price }} 的场景实战开始。验证方向后，再进入 ¥{{ diagnosis.price }} 需求诊断与企业定制项目。</p>
         <dl class="wbx-service-hero__facts" aria-label="最近一期工作坊信息">
-          <div><dt>时间</dt><dd>{{ workshop.date }} · {{ workshop.time }}</dd></div>
+          <div><dt>时间</dt><dd><span>{{ workshop.date }}</span><span>{{ workshop.time }}</span></dd></div>
           <div><dt>规模</dt><dd>{{ workshop.capacity }}</dd></div>
-          <div><dt>地点</dt><dd>{{ workshop.location }}</dd></div>
+          <div><dt>地点</dt><dd><span>{{ workshopVenue }}</span><span>{{ workshopArea }}</span></dd></div>
         </dl>
         <div class="wbx-service-actions">
-          <a class="wbx-service-action wbx-service-action--primary" href="#workshop-registration">报名最近一期</a>
+          <div class="wbx-service-registration-trigger">
+            <a class="wbx-service-action wbx-service-action--primary" href="#workshop-registration" aria-describedby="workshop-registration-popover">报名最近一期</a>
+            <span id="workshop-registration-popover" class="wbx-service-registration-popover" role="tooltip">
+              <img :src="withBase(workshop.registrationPosterPath)" alt="粗门报名二维码" width="1800" height="2400">
+              <strong>微信扫码报名</strong>
+            </span>
+          </div>
           <a class="wbx-service-action" href="#enterprise-custom">了解企业服务</a>
         </div>
       </div>
@@ -57,8 +65,9 @@ const problems = [
           <h2 id="service-path-title">从一次体验，到一个可落地项目</h2>
         </div>
         <ol class="wbx-service-path">
-          <li v-for="([index, title, price, description]) in path" :key="title" class="wbx-service-path__item">
-            <span>{{ index }}</span><h3>{{ title }}</h3><strong>{{ price }}</strong><p>{{ description }}</p>
+          <li v-for="item in path" :key="item.title" class="wbx-service-path__item">
+            <span>{{ item.index }}</span><h3>{{ item.title }}</h3><strong>{{ item.price }}</strong><p>{{ item.description }}</p>
+            <p v-if="'benefit' in item" class="wbx-service-path__benefit">{{ item.benefit }}</p>
           </li>
         </ol>
       </section>
@@ -100,7 +109,7 @@ const problems = [
         </div>
         <div class="wbx-service-enterprise__body">
           <p>适合已有明确负责人、真实业务场景和实施意愿的团队。我们先完成 45 分钟需求诊断，再根据范围给出项目建议。</p>
-          <p class="wbx-service-enterprise__benefit">采购 WorkBuddy {{ diagnosis.waivedWithSeatCount }} 个席位，¥{{ diagnosis.price }} 需求诊断免费。</p>
+          <p class="wbx-service-enterprise__benefit">{{ partnershipBenefit }}</p>
           <ul><li>团队培训与场景共创</li><li>业务流程陪跑与验证</li><li>工作流、资料与系统实施</li><li>上线后的持续优化支持</li></ul>
           <a class="wbx-service-action wbx-service-action--primary" href="#workshop-registration">先参加工作坊</a>
         </div>

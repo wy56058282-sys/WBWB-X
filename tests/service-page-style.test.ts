@@ -12,8 +12,20 @@ describe('custom service conversion styles', () => {
   it('uses a three-column funnel and removes horizontal overflow at mobile width', () => {
     const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
     expect(styles).toMatch(/\.wbx-service-path\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/s)
-    expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-path\s*\{[^}]*grid-template-columns:\s*1fr/s)
+    expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service \.wbx-service-path\s*\{[^}]*grid-template-columns:\s*1fr[^}]*padding-bottom:\s*0/s)
     expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-hero,[\s\S]*?\.wbx-service-section\s*\{[^}]*min-width:\s*0/s)
+    expect(styles).toMatch(/\.wbx-service-path__item:nth-child\(1\)\s*\{[^}]*transform:\s*translateY\(28px\)/s)
+    expect(styles).toMatch(/\.wbx-service-path__item:nth-child\(2\)\s*\{[^}]*transform:\s*translateY\(14px\)/s)
+    expect(styles).toMatch(/\.wbx-service-path__item > span\s*\{[^}]*font-size:\s*calc\(12px \+ 4pt\)/s)
+    expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service-path__item:nth-child\(1\),[\s\S]*?\.wbx-service-path__item:nth-child\(2\)\s*\{[^}]*transform:\s*none/s)
+  })
+
+  it('matches the case-gallery title hierarchy and exposes the registration QR on hover or focus', () => {
+    const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
+    expect(styles).toMatch(/\.wbx-service-brand-title\s*\{[^}]*font-size:\s*51\.2px[^}]*line-height:\s*58\.88px/s)
+    expect(styles).toMatch(/\.wbx-service-brand-title > span\s*\{[^}]*display:\s*block/s)
+    expect(styles).toMatch(/\.wbx-service-registration-trigger:hover[\s\S]*?\.wbx-service-registration-popover,[\s\S]*?\.wbx-service-registration-trigger:focus-within[\s\S]*?\.wbx-service-registration-popover\s*\{[^}]*opacity:\s*1[^}]*visibility:\s*visible/s)
+    expect(styles).toMatch(/@media \(hover:\s*none\)[\s\S]*?\.wbx-service-registration-popover\s*\{[^}]*display:\s*none/s)
   })
 
   it('keeps the supplied registration poster readable and the primary action touch-sized', () => {
