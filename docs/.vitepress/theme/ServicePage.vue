@@ -24,38 +24,8 @@ const problems = [
 
 <template>
   <div class="wbx-service">
-    <header class="wbx-service-hero">
-      <div class="wbx-service-hero__copy">
-        <h1 class="wbx-service-brand-title"><span>WorkBuddy-X</span><span>定制服务</span></h1>
-        <h2 class="wbx-service-hero__promise">先用一场工作坊，找到值得定制的真问题</h2>
-        <p class="wbx-service-hero__lead">每 2 周一期，从 ¥{{ workshop.price }} 的场景实战开始。验证方向后，再进入 ¥{{ diagnosis.price }} 需求诊断与企业定制项目。</p>
-        <dl class="wbx-service-hero__facts" aria-label="最近一期工作坊信息">
-          <div><dt>时间</dt><dd><span>{{ workshop.date }}</span><span>{{ workshop.time }}</span></dd></div>
-          <div><dt>规模</dt><dd>{{ workshop.capacity }}</dd></div>
-          <div><dt>地点</dt><dd><span>{{ workshopVenue }}</span><span>{{ workshopArea }}</span></dd></div>
-        </dl>
-        <div class="wbx-service-actions">
-          <div class="wbx-service-registration-trigger">
-            <a class="wbx-service-action wbx-service-action--primary" href="#workshop-registration" aria-describedby="workshop-registration-popover">报名最近一期</a>
-            <span id="workshop-registration-popover" class="wbx-service-registration-popover" role="tooltip">
-              <img :src="withBase(workshop.registrationQrPath)" alt="粗门报名二维码" width="466" height="466">
-              <strong>微信扫码报名</strong>
-            </span>
-          </div>
-          <a class="wbx-service-action" href="#enterprise-custom">了解企业服务</a>
-        </div>
-      </div>
-      <figure class="wbx-service-hero__media">
-        <a
-          class="wbx-service-hero__poster-link"
-          :href="workshop.activityDetailUrl"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="查看工作坊活动详情（在新页面打开）"
-        >
-          <img class="wbx-service-hero__poster" :src="withBase(workshop.coverPath)" alt="WorkBuddy 场景实战工作坊海报" width="1800" height="2400">
-        </a>
-      </figure>
+    <header class="wbx-service-header">
+      <h1 class="wbx-service-brand-title"><span>WorkBuddy-X</span><span>定制服务</span></h1>
     </header>
 
     <main class="wbx-service-main">
@@ -70,6 +40,39 @@ const problems = [
             <p v-if="'benefit' in item" class="wbx-service-path__benefit">{{ item.benefit }}</p>
           </li>
         </ol>
+      </section>
+
+      <section class="wbx-service-hero" aria-label="最近一期工作坊">
+        <div class="wbx-service-hero__copy">
+          <h2 class="wbx-service-hero__promise">先用一场工作坊，找到值得定制的真问题</h2>
+          <p class="wbx-service-hero__lead">每 2 周一期，从 ¥{{ workshop.price }} 的场景实战开始。验证方向后，再进入 ¥{{ diagnosis.price }} 需求诊断与企业定制项目。</p>
+          <dl class="wbx-service-hero__facts" aria-label="最近一期工作坊信息">
+            <div><dt>时间</dt><dd><span>{{ workshop.date }}</span><span>{{ workshop.time }}</span></dd></div>
+            <div><dt>规模</dt><dd>{{ workshop.capacity }}</dd></div>
+            <div><dt>地点</dt><dd><span>{{ workshopVenue }}</span><span>{{ workshopArea }}</span></dd></div>
+          </dl>
+          <div class="wbx-service-actions">
+            <div class="wbx-service-registration-trigger">
+              <a class="wbx-service-action wbx-service-action--primary" href="#workshop-registration" aria-describedby="workshop-registration-popover">报名最近一期</a>
+              <span id="workshop-registration-popover" class="wbx-service-registration-popover" role="tooltip">
+                <img :src="withBase(workshop.registrationQrPath)" alt="粗门报名二维码" width="466" height="466">
+                <strong>微信扫码报名</strong>
+              </span>
+            </div>
+            <a class="wbx-service-action" href="#enterprise-custom">了解企业服务</a>
+          </div>
+        </div>
+        <figure class="wbx-service-hero__media">
+          <a
+            class="wbx-service-hero__poster-link"
+            :href="workshop.activityDetailUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="查看工作坊活动详情（在新页面打开）"
+          >
+            <img class="wbx-service-hero__poster" :src="withBase(workshop.coverPath)" alt="WorkBuddy 场景实战工作坊海报" width="1800" height="2400">
+          </a>
+        </figure>
       </section>
 
       <section id="workshop-registration" class="wbx-service-section wbx-service-registration" aria-labelledby="registration-title">

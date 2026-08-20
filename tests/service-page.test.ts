@@ -26,8 +26,8 @@ function mountServicePage() {
 describe('custom service conversion page', () => {
   it('leads with the paid biweekly workshop and a working registration jump', () => {
     mountServicePage()
+    const brandTitle = document.querySelector('.wbx-service > .wbx-service-header > .wbx-service-brand-title')
     const hero = document.querySelector('.wbx-service-hero')
-    const brandTitle = hero?.querySelector('.wbx-service-brand-title')
     const promise = hero?.querySelector('.wbx-service-hero__promise')
     const primary = hero?.querySelector<HTMLAnchorElement>('.wbx-service-action--primary')
     const registrationPopover = hero?.querySelector('.wbx-service-registration-popover')
@@ -35,6 +35,7 @@ describe('custom service conversion page', () => {
     const poster = hero?.querySelector<HTMLImageElement>('.wbx-service-hero__poster')
     const posterLink = hero?.querySelector<HTMLAnchorElement>('.wbx-service-hero__poster-link')
     expect(Array.from(brandTitle?.querySelectorAll('span') ?? []).map((item) => item.textContent?.trim())).toEqual(['WorkBuddy-X', '定制服务'])
+    expect(hero?.querySelector('.wbx-service-brand-title')).toBeNull()
     expect(promise?.textContent).toContain('先用一场工作坊')
     expect(hero?.querySelector('.wbx-service-eyebrow')).toBeNull()
     expect(hero?.textContent).toContain('每 2 周一期')
@@ -53,6 +54,21 @@ describe('custom service conversion page', () => {
     expect(posterLink?.getAttribute('target')).toBe('_blank')
     expect(posterLink?.getAttribute('rel')).toBe('noopener noreferrer')
     expect(posterLink?.getAttribute('aria-label')).toContain('查看工作坊活动详情')
+  })
+
+  it('orders the standalone page title, conversion path, workshop hero, and follow-up sections', () => {
+    mountServicePage()
+    const service = document.querySelector('.wbx-service')
+    const main = service?.querySelector(':scope > .wbx-service-main')
+    expect(Array.from(service?.children ?? []).map((item) => item.className)).toEqual([
+      'wbx-service-header',
+      'wbx-service-main',
+    ])
+    expect(Array.from(main?.children ?? []).slice(0, 3).map((item) => item.className)).toEqual([
+      'wbx-service-section wbx-service-journey',
+      'wbx-service-hero',
+      'wbx-service-section wbx-service-registration',
+    ])
   })
 
   it('presents one three-stage path from workshop to enterprise delivery', () => {
@@ -98,7 +114,7 @@ describe('custom service conversion page', () => {
 
   it('keeps business logic concise and repeats meaningful conversion actions', () => {
     mountServicePage()
-    expect(document.querySelectorAll('.wbx-service > header, .wbx-service-main > section')).toHaveLength(6)
+    expect(document.querySelectorAll('.wbx-service > header, .wbx-service-main > section')).toHaveLength(7)
     expect(document.querySelectorAll('a[href="#workshop-registration"]')).toHaveLength(2)
     expect(document.querySelectorAll('a[href="#enterprise-custom"]')).toHaveLength(1)
     expect(document.querySelectorAll('.wbx-service-problem__item')).toHaveLength(3)

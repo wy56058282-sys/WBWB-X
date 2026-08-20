@@ -10,6 +10,8 @@
 .wbx-service h3 { font-size: 19px; line-height: 1.3; }
 .wbx-service-eyebrow { margin-bottom: 14px; color: var(--vp-c-brand-1); font-family: var(--wbx-pixel); font-size: 12px; font-weight: 700; letter-spacing: .09em; }
 
+.wbx-service-header { padding: 36px 0 12px; }
+.wbx-service-header .wbx-service-brand-title { margin-bottom: 0; }
 .wbx-service-hero { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr); gap: 48px; align-items: center; padding: 36px 0 64px; }
 .wbx-service-hero__copy { min-width: 0; }
 .wbx-service-brand-title { margin-bottom: 16px; font-size: 51.2px; font-weight: 850; line-height: 58.88px; letter-spacing: 0; }
