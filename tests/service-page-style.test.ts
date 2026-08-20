@@ -5,6 +5,7 @@ describe('custom service conversion styles', () => {
   it('uses a two-column poster hero that collapses to one column on narrow screens', () => {
     const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
     expect(styles).toMatch(/\.wbx-service-hero\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*minmax\(0, 1\.08fr\) minmax\(320px, 0\.92fr\)/s)
+    expect(styles).toMatch(/\.wbx-service \.wbx-service-hero__promise\s*\{[^}]*border:\s*0[^}]*padding-top:\s*0/s)
     expect(styles).toMatch(/\.wbx-service-hero__poster\s*\{[^}]*width:\s*100%[^}]*height:\s*auto[^}]*object-fit:\s*cover/s)
     expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service-hero\s*\{[^}]*grid-template-columns:\s*1fr/s)
   })
