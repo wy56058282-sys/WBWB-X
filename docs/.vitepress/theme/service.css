@@ -13,7 +13,11 @@
 .wbx-service-hero { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr); gap: 48px; align-items: center; padding: 36px 0 64px; }
 .wbx-service-hero__copy { min-width: 0; }
 .wbx-service-hero__lead { max-width: 680px; margin-bottom: 24px; color: var(--wbx-muted); font-size: 16px; line-height: 1.75; }
-.wbx-service-hero__media { min-width: 0; margin-bottom: 0; overflow: hidden; border: 3px solid var(--wbx-ink); background: #fff; box-shadow: 10px 10px 0 var(--wbx-accent); }
+.wbx-service-hero__media { min-width: 0; margin-bottom: 0; }
+.wbx-service .wbx-service-hero__poster-link { display: block; overflow: hidden; border: 3px solid var(--wbx-ink); color: inherit; background: #fff; box-shadow: 10px 10px 0 var(--wbx-accent); text-decoration: none; transition: box-shadow 180ms ease, transform 180ms ease; }
+.wbx-service .wbx-service-hero__poster-link:hover,
+.wbx-service .wbx-service-hero__poster-link:focus-visible { color: inherit; box-shadow: 14px 14px 0 var(--wbx-accent); transform: translate(-4px, -4px); }
+.wbx-service .wbx-service-hero__poster-link:focus-visible { outline: 3px solid var(--wbx-accent); outline-offset: 4px; }
 .wbx-service-hero__poster { display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; }
 .wbx-service-hero__facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0 0 28px; border-block: 2px solid var(--wbx-ink); }
 .wbx-service-hero__facts > div { min-width: 0; padding: 14px 16px 14px 0; }
@@ -118,5 +122,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .wbx-service .wbx-service-action,
-  .wbx-service-case { transition: none; }
+  .wbx-service-case,
+  .wbx-service-hero__poster-link { transition: none; }
 }

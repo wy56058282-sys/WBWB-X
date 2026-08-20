@@ -22,4 +22,11 @@ describe('custom service conversion styles', () => {
     expect(styles).toMatch(/\.wbx-service \.wbx-service-action\s*\{[^}]*min-height:\s*48px/s)
     expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-action\s*\{[^}]*width:\s*100%/s)
   })
+
+  it('gives the linked hero poster equivalent hover and keyboard-focus feedback', () => {
+    const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
+    expect(styles).toMatch(/\.wbx-service \.wbx-service-hero__poster-link\s*\{[^}]*display:\s*block[^}]*transition:[^}]*transform/s)
+    expect(styles).toMatch(/\.wbx-service-hero__poster-link:hover,[\s\S]*?\.wbx-service-hero__poster-link:focus-visible\s*\{[^}]*transform:\s*translate\(-4px, -4px\)/s)
+    expect(styles).toMatch(/\.wbx-service-hero__poster-link:focus-visible\s*\{[^}]*outline:\s*3px solid var\(--wbx-accent\)/s)
+  })
 })

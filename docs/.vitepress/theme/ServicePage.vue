@@ -38,7 +38,15 @@ const problems = [
         </div>
       </div>
       <figure class="wbx-service-hero__media">
-        <img class="wbx-service-hero__poster" :src="withBase(workshop.coverPath)" alt="WorkBuddy 场景实战工作坊海报" width="1800" height="2400">
+        <a
+          class="wbx-service-hero__poster-link"
+          :href="workshop.activityDetailUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="查看工作坊活动详情（在新页面打开）"
+        >
+          <img class="wbx-service-hero__poster" :src="withBase(workshop.coverPath)" alt="WorkBuddy 场景实战工作坊海报" width="1800" height="2400">
+        </a>
       </figure>
     </header>
 

@@ -355,7 +355,7 @@ describe('product page computed styles', () => {
         <div class="vp-doc"><section class="wbx-service">
           <header class="wbx-service-hero">
             <div class="wbx-service-hero__copy"><p class="wbx-service-eyebrow">CUSTOM SERVICE</p><h1>先用一场工作坊</h1><a class="wbx-service-action wbx-service-action--primary">报名最近一期</a></div>
-            <figure class="wbx-service-hero__media"><img class="wbx-service-hero__poster"></figure>
+            <figure class="wbx-service-hero__media"><a class="wbx-service-hero__poster-link"><img class="wbx-service-hero__poster"></a></figure>
           </header>
           <section class="wbx-service-section"><ol class="wbx-service-path"><li class="wbx-service-path__item">工作坊</li><li class="wbx-service-path__item">诊断</li><li class="wbx-service-path__item">定制</li></ol></section>
           <section class="wbx-service-section wbx-service-enterprise"><div class="wbx-service-enterprise__body"><p class="wbx-service-enterprise__benefit">10 席位诊断免费</p><a class="wbx-service-action wbx-service-action--primary">先参加工作坊</a></div></section>
@@ -363,12 +363,14 @@ describe('product page computed styles', () => {
       `
 
       const path = getComputedStyle(document.querySelector('.wbx-service-path')!)
+      const posterLink = getComputedStyle(document.querySelector('.wbx-service-hero__poster-link')!)
       const enterprise = getComputedStyle(document.querySelector('.wbx-service-enterprise')!)
       const benefit = getComputedStyle(document.querySelector('.wbx-service-enterprise__benefit')!)
       const action = getComputedStyle(document.querySelector('.wbx-service-enterprise .wbx-service-action')!)
 
       expect(path.gridTemplateColumns).toBe(pathColumns)
       expect(path.listStyleType).toBe('none')
+      expect(posterLink.transition).toContain('transform 180ms ease')
       expect(enterprise.backgroundColor).toBe('rgb(13, 16, 13)')
       expect(benefit.borderLeftWidth).toBe('6px')
       expect(action.minHeight).toBe('48px')

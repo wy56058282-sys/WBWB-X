@@ -29,6 +29,7 @@ describe('custom service conversion page', () => {
     const hero = document.querySelector('.wbx-service-hero')
     const primary = hero?.querySelector<HTMLAnchorElement>('.wbx-service-action--primary')
     const poster = hero?.querySelector<HTMLImageElement>('.wbx-service-hero__poster')
+    const posterLink = hero?.querySelector<HTMLAnchorElement>('.wbx-service-hero__poster-link')
     expect(hero?.querySelector('h1')?.textContent).toContain('先用一场工作坊')
     expect(hero?.textContent).toContain('每 2 周一期')
     expect(hero?.textContent).toContain('¥39')
@@ -38,6 +39,10 @@ describe('custom service conversion page', () => {
     expect(poster?.getAttribute('alt')).toContain('WorkBuddy 场景实战工作坊')
     expect(poster?.getAttribute('width')).toBe('1800')
     expect(poster?.getAttribute('height')).toBe('2400')
+    expect(posterLink?.getAttribute('href')).toBe('https://mp.weixin.qq.com/s/Kn-3p5G1mlxDJ7yC-v-fUw')
+    expect(posterLink?.getAttribute('target')).toBe('_blank')
+    expect(posterLink?.getAttribute('rel')).toBe('noopener noreferrer')
+    expect(posterLink?.getAttribute('aria-label')).toContain('查看工作坊活动详情')
   })
 
   it('presents one three-stage path from workshop to enterprise delivery', () => {
