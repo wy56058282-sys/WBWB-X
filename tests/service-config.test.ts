@@ -12,6 +12,7 @@ describe('service conversion configuration', () => {
       location: '星辉 OPC · 人工智能产业园',
       coverPath: '/article-assets/service/workshop-cover.png',
       registrationPosterPath: '/article-assets/service/workshop-registration.png',
+      registrationQrPath: '/article-assets/service/workshop-registration-qr.png',
       activityDetailUrl: 'https://mp.weixin.qq.com/s/Kn-3p5G1mlxDJ7yC-v-fUw',
     })
   })

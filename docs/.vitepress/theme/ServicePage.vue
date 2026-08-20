@@ -38,7 +38,7 @@ const problems = [
           <div class="wbx-service-registration-trigger">
             <a class="wbx-service-action wbx-service-action--primary" href="#workshop-registration" aria-describedby="workshop-registration-popover">报名最近一期</a>
             <span id="workshop-registration-popover" class="wbx-service-registration-popover" role="tooltip">
-              <img :src="withBase(workshop.registrationPosterPath)" alt="粗门报名二维码" width="1800" height="2400">
+              <img :src="withBase(workshop.registrationQrPath)" alt="粗门报名二维码" width="466" height="466">
               <strong>微信扫码报名</strong>
             </span>
           </div>

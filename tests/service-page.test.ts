@@ -43,7 +43,7 @@ describe('custom service conversion page', () => {
     expect(primary?.textContent).toContain('报名最近一期')
     expect(primary?.getAttribute('aria-describedby')).toBe('workshop-registration-popover')
     expect(registrationPopover?.getAttribute('role')).toBe('tooltip')
-    expect(registrationQr?.getAttribute('src')).toBe('/WBWB-X/article-assets/service/workshop-registration.png')
+    expect(registrationQr?.getAttribute('src')).toBe('/WBWB-X/article-assets/service/workshop-registration-qr.png')
     expect(registrationQr?.getAttribute('alt')).toContain('粗门报名二维码')
     expect(poster?.getAttribute('src')).toBe('/WBWB-X/article-assets/service/workshop-cover.png')
     expect(poster?.getAttribute('alt')).toContain('WorkBuddy 场景实战工作坊')
