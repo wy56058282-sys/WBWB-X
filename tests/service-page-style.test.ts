@@ -6,6 +6,9 @@ describe('custom service conversion styles', () => {
     const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
     expect(styles).toMatch(/\.wbx-service-hero\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*minmax\(0, 1\.08fr\) minmax\(320px, 0\.92fr\)/s)
     expect(styles).toMatch(/\.wbx-service \.wbx-service-hero__promise\s*\{[^}]*border:\s*0[^}]*padding-top:\s*0/s)
+    expect(styles).toMatch(/\.wbx-service-editions\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/s)
+    expect(styles).toMatch(/\.wbx-service-edition\[aria-pressed="true"\]\s*\{[^}]*border-color:\s*var\(--wbx-accent\)[^}]*box-shadow:/s)
+    expect(styles).toMatch(/\.wbx-service-edition img\s*\{[^}]*aspect-ratio:\s*3 \/ 4[^}]*object-fit:\s*cover/s)
     expect(styles).toMatch(/\.wbx-service-hero__poster\s*\{[^}]*width:\s*100%[^}]*height:\s*auto[^}]*object-fit:\s*cover/s)
     expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service-hero\s*\{[^}]*grid-template-columns:\s*1fr/s)
   })
@@ -49,7 +52,7 @@ describe('custom service conversion styles', () => {
 
   it('gives the linked hero poster equivalent hover and keyboard-focus feedback', () => {
     const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
-    expect(styles).toMatch(/\.wbx-service \.wbx-service-hero__poster-link\s*\{[^}]*display:\s*block[^}]*transition:[^}]*transform/s)
+    expect(styles).toMatch(/\.wbx-service \.wbx-service-hero__poster-link,\s*\.wbx-service \.wbx-service-hero__poster-frame\s*\{[^}]*display:\s*block[^}]*transition:[^}]*transform/s)
     expect(styles).toMatch(/\.wbx-service-hero__poster-link:hover,[\s\S]*?\.wbx-service-hero__poster-link:focus-visible\s*\{[^}]*transform:\s*translate\(-4px, -4px\)/s)
     expect(styles).toMatch(/\.wbx-service-hero__poster-link:focus-visible\s*\{[^}]*outline:\s*3px solid var\(--wbx-accent\)/s)
   })

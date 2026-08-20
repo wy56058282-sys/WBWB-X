@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { createApp, type App } from 'vue'
+import { createApp, nextTick, type App } from 'vue'
 import type { CaseCatalogItem } from '../docs/.vitepress/case-catalog'
 
 const fixtureCatalog = vi.hoisted((): readonly CaseCatalogItem[] => [
@@ -58,6 +58,33 @@ describe('custom service conversion page', () => {
     expect(posterLink?.getAttribute('target')).toBe('_blank')
     expect(posterLink?.getAttribute('rel')).toBe('noopener noreferrer')
     expect(posterLink?.getAttribute('aria-label')).toContain('查看工作坊活动详情')
+  })
+
+  it('switches among three workshop posters while keeping the second edition selected by default', async () => {
+    mountServicePage()
+    const hero = document.querySelector('.wbx-service-hero')
+    const editions = Array.from(hero?.querySelectorAll<HTMLButtonElement>('.wbx-service-edition') ?? [])
+    expect(editions.map((edition) => edition.getAttribute('aria-label'))).toEqual([
+      '查看第一期 08.15 海报',
+      '查看第二期 08.29 海报',
+      '查看第三期 09.12 海报',
+    ])
+    expect(editions[1].querySelector('small')?.textContent).toBe('当前')
+    expect(editions.map((edition) => edition.getAttribute('aria-pressed'))).toEqual(['false', 'true', 'false'])
+    expect(hero?.querySelector<HTMLImageElement>('.wbx-service-hero__poster')?.getAttribute('src')).toBe('/WBWB-X/article-assets/service/workshop-cover.png')
+
+    editions[0].click()
+    await nextTick()
+    expect(editions.map((edition) => edition.getAttribute('aria-pressed'))).toEqual(['true', 'false', 'false'])
+    expect(hero?.querySelector<HTMLImageElement>('.wbx-service-hero__poster')?.getAttribute('src')).toBe('/WBWB-X/article-assets/service/workshop-815.png')
+    expect(hero?.querySelector<HTMLAnchorElement>('.wbx-service-hero__poster-link')?.getAttribute('href')).toBe('https://mp.weixin.qq.com/s/q7Bq2kEmsYlgI4pTZ59srw')
+
+    editions[2].click()
+    await nextTick()
+    expect(editions.map((edition) => edition.getAttribute('aria-pressed'))).toEqual(['false', 'false', 'true'])
+    expect(hero?.querySelector<HTMLImageElement>('.wbx-service-hero__poster')?.getAttribute('src')).toBe('/WBWB-X/article-assets/service/workshop-912.png')
+    expect(hero?.querySelector('.wbx-service-hero__poster-link')).toBeNull()
+    expect(hero?.querySelector('.wbx-service-hero__poster-frame')).not.toBeNull()
   })
 
   it('orders the standalone page title, conversion path, workshop hero, and follow-up sections', () => {

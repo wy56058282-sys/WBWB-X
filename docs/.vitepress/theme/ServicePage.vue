@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
+import { computed, ref } from 'vue'
 import { data } from '../case-catalog.data'
 import { serviceCatalog, serviceConfig } from '../service-config'
 
@@ -9,6 +10,14 @@ const relatedCases = data.slice(0, 2)
 const [workshopVenue, workshopArea] = workshop.location.split(' · ')
 const workshopBenefit = '每 2 周线下面对面交流，收集场景痛点。'
 const partnershipBenefit = '企业认证为合作伙伴将免费诊断 3 次。'
+
+const workshopEditions = [
+  { id: '815', name: '第一期', date: '08.15', coverPath: '/article-assets/service/workshop-815.png', activityDetailUrl: 'https://mp.weixin.qq.com/s/q7Bq2kEmsYlgI4pTZ59srw' },
+  { id: '829', name: '第二期', date: '08.29', coverPath: workshop.coverPath, activityDetailUrl: workshop.activityDetailUrl },
+  { id: '912', name: '第三期', date: '09.12', coverPath: '/article-assets/service/workshop-912.png', activityDetailUrl: '' },
+] as const
+const selectedWorkshopIndex = ref(1)
+const selectedWorkshop = computed(() => workshopEditions[selectedWorkshopIndex.value])
 
 const path = [
   { index: '01', title: '参加实战工作坊', price: `¥${workshop.price} / 人`, description: '带着真实办公场景来，在半天内完成一次 AI 智能体实战，先判断方法是否适合你。', benefit: workshopBenefit },
@@ -69,17 +78,35 @@ const problems = [
             </div>
             <a class="wbx-service-action" href="#enterprise-custom">了解企业服务</a>
           </div>
+          <div class="wbx-service-editions" aria-label="选择工作坊期次">
+            <button
+              v-for="(edition, index) in workshopEditions"
+              :key="edition.id"
+              class="wbx-service-edition"
+              type="button"
+              :aria-pressed="selectedWorkshopIndex === index"
+              :aria-label="`查看${edition.name} ${edition.date} 海报`"
+              @click="selectedWorkshopIndex = index"
+            >
+              <img :src="withBase(edition.coverPath)" alt="" width="1800" height="2400">
+              <span><strong>{{ edition.name }}</strong><span>{{ edition.date }}</span><small v-if="selectedWorkshopIndex === index">当前</small></span>
+            </button>
+          </div>
         </div>
         <figure class="wbx-service-hero__media">
           <a
+            v-if="selectedWorkshop.activityDetailUrl"
             class="wbx-service-hero__poster-link"
-            :href="workshop.activityDetailUrl"
+            :href="selectedWorkshop.activityDetailUrl"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="查看工作坊活动详情（在新页面打开）"
+            :aria-label="`查看工作坊活动详情（${selectedWorkshop.name}，在新页面打开）`"
           >
-            <img class="wbx-service-hero__poster" :src="withBase(workshop.coverPath)" alt="WorkBuddy 场景实战工作坊海报" width="1800" height="2400">
+            <img class="wbx-service-hero__poster" :src="withBase(selectedWorkshop.coverPath)" :alt="`WorkBuddy 场景实战工作坊海报（${selectedWorkshop.name}）`" width="1800" height="2400">
           </a>
+          <div v-else class="wbx-service-hero__poster-frame">
+            <img class="wbx-service-hero__poster" :src="withBase(selectedWorkshop.coverPath)" :alt="`WorkBuddy 场景实战工作坊海报（${selectedWorkshop.name}）`" width="1800" height="2400">
+          </div>
         </figure>
       </section>
 
