@@ -35,8 +35,11 @@ const problems = [
     <main class="wbx-service-main">
       <section class="wbx-service-section wbx-service-journey" aria-labelledby="service-path-title">
         <div class="wbx-service-section__heading">
-          <p class="wbx-service-eyebrow">ONE CLEAR PATH</p>
-          <h2 id="service-path-title">从一次体验，到一个可落地项目</h2>
+          <div class="wbx-service-section__title-group">
+            <p class="wbx-service-eyebrow">ONE CLEAR PATH</p>
+            <h2 id="service-path-title">从一次体验，到一个可落地项目</h2>
+          </div>
+          <p class="wbx-service-section__summary">先体验、再诊断、后定制，让每一步投入都建立在真实问题之上。</p>
         </div>
         <ol class="wbx-service-path">
           <li v-for="item in path" :key="item.title" class="wbx-service-path__item" tabindex="0">
