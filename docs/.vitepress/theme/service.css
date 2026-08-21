@@ -82,9 +82,7 @@
 .wbx-service-journey .wbx-service-section__heading h2 { margin: 0; border: 0; padding: 0; }
 .wbx-service .wbx-service-section__summary { max-width: 540px; margin: 0 0 4px; color: var(--wbx-muted); font-size: 15px; line-height: 1.7; }
 .wbx-service .wbx-service-path { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 0; padding: 0; list-style: none; list-style-type: none; }
-.wbx-service .wbx-service-path__item { position: relative; min-width: 0; margin: 0; padding: 18px 22px 22px; border: 2px solid var(--wbx-ink); background: var(--wbx-surface); transition: box-shadow 160ms ease, transform 160ms ease; }
-.wbx-service-path__item:hover,
-.wbx-service-path__item:focus-visible { z-index: 1; outline: none; box-shadow: 8px 8px 0 var(--wbx-accent); transform: scale(1.03); }
+.wbx-service .wbx-service-path__item { position: relative; min-width: 0; margin: 0; padding: 18px 22px 22px; border: 2px solid var(--wbx-ink); background: var(--wbx-surface); }
 .wbx-service-path__item > span { color: var(--vp-c-brand-1); font-family: var(--wbx-pixel); font-size: calc(12px + 4pt); }
 .wbx-service-path__item h3 { margin: 14px 0 10px; }
 .wbx-service-path__item strong { display: block; margin-bottom: 14px; font-size: 20px; }
@@ -100,6 +98,13 @@
 .wbx-service-guest:hover,
 .wbx-service-guest:focus-visible { z-index: 1; outline: none; transform: scale(1.03); box-shadow: 8px 8px 0 var(--wbx-accent); }
 .wbx-service-guest img { display: block; width: 100%; height: auto; object-fit: contain; }
+.wbx-service-join { position: relative; display: flex; align-items: center; justify-content: flex-end; gap: 14px; padding-top: 4px; }
+.wbx-service-join__popover { position: static; z-index: 20; display: none; order: -1; width: 330px; overflow: hidden; border: 2px solid var(--wbx-ink); color: var(--wbx-ink); background: #fff; box-shadow: 8px 8px 0 var(--wbx-accent); opacity: 0; pointer-events: none; visibility: hidden; transform: translateX(8px); transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease; }
+.wbx-service-join__popover strong,
+.wbx-service-join__popover span { display: block; padding: 0 14px; text-align: center; }
+.wbx-service-join__popover strong { padding-top: 12px; font-size: 14px; }
+.wbx-service-join__popover span { padding-top: 5px; padding-bottom: 14px; color: var(--wbx-muted); font-size: 12px; line-height: 1.5; white-space: nowrap; }
+.wbx-service-join__popover.is-open { display: block; opacity: 1; pointer-events: auto; visibility: visible; transform: translateX(0); }
 
 .wbx-service-problems { grid-template-columns: 1fr; gap: 30px; }
 .wbx-service-problems .wbx-service-section__heading { display: flex; align-items: end; justify-content: space-between; gap: 40px; }
@@ -138,9 +143,6 @@
   .wbx-service-section { grid-template-columns: 1fr; gap: 30px; }
   .wbx-service .wbx-service-path { grid-template-columns: 1fr; padding-bottom: 0; }
   .wbx-service-problem { grid-template-columns: 1fr; }
-  .wbx-service .wbx-service-path__item,
-  .wbx-service .wbx-service-path__item:hover,
-  .wbx-service .wbx-service-path__item:focus-visible,
   .wbx-service-guest,
   .wbx-service-guest:hover,
   .wbx-service-guest:focus-visible { box-shadow: none; transform: none; transition: none; }
@@ -173,6 +175,10 @@
   .wbx-service-enterprise { box-shadow: 24px 0 0 currentColor, -24px 0 0 currentColor; }
   .wbx-service-guests { box-shadow: 24px 0 0 var(--wbx-hover-surface), -24px 0 0 var(--wbx-hover-surface); }
   .wbx-service-guests__grid { grid-template-columns: 1fr; }
+  .wbx-service-join { display: grid; }
+  .wbx-service-join__popover { position: static; order: initial; width: min(100%, 320px); margin: 14px auto 0; transform: none; }
+  .wbx-service-join__popover span { white-space: normal; }
+  .wbx-service-join__popover.is-open { opacity: 1; pointer-events: auto; visibility: visible; transform: none; }
   .wbx-service-enterprise { box-shadow: 24px 0 0 #0d100d, -24px 0 0 #0d100d; }
   .wbx-service-enterprise__body ul,
   .wbx-service-related__grid { grid-template-columns: 1fr; }

@@ -66,14 +66,12 @@ describe('custom service conversion styles', () => {
     expect(styles).toMatch(/\.wbx-service-path\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)[^}]*gap:\s*16px/s)
     expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service \.wbx-service-path\s*\{[^}]*grid-template-columns:\s*1fr[^}]*padding-bottom:\s*0/s)
     expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-hero,[\s\S]*?\.wbx-service-section\s*\{[^}]*min-width:\s*0/s)
-    expect(styles).toMatch(/\.wbx-service \.wbx-service-path__item\s*\{[^}]*margin:\s*0[^}]*border:\s*2px solid var\(--wbx-ink\)[^}]*transition:[^}]*transform/s)
+    expect(styles).toMatch(/\.wbx-service \.wbx-service-path__item\s*\{[^}]*margin:\s*0[^}]*border:\s*2px solid var\(--wbx-ink\)[^}]*background:\s*var\(--wbx-surface\)/s)
     expect(styles).not.toMatch(/\.wbx-service-path__item \+ \.wbx-service-path__item\s*\{[^}]*border-left:\s*0/s)
-    expect(styles).toMatch(/\.wbx-service-path__item:hover,[\s\S]*?\.wbx-service-path__item:focus-visible\s*\{[^}]*transform:\s*scale\(1\.03\)/s)
-    expect(styles).toMatch(/\.wbx-service-path__item:hover,[\s\S]*?\.wbx-service-path__item:focus-visible\s*\{[^}]*box-shadow:[^}]*var\(--wbx-accent\)/s)
-    expect(styles).toMatch(/\.wbx-service-path__item:hover,[\s\S]*?\.wbx-service-path__item:focus-visible\s*\{[^}]*outline:\s*none/s)
-    expect(styles).toMatch(/\.wbx-service-path__item:hover,[\s\S]*?\.wbx-service-path__item:focus-visible\s*\{[^}]*z-index:\s*1/s)
+    expect(styles).not.toMatch(/\.wbx-service-path__item:(?:hover|focus-visible)/)
+    expect(styles).not.toMatch(/\.wbx-service \.wbx-service-path__item\s*\{[^}]*transition:[^}]*transform/s)
     expect(styles).toMatch(/\.wbx-service-path__item > span\s*\{[^}]*font-size:\s*calc\(12px \+ 4pt\)/s)
-    expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service \.wbx-service-path__item,[\s\S]*?\.wbx-service \.wbx-service-path__item:focus-visible,[\s\S]*?\.wbx-service-guest:focus-visible\s*\{[^}]*transform:\s*none[^}]*transition:\s*none/s)
+    expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service-guest,[\s\S]*?\.wbx-service-guest:focus-visible\s*\{[^}]*transform:\s*none[^}]*transition:\s*none/s)
   })
 
   it('matches the case-gallery title hierarchy and exposes the registration QR on hover or focus', () => {
@@ -105,6 +103,18 @@ describe('custom service conversion styles', () => {
     expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-action\s*\{[^}]*width:\s*100%/s)
   })
 
+  it('shows the mentor contact left of the desktop button and below it on mobile', () => {
+    const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
+    expect(styles).toMatch(/\.wbx-service-join\s*\{[^}]*align-items:\s*center[^}]*justify-content:\s*flex-end/s)
+    expect(styles).toMatch(/\.wbx-service-join__popover\s*\{[^}]*position:\s*static[^}]*display:\s*none[^}]*order:\s*-1[^}]*width:\s*330px[^}]*box-shadow:\s*8px 8px 0 var\(--wbx-accent\)/s)
+    expect(styles).toMatch(/\.wbx-service-join__popover span\s*\{[^}]*white-space:\s*nowrap/s)
+    expect(styles).not.toMatch(/\.wbx-service-join:(?:hover|focus-within)\s+\.wbx-service-join__popover/)
+    expect(styles).toMatch(/\.wbx-service-join__popover\.is-open\s*\{[^}]*display:\s*block[^}]*opacity:\s*1[^}]*visibility:\s*visible/s)
+    expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-join__popover\s*\{[^}]*order:\s*initial[^}]*width:\s*min\(100%, 320px\)/s)
+    expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-join__popover span\s*\{[^}]*white-space:\s*normal/s)
+    expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-join__popover\.is-open\s*\{[^}]*opacity:\s*1[^}]*visibility:\s*visible/s)
+  })
+
   it('keeps all three problem cards equal in size and internally aligned', () => {
     const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
     expect(styles).toMatch(/\.wbx-service-problem\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)[^}]*align-items:\s*stretch/s)
@@ -116,7 +126,7 @@ describe('custom service conversion styles', () => {
     const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
     expect(styles).toMatch(/\.wbx-service-edition:hover,[\s\S]*?\.wbx-service-edition:focus-visible\s*\{[^}]*outline:\s*none[^}]*box-shadow:[^}]*var\(--wbx-accent\)/s)
     expect(styles).not.toMatch(/\.wbx-service-edition:hover,[\s\S]*?\.wbx-service-edition:focus-visible\s*\{[^}]*scale\(/s)
-    expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service \.wbx-service-path__item,[\s\S]*?\.wbx-service-guest:focus-visible\s*\{[^}]*transform:\s*none[^}]*transition:\s*none/s)
+    expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service-guest,[\s\S]*?\.wbx-service-guest:focus-visible\s*\{[^}]*transform:\s*none[^}]*transition:\s*none/s)
   })
 
   it('gives the linked hero poster equivalent hover and keyboard-focus feedback', () => {

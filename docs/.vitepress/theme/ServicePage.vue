@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
-import { computed, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { data } from '../case-catalog.data'
 import { serviceCatalog, serviceConfig } from '../service-config'
 
@@ -26,6 +26,8 @@ const workshopEditions = [
 ] as const
 const selectedWorkshopIndex = ref(1)
 const selectedPosterIndex = ref(0)
+const isMentorJoinOpen = ref(false)
+const mentorJoin = ref<HTMLElement | null>(null)
 const selectedWorkshop = computed(() => workshopEditions[selectedWorkshopIndex.value])
 const selectedPosterPath = computed(() => selectedWorkshop.value.posterPaths[selectedPosterIndex.value])
 
@@ -38,6 +40,17 @@ function selectAdjacentPoster(offset: -1 | 1) {
   const pageCount = selectedWorkshop.value.posterPaths.length
   selectedPosterIndex.value = (selectedPosterIndex.value + offset + pageCount) % pageCount
 }
+
+function closeMentorJoin() {
+  isMentorJoinOpen.value = false
+}
+
+function handleMentorJoinOutsideClick(event: PointerEvent) {
+  if (!mentorJoin.value?.contains(event.target as Node)) closeMentorJoin()
+}
+
+onMounted(() => document.addEventListener('pointerdown', handleMentorJoinOutsideClick))
+onBeforeUnmount(() => document.removeEventListener('pointerdown', handleMentorJoinOutsideClick))
 
 function handleWorkshopTabKeydown(event: KeyboardEvent, index: number) {
   const lastIndex = workshopEditions.length - 1
@@ -191,6 +204,25 @@ const problems = [
           <figure v-for="guest in guestTeachers" :key="guest.name" class="wbx-service-guest" tabindex="0">
             <img :src="withBase(guest.image)" :alt="`嘉宾老师${guest.name}`" loading="lazy">
           </figure>
+        </div>
+        <div ref="mentorJoin" class="wbx-service-join">
+          <button
+            class="wbx-service-action wbx-service-action--primary wbx-service-join__trigger"
+            type="button"
+            aria-controls="mentor-join-popover"
+            :aria-expanded="isMentorJoinOpen"
+            @click="isMentorJoinOpen = !isMentorJoinOpen"
+            @keydown.esc.stop="closeMentorJoin"
+          >加入我们</button>
+          <div
+            id="mentor-join-popover"
+            class="wbx-service-join__popover"
+            :class="{ 'is-open': isMentorJoinOpen }"
+            :aria-hidden="!isMentorJoinOpen"
+          >
+            <strong>主理人微信：NICKY_YI</strong>
+            <span>联系主理人沟通确认后加入导师与 FDE 团队</span>
+          </div>
         </div>
       </section>
 

@@ -68,6 +68,16 @@ function mountCasesPage() {
 }
 
 describe('case gallery', () => {
+  it('defaults to the personal catalog and exposes personal and enterprise tabs', () => {
+    mountCasesPage()
+
+    const tabs = [...document.querySelectorAll<HTMLButtonElement>('[role="tab"]')]
+    expect(tabs.slice(0, 2).map((tab) => tab.textContent?.trim())).toEqual(['个人', '企业'])
+    expect(tabs[0]?.getAttribute('aria-selected')).toBe('true')
+    expect(tabs[1]?.getAttribute('aria-selected')).toBe('false')
+    expect(document.querySelector('[role="tabpanel"]')?.textContent).toContain('Excel 门店经营分析')
+  })
+
   it('filters cases by search and category, then restores the full catalog', async () => {
     mountCasesPage()
 
@@ -124,7 +134,7 @@ describe('case gallery', () => {
     expect(document.body.textContent).not.toContain('CONTRIBUTE A CASE')
     expect(main?.querySelector('.wbx-cases-hero__copy > p:last-child')?.textContent)
       .toBe('从真实场景出发，找到可以带走复用的工作方法。')
-    const categories = main?.querySelector(':scope > .wbx-cases-categories')
+    const categories = main?.querySelector('#personal-cases-panel > .wbx-cases-categories')
     expect(categories).not.toBeNull()
     expect(
       [...(categories?.querySelectorAll<HTMLButtonElement>('button') ?? [])]
@@ -140,6 +150,45 @@ describe('case gallery', () => {
     expect(tools?.querySelector('#submit-case')).not.toBeNull()
     expect(document.querySelectorAll('.wbx-cases-submit')).toHaveLength(1)
     expect(document.querySelector('.wbx-cases-outline')).toBeNull()
+  })
+
+  it('switches to a locked enterprise directory and resets enterprise filters', async () => {
+    mountCasesPage()
+    document.querySelector<HTMLButtonElement>('#enterprise-cases-tab')?.click()
+    await nextTick()
+
+    expect(document.querySelectorAll('.wbx-enterprise-case-card')).toHaveLength(100)
+    expect(document.querySelector('.wbx-enterprise-case-card a, .wbx-enterprise-case-card button')).toBeNull()
+    expect(document.querySelector('.wbx-enterprise-case-card')?.textContent).toContain('企业案例，保密')
+    expect(document.querySelector('.wbx-enterprise-case-card')?.textContent).not.toContain('详情暂未开放')
+
+    document.querySelector<HTMLButtonElement>('.wbx-enterprise-filter-group[aria-label="行业筛选"] button:nth-of-type(2)')?.click()
+    await nextTick()
+    expect(document.querySelectorAll('.wbx-enterprise-case-card').length).toBeLessThan(100)
+
+    const kindTabs = document.querySelectorAll<HTMLButtonElement>('.wbx-enterprise-kind-tabs [role="tab"]')
+    kindTabs[1]?.click()
+    await nextTick()
+    expect(kindTabs[1]?.getAttribute('aria-selected')).toBe('true')
+    expect(document.querySelectorAll('.wbx-enterprise-case-card')).toHaveLength(100)
+  })
+
+  it('uses category-style icons for enterprise content tabs', async () => {
+    mountCasesPage()
+    document.querySelector<HTMLButtonElement>('#enterprise-cases-tab')?.click()
+    await nextTick()
+
+    const sceneTab = document.querySelector<HTMLButtonElement>('#enterprise-scenes-tab')!
+    const caseTab = document.querySelector<HTMLButtonElement>('#enterprise-catalog-cases-tab')!
+
+    expect(sceneTab.querySelector('i')?.classList.contains('hn-check-circle-solid')).toBe(true)
+    expect(caseTab.querySelector('i')?.classList.contains('hn-briefcase-solid')).toBe(true)
+
+    caseTab.click()
+    await nextTick()
+
+    expect(sceneTab.querySelector('i')?.classList.contains('hn-lightbulb-solid')).toBe(true)
+    expect(caseTab.querySelector('i')?.classList.contains('hn-check-circle-solid')).toBe(true)
   })
 
   it('only fixes the tools column when it fits in the desktop viewport', async () => {

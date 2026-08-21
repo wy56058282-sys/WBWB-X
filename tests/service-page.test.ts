@@ -294,6 +294,38 @@ describe('custom service conversion page', () => {
     expect(images.every((image) => image.getAttribute('loading') === 'lazy')).toBe(true)
   })
 
+  it('offers an accessible mentor application contact below the guest grid', async () => {
+    mountServicePage()
+    const guests = document.querySelector('#workshop-registration')
+    const trigger = guests?.querySelector<HTMLButtonElement>('.wbx-service-join__trigger')
+    const popover = guests?.querySelector('.wbx-service-join__popover')
+
+    expect(guests?.lastElementChild?.classList.contains('wbx-service-join')).toBe(true)
+    expect(trigger?.textContent?.trim()).toBe('加入我们')
+    expect(trigger?.getAttribute('aria-controls')).toBe('mentor-join-popover')
+    expect(trigger?.getAttribute('aria-expanded')).toBe('false')
+    expect(popover?.getAttribute('id')).toBe('mentor-join-popover')
+    expect(popover?.querySelector('img')).toBeNull()
+    expect(popover?.textContent).toContain('主理人微信：NICKY_YI')
+    expect(popover?.querySelector('span')?.innerHTML).toBe('联系主理人沟通确认后加入导师与 FDE 团队')
+    expect(popover?.textContent).not.toContain('添加微信')
+
+    trigger?.click()
+    await nextTick()
+    expect(trigger?.getAttribute('aria-expanded')).toBe('true')
+    expect(popover?.getAttribute('aria-hidden')).toBe('false')
+
+    document.body.dispatchEvent(new Event('pointerdown', { bubbles: true }))
+    await nextTick()
+    expect(trigger?.getAttribute('aria-expanded')).toBe('false')
+
+    trigger?.click()
+    await nextTick()
+    trigger?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
+    await nextTick()
+    expect(trigger?.getAttribute('aria-expanded')).toBe('false')
+  })
+
   it('keeps business logic concise and repeats meaningful conversion actions', () => {
     mountServicePage()
     expect(document.querySelectorAll('.wbx-service > header, .wbx-service-main > section')).toHaveLength(7)

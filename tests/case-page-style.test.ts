@@ -104,6 +104,34 @@ function finalGridTrackWidth(template: string, availableWidth: number) {
 }
 
 describe('case collection page styles', () => {
+  it('renders personal and enterprise case cards with square corners', () => {
+    const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
+
+    expect(source).toMatch(/\.wbx-case-card__link\s*\{[^}]*border-radius:\s*0;/s)
+    expect(source).toMatch(/\.wbx-enterprise-case-card\s*\{[^}]*border-radius:\s*0;/s)
+  })
+
+  it('displays the personal and enterprise audience tabs as separate controls', () => {
+    const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
+
+    expect(source).toMatch(/\.wbx-cases-primary-tabs\s*\{[^}]*display:\s*flex;[^}]*gap:\s*8px;[^}]*border:\s*0;/s)
+    expect(source).toMatch(/\.wbx-cases-primary-tabs button\s*\{[^}]*min-width:\s*120px;[^}]*border:\s*2px solid var\(--wbx-ink\);[^}]*border-radius:\s*0;/s)
+  })
+
+  it('matches enterprise content tabs to the personal category controls', () => {
+    const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
+
+    expect(source).toMatch(/\.wbx-enterprise-kind-tabs\s*\{[^}]*display:\s*flex;[^}]*gap:\s*8px;[^}]*flex-wrap:\s*wrap;[^}]*border:\s*0;/s)
+    expect(source).toMatch(/\.wbx-cases-categories button,\s*\.wbx-enterprise-kind-tabs button,\s*\.wbx-cases-empty button\s*\{[^}]*flex:\s*0 0 auto;[^}]*min-height:\s*36px;[^}]*padding:\s*0 12px;[^}]*font-size:\s*14px;[^}]*font-weight:\s*700;/s)
+  })
+
+  it('uses the personal category hover treatment for enterprise content tabs', () => {
+    const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
+
+    expect(source).toMatch(/\.wbx-cases-categories button:hover,[\s\S]*?\.wbx-enterprise-kind-tabs button:focus-visible[\s\S]*?\{[^}]*box-shadow:\s*4px 4px 0 var\(--wbx-ink\);[^}]*transform:\s*translate\(-2px, -2px\);/s)
+    expect(source).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-cases-primary-tabs button,[\s\S]*?\.wbx-enterprise-kind-tabs button\s*\{[^}]*transition:\s*none;[^}]*transform:\s*none(?:\s*!important)?;/s)
+  })
+
   it('uses a stable responsive card grid with constrained cards', () => {
     const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
 
@@ -146,7 +174,7 @@ describe('case collection page styles', () => {
     expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-layout-grid,\s*\.wbx-cases-main-column,\s*\.wbx-cases-tools-column,\s*\.wbx-cases-tools-stack\s*\{[^}]*display:\s*contents/s)
     expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-search\s*\{[^}]*order:\s*2[^}]*width:\s*100%/s)
     expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-tools-column\s*\{[^}]*margin-top:\s*0/s)
-    expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-main-column > \.wbx-cases-categories\s*\{[^}]*order:\s*3/s)
+    expect(source).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-cases-primary-tabs,\s*#personal-cases-panel,\s*#enterprise-cases-panel\s*\{[^}]*order:\s*3/s)
   })
 
   it('registers the gallery and makes it the entire case-index body', () => {
@@ -187,8 +215,8 @@ describe('case collection page styles', () => {
     expect(source).toMatch(/@media \(min-width:\s*1025px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.wbx-cases-layout \.VPDoc \.content-container\s*\{[^}]*max-width:\s*none/s)
     expect(source).not.toMatch(/\.wbx-cases-layout \.VPDoc[^{]*\{[^}]*padding(?:-inline|-left|-right):/s)
     expect(source).toMatch(/\.wbx-cases h1\s*\{[^}]*font-weight:\s*850[^}]*line-height:\s*58\.88px[^}]*letter-spacing:\s*0/s)
-    expect(source).toMatch(/\.wbx-cases-categories button,\s*\.wbx-cases-empty button\s*\{[^}]*border:\s*2px solid var\(--wbx-ink\)[^}]*border-radius:\s*0/s)
-    expect(source).toMatch(/\.wbx-cases-categories button:hover,\s*\.wbx-cases-categories button\[aria-pressed="true"\],\s*\.wbx-cases-empty button:hover\s*\{[^}]*color:\s*#0d100d[^}]*background:\s*var\(--wbx-accent\)/s)
+    expect(source).toMatch(/\.wbx-cases-categories button,\s*\.wbx-enterprise-kind-tabs button,\s*\.wbx-cases-empty button\s*\{[^}]*border:\s*2px solid var\(--wbx-ink\)[^}]*border-radius:\s*0/s)
+    expect(source).toMatch(/\.wbx-cases-categories button:hover,\s*\.wbx-cases-categories button\[aria-pressed="true"\],\s*\.wbx-enterprise-kind-tabs button:hover,\s*\.wbx-enterprise-kind-tabs button\[aria-selected="true"\],\s*\.wbx-cases-empty button:hover\s*\{[^}]*color:\s*#0d100d[^}]*background:\s*var\(--wbx-accent\)/s)
     expect(source).toMatch(/\.wbx-cases \.wbx-cases-action:hover,\s*\.wbx-cases \.wbx-cases-action:focus-visible\s*\{[^}]*color:\s*#0d100d[^}]*background:\s*var\(--wbx-accent\)/s)
     expect(source).toMatch(/\.wbx-cases-categories button:focus-visible,\s*\.wbx-case-card__link:focus-visible,\s*\.wbx-cases-action:focus-visible,\s*\.wbx-cases-empty button:focus-visible\s*\{[^}]*outline:\s*2px solid var\(--wbx-accent\)/s)
     expect(source).toMatch(/\.wbx-cases \.wbx-cases-action,\s*\.wbx-case-service-cta \.wbx-cases-action\s*\{[^}]*border:\s*2px solid var\(--wbx-ink\)[^}]*border-radius:\s*0/s)

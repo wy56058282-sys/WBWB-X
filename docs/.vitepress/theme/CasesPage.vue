@@ -3,10 +3,21 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { withBase } from 'vitepress'
 import { caseCategories, filterCaseCatalog } from '../case-catalog'
 import { data } from '../case-catalog.data'
+import {
+  enterpriseCaseCatalog,
+  enterpriseFunctions,
+  enterpriseIndustries,
+  filterEnterpriseCaseCatalog,
+  type EnterpriseCaseKind,
+} from '../enterprise-case-catalog'
 import { isServiceFormUrl, serviceConfig } from '../service-config'
 
 const query = ref('')
 const category = ref('全部')
+const audience = ref<'personal' | 'enterprise'>('personal')
+const enterpriseKind = ref<EnterpriseCaseKind>('scene')
+const industry = ref('')
+const businessFunction = ref('')
 const toolsColumnAnchor = ref<HTMLElement | null>(null)
 const toolsColumn = ref<HTMLElement | null>(null)
 const toolsSticky = ref(false)
@@ -16,6 +27,13 @@ let navResizeObserver: ResizeObserver | undefined
 
 const categories = computed(() => caseCategories(data))
 const cases = computed(() => filterCaseCatalog(data, query.value, category.value))
+const enterpriseCases = computed(() => filterEnterpriseCaseCatalog(
+  enterpriseCaseCatalog,
+  enterpriseKind.value,
+  query.value,
+  industry.value,
+  businessFunction.value,
+))
 const categoryIcons: Record<string, string> = {
   '全部': 'hn-grid-solid',
   '内容创作': 'hn-pen-nib-solid',
@@ -24,9 +42,36 @@ const categoryIcons: Record<string, string> = {
   '自动化': 'hn-robot-solid',
 }
 
+const enterpriseKindIcons: Record<EnterpriseCaseKind, string> = {
+  scene: 'hn-lightbulb-solid',
+  case: 'hn-briefcase-solid',
+}
+
 function resetFilters() {
   query.value = ''
   category.value = '全部'
+  industry.value = ''
+  businessFunction.value = ''
+}
+
+function selectAudience(next: 'personal' | 'enterprise') {
+  audience.value = next
+  resetFilters()
+}
+
+function selectEnterpriseKind(next: EnterpriseCaseKind) {
+  enterpriseKind.value = next
+  resetFilters()
+}
+
+function moveTab<T extends string>(event: KeyboardEvent, values: readonly T[], current: T, select: (value: T) => void) {
+  if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return
+  event.preventDefault()
+  const direction = event.key === 'ArrowRight' ? 1 : -1
+  const next = (values.indexOf(current) + direction + values.length) % values.length
+  select(values[next])
+  void nextTick(() => (event.currentTarget as HTMLElement)?.parentElement
+    ?.querySelectorAll<HTMLElement>('[role="tab"]')[next]?.focus())
 }
 
 function updateToolsSticky() {
@@ -88,6 +133,12 @@ onBeforeUnmount(() => {
           </div>
         </header>
 
+        <div class="wbx-cases-primary-tabs" role="tablist" aria-label="案例受众">
+          <button id="personal-cases-tab" type="button" role="tab" :aria-selected="audience === 'personal'" aria-controls="personal-cases-panel" @click="selectAudience('personal')" @keydown="moveTab($event, ['personal', 'enterprise'], audience, selectAudience)">个人</button>
+          <button id="enterprise-cases-tab" type="button" role="tab" :aria-selected="audience === 'enterprise'" aria-controls="enterprise-cases-panel" @click="selectAudience('enterprise')" @keydown="moveTab($event, ['personal', 'enterprise'], audience, selectAudience)">企业</button>
+        </div>
+
+        <div v-if="audience === 'personal'" id="personal-cases-panel" role="tabpanel" aria-labelledby="personal-cases-tab">
         <div id="case-gallery" class="wbx-cases-categories" aria-label="案例分类">
           <button
             v-for="item in categories"
@@ -136,6 +187,47 @@ onBeforeUnmount(() => {
             <button type="button" @click="resetFilters">清除筛选</button>
           </div>
         </section>
+        </div>
+
+        <div v-else id="enterprise-cases-panel" class="wbx-enterprise-cases" role="tabpanel" aria-labelledby="enterprise-cases-tab">
+          <div class="wbx-enterprise-kind-tabs" role="tablist" aria-label="企业内容类型">
+            <button id="enterprise-scenes-tab" type="button" role="tab" :aria-selected="enterpriseKind === 'scene'" aria-controls="enterprise-results" @click="selectEnterpriseKind('scene')" @keydown="moveTab($event, ['scene', 'case'], enterpriseKind, selectEnterpriseKind)">
+              <i :class="['hn', enterpriseKind === 'scene' ? 'hn-check-circle-solid' : enterpriseKindIcons.scene, 'wbx-cases-category__indicator']" aria-hidden="true" />
+              建议场景
+            </button>
+            <button id="enterprise-catalog-cases-tab" type="button" role="tab" :aria-selected="enterpriseKind === 'case'" aria-controls="enterprise-results" @click="selectEnterpriseKind('case')" @keydown="moveTab($event, ['scene', 'case'], enterpriseKind, selectEnterpriseKind)">
+              <i :class="['hn', enterpriseKind === 'case' ? 'hn-check-circle-solid' : enterpriseKindIcons.case, 'wbx-cases-category__indicator']" aria-hidden="true" />
+              客户案例
+            </button>
+          </div>
+          <div class="wbx-enterprise-filter-group" aria-label="行业筛选">
+            <span>行业</span>
+            <button type="button" :aria-pressed="industry === ''" @click="industry = ''">全部</button>
+            <button v-for="item in enterpriseIndustries" :key="item" type="button" :aria-pressed="industry === item" @click="industry = item">{{ item }}</button>
+          </div>
+          <div class="wbx-enterprise-filter-group" aria-label="职能筛选">
+            <span>职能</span>
+            <button type="button" :aria-pressed="businessFunction === ''" @click="businessFunction = ''">全部</button>
+            <button v-for="item in enterpriseFunctions" :key="item" type="button" :aria-pressed="businessFunction === item" @click="businessFunction = item">{{ item }}</button>
+          </div>
+          <div class="wbx-enterprise-results-bar">
+            <span>共 {{ enterpriseCases.length }} 条</span>
+            <button v-if="query || industry || businessFunction" type="button" @click="resetFilters">清空筛选</button>
+          </div>
+          <section id="enterprise-results" class="wbx-cases-gallery-results" role="tabpanel" :aria-labelledby="enterpriseKind === 'scene' ? 'enterprise-scenes-tab' : 'enterprise-catalog-cases-tab'">
+            <ul v-if="enterpriseCases.length" class="wbx-cases-grid" aria-live="polite">
+              <li v-for="item in enterpriseCases" :key="`${item.kind}-${item.number}`" class="wbx-case-card wbx-enterprise-case-card">
+                <span class="wbx-enterprise-case-card__number">{{ String(item.number).padStart(3, '0') }}</span>
+                <span class="wbx-enterprise-case-card__tags"><span>{{ item.industry }}</span><span>{{ item.function }}</span></span>
+                <span class="wbx-enterprise-case-card__status">{{ item.sourceStatus }}</span>
+                <strong>{{ item.title }}</strong>
+                <span class="wbx-enterprise-case-card__summary">{{ item.summary }}</span>
+                <span class="wbx-enterprise-case-card__locked">企业案例，保密</span>
+              </li>
+            </ul>
+            <div v-else class="wbx-cases-empty" role="status"><p>没有找到匹配的企业内容</p><button type="button" @click="resetFilters">清空筛选</button></div>
+          </section>
+        </div>
       </main>
 
       <aside ref="toolsColumnAnchor" class="wbx-cases-tools-column" aria-label="案例搜索与投稿">
@@ -144,7 +236,7 @@ onBeforeUnmount(() => {
           :class="['wbx-cases-tools-stack', { 'is-sticky': toolsSticky, 'is-fixed': toolsFixed }]"
         >
         <label class="wbx-cases-search">
-          <input v-model="query" type="search" aria-label="搜索案例" placeholder="搜索场景、成果或产品" autocomplete="off">
+          <input v-model="query" type="search" aria-label="搜索案例" :placeholder="audience === 'personal' ? '搜索场景、成果或产品' : '搜索标题、摘要、行业或职能'" autocomplete="off">
         </label>
         <section id="submit-case" class="wbx-cases-submit" aria-labelledby="submit-case-title">
         <div>
