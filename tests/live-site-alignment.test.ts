@@ -16,7 +16,7 @@ describe('published live-site alignment contract', () => {
       '首页',
       '开始阅读',
       '案例集',
-      '定制服务',
+      '服务',
       '资料',
       '交流群',
     ])
@@ -25,7 +25,7 @@ describe('published live-site alignment contract', () => {
 
   it('keeps the published homepage labels, analytics strip, and download', () => {
     expect(homeSource).toContain("import HomeAnalyticsStrip from './HomeAnalyticsStrip.vue'")
-    expect(homeSource).toContain('中国版 v5.3.13')
+    expect(homeSource).toContain('中国版 v5.3.14')
     expect(homeSource).toContain('国际版 v5.2.7')
     expect(homeSource).toContain('<HomeAnalyticsStrip')
     expect(homeSource).toContain('https://pan.quark.cn/s/4b2488289c79')

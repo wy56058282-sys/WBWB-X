@@ -217,12 +217,7 @@ const workflowSteps = [
               >
                 <span>{{ currentUpdateDatePrefix }}</span>
                 <span class="wbx-update-ticker__date-day-viewport">
-                  <Transition name="wbx-update-date">
-                    <span
-                      :key="currentHomeUpdate.date"
-                      class="wbx-update-ticker__date-day"
-                    >{{ currentUpdateDateDay }}</span>
-                  </Transition>
+                  <span :key="currentHomeUpdate.date" class="wbx-update-ticker__date-day">{{ currentUpdateDateDay }}</span>
                 </span>
               </time>
             </span>
@@ -298,9 +293,9 @@ const workflowSteps = [
             href="https://www.workbuddy.cn/"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="访问 WorkBuddy 中国版 v5.3.13"
+            aria-label="访问 WorkBuddy 中国版 v5.3.14"
           >
-            <span class="wbx-hero__official-label">中国版 v5.3.13</span>
+            <span class="wbx-hero__official-label">中国版 v5.3.14</span>
           </a>
           <a
             class="wbx-hero__official"

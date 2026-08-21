@@ -18,11 +18,11 @@ describe('site navigation', () => {
       '首页',
       '开始阅读',
       '案例集',
-      '定制服务',
+      '服务',
       '资料',
       '交流群',
     ])
-    expect(nav.find((item) => item.text === '定制服务')?.link).toBe('/help/')
+    expect(nav.find((item) => item.text === '服务')?.link).toBe('/help/')
     expect(nav.find((item) => item.text === '资料')?.link).toBe('/resources/')
   })
 

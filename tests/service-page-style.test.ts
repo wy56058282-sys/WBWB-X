@@ -2,15 +2,58 @@ import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 
 describe('custom service conversion styles', () => {
+  it('merges the workshop heading into the left copy without mobile overflow', () => {
+    const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
+    expect(styles).toMatch(/\.wbx-service-hero__heading\s*\{[^}]*margin-bottom:\s*36px/s)
+    expect(styles).toMatch(/\.wbx-service-hero__heading h2\s*\{[^}]*margin:\s*0[^}]*border:\s*0[^}]*padding:\s*0[^}]*font-weight:\s*750/s)
+    expect(styles).toMatch(/\.wbx-service-hero__heading\s*\{[^}]*display:\s*block/s)
+    expect(styles).toMatch(/\.wbx-service-hero__heading \.wbx-service-section__summary\s*\{[^}]*margin:\s*12px 0 0[^}]*text-align:\s*left/s)
+    expect(styles).toMatch(/\.wbx-service-hero__title-edition\s*\{[^}]*margin-left:\s*12px/s)
+    expect(styles).toMatch(/\.wbx-service-hero__title-edition\s*\{[^}]*font-size:\s*16px/s)
+    expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-hero__heading\s*\{[^}]*min-width:\s*0/s)
+    expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-hero__title-edition\s*\{[^}]*font-size:\s*14px/s)
+  })
+
+  it('stacks the problem heading above a three-column content row without heading dividers', () => {
+    const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
+    expect(styles).toMatch(/\.wbx-service-problems\s*\{[^}]*grid-template-columns:\s*1fr[^}]*gap:\s*30px/s)
+    expect(styles).toMatch(/\.wbx-service-problems \.wbx-service-section__heading\s*\{[^}]*display:\s*flex[^}]*align-items:\s*end[^}]*justify-content:\s*space-between/s)
+    expect(styles).toMatch(/\.wbx-service-problems \.wbx-service-section__heading h2\s*\{[^}]*margin:\s*0[^}]*border:\s*0[^}]*padding:\s*0/s)
+    expect(styles).toMatch(/\.wbx-service-problem\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/s)
+    expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service-problems \.wbx-service-section__heading\s*\{[^}]*align-items:\s*start[^}]*flex-direction:\s*column/s)
+    expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service-problem\s*\{[^}]*grid-template-columns:\s*1fr/s)
+  })
+
   it('uses a two-column poster hero that collapses to one column on narrow screens', () => {
     const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
-    expect(styles).toMatch(/\.wbx-service-hero\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*minmax\(0, 1\.08fr\) minmax\(320px, 0\.92fr\)/s)
-    expect(styles).toMatch(/\.wbx-service \.wbx-service-hero__promise\s*\{[^}]*border:\s*0[^}]*padding-top:\s*0/s)
-    expect(styles).toMatch(/\.wbx-service-editions\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/s)
-    expect(styles).toMatch(/\.wbx-service-edition\[aria-pressed="true"\]\s*\{[^}]*border-color:\s*var\(--wbx-accent\)[^}]*box-shadow:/s)
+    expect(styles).toMatch(/\.wbx-service \.wbx-service-hero__promise\s*\{[^}]*border:\s*0[^}]*padding-top:\s*0[^}]*font-size:\s*36px[^}]*font-weight:\s*850/s)
+    expect(styles).toMatch(/\.wbx-service-hero\s*\{[^}]*grid-template-columns:\s*1fr/s)
+    expect(styles).toMatch(/\.wbx-service-editions\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)[^}]*width:\s*574px[^}]*max-width:\s*100%[^}]*order:\s*2[^}]*margin-bottom:\s*0/s)
+    expect(styles).toMatch(/\.wbx-service-hero__panel\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*minmax\(0, 1\.08fr\) minmax\(320px, 0\.92fr\)[^}]*order:\s*1[^}]*margin-bottom:\s*30px/s)
+    expect(styles).toMatch(/\.wbx-service-hero__panel\s*\{[^}]*align-items:\s*start/s)
+    expect(styles).toMatch(/\.wbx-service-edition\[aria-selected="true"\]\s*\{[^}]*border-color:\s*var\(--wbx-accent\)[^}]*box-shadow:/s)
     expect(styles).toMatch(/\.wbx-service-edition img\s*\{[^}]*aspect-ratio:\s*3 \/ 4[^}]*object-fit:\s*cover/s)
     expect(styles).toMatch(/\.wbx-service-hero__poster\s*\{[^}]*width:\s*100%[^}]*height:\s*auto[^}]*object-fit:\s*cover/s)
-    expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service-hero\s*\{[^}]*grid-template-columns:\s*1fr/s)
+    expect(styles).toMatch(/\.wbx-service-hero__media\s*\{[^}]*position:\s*relative/s)
+    expect(styles).toMatch(/\.wbx-service-hero__poster-navigation\s*\{[^}]*display:\s*flex[^}]*min-height:\s*48px[^}]*align-items:\s*center[^}]*justify-content:\s*space-between[^}]*margin-top:\s*16px/s)
+    expect(styles).toMatch(/\.wbx-service-hero__poster-actions\s*\{[^}]*display:\s*flex[^}]*gap:\s*12px/s)
+    expect(styles).toMatch(/\.wbx-service-hero__poster-control\s*\{[^}]*position:\s*static[^}]*width:\s*48px[^}]*height:\s*48px/s)
+    expect(styles).toMatch(/\.wbx-service-hero__poster-page\s*\{[^}]*position:\s*static/s)
+    expect(styles).toMatch(/\.wbx-service-hero__facts\s*\{[^}]*border-top:\s*1px solid var\(--wbx-ink\)[^}]*border-bottom:\s*1px solid var\(--wbx-ink\)/s)
+    expect(styles).toMatch(/\.wbx-service \.wbx-service-hero__format\s*\{[^}]*font-weight:\s*800/s)
+    expect(styles).toMatch(/\.wbx-service \.wbx-service-hero__tagline\s*\{[^}]*font-size:\s*20px[^}]*font-weight:\s*800/s)
+    expect(styles).toMatch(/\.wbx-service \.wbx-service-hero__audience\s*\{[^}]*color:\s*var\(--wbx-muted\)[^}]*line-height:\s*1\.7/s)
+    expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service-hero__panel\s*\{[^}]*grid-template-columns:\s*1fr/s)
+    expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service \.wbx-service-hero__promise\s*\{[^}]*font-size:\s*32px[^}]*font-weight:\s*850/s)
+    expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-editions\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)[^}]*width:\s*100%/s)
+  })
+
+  it('keeps workshop facts in three clean columns with horizontal dividers only', () => {
+    const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
+    expect(styles).toMatch(/\.wbx-service-hero__facts\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)[^}]*border-top:\s*1px solid var\(--wbx-ink\)[^}]*border-bottom:\s*1px solid var\(--wbx-ink\)/s)
+    expect(styles).toMatch(/\.wbx-service-hero__facts > div \+ div\s*\{[^}]*border:\s*0/s)
+    expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-hero__facts\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/s)
+    expect(styles).not.toMatch(/\.wbx-service-hero__facts(?:\s*>\s*div(?:\s*\+\s*div)?)?\s*\{[^}]*border-(?:left|right):/s)
   })
 
   it('uses a three-column funnel and removes horizontal overflow at mobile width', () => {
@@ -27,9 +70,10 @@ describe('custom service conversion styles', () => {
     expect(styles).not.toMatch(/\.wbx-service-path__item \+ \.wbx-service-path__item\s*\{[^}]*border-left:\s*0/s)
     expect(styles).toMatch(/\.wbx-service-path__item:hover,[\s\S]*?\.wbx-service-path__item:focus-visible\s*\{[^}]*transform:\s*scale\(1\.03\)/s)
     expect(styles).toMatch(/\.wbx-service-path__item:hover,[\s\S]*?\.wbx-service-path__item:focus-visible\s*\{[^}]*box-shadow:[^}]*var\(--wbx-accent\)/s)
+    expect(styles).toMatch(/\.wbx-service-path__item:hover,[\s\S]*?\.wbx-service-path__item:focus-visible\s*\{[^}]*outline:\s*none/s)
     expect(styles).toMatch(/\.wbx-service-path__item:hover,[\s\S]*?\.wbx-service-path__item:focus-visible\s*\{[^}]*z-index:\s*1/s)
     expect(styles).toMatch(/\.wbx-service-path__item > span\s*\{[^}]*font-size:\s*calc\(12px \+ 4pt\)/s)
-    expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service \.wbx-service-path__item,[\s\S]*?\.wbx-service \.wbx-service-path__item:hover,[\s\S]*?\.wbx-service \.wbx-service-path__item:focus-visible\s*\{[^}]*transform:\s*none[^}]*transition:\s*none/s)
+    expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service \.wbx-service-path__item,[\s\S]*?\.wbx-service \.wbx-service-path__item:focus-visible,[\s\S]*?\.wbx-service-guest:focus-visible\s*\{[^}]*transform:\s*none[^}]*transition:\s*none/s)
   })
 
   it('matches the case-gallery title hierarchy and exposes the registration QR on hover or focus', () => {
@@ -46,13 +90,33 @@ describe('custom service conversion styles', () => {
   it('lays out guest teacher images in three desktop columns and one mobile column', () => {
     const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
     expect(styles).toMatch(/\.wbx-service-guests\s*\{[^}]*grid-template-columns:\s*1fr/s)
+    expect(styles).toMatch(/\.wbx-service-guests \.wbx-service-section__heading\s*\{[^}]*display:\s*flex[^}]*align-items:\s*end[^}]*justify-content:\s*space-between/s)
+    expect(styles).toMatch(/\.wbx-service-guests \.wbx-service-section__heading h2\s*\{[^}]*margin:\s*0[^}]*border:\s*0[^}]*padding:\s*0/s)
+    expect(styles).toMatch(/\.wbx-service-guests \.wbx-service-section__heading h2\s*\{[^}]*overflow-wrap:\s*anywhere/s)
+    expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service-guests \.wbx-service-section__heading\s*\{[^}]*align-items:\s*start[^}]*flex-direction:\s*column/s)
     expect(styles).toMatch(/\.wbx-service-guests__grid\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/s)
     expect(styles).toMatch(/\.wbx-service-guest\s*\{[^}]*border:\s*2px solid var\(--wbx-ink\)[^}]*transition:[^}]*transform/s)
     expect(styles).toMatch(/\.wbx-service-guest:hover,[\s\S]*?\.wbx-service-guest:focus-visible\s*\{[^}]*transform:\s*scale\(1\.03\)[^}]*box-shadow:[^}]*var\(--wbx-accent\)/s)
+    expect(styles).toMatch(/\.wbx-service-guest:hover,[\s\S]*?\.wbx-service-guest:focus-visible\s*\{[^}]*outline:\s*none/s)
     expect(styles).toMatch(/\.wbx-service-guest img\s*\{[^}]*width:\s*100%[^}]*height:\s*auto[^}]*object-fit:\s*contain/s)
     expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-guests__grid\s*\{[^}]*grid-template-columns:\s*1fr/s)
+    expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-edition img\s*\{[^}]*display:\s*none/s)
     expect(styles).toMatch(/\.wbx-service \.wbx-service-action\s*\{[^}]*min-height:\s*48px/s)
     expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-action\s*\{[^}]*width:\s*100%/s)
+  })
+
+  it('keeps all three problem cards equal in size and internally aligned', () => {
+    const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
+    expect(styles).toMatch(/\.wbx-service-problem\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)[^}]*align-items:\s*stretch/s)
+    expect(styles).toMatch(/\.wbx-service-problem__item\s*\{[^}]*height:\s*100%[^}]*grid-template-rows:\s*auto auto 1fr/s)
+    expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service-problem\s*\{[^}]*grid-template-columns:\s*1fr/s)
+  })
+
+  it('keeps tabs stable while disabling content-card motion at touch widths', () => {
+    const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
+    expect(styles).toMatch(/\.wbx-service-edition:hover,[\s\S]*?\.wbx-service-edition:focus-visible\s*\{[^}]*outline:\s*none[^}]*box-shadow:[^}]*var\(--wbx-accent\)/s)
+    expect(styles).not.toMatch(/\.wbx-service-edition:hover,[\s\S]*?\.wbx-service-edition:focus-visible\s*\{[^}]*scale\(/s)
+    expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service \.wbx-service-path__item,[\s\S]*?\.wbx-service-guest:focus-visible\s*\{[^}]*transform:\s*none[^}]*transition:\s*none/s)
   })
 
   it('gives the linked hero poster equivalent hover and keyboard-focus feedback', () => {

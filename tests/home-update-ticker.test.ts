@@ -7,6 +7,14 @@ import { readHomeStyle } from './helpers/read-theme-style'
 const harness = useHomePageHarness()
 
 describe('home hero icon navigation', () => {
+  it('leads with the latest Chinese release and only its newly added capability', () => {
+    expect(homeUpdates[0]).toEqual({
+      date: '2026-08-17',
+      title: '5.3.14：新增 Markdown AI 编辑快捷键提示，支持 Enter 直接发送、Cmd+Enter 换行',
+      href: 'https://www.workbuddy.cn/docs/workbuddy/Changelog',
+    })
+  })
+
   it('rotates one synchronized update link every six seconds and loops a full cycle', async () => {
     vi.useFakeTimers()
     harness.mountHomePage()
@@ -29,7 +37,7 @@ describe('home hero icon navigation', () => {
     await vi.advanceTimersByTimeAsync(6000)
 
     expect(ticker?.querySelector('time')).toBe(initialTime)
-    expect(ticker?.querySelector('.wbx-update-ticker__date-day')).toBe(initialDay)
+    expect(ticker?.querySelector('.wbx-update-ticker__date-day')).not.toBe(initialDay)
     expect(initialTime?.textContent).toBe(homeUpdates[1].date)
     expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
       homeUpdates[1].title,
