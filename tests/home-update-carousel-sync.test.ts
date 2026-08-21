@@ -74,11 +74,10 @@ describe('home update carousel synchronization', () => {
     mountHomePage()
 
     const ticker = document.querySelector('.wbx-update-ticker')
-    const initialTime = ticker?.querySelector('time')
-    const initialDay = ticker?.querySelector('.wbx-update-ticker__date-day')
-
     expect(ticker?.querySelectorAll('.wbx-update-ticker__link')).toHaveLength(1)
-    expect(initialTime?.textContent).toBe(fixtureHomeUpdates[0].date)
+    expect(ticker?.querySelector<HTMLAnchorElement>('a')?.getAttribute('aria-label')).toBe(
+      `${fixtureHomeUpdates[0].date} ${fixtureHomeUpdates[0].title}`,
+    )
     expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
       fixtureHomeUpdates[0].title,
     )
@@ -88,15 +87,8 @@ describe('home update carousel synchronization', () => {
 
     await vi.advanceTimersByTimeAsync(6000)
 
-    const nextDay = Array.from(
-      ticker?.querySelectorAll('.wbx-update-ticker__date-day') ?? [],
-    ).find(
-      (day) => day !== initialDay,
-    )
-    expect(nextDay).toBeDefined()
-    expect(nextDay?.textContent).toBe('11')
-    expect(ticker?.querySelector('time')?.getAttribute('datetime')).toBe(
-      fixtureHomeUpdates[1].date,
+    expect(ticker?.querySelector<HTMLAnchorElement>('a')?.getAttribute('aria-label')).toBe(
+      `${fixtureHomeUpdates[1].date} ${fixtureHomeUpdates[1].title}`,
     )
     expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
       fixtureHomeUpdates[1].title,

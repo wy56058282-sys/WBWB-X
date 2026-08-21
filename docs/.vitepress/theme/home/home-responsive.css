@@ -113,12 +113,8 @@
     width: min(100%, 320px);
     height: 28px;
     margin-bottom: -14px;
-    grid-template-columns: 82px minmax(0, 1fr);
+    grid-template-columns: 28px minmax(0, 1fr);
     transform: translateY(-48px);
-  }
-
-  .wbx-update-ticker__date {
-    font-size: 10px;
   }
 
   .wbx-hero__copy h1 {

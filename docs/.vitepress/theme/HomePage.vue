@@ -28,12 +28,6 @@ const updateTickerRef = ref<HTMLElement | null>(null)
 const currentHomeUpdate = computed(
   () => sortedHomeUpdates[currentUpdateIndex.value],
 )
-const currentUpdateDatePrefix = computed(() =>
-  currentHomeUpdate.value.date.slice(0, 8),
-)
-const currentUpdateDateDay = computed(() =>
-  currentHomeUpdate.value.date.slice(8),
-)
 let updateTimer: ReturnType<typeof window.setTimeout> | undefined
 let updateMotionQuery: MediaQueryList | undefined
 
@@ -210,22 +204,19 @@ const workflowSteps = [
             @focusin="pauseUpdateFocus"
             @focusout="handleUpdateFocusOut"
           >
-            <span class="wbx-update-ticker__date-viewport">
-              <time
-                class="wbx-update-ticker__date"
-                :datetime="currentHomeUpdate.date"
-              >
-                <span>{{ currentUpdateDatePrefix }}</span>
-                <span class="wbx-update-ticker__date-day-viewport">
-                  <span :key="currentHomeUpdate.date" class="wbx-update-ticker__date-day">{{ currentUpdateDateDay }}</span>
-                </span>
-              </time>
+            <span class="wbx-update-ticker__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M4 10v4h3l8 4V6l-8 4H4Z" />
+                <path d="m7 14 2 5h3l-2-4" />
+                <path d="M18 9a4 4 0 0 1 0 6" />
+              </svg>
             </span>
             <span class="wbx-update-ticker__content">
               <a
                 :key="`${currentHomeUpdate.date}-${currentHomeUpdate.title}`"
                 class="wbx-update-ticker__link"
                 :href="withBase(currentHomeUpdate.href)"
+                :aria-label="`${currentHomeUpdate.date} ${currentHomeUpdate.title}`"
               >
                 <span class="wbx-update-ticker__title-track">
                   <span class="wbx-update-ticker__title">{{ currentHomeUpdate.title }}</span>
