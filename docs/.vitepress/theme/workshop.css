@@ -1,8 +1,8 @@
 .wbx-workshop {
   display: grid;
   grid-template-columns: 1fr;
-  width: min(100%, var(--wbx-content-width));
-  margin-inline: auto;
+  width: min(calc(100% - 52px), var(--wbx-content-width));
+  margin: 0 auto 0 52px;
   padding: var(--wbx-section-space) 0 64px;
   color: var(--wbx-ink);
   scroll-margin-top: 96px;
@@ -70,6 +70,10 @@
 @media (max-width: 900px) {
   .wbx-workshop__panel { grid-template-columns: 1fr; }
   .wbx-workshop__media { max-width: 620px; }
+}
+
+@media (max-width: 760px) {
+  .wbx-workshop { width: calc(100% - 4px); margin-left: 4px; }
 }
 
 @media (max-width: 640px) {

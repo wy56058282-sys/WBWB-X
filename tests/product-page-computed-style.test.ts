@@ -381,12 +381,12 @@ describe('product page computed styles', () => {
   )
 
   it.each([
-    { viewportWidth: 1440, panelColumns: 'minmax(0, 1.08fr) minmax(320px, .92fr)' },
-    { viewportWidth: 900, panelColumns: '1fr' },
-    { viewportWidth: 390, panelColumns: '1fr' },
+    { viewportWidth: 1440, panelColumns: 'minmax(0, 1.08fr) minmax(320px, .92fr)', titleInset: '52px' },
+    { viewportWidth: 900, panelColumns: '1fr', titleInset: '52px' },
+    { viewportWidth: 390, panelColumns: '1fr', titleInset: '4px' },
   ])(
     'keeps the homepage workshop responsive at $viewportWidth px',
-    ({ viewportWidth, panelColumns }) => {
+    ({ viewportWidth, panelColumns, titleInset }) => {
       installStyles(pageStyles.workshop, themes.light, viewportWidth)
       document.body.innerHTML = `
         <section class="wbx-home-workshop wbx-workshop">
@@ -401,6 +401,7 @@ describe('product page computed styles', () => {
       expect(getComputedStyle(document.querySelector('.wbx-workshop__panel')!).gridTemplateColumns).toBe(panelColumns)
       expect(getComputedStyle(document.querySelector('.wbx-workshop__poster-link')!).transition).toContain('transform 180ms ease')
       expect(getComputedStyle(document.querySelector('.wbx-workshop__edition')!).boxShadow).not.toBe('')
+      expect(getComputedStyle(document.querySelector('.wbx-workshop')!).marginLeft).toBe(titleInset)
 
       if (viewportWidth === 390) {
         expect(getComputedStyle(document.querySelector('.wbx-workshop')!).minWidth).toBe('0')
