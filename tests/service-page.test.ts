@@ -11,6 +11,7 @@ const apps: App[] = []
 afterEach(() => {
   apps.splice(0).forEach((app) => app.unmount())
   document.body.replaceChildren()
+  vi.useRealTimers()
 })
 
 function mountServicePage() {
@@ -51,7 +52,36 @@ describe('WorkBuddy product service page', () => {
     )
   })
 
-  it('runs a command and exposes a finished deliverable state', async () => {
+  it('automatically runs the hero console through typing, execution, and delivery', async () => {
+    vi.useFakeTimers()
+    mountServicePage()
+
+    const console = document.querySelector<HTMLElement>('.wbx-service-console')!
+    const progress = document.querySelector<HTMLElement>('.wbx-service-console__progress')!
+
+    expect(console.dataset.stage).toBe('idle')
+    expect(progress.getAttribute('aria-valuenow')).toBe('0')
+
+    await vi.advanceTimersByTimeAsync(600)
+    await nextTick()
+    expect(console.dataset.stage).toBe('typing')
+    expect(document.querySelector<HTMLInputElement>('#service-command')?.value.length).toBeGreaterThan(0)
+
+    await vi.advanceTimersByTimeAsync(1800)
+    await nextTick()
+    expect(console.dataset.stage).toBe('running')
+    expect(Number(progress.getAttribute('aria-valuenow'))).toBeGreaterThan(0)
+    expect(Number(progress.getAttribute('aria-valuenow'))).toBeLessThan(100)
+
+    await vi.advanceTimersByTimeAsync(3000)
+    await nextTick()
+    expect(console.dataset.stage).toBe('complete')
+    expect(progress.getAttribute('aria-valuenow')).toBe('100')
+    expect(document.querySelector('.wbx-service-console__deliverable')?.textContent).toContain('已交付')
+  })
+
+  it('lets a user command take over the automatic hero simulation', async () => {
+    vi.useFakeTimers()
     mountServicePage()
 
     const input = document.querySelector<HTMLInputElement>('#service-command')!
@@ -60,9 +90,14 @@ describe('WorkBuddy product service page', () => {
     document.querySelector<HTMLFormElement>('.wbx-service-console__form')!.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }))
     await nextTick()
 
-    expect(document.querySelector('.wbx-service-console__progress')?.textContent).toContain('100%')
-    expect(document.querySelector('.wbx-service-console__deliverable')?.textContent).toContain('已交付')
+    expect(document.querySelector<HTMLElement>('.wbx-service-console')?.dataset.stage).toBe('planning')
+    expect(document.querySelector('.wbx-service-console__progress')?.textContent).toContain('0%')
     expect(document.querySelector('.wbx-service-console__request')?.textContent).toContain('整理合同重点条款')
+
+    await vi.advanceTimersByTimeAsync(3200)
+    await nextTick()
+    expect(document.querySelector<HTMLElement>('.wbx-service-console')?.dataset.stage).toBe('complete')
+    expect(document.querySelector('.wbx-service-console__deliverable')?.textContent).toContain('已交付')
   })
 
   it('switches model details and completes the remote-control demo', async () => {
@@ -76,6 +111,27 @@ describe('WorkBuddy product service page', () => {
 
     document.querySelector<HTMLButtonElement>('.wbx-service-remote__run')!.click()
     await nextTick()
+    expect(document.querySelector('.wbx-service-remote__state')?.textContent).toContain('已交付')
+  })
+
+  it('automatically animates agent dispatch and the remote delivery loop', async () => {
+    vi.useFakeTimers()
+    mountServicePage()
+
+    const swarm = document.querySelector<HTMLElement>('.wbx-service-swarm')!
+    const remote = document.querySelector<HTMLElement>('.wbx-service-remote')!
+    expect(swarm.dataset.motionState).toBe('idle')
+    expect(remote.dataset.stage).toBe('idle')
+
+    await vi.advanceTimersByTimeAsync(1100)
+    await nextTick()
+    expect(swarm.dataset.motionState).toBe('dispatching')
+    expect(document.querySelectorAll('.wbx-service-swarm__node.is-active').length).toBeGreaterThan(0)
+    expect(remote.dataset.stage).toBe('running')
+
+    await vi.advanceTimersByTimeAsync(1800)
+    await nextTick()
+    expect(remote.dataset.stage).toBe('complete')
     expect(document.querySelector('.wbx-service-remote__state')?.textContent).toContain('已交付')
   })
 

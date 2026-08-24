@@ -346,12 +346,14 @@ final result: passed
 
 ## Evidence
 
-- Full comparison: `audit/service-page/comparison-1440-full.png` (3180 × 10012)
-- Hero comparison: `audit/service-page/comparison-1440-hero.png` (3180 × 1870)
-- Reference capture: `audit/service-page/reference-1440.png` (1570 × 9942)
-- Implementation capture: `audit/service-page/implementation-1440.png` (1561 × 9689)
-- Mobile capture: `audit/service-page/implementation-390.png` (462 × 1041)
-- Dark-theme capture: `audit/service-page/implementation-dark-1440.png`
+- Full comparison: `audit/2026-08-24-service-page/comparison-1440-full.png` (3180 × 10012)
+- Hero comparison: `audit/2026-08-24-service-page/comparison-1440-hero.png` (3180 × 1870)
+- Reference capture: `audit/2026-08-24-service-page/reference-1440.png` (1570 × 9942)
+- Implementation capture: `audit/2026-08-24-service-page/implementation-1440.png` (1561 × 9689)
+- Mobile capture: `audit/2026-08-24-service-page/implementation-390.png` (462 × 1041)
+- Dark-theme capture: `audit/2026-08-24-service-page/implementation-dark-1440.png`
+- Hero motion capture: `audit/2026-08-24-service-page/implementation-motion-hero.png`
+- Remote motion capture: `audit/2026-08-24-service-page/implementation-motion-remote.png`
 
 The same browser viewport override was used for the desktop source and implementation captures. The browser reported an inner width of 1422 px for both pages; the eight-pixel capture-width difference comes from their scrollbar treatments.
 
@@ -380,5 +382,6 @@ The same browser viewport override was used for the desktop source and implement
 1. Replaced the legacy diagnosis/workshop/team surface with the seven-part reference structure and its three interactive demos.
 2. Reworked all surfaces to the main site tokens and responsive system, then added keyboard/focus and reduced-motion coverage.
 3. Updated SEO, content inventory, and legacy regression assertions; verified the result in light, dark, desktop, tablet, and mobile states.
+4. Restored the reference page's primary motion system: automatic typed commands, staged progress logs, Agent dispatch pulses, capability/file loops, model transitions, live task count, and viewport-triggered remote delivery.
 
 final result: passed
