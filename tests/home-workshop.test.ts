@@ -45,6 +45,14 @@ describe('homepage workshop card', () => {
     expect(sections.indexOf(workshop!)).toBe(sections.indexOf(document.querySelector('.wbx-system')!) - 1)
   })
 
+  it('omits the repeated workshop promise and tagline from the activity details', () => {
+    harness.mountHomePage()
+    const workshop = document.querySelector('.wbx-home-workshop')
+
+    expect(workshop?.querySelector('.wbx-workshop__promise')).toBeNull()
+    expect(workshop?.querySelector('.wbx-workshop__tagline')).toBeNull()
+  })
+
   it('switches editions and poster pages in the full homepage workshop section', async () => {
     harness.mountHomePage()
     const workshop = document.querySelector('.wbx-home-workshop')

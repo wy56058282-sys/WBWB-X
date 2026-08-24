@@ -142,8 +142,6 @@ onBeforeUnmount(() => {
           <h2 id="workshop-title">WorkBuddy X 工作坊 <span class="wbx-workshop__title-edition">{{ selectedWorkshop.edition }}</span></h2>
           <p class="wbx-workshop__summary">先用一场工作坊，找到值得定制的真问题</p>
         </div>
-        <h2 class="wbx-workshop__promise">{{ selectedWorkshop.title }}</h2>
-        <p class="wbx-workshop__tagline">掌握 AI · 掌控未来</p>
         <p class="wbx-workshop__audience">面向人群：创业者、管理者、设计师、超级个体、一人公司（OPC）</p>
         <dl class="wbx-workshop__facts" :aria-label="`${selectedWorkshop.edition}工作坊信息`">
           <div><dt>时间</dt><dd><span>{{ selectedWorkshop.fullDate }}</span><span>{{ selectedWorkshop.time }}</span></dd></div>
