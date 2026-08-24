@@ -1,9 +1,9 @@
 .wbx-hero {
   overflow: hidden;
-  border: 2px solid #0d100d;
-  border-radius: 20px;
+  border: 1px solid var(--wbx-line);
+  border-radius: var(--wbx-radius-lg);
   background: #f7f7f7;
-  box-shadow: 0 18px 60px rgb(13 16 13 / 8%);
+  box-shadow: var(--wbx-shadow-soft);
 }
 
 .wbx-hero__stage {
@@ -151,20 +151,20 @@
   min-width: 210px;
   min-height: 62px;
   padding: 0 28px;
-  border: 2px solid #0d100d;
-  border-radius: 0;
+  border: 1px solid #0d100d;
+  border-radius: var(--wbx-radius-md);
   color: #0d100d !important;
   font-size: 18px;
   font-weight: 760;
   text-decoration: none !important;
-  transition: background 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+  transition: background var(--wbx-motion-fast) ease, box-shadow var(--wbx-motion-fast) ease, transform var(--wbx-motion-fast) var(--wbx-ease-standard);
 }
 
 .wbx-button:hover,
 .wbx-button:focus-visible {
   outline: none;
-  box-shadow: 4px 4px #0d100d;
-  transform: translate(-2px, -2px);
+  box-shadow: var(--wbx-shadow-soft);
+  transform: translateY(-1px);
 }
 
 .wbx-button--primary {

@@ -1,16 +1,28 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
+import { baseRule } from './helpers/css-rules'
 
 const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
 
 describe('WorkBuddy product service styles', () => {
-  it('uses the site design tokens instead of the standalone reference palette', () => {
+  it('keeps the site design tokens for the shell', () => {
     expect(styles).toContain('var(--wbx-accent)')
     expect(styles).toContain('var(--wbx-paper)')
     expect(styles).toContain('var(--wbx-surface)')
     expect(styles).toContain('var(--wbx-pixel)')
+  })
+
+  it('keeps the original visuals and changes only their main accent', () => {
+    expect(styles).toMatch(/\.wbx-service\s*\{[^}]*--wb-ref-bg:\s*var\(--wbx-paper\);[^}]*--wb-ref-panel:\s*var\(--wbx-surface\);[^}]*--wb-ref-acc:\s*var\(--wbx-accent\);/s)
+    expect(styles).toMatch(/\.dark \.wbx-service\s*\{[^}]*--wb-ref-bg:\s*var\(--wbx-paper\);[^}]*--wb-ref-panel:\s*var\(--wbx-surface\);[^}]*--wb-ref-ink:\s*var\(--wbx-ink\);/s)
     expect(styles).not.toContain('#c8f542')
-    expect(styles).not.toContain('#0a0b09')
+    expect(styles).not.toContain('/* Reference visuals keep the source landing page')
+    expect(styles).not.toContain('.wbx-service .console-window')
+    expect(styles).not.toContain('.wbx-service .net-box')
+    expect(styles).not.toContain('.wbx-service .remote-stage')
+    expect(styles).toMatch(/\.wbx-service-console\s*\{[^}]*box-shadow:\s*8px 8px 0 var\(--wbx-accent\)/s)
+    expect(styles).toMatch(/\.wbx-service-swarm__node\.is-core circle\s*\{[^}]*fill:\s*var\(--wbx-accent\)/s)
+    expect(styles).toMatch(/\.wbx-service-remote\s*\{[^}]*grid-template-columns:\s*minmax\(220px, \.72fr\) 180px minmax\(300px, 1\.3fr\)/s)
   })
 
   it('keeps the site shell and gives the product page a wide bounded canvas', () => {
@@ -18,6 +30,23 @@ describe('WorkBuddy product service styles', () => {
     expect(styles).toMatch(/\.wbx-service\s*\{[^}]*max-width:\s*1200px[^}]*overflow-x:\s*clip/s)
     expect(styles).not.toMatch(/\.custom-service-page \.VPNav\s*\{[^}]*display:\s*none/s)
     expect(styles).not.toMatch(/\.custom-service-page \.VPFooter\s*\{[^}]*display:\s*none/s)
+  })
+
+  it('lets the hero blend into the page and keeps section tags text-only', () => {
+    const hero = baseRule(styles, '.wbx-service-hero')
+
+    expect(hero).not.toMatch(/(?:^|\s)border:/)
+    expect(hero).not.toMatch(/border-radius:/)
+    expect(hero).not.toMatch(/(?:^|\s)background:/)
+    expect(styles).not.toContain('.wbx-service-hero::before')
+    expect(styles).not.toContain('.wbx-service-tag::before')
+  })
+
+  it('de-containerizes the final download call to action', () => {
+    const download = baseRule(styles, '.wbx-service-download')
+
+    expect(download).toMatch(/border:\s*0;/)
+    expect(download).toMatch(/background:\s*transparent;/)
   })
 
   it('adapts the main diagrams and capability rows across tablet and mobile widths', () => {

@@ -80,10 +80,10 @@ describe('home hero icon navigation', () => {
     const css = readHomeStyle()
 
     expect(css).toMatch(
-      /\.wbx-hero\s*\{[^}]*border:\s*2px solid #0d100d;/s,
+      /\.wbx-hero\s*\{[^}]*border:\s*1px solid var\(--wbx-line\);/s,
     )
     expect(css).toMatch(
-      /\.wbx-hero\s*\{[^}]*border-radius:\s*20px;/s,
+      /\.wbx-hero\s*\{[^}]*border-radius:\s*var\(--wbx-radius-lg\);/s,
     )
     expect(css).not.toMatch(
       /\.wbx-hero__stage\s*\{[^}]*border:\s*2px solid #0d100d;/s,

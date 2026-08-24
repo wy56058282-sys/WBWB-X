@@ -12,10 +12,23 @@
     var(--wbx-accent) 18%,
     var(--wbx-surface)
   );
+  --wbx-surface-soft: color-mix(
+    in srgb,
+    var(--wbx-surface) 82%,
+    var(--wbx-paper)
+  );
   --wbx-pixel: "Silkscreen", "SFMono-Regular", Consolas, monospace;
   --wbx-body: "Avenir Next", Avenir, "PingFang SC", "Hiragino Sans GB",
     "Microsoft YaHei", sans-serif;
-  --wbx-shadow: 4px 4px 0 var(--wbx-ink);
+  --wbx-radius-sm: 6px;
+  --wbx-radius-md: 10px;
+  --wbx-radius-lg: 12px;
+  --wbx-shadow-soft: 0 10px 30px rgb(13 16 13 / 8%);
+  --wbx-shadow-hover: 0 14px 38px rgb(13 16 13 / 12%);
+  --wbx-shadow: var(--wbx-shadow-soft);
+  --wbx-motion-fast: 160ms;
+  --wbx-motion-base: 220ms;
+  --wbx-ease-standard: cubic-bezier(.22, 1, .36, 1);
   --wbx-content-width: 1104px;
   --wbx-section-space: 64px;
   --wbx-control-height: 48px;
@@ -70,6 +83,13 @@
     var(--wbx-accent) 18%,
     var(--wbx-surface)
   );
+  --wbx-surface-soft: color-mix(
+    in srgb,
+    var(--wbx-surface) 88%,
+    var(--wbx-paper)
+  );
+  --wbx-shadow-soft: 0 10px 30px rgb(0 0 0 / 24%);
+  --wbx-shadow-hover: 0 14px 38px rgb(0 0 0 / 32%);
   --vp-c-brand-1: var(--wbx-accent);
   --vp-c-brand-2: color-mix(
     in srgb,
@@ -259,11 +279,41 @@ body {
   color: var(--wbx-ink);
 }
 
-.VPNavBarSearch .DocSearch-Button,
+.VPNavBarSearch .DocSearch-Button {
+  border: 1px solid var(--wbx-line);
+  border-radius: var(--wbx-radius-md) !important;
+  background: var(--wbx-surface);
+  transition:
+    border-color var(--wbx-motion-fast) ease,
+    background var(--wbx-motion-fast) ease,
+    box-shadow var(--wbx-motion-fast) ease;
+}
+
 .VPNavBarSearch button {
   border: 1px solid var(--wbx-line);
-  border-radius: 4px !important;
+  border-radius: var(--wbx-radius-md) !important;
   background: var(--wbx-surface);
+}
+
+.VPNavBarSearch .DocSearch-Button:hover,
+.VPNavBarSearch .DocSearch-Button:focus-visible {
+  border-color: color-mix(in srgb, var(--wbx-accent) 55%, var(--wbx-line));
+  background: var(--wbx-surface-soft);
+  box-shadow: var(--wbx-shadow-soft);
+}
+
+.VPButton {
+  border-radius: var(--wbx-radius-md) !important;
+  transition:
+    background var(--wbx-motion-fast) ease,
+    border-color var(--wbx-motion-fast) ease,
+    box-shadow var(--wbx-motion-fast) ease,
+    transform var(--wbx-motion-fast) var(--wbx-ease-standard);
+}
+
+.VPButton:hover {
+  box-shadow: var(--wbx-shadow-soft);
+  transform: translateY(-1px);
 }
 
 @media (min-width: 960px) {
@@ -508,21 +558,21 @@ body {
 
 .VPDocFooter .pager-link {
   border: 1px solid var(--wbx-line);
-  border-radius: 5px;
+  border-radius: var(--wbx-radius-md);
   background: var(--wbx-surface);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+  transition: border-color var(--wbx-motion-fast) ease, box-shadow var(--wbx-motion-fast) ease, transform var(--wbx-motion-fast) ease;
 }
 
 .VPDocFooter .pager-link:hover {
-  border-color: var(--wbx-ink);
-  box-shadow: var(--wbx-shadow);
-  transform: translate(-2px, -2px);
+  border-color: color-mix(in srgb, var(--wbx-accent) 55%, var(--wbx-line));
+  box-shadow: var(--wbx-shadow-soft);
+  transform: translateY(-1px);
 }
 
 .VPLocalSearchBox .shell {
-  border: 1px solid var(--wbx-ink) !important;
-  border-radius: 6px !important;
-  box-shadow: var(--wbx-shadow) !important;
+  border: 1px solid var(--wbx-line) !important;
+  border-radius: var(--wbx-radius-lg) !important;
+  box-shadow: var(--wbx-shadow-soft) !important;
 }
 
 .VPLocalSearchBox .result.selected {
@@ -545,11 +595,11 @@ body {
   overflow-y: auto;
   pointer-events: auto;
   border: 1px solid var(--wbx-ink);
-  border-radius: 8px;
+  border-radius: var(--wbx-radius-lg);
   padding: 12px;
   color: var(--wbx-ink);
   background: var(--wbx-surface);
-  box-shadow: var(--wbx-shadow);
+  box-shadow: var(--wbx-shadow-hover);
   outline: none;
 }
 

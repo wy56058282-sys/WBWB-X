@@ -97,6 +97,6 @@ describe('desktop sidebar scrolling', () => {
     expect(getComputedStyle(nav).overflowY).toBe('auto')
     expect(getComputedStyle(link).paddingTop).toBe('7px')
     expect(getComputedStyle(link).paddingBottom).toBe('7px')
-    expect(getComputedStyle(link).borderRadius).toBe('6px')
+    expect(getComputedStyle(link).borderRadius).toBe('var(--wbx-radius-sm)')
   })
 })

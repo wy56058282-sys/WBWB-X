@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createApp, nextTick, type App } from 'vue'
 
 vi.mock('vitepress', () => ({ withBase: (path: string) => `/WBWB-X${path}` }))
@@ -8,10 +8,15 @@ import ServicePage from '../docs/.vitepress/theme/ServicePage.vue'
 
 const apps: App[] = []
 
+beforeEach(() => {
+  vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null)
+})
+
 afterEach(() => {
   apps.splice(0).forEach((app) => app.unmount())
   document.body.replaceChildren()
   vi.useRealTimers()
+  vi.restoreAllMocks()
 })
 
 function mountServicePage() {
@@ -38,6 +43,37 @@ describe('WorkBuddy product service page', () => {
     expect(document.querySelector('#top h1')?.textContent).toContain('一句话，让 AI 替你上班。')
     expect(document.querySelector('#shift h2')?.textContent).toContain('直接说「去办」')
     expect(document.querySelectorAll('.wbx-service-capability')).toHaveLength(4)
+    expect(Array.from(document.querySelectorAll('.wbx-service-tag')).map((tag) => tag.textContent?.trim())).toEqual([
+      'AI-NATIVE DESKTOP AGENT · 桌面智能体工作台',
+      '01 · MINDSET',
+      '02 · AGENT SWARM',
+      '03 · CAPABILITIES',
+      '04 · REMOTE CONTROL',
+      '05 · SKILLS',
+      '06 · GET STARTED',
+    ])
+  })
+
+  it('keeps every original dynamic visual structure', () => {
+    mountServicePage()
+
+    expect(document.querySelector('#top > canvas#heroCanvas')).toBeNull()
+    expect(document.querySelector('#top .wbx-service-console__bar + .wbx-service-console__body')).not.toBeNull()
+    expect(document.querySelector('#top .console-window')).toBeNull()
+    expect(document.querySelector('#shift .wbx-service-compare > .wbx-service-compare__card.is-muted')).not.toBeNull()
+    expect(document.querySelector('#shift .vs-grid')).toBeNull()
+    expect(document.querySelector('#swarm .wbx-service-swarm__map[viewBox="0 0 900 510"]')).not.toBeNull()
+    expect(document.querySelector('#swarm .net-box')).toBeNull()
+    expect(document.querySelector('#capabilities .wbx-service-flow')).not.toBeNull()
+    expect(document.querySelector('#capabilities .wbx-service-deliverables')).not.toBeNull()
+    expect(document.querySelector('#capabilities .wbx-service-files')).not.toBeNull()
+    expect(document.querySelector('#capabilities .wbx-service-model__tabs + .wbx-service-model__detail')).not.toBeNull()
+    expect(document.querySelector('#capabilities .flowbox')).toBeNull()
+    expect(document.querySelector('#remote > .wbx-service-remote > .wbx-service-phone')).not.toBeNull()
+    expect(document.querySelector('#remote .wbx-service-remote__channels + .wbx-service-laptop')).not.toBeNull()
+    expect(document.querySelector('#remote .remote-stage')).toBeNull()
+    expect(document.querySelectorAll('#skills .wbx-service-skills__marquee > div')).toHaveLength(2)
+    expect(document.querySelector('#skills .mq')).toBeNull()
   })
 
   it('uses the approved download, case, and guide destinations', () => {
@@ -111,7 +147,7 @@ describe('WorkBuddy product service page', () => {
 
     document.querySelector<HTMLButtonElement>('.wbx-service-remote__run')!.click()
     await nextTick()
-    expect(document.querySelector('.wbx-service-remote__state')?.textContent).toContain('已交付')
+    expect(document.querySelector('.wbx-service-remote__state')?.textContent).toContain('已交付 · 3 个文件')
   })
 
   it('automatically animates agent dispatch and the remote delivery loop', async () => {
@@ -132,7 +168,7 @@ describe('WorkBuddy product service page', () => {
     await vi.advanceTimersByTimeAsync(1800)
     await nextTick()
     expect(remote.dataset.stage).toBe('complete')
-    expect(document.querySelector('.wbx-service-remote__state')?.textContent).toContain('已交付')
+    expect(document.querySelector('.wbx-service-remote__state')?.textContent).toContain('已交付 · 3 个文件')
   })
 
   it('keeps activities, diagnosis conversion, and team content out of service', () => {

@@ -40,6 +40,7 @@ describe('help survey poster layout', () => {
 
   it('uses the compact service page shell', () => {
     expect(helpPage).toContain('pageClass: custom-service-page')
+    expect(helpPage).toContain('lastUpdated: false')
     expect(helpPage).toContain('title: WorkBuddy 产品能力与服务')
     expect(helpPage).toContain('多 Agent 协作、桌面执行、远程控制与技能生态')
     expect(helpPage).toContain('<ServicePage />')

@@ -281,7 +281,7 @@ describe('product page computed styles', () => {
         expect(computed.backgroundColor).toBe('rgb(50, 230, 185)')
         expect(computed.fontWeight).toBe('700')
         expect(computed.textDecoration).toBe('none')
-        expect(computed.transition).toContain('background 160ms ease')
+        expect(computed.transition).toContain('background var(--wbx-motion-fast) ease')
 
         document.head.querySelectorAll('style').forEach((style) => style.remove())
       }
@@ -323,7 +323,7 @@ describe('product page computed styles', () => {
 
       const panel = getComputedStyle(document.querySelector('.wbx-workshop__panel')!)
       expect(panel.gridTemplateColumns).toBe(panelColumns)
-      expect(getComputedStyle(document.querySelector('.wbx-workshop__poster-link')!).transition).toContain('transform 180ms ease')
+      expect(getComputedStyle(document.querySelector('.wbx-workshop__poster-link')!).transition).toContain('transform var(--wbx-motion-base) var(--wbx-ease-standard)')
       expect(getComputedStyle(document.querySelector('.wbx-workshop__edition')!).boxShadow).not.toBe('')
       const workshop = getComputedStyle(document.querySelector('.wbx-workshop')!)
       expect(workshop.width).toBe(sectionWidth)

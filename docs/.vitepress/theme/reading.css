@@ -1,5 +1,5 @@
 .wbx-reading-layout {
-  --wbx-reading-radius: 8px;
+  --wbx-reading-radius: var(--wbx-radius-md);
   --wbx-reading-space: 8px;
   --wbx-reading-section-gap: 48px;
 }
@@ -16,6 +16,7 @@
 
 .wbx-reading-layout .VPSidebarItem .link {
   border: 0;
+  border-radius: var(--wbx-radius-sm);
   background: transparent;
 }
 
@@ -60,7 +61,7 @@
   min-height: 74px;
   padding: 12px 16px;
   border: 0;
-  border-radius: 0;
+  border-radius: var(--wbx-radius-md);
   background: transparent;
 }
 
@@ -110,6 +111,10 @@
   border-radius: var(--wbx-reading-radius);
   background: var(--wbx-surface);
   box-shadow: none;
+}
+
+.wbx-reading-layout .vp-doc :is(table, .custom-block) {
+  border-radius: var(--wbx-radius-md);
 }
 
 .wbx-reading-layout .vp-doc div[class*="language-"] > span.lang,

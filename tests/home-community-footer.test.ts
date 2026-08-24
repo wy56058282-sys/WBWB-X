@@ -18,7 +18,8 @@ describe('home hero icon navigation', () => {
 
     expect(footer?.textContent).toContain('以真实场景为主线的 WB-X 实战读本')
     expect(footer?.textContent).toContain('Pixel icons by HackerNoon')
-    expect(footer?.textContent).toContain('Copyright © 2026 WB-X.SparkX')
+    expect(footer?.textContent).toContain('Copyright © 2026 安徽象限跃迁人工智能科技有限公司')
+    expect(footer?.textContent).not.toContain('WB-X.SparkX')
     expect(attribution?.getAttribute('href')).toBe(
       'https://hackernoon.com/pixel-icon-library',
     )
@@ -32,31 +33,21 @@ describe('home hero icon navigation', () => {
     )
   })
 
-  it('runs the community callout viewport-wide without an outer border', () => {
-    const css = readHomeStyle()
-    const community = baseRule(css, '.wbx-community')
-    const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
-
-    expect(community).toMatch(/width:\s*100vw;/)
-    expect(community).toMatch(/margin-top:\s*48px;/)
-    expect(community).toMatch(/margin-right:\s*calc\(50% - 50vw\);/)
-    expect(community).toMatch(/margin-left:\s*calc\(50% - 50vw\);/)
-    expect(community).toMatch(/border:\s*0;/)
-    expect(mobile).toMatch(
-      /\.wbx-community\s*\{[^}]*margin-top:\s*38px;/s,
-    )
-  })
-
-  it('links to Quark and contribution without a GitHub action', () => {
+  it('places the material actions directly after the system description', () => {
     harness.mountHomePage()
 
+    const intro = document.querySelector('.wbx-system__intro')
+    const description = intro?.querySelector(':scope > p:last-of-type')
+    const actions = intro?.querySelector('.wbx-system__actions')
     const download = document.querySelector<HTMLAnchorElement>(
-      '.wbx-community__download',
+      '.wbx-system__download',
     )
     const contribution = Array.from(
-      document.querySelectorAll<HTMLAnchorElement>('.wbx-community__actions a'),
+      document.querySelectorAll<HTMLAnchorElement>('.wbx-system__actions a'),
     ).find((link) => link.textContent === '参与共创')
 
+    expect(description?.nextElementSibling).toBe(actions)
+    expect(document.querySelectorAll('.wbx-system__actions')).toHaveLength(1)
     expect(download?.textContent).toBe('教学资料')
     expect(download?.getAttribute('href')).toBe(
       'https://pan.quark.cn/s/4b2488289c79',
@@ -64,107 +55,58 @@ describe('home hero icon navigation', () => {
     expect(download?.getAttribute('target')).toBe('_blank')
     expect(download?.getAttribute('rel')).toBe('noopener noreferrer')
     expect(contribution?.getAttribute('href')).toBe('/community/contributing')
-    expect(document.querySelector<HTMLImageElement>('.wbx-community__ip')?.getAttribute('src'))
-      .toBe('/brand/workbuddy-ip.png')
-    expect(document.querySelector('.wbx-community__heart')).toBeNull()
-    expect(document.querySelector('.wbx-community__icon')).toBeNull()
+    expect(document.querySelector('.wbx-community__copy')).toBeNull()
     expect(document.body.textContent).not.toContain('前往 GitHub')
   })
 
-  it('renders the complete IP as one static image', () => {
+  it('keeps the moved actions in two equal columns at desktop and mobile widths', () => {
     const css = readHomeStyle()
-    const community = baseRule(css, '.wbx-community')
-    const copy = baseRule(css, '.wbx-community__copy')
-    const communityTitle = baseRule(css, '.wbx-community h2')
-    const actions = baseRule(css, '.wbx-community__actions')
-    const art = baseRule(css, '.wbx-community__art')
-    const stage = baseRule(css, '.wbx-community__ip-stage')
-    const footer = baseRule(css, '.wbx-home-footer')
-    const download = baseRule(css, '.wbx-community .wbx-button.wbx-community__download')
-    const ip = baseRule(css, '.wbx-community__ip')
-    const tablet = css.slice(
-      css.indexOf('@media (max-width: 960px)'),
-      css.indexOf('@media (min-width: 761px)'),
-    )
-    const compactDesktop = css.slice(
-      css.indexOf('@media (max-width: 1200px)'),
-      css.indexOf('@media (max-width: 960px)'),
-    )
+    const actions = baseRule(css, '.wbx-system__actions')
+    const button = baseRule(css, '.wbx-system__actions .wbx-button')
+    const download = baseRule(css, '.wbx-system__actions .wbx-system__download')
     const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
 
-    expect(community).toMatch(
-      /grid-template-columns:\s*minmax\(0, 1fr\) minmax\(240px, 0\.72fr\);/,
-    )
-    expect(community).toMatch(/margin-top:\s*48px;/)
-    expect(community).toMatch(/min-height:\s*270px;/)
-    expect(community).toMatch(/height:\s*299px;/)
-    expect(copy).toMatch(/max-width:\s*680px;/)
-    expect(communityTitle).toMatch(/font-size:\s*36px;/)
-    expect(communityTitle).toMatch(/white-space:\s*nowrap;/)
-    expect(copy).toMatch(
-      /padding:\s*31px 0 31px calc\(max\(\(100vw - 1480px\) \/ 2, 0px\) \+ 140px\);/,
-    )
-    expect(compactDesktop).toMatch(
-      /\.wbx-community__copy\s*\{[^}]*padding-left:\s*132px;/s,
-    )
-    expect(compactDesktop).toMatch(
-      /\.wbx-community h2\s*\{[^}]*white-space:\s*normal;/s,
-    )
-    expect(compactDesktop).not.toMatch(/\.wbx-community h2\s*\{[^}]*font-size:/s)
     expect(actions).toMatch(/display:\s*grid;/)
     expect(actions).toMatch(
       /grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/,
     )
     expect(actions).toMatch(/width:\s*min\(100%, 370px\);/)
-    expect(baseRule(css, '.wbx-community .wbx-button')).toMatch(/min-width:\s*0;/)
-    expect(community).toMatch(/overflow:\s*visible;/)
-    expect(art).toMatch(/overflow:\s*visible;/)
-    expect(art).toMatch(/min-height:\s*270px;/)
-    expect(art).toMatch(/background:\s*#f3f4f2;/)
-    expect(art).not.toMatch(/linear-gradient/)
-    expect(stage).toMatch(/position:\s*absolute;/)
-    expect(stage).toMatch(/bottom:\s*-24px;/)
-    expect(stage).toMatch(/left:\s*50%;/)
-    expect(stage).toMatch(/transform:\s*translateX\(-50%\);/)
-    expect(footer).toMatch(/padding-top:\s*24px;/)
+    expect(actions).toMatch(/margin-top:\s*24px;/)
+    expect(button).toMatch(/min-width:\s*0;/)
     expect(download).toMatch(/background:\s*var\(--wbx-accent\);/)
     expect(download).toMatch(/color:\s*#0d100d !important;/)
     expect(download).toMatch(/border-color:\s*var\(--wbx-accent\);/)
     expect(css).toMatch(
-      /\.wbx-community \.wbx-button\.wbx-community__download:(?:hover|focus-visible)[^{]*\{[^}]*color:\s*#0d100d !important;[^}]*border-color:\s*var\(--wbx-accent\);/s,
+      /\.wbx-system__actions \.wbx-system__download:(?:hover|focus-visible)[^{]*\{[^}]*color:\s*#0d100d !important;[^}]*border-color:\s*var\(--wbx-accent\);/s,
     )
-    expect(stage).toMatch(/width:\s*min\(92%, 374px\);/)
-    expect(ip).toMatch(/width:\s*min\(100%, 374px\);/)
+    expect(mobile).toMatch(
+      /\.wbx-system__actions\s*\{[^}]*width:\s*100%;/s,
+    )
+  })
+
+  it('renders the halved IP as a borderless footer decoration', () => {
+    harness.mountHomePage()
+
+    const css = readHomeStyle()
+    const decoration = baseRule(css, '.wbx-community-ip')
+    const ip = baseRule(css, '.wbx-community__ip')
+    const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
+    const image = document.querySelector<HTMLImageElement>('.wbx-community__ip')
+
+    expect(document.querySelector('.wbx-community-ip')?.getAttribute('aria-hidden')).toBe('true')
+    expect(image?.getAttribute('src')).toBe('/brand/workbuddy-ip.png')
+    expect(image?.getAttribute('alt')).toBe('')
+    expect(decoration).toMatch(/justify-content:\s*flex-end;/)
+    expect(decoration).toMatch(/border:\s*0;/)
+    expect(decoration).toMatch(/background:\s*transparent;/)
+    expect(ip).toMatch(/width:\s*min\(100%, 187px\);/)
+    expect(ip).toMatch(/height:\s*auto;/)
     expect(ip).not.toMatch(/animation:/)
-    expect(ip).not.toMatch(/clip-path:/)
-    expect(ip).not.toMatch(/filter:/)
-    expect(css).not.toContain('.wbx-community__heart')
-    expect(css).not.toContain('wbx-community-heart-pulse')
-    expect(css).not.toContain('wbx-community-book-float')
-    expect(tablet).not.toContain('.wbx-community')
     expect(mobile).toMatch(
-      /\.wbx-community\s*\{[^}]*grid-template-columns:\s*1fr;/s,
+      /\.wbx-community-ip\s*\{[^}]*justify-content:\s*center;[^}]*padding-right:\s*0;/s,
     )
     expect(mobile).toMatch(
-      /\.wbx-community__actions\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/s,
-    )
-    expect(mobile).toMatch(
-      /\.wbx-community__copy\s*\{[^}]*padding:\s*32px 24px;/s,
-    )
-    expect(mobile).toMatch(
-      /\.wbx-community h2\s*\{[^}]*font-size:\s*30px;[^}]*white-space:\s*normal;/s,
-    )
-    expect(mobile).toMatch(
-      /\.wbx-community\s*\{[^}]*overflow:\s*visible;/s,
-    )
-    expect(mobile).toMatch(
-      /\.wbx-community__art\s*\{[^}]*min-height:\s*170px;[^}]*overflow:\s*visible;/s,
-    )
-    expect(mobile).toMatch(
-      /\.wbx-community__ip-stage\s*\{[^}]*max-width:\s*300px;[^}]*margin:\s*0 auto -10px;/s,
-    )
-    expect(mobile).toMatch(
-      /\.wbx-community__ip-stage\s*\{[^}]*position:\s*relative;[^}]*transform:\s*none;/s,
+      /\.wbx-community__ip\s*\{[^}]*width:\s*min\(100%, 150px\);/s,
     )
   })
 

@@ -39,7 +39,7 @@ describe('brand configuration', () => {
     expect(vitepressConfig.themeConfig?.footer).toEqual({
       message:
         '以真实场景为主线的 WB-X 实战读本 · <a href="https://hackernoon.com/pixel-icon-library" target="_blank" rel="noopener noreferrer">Pixel icons by HackerNoon</a>',
-      copyright: 'Copyright © 2026 WB-X.SparkX',
+      copyright: 'Copyright © 2026 安徽象限跃迁人工智能科技有限公司',
     })
   })
 

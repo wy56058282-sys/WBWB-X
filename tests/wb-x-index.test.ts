@@ -88,7 +88,7 @@ describe('small-book reading index', () => {
     expect(links).toEqual(expectedPaths)
   })
 
-  it('renders each reading entry as a naked list row instead of a white card', () => {
+  it('renders each reading entry as a quiet rounded list row instead of a white card', () => {
     expect(readingCss).toMatch(
       /\.wbx-reading-layout \.wbx-book-index__entry > a\s*{[^}]*min-height:\s*74px/,
     )
@@ -99,7 +99,7 @@ describe('small-book reading index', () => {
       /\.wbx-reading-layout \.wbx-book-index__entry > a\s*{[^}]*border:\s*0/,
     )
     expect(readingCss).toMatch(
-      /\.wbx-reading-layout \.wbx-book-index__entry > a\s*{[^}]*border-radius:\s*0/,
+      /\.wbx-reading-layout \.wbx-book-index__entry > a\s*{[^}]*border-radius:\s*var\(--wbx-radius-md\)/,
     )
     expect(readingCss).toMatch(
       /\.wbx-reading-layout \.wbx-book-index__entry > a:hover\s*{[^}]*transform:\s*none/,

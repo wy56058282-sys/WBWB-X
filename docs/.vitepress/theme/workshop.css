@@ -25,17 +25,17 @@
 
 .wbx-workshop__media { position: relative; grid-area: media; min-width: 0; margin-bottom: 0; }
 .wbx-workshop__poster-link,
-.wbx-workshop__poster-frame { display: block; overflow: hidden; border: 3px solid var(--wbx-ink); color: inherit; background: #fff; box-shadow: 10px 10px 0 var(--wbx-accent); text-decoration: none; transition: box-shadow 180ms ease, transform 180ms ease; }
+.wbx-workshop__poster-frame { display: block; overflow: hidden; border: 1px solid var(--wbx-line); border-radius: var(--wbx-radius-lg); color: inherit; background: #fff; box-shadow: var(--wbx-shadow-soft); text-decoration: none; transition: box-shadow var(--wbx-motion-base) ease, transform var(--wbx-motion-base) var(--wbx-ease-standard); }
 .wbx-workshop__poster-link:hover,
-.wbx-workshop__poster-link:focus-visible { color: inherit; box-shadow: 14px 14px 0 var(--wbx-accent); transform: translate(-4px, -4px); }
+.wbx-workshop__poster-link:focus-visible { color: inherit; box-shadow: var(--wbx-shadow-hover); transform: translateY(-2px); }
 .wbx-workshop__poster-link:focus-visible { outline: 3px solid var(--wbx-accent); outline-offset: 4px; }
 .wbx-workshop__poster { display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; }
 .wbx-workshop__poster-navigation { display: flex; grid-area: navigation; min-height: 48px; align-items: center; justify-content: space-between; margin-top: 0; }
 .wbx-workshop__poster-actions { display: flex; gap: 12px; }
-.wbx-workshop__poster-control { position: static; display: grid; width: 48px; height: 48px; place-items: center; border: 2px solid var(--wbx-ink); border-radius: 50%; color: var(--wbx-ink); background: var(--wbx-accent); cursor: pointer; font-size: 24px; font-weight: 850; line-height: 1; transition: box-shadow 160ms ease, transform 160ms ease; }
+.wbx-workshop__poster-control { position: static; display: grid; width: 48px; height: 48px; place-items: center; border: 1px solid color-mix(in srgb, var(--wbx-accent) 65%, var(--wbx-ink)); border-radius: 50%; color: var(--wbx-ink); background: var(--wbx-accent); cursor: pointer; font-size: 24px; font-weight: 850; line-height: 1; transition: box-shadow var(--wbx-motion-fast) ease, transform var(--wbx-motion-fast) ease; }
 .wbx-workshop__poster-control:hover,
-.wbx-workshop__poster-control:focus-visible { outline: none; box-shadow: 4px 4px 0 var(--wbx-ink); transform: translate(-2px, -2px); }
-.wbx-workshop__poster-page { position: static; border: 2px solid var(--wbx-ink); padding: 4px 9px; color: var(--wbx-ink); background: var(--wbx-accent); font-size: 12px; font-weight: 800; line-height: 1; }
+.wbx-workshop__poster-control:focus-visible { outline: none; box-shadow: var(--wbx-shadow-soft); transform: translateY(-1px); }
+.wbx-workshop__poster-page { position: static; border: 1px solid color-mix(in srgb, var(--wbx-accent) 65%, var(--wbx-ink)); border-radius: var(--wbx-radius-sm); padding: 4px 9px; color: var(--wbx-ink); background: var(--wbx-accent); font-size: 12px; font-weight: 800; line-height: 1; }
 
 .wbx-workshop__facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0 0 28px; border-top: 1px solid var(--wbx-ink); border-bottom: 1px solid var(--wbx-ink); }
 .wbx-workshop__facts > div { min-width: 0; padding: 14px 16px 14px 0; }
@@ -44,29 +44,29 @@
 .wbx-workshop__facts dd { margin: 4px 0 0; font-size: 14px; font-weight: 750; line-height: 1.5; }
 .wbx-workshop__facts dd > span { display: block; }
 .wbx-workshop__actions { display: flex; flex-wrap: wrap; gap: 12px; }
-.wbx-workshop__action { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; border: 2px solid var(--wbx-ink); border-radius: 0; padding: 0 20px; color: var(--wbx-ink); background: var(--wbx-surface); cursor: pointer; font: inherit; font-size: 14px; font-weight: 700; text-align: center; text-decoration: none; transition: background 160ms ease, box-shadow 160ms ease, transform 160ms ease; }
+.wbx-workshop__action { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; border: 1px solid var(--wbx-line); border-radius: var(--wbx-radius-md); padding: 0 20px; color: var(--wbx-ink); background: var(--wbx-surface); cursor: pointer; font: inherit; font-size: 14px; font-weight: 700; text-align: center; text-decoration: none; transition: background var(--wbx-motion-fast) ease, box-shadow var(--wbx-motion-fast) ease, transform var(--wbx-motion-fast) ease; }
 .wbx-workshop__action--primary { color: #0d100d; background: var(--wbx-accent); }
 .wbx-workshop__action:hover,
-.wbx-workshop__action:focus-visible { color: #0d100d; background: var(--wbx-accent); box-shadow: 4px 4px 0 var(--wbx-ink); transform: translate(-2px, -2px); }
+.wbx-workshop__action:focus-visible { color: #0d100d; background: var(--wbx-accent); box-shadow: var(--wbx-shadow-soft); transform: translateY(-1px); }
 .wbx-workshop__action:focus-visible { outline: 2px solid var(--wbx-accent); outline-offset: 3px; }
 
 .wbx-home-workshop__registration { position: relative; }
-.wbx-home-workshop__registration-popover { position: absolute; z-index: 20; bottom: calc(100% + 14px); left: 0; display: none; width: min(240px, calc(100vw - 28px)); overflow: hidden; border: 2px solid var(--wbx-ink); background: var(--wbx-surface); box-shadow: 8px 8px 0 var(--wbx-accent); }
+.wbx-home-workshop__registration-popover { position: absolute; z-index: 20; bottom: calc(100% + 14px); left: 0; display: none; width: min(240px, calc(100vw - 28px)); overflow: hidden; border: 1px solid var(--wbx-line); border-radius: var(--wbx-radius-lg); background: var(--wbx-surface); box-shadow: var(--wbx-shadow-hover); }
 .wbx-home-workshop__registration-popover.is-open { display: block; }
 .wbx-home-workshop__registration-popover img { display: block; width: 100%; height: auto; aspect-ratio: 1; }
 .wbx-home-workshop__registration-popover strong { display: block; padding: 10px 12px; font-size: 13px; text-align: center; }
 
 .wbx-workshop__editions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 574px; max-width: 100%; gap: 12px; margin-top: auto; margin-bottom: 0; }
-.wbx-workshop__edition { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 12px; min-width: 0; align-items: center; border: 2px solid var(--wbx-ink); padding: 8px; color: var(--wbx-ink); background: var(--wbx-surface); cursor: pointer; text-align: left; transition: background 160ms ease, box-shadow 160ms ease; }
+.wbx-workshop__edition { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 12px; min-width: 0; align-items: center; border: 1px solid var(--wbx-line); border-radius: var(--wbx-radius-md); padding: 8px; color: var(--wbx-ink); background: var(--wbx-surface); cursor: pointer; text-align: left; transition: background var(--wbx-motion-fast) ease, box-shadow var(--wbx-motion-fast) ease; }
 .wbx-workshop__edition img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; }
 .wbx-workshop__edition > span { display: grid; min-width: 0; gap: 2px; }
 .wbx-workshop__edition strong { font-size: 13px; line-height: 1.3; }
 .wbx-workshop__edition span span,
 .wbx-workshop__edition small { font-size: 11px; line-height: 1.3; }
 .wbx-workshop__edition small { color: var(--vp-c-brand-1); font-weight: 800; }
-.wbx-workshop__edition[aria-selected="true"] { border-color: var(--wbx-accent); background: var(--wbx-hover-surface); box-shadow: 5px 5px 0 var(--wbx-accent); }
+.wbx-workshop__edition[aria-selected="true"] { border-color: var(--wbx-accent); background: var(--wbx-hover-surface); box-shadow: var(--wbx-shadow-soft); }
 .wbx-workshop__edition:hover,
-.wbx-workshop__edition:focus-visible { outline: none; background: var(--wbx-hover-surface); box-shadow: 5px 5px 0 var(--wbx-accent); }
+.wbx-workshop__edition:focus-visible { outline: none; background: var(--wbx-hover-surface); box-shadow: var(--wbx-shadow-soft); }
 
 @media (max-width: 900px) {
   .wbx-workshop__panel { grid-template-areas: none; grid-template-columns: 1fr; row-gap: 0; }

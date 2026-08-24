@@ -24,13 +24,6 @@
     left: calc(35% + 10px);
   }
 
-  .wbx-community__copy {
-    padding-left: 132px;
-  }
-
-  .wbx-community h2 {
-    white-space: normal;
-  }
 }
 
 @media (max-width: 960px) {
@@ -268,47 +261,18 @@
     grid-template-columns: 1fr;
   }
 
-  .wbx-community {
-    grid-template-columns: 1fr;
-    gap: 0;
-    height: auto;
-    min-height: 0;
+  .wbx-system__actions {
+    width: 100%;
+  }
+
+  .wbx-community-ip {
+    justify-content: center;
     margin-top: 38px;
-    overflow: visible;
+    padding-right: 0;
   }
 
-  .wbx-community__copy {
-    padding: 32px 24px;
-  }
-
-  .wbx-community h2 {
-    font-size: 30px;
-    white-space: normal;
-  }
-
-  .wbx-community__actions {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    width: 100%;
-  }
-
-  .wbx-community .wbx-button {
-    width: 100%;
-  }
-
-  .wbx-community__art {
-    min-height: 170px;
-    overflow: visible;
-  }
-
-  .wbx-community__ip-stage {
-    position: relative;
-    right: auto;
-    bottom: auto;
-    left: auto;
-    max-width: 300px;
-    margin: 0 auto -10px;
-    transform: none;
+  .wbx-community__ip {
+    width: min(100%, 150px);
   }
 
   .wbx-home-footer {

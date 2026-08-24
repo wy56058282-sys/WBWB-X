@@ -53,7 +53,7 @@ describe('home hero icon navigation', () => {
     expect(readingCards[0]?.querySelector('.hn-user')).toBeNull()
   })
 
-  it('uses the WorkBuddy Team lift and shadow on reading-path cards', () => {
+  it('uses the calm shared lift and shadow on reading-path cards', () => {
     const css = readHomeStyle()
     const card = baseRule(css, '.wbx-reading-card')
     const interaction = css.match(
@@ -61,14 +61,14 @@ describe('home hero icon navigation', () => {
     )?.[1]
 
     expect(card).toMatch(
-      /transition:\s*border-color 0\.3s ease, box-shadow 0\.3s ease, transform 0\.3s ease;/,
+      /transition:\s*border-color var\(--wbx-motion-base\) ease, box-shadow var\(--wbx-motion-base\) ease, transform var\(--wbx-motion-base\) ease;/,
     )
     expect(interaction).toBeDefined()
     expect(interaction).toMatch(/border-color:\s*var\(--wbx-line\);/)
     expect(interaction).toMatch(
-      /box-shadow:\s*0 12px 32px rgba\(0, 0, 0, 0\.08\);/,
+      /box-shadow:\s*var\(--wbx-shadow-soft\);/,
     )
-    expect(interaction).toMatch(/transform:\s*translateY\(-4px\);/)
+    expect(interaction).toMatch(/transform:\s*translateY\(-2px\);/)
     expect(interaction).not.toMatch(/translate\(/)
   })
 
@@ -96,13 +96,13 @@ describe('home hero icon navigation', () => {
     )
   })
 
-  it('aligns the system panel with the reading cards and rounds it by 20px', () => {
+  it('aligns the system panel with the reading cards and uses the shared radius', () => {
     const css = readHomeStyle()
     const system = baseRule(css, '.wbx-system')
     const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
 
     expect(system).toMatch(/margin:\s*72px 52px 0;/)
-    expect(system).toMatch(/border-radius:\s*20px;/)
+    expect(system).toMatch(/border-radius:\s*var\(--wbx-radius-lg\);/)
     expect(mobile).toMatch(
       /\.wbx-system\s*\{[^}]*margin:\s*52px 4px 0;/s,
     )
@@ -112,7 +112,7 @@ describe('home hero icon navigation', () => {
     const css = readHomeStyle()
     const system = baseRule(css, '.wbx-system')
     const introLabel = baseRule(css, '.wbx-system__intro .wbx-pixel-label')
-    const introCopy = baseRule(css, '.wbx-system__intro > p:last-child')
+    const introCopy = baseRule(css, '.wbx-system__description')
     const steps = baseRule(css, '.wbx-system__steps')
     const step = baseRule(css, '.wbx-system__steps li')
     const number = baseRule(css, '.wbx-system__steps b')
@@ -137,20 +137,16 @@ describe('home hero icon navigation', () => {
     expect(copy).toMatch(/color:\s*#0d100d;/)
   })
 
-  it('uses the approved system heading and community download copy', () => {
+  it('uses the approved system heading without the retired materials callout', () => {
     harness.mountHomePage()
 
     expect(document.querySelector('#wbx-system-title')?.textContent).toBe(
       'AI 时代，一起象限跃迁',
     )
     expect(document.body.textContent).not.toContain('一次成功，不该只发生一次。')
-    expect(document.querySelector('#wbx-community-title')?.textContent).toBe(
-      '获取 WorkBuddy 小白书与配套资料',
-    )
-    expect(document.querySelector('.wbx-community__description')?.textContent).toBe(
-      '下载完整读本、案例资料与后续更新内容。',
-    )
-    expect(document.querySelector('.wbx-community__code')).toBeNull()
+    expect(document.body.textContent).not.toContain('BUILD IN PUBLIC · LEARN IN PUBLIC')
+    expect(document.body.textContent).not.toContain('获取 WorkBuddy 小白书与配套资料')
+    expect(document.body.textContent).not.toContain('下载完整读本、案例资料与后续更新内容。')
     expect(document.body.textContent).not.toContain('提取码：WPc9')
   })
 
@@ -161,6 +157,7 @@ describe('home hero icon navigation', () => {
 
     expect(heading).toMatch(/padding-top:\s*18px;/)
     expect(heading).not.toMatch(/border-top:/)
-    expect(taskGrid).toMatch(/border-top:\s*1px solid var\(--wbx-line\);/)
+    expect(taskGrid).toMatch(/border:\s*1px solid var\(--wbx-line\);/)
+    expect(taskGrid).toMatch(/border-radius:\s*var\(--wbx-radius-lg\);/)
   })
 })

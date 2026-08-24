@@ -104,18 +104,18 @@ function finalGridTrackWidth(template: string, availableWidth: number) {
 }
 
 describe('case collection page styles', () => {
-  it('renders personal and enterprise case cards with square corners', () => {
+  it('renders personal and enterprise case cards with the shared soft corners', () => {
     const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
 
-    expect(source).toMatch(/\.wbx-case-card__link\s*\{[^}]*border-radius:\s*0;/s)
-    expect(source).toMatch(/\.wbx-enterprise-case-card\s*\{[^}]*border-radius:\s*0;/s)
+    expect(source).toMatch(/\.wbx-case-card__link\s*\{[^}]*border-radius:\s*var\(--wbx-radius-lg\);/s)
+    expect(source).toMatch(/\.wbx-enterprise-case-card\s*\{[^}]*border-radius:\s*var\(--wbx-radius-lg\);/s)
   })
 
   it('displays the personal and enterprise audience tabs as separate controls', () => {
     const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
 
     expect(source).toMatch(/\.wbx-cases-primary-tabs\s*\{[^}]*display:\s*flex;[^}]*gap:\s*8px;[^}]*border:\s*0;/s)
-    expect(source).toMatch(/\.wbx-cases-primary-tabs button\s*\{[^}]*min-width:\s*120px;[^}]*border:\s*2px solid var\(--wbx-ink\);[^}]*border-radius:\s*0;/s)
+    expect(source).toMatch(/\.wbx-cases-primary-tabs button\s*\{[^}]*min-width:\s*120px;[^}]*border:\s*1px solid var\(--wbx-line\);[^}]*border-radius:\s*var\(--wbx-radius-md\);/s)
   })
 
   it('matches enterprise content tabs to the personal category controls', () => {
@@ -128,7 +128,7 @@ describe('case collection page styles', () => {
   it('uses the personal category hover treatment for enterprise content tabs', () => {
     const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
 
-    expect(source).toMatch(/\.wbx-cases-categories button:hover,[\s\S]*?\.wbx-enterprise-kind-tabs button:focus-visible[\s\S]*?\{[^}]*box-shadow:\s*4px 4px 0 var\(--wbx-ink\);[^}]*transform:\s*translate\(-2px, -2px\);/s)
+    expect(source).toMatch(/\.wbx-cases-categories button:hover,[\s\S]*?\.wbx-enterprise-kind-tabs button:focus-visible[\s\S]*?\{[^}]*box-shadow:\s*var\(--wbx-shadow-soft\);[^}]*transform:\s*translateY\(-1px\);/s)
     expect(source).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-cases-primary-tabs button,[\s\S]*?\.wbx-enterprise-kind-tabs button\s*\{[^}]*transition:\s*none;[^}]*transform:\s*none(?:\s*!important)?;/s)
   })
 
@@ -206,7 +206,7 @@ describe('case collection page styles', () => {
     expect(pageSource).not.toContain('wbx-cases-header__eyebrow')
   })
 
-  it('keeps the shared content width and square category controls', () => {
+  it('keeps the shared content width and soft category controls', () => {
     const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
     const pageSource = readFileSync('docs/.vitepress/theme/CasesPage.vue', 'utf8')
 
@@ -215,11 +215,11 @@ describe('case collection page styles', () => {
     expect(source).toMatch(/@media \(min-width:\s*1025px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.wbx-cases-layout \.VPDoc \.content-container\s*\{[^}]*max-width:\s*none/s)
     expect(source).not.toMatch(/\.wbx-cases-layout \.VPDoc[^{]*\{[^}]*padding(?:-inline|-left|-right):/s)
     expect(source).toMatch(/\.wbx-cases h1\s*\{[^}]*font-weight:\s*850[^}]*line-height:\s*58\.88px[^}]*letter-spacing:\s*0/s)
-    expect(source).toMatch(/\.wbx-cases-categories button,\s*\.wbx-enterprise-kind-tabs button,\s*\.wbx-cases-empty button\s*\{[^}]*border:\s*2px solid var\(--wbx-ink\)[^}]*border-radius:\s*0/s)
+    expect(source).toMatch(/\.wbx-cases-categories button,\s*\.wbx-enterprise-kind-tabs button,\s*\.wbx-cases-empty button\s*\{[^}]*border:\s*1px solid var\(--wbx-line\)[^}]*border-radius:\s*var\(--wbx-radius-md\)/s)
     expect(source).toMatch(/\.wbx-cases-categories button:hover,\s*\.wbx-cases-categories button\[aria-pressed="true"\],\s*\.wbx-enterprise-kind-tabs button:hover,\s*\.wbx-enterprise-kind-tabs button\[aria-selected="true"\],\s*\.wbx-cases-empty button:hover\s*\{[^}]*color:\s*#0d100d[^}]*background:\s*var\(--wbx-accent\)/s)
     expect(source).toMatch(/\.wbx-cases \.wbx-cases-action:hover,\s*\.wbx-cases \.wbx-cases-action:focus-visible\s*\{[^}]*color:\s*#0d100d[^}]*background:\s*var\(--wbx-accent\)/s)
     expect(source).toMatch(/\.wbx-cases-categories button:focus-visible,\s*\.wbx-case-card__link:focus-visible,\s*\.wbx-cases-action:focus-visible,\s*\.wbx-cases-empty button:focus-visible\s*\{[^}]*outline:\s*2px solid var\(--wbx-accent\)/s)
-    expect(source).toMatch(/\.wbx-cases \.wbx-cases-action,\s*\.wbx-case-service-cta \.wbx-cases-action\s*\{[^}]*border:\s*2px solid var\(--wbx-ink\)[^}]*border-radius:\s*0/s)
+    expect(source).toMatch(/\.wbx-cases \.wbx-cases-action,\s*\.wbx-case-service-cta \.wbx-cases-action\s*\{[^}]*border:\s*1px solid var\(--wbx-line\)[^}]*border-radius:\s*var\(--wbx-radius-md\)/s)
     expect(source).toMatch(/\.wbx-cases \.wbx-cases-action--primary,\s*\.wbx-case-service-cta \.wbx-cases-action--primary\s*\{[^}]*background:\s*var\(--wbx-accent\)/)
     expect(pageSource).toMatch(/const categoryIcons:[\s\S]*'全部':\s*'hn-grid-solid'[\s\S]*'内容创作':\s*'hn-pen-nib-solid'[\s\S]*'数据分析':\s*'hn-analytics-solid'[\s\S]*'知识管理':\s*'hn-book-bookmark-solid'[\s\S]*'自动化':\s*'hn-robot-solid'/)
     expect(pageSource).toMatch(/:class="\[\s*'hn',\s*category === item \? 'hn-check-circle-solid' : categoryIcons\[item\],\s*'wbx-cases-category__indicator',\s*\]"/s)

@@ -1,7 +1,6 @@
 .custom-service-page .VPDoc:not(.has-sidebar) .container {
   max-width: 1480px;
 }
-
 .custom-service-page .VPDoc:not(.has-sidebar) .content,
 .custom-service-page .VPDoc.has-aside .content-container {
   max-width: none;
@@ -12,12 +11,39 @@
 }
 
 .wbx-service {
+  --wb-ref-bg: var(--wbx-paper);
+  --wb-ref-bg2: var(--wbx-surface-soft);
+  --wb-ref-panel: var(--wbx-surface);
+  --wb-ref-panel2: var(--wbx-surface-soft);
+  --wb-ref-line: var(--wbx-line);
+  --wb-ref-line2: color-mix(in srgb, var(--wbx-line) 72%, var(--wbx-ink));
+  --wb-ref-ink: var(--wbx-ink);
+  --wb-ref-sub: var(--wbx-muted);
+  --wb-ref-dim: color-mix(in srgb, var(--wbx-muted) 72%, transparent);
+  --wb-ref-acc: var(--wbx-accent);
+  --wb-ref-acc-ink: color-mix(in srgb, var(--wbx-accent) 48%, var(--wbx-ink));
+  --wb-ref-acc-soft: var(--wbx-accent-soft);
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   overflow-x: clip;
   color: var(--wbx-ink);
   background: var(--wbx-paper);
+}
+
+.dark .wbx-service {
+  --wb-ref-bg: var(--wbx-paper);
+  --wb-ref-bg2: var(--wbx-surface-soft);
+  --wb-ref-panel: var(--wbx-surface);
+  --wb-ref-panel2: var(--wbx-surface-soft);
+  --wb-ref-line: var(--wbx-line);
+  --wb-ref-line2: color-mix(in srgb, var(--wbx-line) 72%, var(--wbx-ink));
+  --wb-ref-ink: var(--wbx-ink);
+  --wb-ref-sub: var(--wbx-muted);
+  --wb-ref-dim: color-mix(in srgb, var(--wbx-muted) 72%, transparent);
+  --wb-ref-acc: var(--wbx-accent);
+  --wb-ref-acc-ink: var(--wbx-accent);
+  --wb-ref-acc-soft: var(--wbx-accent-soft);
 }
 
 .wbx-service :where(h1, h2, h3, p, ul, ol, dl, figure) {
@@ -81,16 +107,6 @@
   letter-spacing: .1em;
 }
 
-.wbx-service-tag::before {
-  display: inline-block;
-  width: 34px;
-  height: 2px;
-  margin-right: 12px;
-  vertical-align: middle;
-  background: var(--wbx-accent);
-  content: '';
-}
-
 .wbx-service h1 {
   margin-top: 25px;
   font-size: clamp(52px, 6.4vw, 88px);
@@ -150,22 +166,6 @@
   position: relative;
   padding: 76px 52px 96px;
   overflow: hidden;
-  border: 2px solid var(--wbx-ink);
-  border-radius: 20px;
-  background: var(--wbx-surface);
-}
-
-.wbx-service-hero::before {
-  position: absolute;
-  inset: 0;
-  opacity: .38;
-  background-image:
-    linear-gradient(var(--wbx-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--wbx-line) 1px, transparent 1px);
-  background-size: 44px 44px;
-  content: '';
-  pointer-events: none;
-  mask-image: linear-gradient(to bottom, #000, transparent 62%);
 }
 
 .wbx-service-hero__copy,
@@ -1063,10 +1063,6 @@
   text-align: center;
 }
 
-.wbx-service-skills .wbx-service-tag::before {
-  display: none;
-}
-
 .wbx-service-skills__marquee {
   overflow: hidden;
   mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
@@ -1103,15 +1099,10 @@
 }
 
 .wbx-service-download {
-  border: 2px solid var(--wbx-ink);
-  border-top: 0;
+  border: 0;
   padding: 120px 52px;
-  background: var(--wbx-surface);
+  background: transparent;
   text-align: center;
-}
-
-.wbx-service-download .wbx-service-tag::before {
-  display: none;
 }
 
 .wbx-service-download h2 {
@@ -1258,7 +1249,6 @@
 
   .wbx-service-hero {
     padding: 52px 20px 64px;
-    border-radius: 14px;
   }
 
   .wbx-service h1 {

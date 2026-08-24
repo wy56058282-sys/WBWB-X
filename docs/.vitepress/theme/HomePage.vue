@@ -371,25 +371,10 @@ const workflowSteps = [
       <div class="wbx-system__intro">
         <p class="wbx-pixel-label">FROM TASK TO TEAM</p>
         <h2 id="wbx-system-title">AI 时代，一起象限跃迁</h2>
-        <p>小白书真正关心的不是“AI 会什么”，而是如何把一个结果沉淀成稳定、可协作、可复用的工作系统。</p>
-      </div>
-      <ol class="wbx-system__steps">
-        <li v-for="step in workflowSteps" :key="step.number">
-          <b>{{ step.number }}</b>
-          <strong>{{ step.title }}</strong>
-          <span>{{ step.description }}</span>
-        </li>
-      </ol>
-    </section>
-
-    <section class="wbx-community" aria-labelledby="wbx-community-title">
-      <div class="wbx-community__copy">
-        <p class="wbx-pixel-label">BUILD IN PUBLIC · LEARN IN PUBLIC</p>
-        <h2 id="wbx-community-title">获取 WorkBuddy 小白书与配套资料</h2>
-        <p class="wbx-community__description">下载完整读本、案例资料与后续更新内容。</p>
-        <div class="wbx-community__actions">
+        <p class="wbx-system__description">小白书真正关心的不是“AI 会什么”，而是如何把一个结果沉淀成稳定、可协作、可复用的工作系统。</p>
+        <div class="wbx-system__actions">
           <a
-            class="wbx-button wbx-button--primary wbx-community__download"
+            class="wbx-button wbx-button--primary wbx-system__download"
             href="https://pan.quark.cn/s/4b2488289c79"
             target="_blank"
             rel="noopener noreferrer"
@@ -400,12 +385,18 @@ const workflowSteps = [
           >参与共创</a>
         </div>
       </div>
-      <div class="wbx-community__art" aria-hidden="true">
-        <div class="wbx-community__ip-stage">
-          <img class="wbx-community__ip" :src="withBase('/brand/workbuddy-ip.png')" alt="">
-        </div>
-      </div>
+      <ol class="wbx-system__steps">
+        <li v-for="step in workflowSteps" :key="step.number">
+          <b>{{ step.number }}</b>
+          <strong>{{ step.title }}</strong>
+          <span>{{ step.description }}</span>
+        </li>
+      </ol>
     </section>
+
+    <div class="wbx-community-ip" aria-hidden="true">
+      <img class="wbx-community__ip" :src="withBase('/brand/workbuddy-ip.png')" alt="">
+    </div>
 
   </main>
 
@@ -420,7 +411,7 @@ const workflowSteps = [
           rel="noopener noreferrer"
         >Pixel icons by HackerNoon</a>
       </p>
-      <p class="wbx-home-footer__copyright">Copyright © 2026 WB-X.SparkX</p>
+      <p class="wbx-home-footer__copyright">Copyright © 2026 安徽象限跃迁人工智能科技有限公司</p>
     </div>
   </footer>
 </template>

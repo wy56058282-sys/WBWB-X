@@ -62,8 +62,8 @@ describe('WB-X reading visual scope', () => {
     expect(readingCss).not.toMatch(
       /\.wbx-reading-layout \.VPSidebarItem \.link\s*{[^}]*padding:/,
     )
-    expect(readingCss).not.toMatch(
-      /\.wbx-reading-layout \.VPSidebarItem \.link\s*{[^}]*border-radius:/,
+    expect(readingCss).toMatch(
+      /\.wbx-reading-layout \.VPSidebarItem \.link\s*{[^}]*border-radius:\s*var\(--wbx-radius-sm\)/,
     )
   })
 })
