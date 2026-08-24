@@ -1,5 +1,7 @@
 import { serviceConfig } from './service-config'
 
+declare const __WBX_WORKSHOP_BUILD_TIME__: string | undefined
+
 export interface WorkshopEdition {
   id: string
   title: string
@@ -20,7 +22,12 @@ export interface WorkshopEdition {
 
 export type WorkshopEditionStatus = 'upcoming' | 'ongoing' | 'past'
 
-export const homeWorkshopReferenceTime = new Date('2026-08-24T00:00:00+08:00')
+const workshopBuildTime = typeof __WBX_WORKSHOP_BUILD_TIME__ === 'string'
+  ? __WBX_WORKSHOP_BUILD_TIME__
+  : new Date().toISOString()
+
+export const homeWorkshopReferenceTime = new Date(workshopBuildTime)
+export const MAX_WORKSHOP_REFRESH_DELAY = 2_147_483_647
 
 export interface WorkshopEditionSelection {
   edition: WorkshopEdition
@@ -121,4 +128,16 @@ export function nextWorkshopBoundary(
     .map((value) => dateValue(value))
     .filter((value) => value > nowValue)
     .sort((left, right) => left - right)[0]
+}
+
+export function nextWorkshopRefreshDelay(
+  editions: readonly WorkshopEdition[],
+  now: Date,
+) {
+  const boundary = nextWorkshopBoundary(editions, now)
+  if (boundary === undefined) return undefined
+  return Math.min(
+    MAX_WORKSHOP_REFRESH_DELAY,
+    Math.max(1, boundary - now.getTime() + 1),
+  )
 }

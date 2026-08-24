@@ -16,6 +16,7 @@ const umamiShareUrl = process.env.VITE_WBX_UMAMI_SHARE_URL?.trim()
 const umamiCollectionStartedAt = process.env.VITE_WBX_UMAMI_COLLECTION_STARTED_AT?.trim()
 const umamiTrackingEnabled = Boolean(umamiWebsiteId && umamiShareUrl && umamiCollectionStartedAt)
 const BAIDU_ANALYTICS_URL = 'https://hm.baidu.com/hm.js?7a23a8966a0536ac9ba595d6a0544f07'
+const workshopBuildTime = new Date().toISOString()
 
 function canonicalPath(relativePath: string) {
   const normalized = relativePath.replace(/\\/g, '/')
@@ -29,6 +30,9 @@ export default withMermaid(defineConfig({
   base: process.env.SITE_BASE ?? '/',
   srcExclude: ['superpowers/**', 'maintenance/**'],
   vite: {
+    define: {
+      __WBX_WORKSHOP_BUILD_TIME__: JSON.stringify(workshopBuildTime),
+    },
     plugins: [legacyRouteRedirectPlugin()],
     server: {
       allowedHosts: process.env.WB_PREVIEW_HOST ? [process.env.WB_PREVIEW_HOST] : [],

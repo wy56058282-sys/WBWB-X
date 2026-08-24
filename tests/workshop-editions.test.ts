@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  nextWorkshopRefreshDelay,
   selectRelevantWorkshopEdition,
   type WorkshopEdition,
 } from '../docs/.vitepress/workshop-editions'
@@ -36,4 +37,17 @@ describe('selectRelevantWorkshopEdition', () => {
   it('uses the most recently ended edition even when its recap URL is unavailable', () => {
     expect(selectRelevantWorkshopEdition(editions.slice(1, 2), new Date('2026-09-20T12:00:00+08:00'))).toMatchObject({ edition: { id: 'ongoing', activityDetailUrl: '' }, status: 'past' })
   })
+
+  it('caps a distant boundary refresh and allows it to be rescheduled', () => {
+    const now = new Date('2026-01-01T00:00:00+08:00')
+    const distant = editionWithDates('2099-01-01T14:00:00+08:00', '2099-01-01T18:00:00+08:00')
+    const near = editionWithDates('2026-01-01T00:00:01+08:00', '2026-01-01T00:00:02+08:00')
+
+    expect(nextWorkshopRefreshDelay([distant], now)).toBe(2_147_483_647)
+    expect(nextWorkshopRefreshDelay([near], now)).toBe(1_001)
+  })
 })
+
+function editionWithDates(startsAt: string, endsAt: string): WorkshopEdition {
+  return { ...editions[0], startsAt, endsAt }
+}

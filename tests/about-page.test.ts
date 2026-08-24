@@ -43,6 +43,7 @@ describe('about page', () => {
     const popover = document.querySelector('.wbx-about-join__popover')
 
     expect(document.querySelector('#about-team-title')?.textContent).toBe('场景教练和前线部署工程师（FDE）')
+    expect(document.querySelector('.wbx-about')?.tagName).toBe('DIV')
     expect(people).toHaveLength(6)
     expect(people.map((person) => person.alt)).toEqual(['嘉宾老师王翔旭', '嘉宾老师黄学铃', '嘉宾老师李泽慧', '嘉宾老师王劲松', '嘉宾老师刘鹏振', '嘉宾老师丁怡豪'])
     expect(trigger?.getAttribute('aria-expanded')).toBe('false')

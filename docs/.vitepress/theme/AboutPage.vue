@@ -27,7 +27,7 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', handleJoinOuts
 </script>
 
 <template>
-  <main class="wbx-about">
+  <div class="wbx-about">
     <header class="wbx-about__header">
       <p class="wbx-pixel-label">ABOUT WORKBUDDY-X</p>
       <h1>关于我们</h1>
@@ -66,5 +66,5 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', handleJoinOuts
         </div>
       </div>
     </section>
-  </main>
+  </div>
 </template>

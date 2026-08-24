@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
-import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import {
   homeWorkshopReferenceTime,
-  nextWorkshopBoundary,
+  nextWorkshopRefreshDelay,
   selectRelevantWorkshopEdition,
   workshopEditions,
   type WorkshopEdition,
@@ -19,6 +19,7 @@ const selection = computed(() => selectRelevantWorkshopEdition(editions.value, c
 const isRegistrationOpen = ref(false)
 const registration = ref<HTMLElement | null>(null)
 const trigger = ref<HTMLButtonElement | null>(null)
+const recap = ref<HTMLAnchorElement | null>(null)
 let refreshTimer: ReturnType<typeof window.setTimeout> | undefined
 
 function closeRegistration(restoreFocus = false) {
@@ -48,14 +49,20 @@ function scheduleWorkshopRefresh() {
     refreshTimer = undefined
   }
 
-  const boundary = nextWorkshopBoundary(editions.value, currentTime.value)
-  if (boundary === undefined) return
+  const delay = nextWorkshopRefreshDelay(editions.value, currentTime.value)
+  if (delay === undefined) return
 
   refreshTimer = window.setTimeout(() => {
     currentTime.value = new Date()
     scheduleWorkshopRefresh()
-  }, Math.max(1, boundary - currentTime.value.getTime() + 1))
+  }, delay)
 }
+
+watch(selection, (nextSelection) => {
+  if (nextSelection?.status !== 'past' || !isRegistrationOpen.value) return
+  isRegistrationOpen.value = false
+  nextTick(() => recap.value?.focus())
+})
 
 onMounted(() => {
   currentTime.value = new Date()
@@ -105,9 +112,11 @@ onBeforeUnmount(() => {
         <a
           v-else
           class="wbx-home-workshop__recap"
+          ref="recap"
           :href="selection.edition.activityDetailUrl || withBase('/help/#workshop-history')"
           :target="selection.edition.activityDetailUrl ? '_blank' : undefined"
           :rel="selection.edition.activityDetailUrl ? 'noopener noreferrer' : undefined"
+          :aria-label="selection.edition.activityDetailUrl ? '查看活动回顾（在新页面打开）' : undefined"
         >查看活动回顾</a>
         <a class="wbx-home-workshop__all" :href="withBase('/help/#workshop-registration')">查看全部活动</a>
       </div>

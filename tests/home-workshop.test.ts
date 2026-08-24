@@ -91,6 +91,7 @@ describe('homepage workshop card', () => {
     expect(recap?.getAttribute('href')).toBe('https://example.com/recap')
     expect(recap?.getAttribute('target')).toBe('_blank')
     expect(recap?.getAttribute('rel')).toBe('noopener noreferrer')
+    expect(recap?.getAttribute('aria-label')).toContain('在新页面打开')
   })
 
   it('falls back to workshop history when a past edition has no detail URL', async () => {
@@ -111,5 +112,21 @@ describe('homepage workshop card', () => {
     await vi.advanceTimersByTimeAsync(1_001)
     await nextTick()
     expect(document.querySelector('.wbx-home-workshop')?.textContent).toContain('第三期')
+  })
+
+  it('closes an open QR and focuses recap when the last edition becomes past', async () => {
+    vi.setSystemTime(new Date('2026-08-29T17:59:59+08:00'))
+    mountWorkshop([edition({ startsAt: '2026-08-29T14:00:00+08:00', endsAt: '2026-08-29T18:00:00+08:00' })])
+    await nextTick()
+    const trigger = document.querySelector<HTMLButtonElement>('.wbx-home-workshop__registration-trigger')
+
+    trigger?.click()
+    await nextTick()
+    await vi.advanceTimersByTimeAsync(1_001)
+    await nextTick()
+
+    const recap = document.querySelector<HTMLAnchorElement>('.wbx-home-workshop__recap')
+    expect(document.querySelector('.wbx-home-workshop__registration-trigger')).toBeNull()
+    expect(document.activeElement).toBe(recap)
   })
 })
