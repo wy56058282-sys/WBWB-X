@@ -333,3 +333,52 @@ final result: passed
 - P3：移动端截图画布受应用内浏览器按域缩放影响，但 DOM 单列尺寸与零溢出实测通过，不影响真实页面布局。
 
 final result: passed
+
+---
+
+# 2026-08-24 服务页主站风格重构 Design QA
+
+## Scope
+
+- Target: `/help/`
+- Reference: supplied WorkBuddy product page served locally from the provided HTML
+- Expected difference: preserve the reference content hierarchy and interaction model while replacing its standalone black/lime shell with the WorkBuddy-X site navigation, typography, mint accent, square borders, light/dark tokens, footer, and floating entry.
+
+## Evidence
+
+- Full comparison: `audit/service-page/comparison-1440-full.png` (3180 × 10012)
+- Hero comparison: `audit/service-page/comparison-1440-hero.png` (3180 × 1870)
+- Reference capture: `audit/service-page/reference-1440.png` (1570 × 9942)
+- Implementation capture: `audit/service-page/implementation-1440.png` (1561 × 9689)
+- Mobile capture: `audit/service-page/implementation-390.png` (462 × 1041)
+- Dark-theme capture: `audit/service-page/implementation-dark-1440.png`
+
+The same browser viewport override was used for the desktop source and implementation captures. The browser reported an inner width of 1422 px for both pages; the eight-pixel capture-width difference comes from their scrollbar treatments.
+
+## Visual review
+
+| Check | Result | Notes |
+| --- | --- | --- |
+| Section order | Passed | Hero, mindset comparison, Agent swarm, four capabilities, remote control, skills, and final CTA follow the reference narrative. |
+| Main-site integration | Passed | Existing navigation, search, theme switch, footer, and floating entry remain intact. |
+| Brand translation | Passed | Uses existing WorkBuddy-X semantic tokens, Avenir/PingFang, Silkscreen labels, pixel icons, square borders, and `#32e6b9`. |
+| Content hierarchy | Passed | Display headings, explanatory copy, interactive demos, and CTA hierarchy remain readable at desktop and mobile widths. |
+| Responsive layout | Passed | Requested 1440, 1280, 900, 768, and 390 px checks reported no horizontal overflow; comparison and capability grids collapse at the intended breakpoints. |
+| Dark theme | Passed | Hero surface, body, type, borders, and accent maintain contrast after the site theme switch. |
+| Interactive states | Passed | Command submission updates the request and deliverable; Kimi tab selects its panel; remote demo reaches the delivered state. |
+| Accessibility | Passed | Visible focus styles, labeled form controls, semantic regions/tabs, reduced-motion CSS, and safe external-link attributes are present. |
+| Retired service content | Passed | No workshop, team, paid diagnosis, or old service-path module appears on `/help/`. |
+
+## Implementation density
+
+- `ServicePage.vue`: 280 lines / 17,018 bytes
+- `service.css`: 1,226 lines / 23,829 bytes
+- No new UI framework, backend, download endpoint, or raster content asset was introduced.
+
+## Iteration history
+
+1. Replaced the legacy diagnosis/workshop/team surface with the seven-part reference structure and its three interactive demos.
+2. Reworked all surfaces to the main site tokens and responsive system, then added keyboard/focus and reduced-motion coverage.
+3. Updated SEO, content inventory, and legacy regression assertions; verified the result in light, dark, desktop, tablet, and mobile states.
+
+final result: passed

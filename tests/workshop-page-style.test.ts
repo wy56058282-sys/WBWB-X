@@ -18,7 +18,8 @@ describe('workshop and About responsive styles', () => {
 
     expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-workshop__panel\s*\{[^}]*grid-template-columns:\s*1fr/s)
     expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-home-workshop__registration\s*\{[^}]*width:\s*100%/s)
-    expect(serviceStyles).not.toContain('.wbx-service-hero')
+    expect(serviceStyles).not.toContain('.wbx-service-edition')
+    expect(serviceStyles).not.toContain('.wbx-service-registration')
   })
 
   it('keeps About member images uncropped across desktop and mobile grids', () => {

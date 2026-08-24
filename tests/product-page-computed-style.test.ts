@@ -115,14 +115,6 @@ function assertCompactSurfaces(doc: Document) {
     size('.wbx-case-service-cta .wbx-cases-action', '14px')
   }
 
-  if (doc.querySelector('.wbx-service')) {
-    size('.wbx-service-eyebrow', '12px')
-    size('.wbx-service .wbx-service-action', '14px')
-    size('.wbx-service-enterprise__benefit', '18px')
-    size('.wbx-service-case small', '10px')
-    size('.wbx-service-case strong', '15px')
-    size('.wbx-service-case span span', '13px')
-  }
 }
 
 afterEach(() => {
@@ -186,33 +178,6 @@ describe('product page computed styles', () => {
             '.wbx-case-card__product': '11px',
           },
         },
-        {
-          css: pageStyles.service,
-          markup: `
-            <div class="VPDoc"><div class="vp-doc"><section class="wbx-service">
-              <header class="wbx-service-header"><div class="wbx-service-header__title">
-                <p class="wbx-service-eyebrow">服务标签</p><h1>定制服务</h1><p class="wbx-service-header__summary">服务正文</p><a class="wbx-service-action">预约</a>
-              </div></header>
-              <section class="wbx-service-section"><div class="wbx-service-section__heading"><h2>服务范围</h2></div></section>
-              <section class="wbx-service-section wbx-service-enterprise"><div class="wbx-service-enterprise__body"><p class="wbx-service-enterprise__benefit">辅助提示</p></div></section>
-              <section class="wbx-service-section wbx-service-related"><div class="wbx-service-related__grid"><a class="wbx-service-case">
-                <span><small>案例标签</small><strong>卡片标题</strong><span>辅助结果</span></span>
-              </a></div></section>
-            </section></div></div>
-          `,
-          h1: '.wbx-service h1',
-          h2: '.wbx-service h2',
-          body: '.wbx-service-header__summary',
-          bodyFontSize: '15px',
-          bodyLineHeight: '1.7',
-          compact: {
-            '.wbx-service-eyebrow': '12px',
-            '.wbx-service-action': '14px',
-            '.wbx-service-case small': '10px',
-            '.wbx-service-case strong': '15px',
-            '.wbx-service-case span span': '13px',
-          },
-        },
       ]
 
       for (const page of pages) {
@@ -257,10 +222,7 @@ describe('product page computed styles', () => {
           expect(getComputedStyle(document.querySelector('.wbx-cases-action')!).fontSize).toBe('14px')
         }
 
-        const eyebrowSelector = page.css === pageStyles.cases
-          ? '.submit-eyebrow'
-          : '.wbx-service-eyebrow'
-        const eyebrowStyle = getComputedStyle(document.querySelector(eyebrowSelector)!)
+        const eyebrowStyle = getComputedStyle(document.querySelector('.submit-eyebrow')!)
         expect(eyebrowStyle.color).toBe('rgb(23, 107, 85)')
         expect(eyebrowStyle.fontFamily).toContain('Silkscreen')
         expect(eyebrowStyle.fontWeight).toBe('700')
@@ -306,11 +268,6 @@ describe('product page computed styles', () => {
           markup: '<div class="vp-doc"><div class="wbx-cases"><a class="wbx-cases-action wbx-cases-action--primary">案例操作</a></div></div>',
           selector: '.wbx-cases-action--primary',
         },
-        {
-          css: pageStyles.service,
-          markup: '<div class="vp-doc"><div class="wbx-service"><a class="wbx-service-action wbx-service-action--primary">服务操作</a></div></div>',
-          selector: '.wbx-service-action--primary',
-        },
       ]
 
       for (const page of pages) {
@@ -345,40 +302,6 @@ describe('product page computed styles', () => {
     expect(computed.outlineWidth).toBe('2px')
     expect(computed.boxShadow).toMatch(/(?:rgb\(13, 16, 13\)|#0d100d)/)
   })
-
-  it.each([
-    { viewportWidth: 1440, pathColumns: 'repeat(3, minmax(0, 1fr))' },
-    { viewportWidth: 900, pathColumns: '1fr' },
-    { viewportWidth: 390, pathColumns: '1fr' },
-  ])(
-    'keeps the production service conversion hierarchy readable at $viewportWidth px',
-    ({ viewportWidth, pathColumns }) => {
-      installStyles(pageStyles.service, themes.light, viewportWidth)
-      document.body.innerHTML = `
-        <div class="vp-doc"><section class="wbx-service">
-          <header class="wbx-service-header"><div class="wbx-service-header__title"><p class="wbx-service-eyebrow">CUSTOM SERVICE</p><h1>定制服务</h1></div></header>
-          <section class="wbx-service-section"><ol class="wbx-service-path"><li class="wbx-service-path__item">工作坊</li><li class="wbx-service-path__item">诊断</li><li class="wbx-service-path__item">定制</li></ol></section>
-          <section class="wbx-service-section wbx-service-enterprise"><div class="wbx-service-enterprise__body"><p class="wbx-service-enterprise__benefit">10 席位诊断免费</p><a class="wbx-service-action wbx-service-action--primary">先参加工作坊</a></div></section>
-        </section></div>
-      `
-
-      const path = getComputedStyle(document.querySelector('.wbx-service-path')!)
-      const enterprise = getComputedStyle(document.querySelector('.wbx-service-enterprise')!)
-      const benefit = getComputedStyle(document.querySelector('.wbx-service-enterprise__benefit')!)
-      const action = getComputedStyle(document.querySelector('.wbx-service-enterprise .wbx-service-action')!)
-
-      expect(path.gridTemplateColumns).toBe(pathColumns)
-      expect(path.listStyleType).toBe('none')
-      expect(enterprise.backgroundColor).toBe('rgb(13, 16, 13)')
-      expect(benefit.borderLeftWidth).toBe('6px')
-      expect(action.minHeight).toBe('48px')
-
-      if (viewportWidth === 390) {
-        expect(action.width).toBe('100%')
-        expect(getComputedStyle(document.querySelector('.wbx-service-section')!).minWidth).toBe('0')
-      }
-    },
-  )
 
   it.each([
     { viewportWidth: 1440, panelColumns: 'minmax(0, 570px) minmax(320px, 486px)', sectionWidth: 'calc(100% - 104px)', titleInset: '52px' },

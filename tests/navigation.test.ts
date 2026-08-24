@@ -26,11 +26,11 @@ describe('site navigation', () => {
     expect(nav.find((item) => item.text === '关于我们')?.link).toBe('/about/')
   })
 
-  it('documents /help/ as paid custom service rather than a free questionnaire', () => {
+  it('documents /help/ as the product capability and service entry', () => {
     const inventory = readFileSync('CONTENT_INVENTORY.md', 'utf8')
 
-    expect(inventory).toContain('| 定制服务 | `/help/` | 说明付费需求诊断与预约状态 |')
-    expect(inventory).toContain('| 定制服务 | `docs/help/index.md` | 说明付费需求诊断与预约状态 |')
+    expect(inventory).toContain('| 产品能力与服务 | `/help/` | 展示多 Agent、桌面执行、远程控制与技能生态 |')
+    expect(inventory).toContain('| 产品能力与服务 | `docs/help/index.md` | 展示 WorkBuddy 产品能力与服务入口 |')
     expect(inventory).not.toContain('| 提需求 | `/help/`')
   })
 

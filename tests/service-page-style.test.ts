@@ -1,38 +1,42 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 
-describe('custom service conversion styles', () => {
-  it('styles only service content and contains no retired workshop rules', () => {
-    const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
+const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
 
-    expect(styles).not.toContain('.wbx-service-hero')
+describe('WorkBuddy product service styles', () => {
+  it('uses the site design tokens instead of the standalone reference palette', () => {
+    expect(styles).toContain('var(--wbx-accent)')
+    expect(styles).toContain('var(--wbx-paper)')
+    expect(styles).toContain('var(--wbx-surface)')
+    expect(styles).toContain('var(--wbx-pixel)')
+    expect(styles).not.toContain('#c8f542')
+    expect(styles).not.toContain('#0a0b09')
+  })
+
+  it('keeps the site shell and gives the product page a wide bounded canvas', () => {
+    expect(styles).toMatch(/\.custom-service-page \.VPDoc:not\(\.has-sidebar\) \.container\s*\{[^}]*max-width:\s*1480px/s)
+    expect(styles).toMatch(/\.wbx-service\s*\{[^}]*max-width:\s*1200px[^}]*overflow-x:\s*clip/s)
+    expect(styles).not.toMatch(/\.custom-service-page \.VPNav\s*\{[^}]*display:\s*none/s)
+    expect(styles).not.toMatch(/\.custom-service-page \.VPFooter\s*\{[^}]*display:\s*none/s)
+  })
+
+  it('adapts the main diagrams and capability rows across tablet and mobile widths', () => {
+    expect(styles).toMatch(/\.wbx-service-compare\s*\{[^}]*grid-template-columns:\s*1fr 56px 1fr/s)
+    expect(styles).toMatch(/\.wbx-service-capability\s*\{[^}]*grid-template-columns:[^}]*minmax\(0, 1fr\)[^}]*minmax\(0, 1fr\)/s)
+    expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service-compare[^{]*\{[^}]*grid-template-columns:\s*1fr/s)
+    expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-hero__actions[^{]*\{[^}]*align-items:\s*stretch/s)
+  })
+
+  it('provides keyboard focus and reduced-motion behavior', () => {
+    expect(styles).toMatch(/\.wbx-service[^{}]*:focus-visible\s*\{[^}]*outline:\s*var\(--wbx-focus\)/s)
+    expect(styles).toMatch(/@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*?animation-duration:\s*0\.01ms\s*!important/s)
+  })
+
+  it('contains no retired workshop, diagnosis, or team styling', () => {
     expect(styles).not.toContain('.wbx-service-edition')
     expect(styles).not.toContain('.wbx-service-registration')
-    expect(styles).toMatch(/\.wbx-service-header\s*\{[^}]*min-height:\s*220px/s)
-    expect(styles).toMatch(/\.wbx-service-brand-title\s*\{[^}]*font-size:\s*51\.2px[^}]*line-height:\s*58\.88px/s)
-  })
-
-  it('uses a three-column service path that stacks at tablet widths', () => {
-    const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
-
-    expect(styles).toMatch(/\.wbx-service \.wbx-service-path\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/s)
-    expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service \.wbx-service-path\s*\{[^}]*grid-template-columns:\s*1fr/s)
-    expect(styles).toMatch(/\.wbx-service-path__item > span\s*\{[^}]*font-size:\s*calc\(12px \+ 4pt\)/s)
-  })
-
-  it('keeps problem cards aligned and responsive', () => {
-    const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
-
-    expect(styles).toMatch(/\.wbx-service-problem\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)[^}]*align-items:\s*stretch/s)
-    expect(styles).toMatch(/\.wbx-service-problem__item\s*\{[^}]*height:\s*100%[^}]*grid-template-rows:\s*auto auto 1fr/s)
-    expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service-problem\s*\{[^}]*grid-template-columns:\s*1fr/s)
-  })
-
-  it('keeps enterprise and outcome cards readable on mobile', () => {
-    const styles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
-
-    expect(styles).toMatch(/\.wbx-service-enterprise__body \.wbx-service-enterprise__benefit\s*\{[^}]*border-left:\s*6px solid var\(--wbx-accent\)/s)
-    expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-related__grid\s*\{[^}]*grid-template-columns:\s*1fr/s)
-    expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-action\s*\{[^}]*width:\s*100%/s)
+    expect(styles).not.toContain('.wbx-service-path')
+    expect(styles).not.toContain('.wbx-service-enterprise')
+    expect(styles).not.toContain('.wbx-service-guests')
   })
 })

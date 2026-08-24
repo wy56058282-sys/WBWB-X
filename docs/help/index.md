@@ -1,7 +1,7 @@
 ---
-title: WorkBuddy 定制服务
+title: WorkBuddy 产品能力与服务
 titleTemplate: false
-description: 从 39 元 WorkBuddy 场景实战工作坊开始，通过需求诊断进入企业定制项目。
+description: 了解 WorkBuddy 如何通过多 Agent 协作、桌面执行、远程控制与技能生态直接交付工作成果。
 aside: false
 outline: false
 pageClass: custom-service-page
