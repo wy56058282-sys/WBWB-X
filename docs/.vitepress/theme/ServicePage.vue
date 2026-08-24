@@ -1,33 +1,17 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { data } from '../case-catalog.data'
 import { serviceCatalog, serviceConfig } from '../service-config'
+import { workshopEditions } from '../workshop-editions'
 
 const workshop = serviceConfig.workshop
 const diagnosis = serviceCatalog.diagnosis
 const relatedCases = data.slice(0, 2)
-const [workshopVenue, workshopArea] = workshop.location.split(' · ')
 const workshopBenefit = '每 2 周线下面对面交流，收集场景痛点。'
 const partnershipBenefit = '企业认证为合作伙伴将免费诊断 3 次。'
-const guestTeachers = [
-  { name: '王翔旭', image: '/article-assets/service/guest-wang-xiangxu.png' },
-  { name: '黄学铃', image: '/article-assets/service/guest-huang-xueling.png' },
-  { name: '李泽慧', image: '/article-assets/service/guest-li-zehui.png' },
-  { name: '王劲松', image: '/article-assets/service/guest-wang-jinsong.png' },
-  { name: '刘鹏振', image: '/article-assets/service/guest-liu-pengzhen.png' },
-  { name: '丁怡豪', image: '/article-assets/service/guest-ding-yihao.png' },
-] as const
-
-const workshopEditions = [
-  { id: '815', name: '第一期', date: '08.15', fullDate: '2026 年 8 月 15 日', time: workshop.time, capacity: workshop.capacity, venue: workshopVenue, area: workshopArea, coverPath: '/article-assets/service/workshop-815.png', posterPaths: ['/article-assets/service/workshop-815.png', '/article-assets/service/workshop-815-agenda.png', '/article-assets/service/workshop-815-benefits.png', '/article-assets/service/workshop-815-reminder.png'], activityDetailUrl: 'https://mp.weixin.qq.com/s/q7Bq2kEmsYlgI4pTZ59srw' },
-  { id: '829', name: '第二期', date: '08.29', fullDate: workshop.date, time: workshop.time, capacity: workshop.capacity, venue: workshopVenue, area: workshopArea, coverPath: workshop.coverPath, posterPaths: [workshop.coverPath, '/article-assets/service/workshop-829-agenda.png', '/article-assets/service/workshop-829-benefits.png', '/article-assets/service/workshop-829-reminder.png'], activityDetailUrl: workshop.activityDetailUrl },
-  { id: '912', name: '第三期', date: '09.12', fullDate: '2026 年 9 月 12 日', time: workshop.time, capacity: workshop.capacity, venue: workshopVenue, area: workshopArea, coverPath: '/article-assets/service/workshop-912.png', posterPaths: ['/article-assets/service/workshop-912.png'], activityDetailUrl: '' },
-] as const
 const selectedWorkshopIndex = ref(1)
 const selectedPosterIndex = ref(0)
-const isMentorJoinOpen = ref(false)
-const mentorJoin = ref<HTMLElement | null>(null)
 const selectedWorkshop = computed(() => workshopEditions[selectedWorkshopIndex.value])
 const selectedPosterPath = computed(() => selectedWorkshop.value.posterPaths[selectedPosterIndex.value])
 
@@ -40,17 +24,6 @@ function selectAdjacentPoster(offset: -1 | 1) {
   const pageCount = selectedWorkshop.value.posterPaths.length
   selectedPosterIndex.value = (selectedPosterIndex.value + offset + pageCount) % pageCount
 }
-
-function closeMentorJoin() {
-  isMentorJoinOpen.value = false
-}
-
-function handleMentorJoinOutsideClick(event: PointerEvent) {
-  if (!mentorJoin.value?.contains(event.target as Node)) closeMentorJoin()
-}
-
-onMounted(() => document.addEventListener('pointerdown', handleMentorJoinOutsideClick))
-onBeforeUnmount(() => document.removeEventListener('pointerdown', handleMentorJoinOutsideClick))
 
 function handleWorkshopTabKeydown(event: KeyboardEvent, index: number) {
   const lastIndex = workshopEditions.length - 1
@@ -106,7 +79,7 @@ const problems = [
         </ol>
       </section>
 
-      <section class="wbx-service-hero" aria-labelledby="workshop-title">
+      <section id="workshop-registration" class="wbx-service-hero" aria-labelledby="workshop-title">
         <div
           id="workshop-panel"
           class="wbx-service-hero__panel"
@@ -116,13 +89,13 @@ const problems = [
           <div class="wbx-service-hero__copy">
             <div class="wbx-service-hero__heading">
               <p class="wbx-service-eyebrow">WORKBUDDY X WORKSHOP</p>
-              <h2 id="workshop-title">WorkBuddy X 工作坊 <span class="wbx-service-hero__title-edition">{{ selectedWorkshop.name }}</span></h2>
+              <h2 id="workshop-title">WorkBuddy X 工作坊 <span class="wbx-service-hero__title-edition">{{ selectedWorkshop.edition }}</span></h2>
               <p class="wbx-service-section__summary">先用一场工作坊，找到值得定制的真问题</p>
             </div>
             <h2 class="wbx-service-hero__promise">场景实战工作坊</h2>
             <p class="wbx-service-hero__tagline">掌握 AI · 掌控未来</p>
             <p class="wbx-service-hero__audience">面向人群：创业者、管理者、设计师、超级个体、一人公司（OPC）</p>
-            <dl class="wbx-service-hero__facts" :aria-label="`${selectedWorkshop.name}工作坊信息`">
+            <dl class="wbx-service-hero__facts" :aria-label="`${selectedWorkshop.edition}工作坊信息`">
               <div><dt>时间</dt><dd><span>{{ selectedWorkshop.fullDate }}</span><span>{{ selectedWorkshop.time }}</span></dd></div>
               <div><dt>规模</dt><dd>{{ selectedWorkshop.capacity }}</dd></div>
               <div><dt>地点</dt><dd><span>{{ selectedWorkshop.venue }}</span><span>{{ selectedWorkshop.area }}</span></dd></div>
@@ -145,12 +118,12 @@ const problems = [
               :href="selectedWorkshop.activityDetailUrl"
               target="_blank"
               rel="noopener noreferrer"
-              :aria-label="`查看工作坊活动详情（${selectedWorkshop.name}，在新页面打开）`"
+              :aria-label="`查看工作坊活动详情（${selectedWorkshop.edition}，在新页面打开）`"
             >
-              <img class="wbx-service-hero__poster" :src="withBase(selectedPosterPath)" :alt="`WorkBuddy 场景实战工作坊海报（${selectedWorkshop.name}，第 ${selectedPosterIndex + 1} 页）`" width="1800" height="2400">
+              <img class="wbx-service-hero__poster" :src="withBase(selectedPosterPath)" :alt="`WorkBuddy 场景实战工作坊海报（${selectedWorkshop.edition}，第 ${selectedPosterIndex + 1} 页）`" width="1800" height="2400">
             </a>
             <div v-else class="wbx-service-hero__poster-frame">
-              <img class="wbx-service-hero__poster" :src="withBase(selectedPosterPath)" :alt="`WorkBuddy 场景实战工作坊海报（${selectedWorkshop.name}，第 ${selectedPosterIndex + 1} 页）`" width="1800" height="2400">
+              <img class="wbx-service-hero__poster" :src="withBase(selectedPosterPath)" :alt="`WorkBuddy 场景实战工作坊海报（${selectedWorkshop.edition}，第 ${selectedPosterIndex + 1} 页）`" width="1800" height="2400">
             </div>
             <div class="wbx-service-hero__poster-navigation" aria-label="切换海报页面">
               <span class="wbx-service-hero__poster-page" aria-live="polite">{{ selectedPosterIndex + 1 }} / {{ selectedWorkshop.posterPaths.length }}</span>
@@ -171,7 +144,7 @@ const problems = [
             </div>
           </figure>
         </div>
-        <div class="wbx-service-editions" role="tablist" aria-label="选择工作坊期次">
+        <div id="workshop-history" class="wbx-service-editions" role="tablist" aria-label="选择工作坊期次">
           <button
             v-for="(edition, index) in workshopEditions"
             :id="`workshop-tab-${edition.id}`"
@@ -182,47 +155,13 @@ const problems = [
             aria-controls="workshop-panel"
             :aria-selected="selectedWorkshopIndex === index"
             :tabindex="selectedWorkshopIndex === index ? 0 : -1"
-            :aria-label="`查看${edition.name} ${edition.date} 工作坊信息`"
+            :aria-label="`查看${edition.edition} ${edition.date} 工作坊信息`"
             @click="selectWorkshop(index)"
             @keydown="handleWorkshopTabKeydown($event, index)"
           >
             <img :src="withBase(edition.coverPath)" alt="" width="1800" height="2400">
-            <span><strong>{{ edition.name }}</strong><span>{{ edition.date }}</span><small v-if="selectedWorkshopIndex === index">当前</small></span>
+            <span><strong>{{ edition.edition }}</strong><span>{{ edition.date }}</span><small v-if="selectedWorkshopIndex === index">当前</small></span>
           </button>
-        </div>
-      </section>
-
-      <section id="workshop-registration" class="wbx-service-section wbx-service-guests" aria-labelledby="guests-title">
-        <div class="wbx-service-section__heading">
-          <div class="wbx-service-section__title-group">
-            <p class="wbx-service-eyebrow">GUEST TEACHERS</p>
-            <h2 id="guests-title">场景教练和前线部署工程师（FDE）</h2>
-          </div>
-          <p class="wbx-service-section__summary">来自产品、设计、运营与 AI 实践的一线嘉宾，共同带你完成真实场景实战。</p>
-        </div>
-        <div class="wbx-service-guests__grid">
-          <figure v-for="guest in guestTeachers" :key="guest.name" class="wbx-service-guest" tabindex="0">
-            <img :src="withBase(guest.image)" :alt="`嘉宾老师${guest.name}`" loading="lazy">
-          </figure>
-        </div>
-        <div ref="mentorJoin" class="wbx-service-join">
-          <button
-            class="wbx-service-action wbx-service-action--primary wbx-service-join__trigger"
-            type="button"
-            aria-controls="mentor-join-popover"
-            :aria-expanded="isMentorJoinOpen"
-            @click="isMentorJoinOpen = !isMentorJoinOpen"
-            @keydown.esc.stop="closeMentorJoin"
-          >加入我们</button>
-          <div
-            id="mentor-join-popover"
-            class="wbx-service-join__popover"
-            :class="{ 'is-open': isMentorJoinOpen }"
-            :aria-hidden="!isMentorJoinOpen"
-          >
-            <strong>主理人微信：NICKY_YI</strong>
-            <span>联系主理人沟通确认后加入导师与 FDE 团队</span>
-          </div>
         </div>
       </section>
 

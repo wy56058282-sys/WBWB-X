@@ -16,6 +16,10 @@
   --wbx-body: "Avenir Next", Avenir, "PingFang SC", "Hiragino Sans GB",
     "Microsoft YaHei", sans-serif;
   --wbx-shadow: 4px 4px 0 var(--wbx-ink);
+  --wbx-content-width: 1104px;
+  --wbx-section-space: 64px;
+  --wbx-control-height: 48px;
+  --wbx-focus: 2px solid var(--wbx-accent);
   --vp-font-family-base: var(--wbx-body);
   --vp-c-brand-1: color-mix(
     in srgb,

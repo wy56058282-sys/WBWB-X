@@ -8,6 +8,7 @@ import {
 import { withBase } from 'vitepress'
 import { brand } from '../brand'
 import HomeAnalyticsStrip from './HomeAnalyticsStrip.vue'
+import HomeWorkshop from './HomeWorkshop.vue'
 import { readHomeAnalyticsConfig } from './homeAnalytics'
 import { homeUpdates } from './homeUpdates'
 
@@ -363,6 +364,8 @@ const workflowSteps = [
         </a>
       </div>
     </section>
+
+    <HomeWorkshop />
 
     <section class="wbx-section wbx-system" aria-labelledby="wbx-system-title">
       <div class="wbx-system__intro">

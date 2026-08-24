@@ -1,0 +1,45 @@
+.custom-about-page .VPDoc:not(.has-sidebar) .container { max-width: var(--wbx-content-width); }
+.custom-about-page .VPDoc:not(.has-sidebar) .content { max-width: none; }
+
+.wbx-about { padding: 20px 0 80px; color: var(--wbx-ink); }
+.wbx-about :where(h1, h2, p, figure) { margin-top: 0; }
+.wbx-about :where(h1, h2) { border: 0; padding: 0; letter-spacing: -0.02em; }
+.wbx-about__header { max-width: 740px; min-height: 220px; padding: 10px 0 48px; }
+.wbx-about__header .wbx-pixel-label,
+.wbx-about__heading .wbx-pixel-label { margin-bottom: 12px; color: var(--vp-c-brand-1); }
+.wbx-about h1 { margin-bottom: 16px; font-size: 51.2px; font-weight: 850; line-height: 58.88px; }
+.wbx-about h2 { margin-bottom: 0; font-size: 28px; font-weight: 700; line-height: 1.32; }
+.wbx-about__heading > p { margin-bottom: 0; color: var(--wbx-muted); font-size: 15px; line-height: 1.7; }
+.wbx-about__team { display: grid; gap: 30px; padding: var(--wbx-section-space) 0; background: var(--wbx-hover-surface); box-shadow: 48px 0 0 var(--wbx-hover-surface), -48px 0 0 var(--wbx-hover-surface); }
+.wbx-about__heading { display: flex; align-items: end; justify-content: space-between; gap: 40px; }
+.wbx-about__heading > div { min-width: 0; }
+.wbx-about__heading > p { max-width: 540px; }
+.wbx-about-members { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.wbx-about-member { min-width: 0; margin: 0; overflow: hidden; border: 2px solid var(--wbx-ink); background: var(--wbx-surface); }
+.wbx-about-member img { display: block; width: 100%; height: auto; object-fit: contain; }
+.wbx-about-join { display: flex; align-items: center; justify-content: flex-end; gap: 14px; }
+.wbx-about-join__trigger { display: inline-flex; min-height: var(--wbx-control-height); align-items: center; justify-content: center; border: 2px solid var(--wbx-ink); padding: 0 20px; color: var(--wbx-ink); background: var(--wbx-surface); cursor: pointer; font: inherit; font-size: 14px; font-weight: 700; text-decoration: none; }
+.wbx-about-join__trigger { color: #0d100d; background: var(--wbx-accent); }
+.wbx-about-join__trigger:hover,
+.wbx-about-join__trigger:focus-visible { outline: var(--wbx-focus); outline-offset: 3px; box-shadow: var(--wbx-shadow); transform: translate(-2px, -2px); }
+.wbx-about-join__popover { display: none; order: -1; width: 330px; border: 2px solid var(--wbx-ink); color: var(--wbx-ink); background: var(--wbx-surface); box-shadow: 8px 8px 0 var(--wbx-accent); }
+.wbx-about-join__popover strong,
+.wbx-about-join__popover span { display: block; padding: 0 14px; text-align: center; }
+.wbx-about-join__popover strong { padding-top: 12px; font-size: 14px; }
+.wbx-about-join__popover span { padding-top: 5px; padding-bottom: 14px; color: var(--wbx-muted); font-size: 12px; line-height: 1.5; }
+.wbx-about-join__popover.is-open { display: block; }
+
+@media (max-width: 900px) {
+  .wbx-about__heading { align-items: start; flex-direction: column; gap: 20px; }
+  .wbx-about-members { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  .wbx-about { padding-top: 0; }
+  .wbx-about h1 { font-size: 36px; line-height: 43.2px; }
+  .wbx-about__team { padding: 46px 0; box-shadow: 24px 0 0 var(--wbx-hover-surface), -24px 0 0 var(--wbx-hover-surface); }
+  .wbx-about-members { grid-template-columns: 1fr; }
+  .wbx-about-join { display: grid; }
+  .wbx-about-join__trigger { width: 100%; }
+  .wbx-about-join__popover { order: initial; width: min(100%, 320px); margin: 0 auto; }
+}

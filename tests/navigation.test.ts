@@ -19,11 +19,11 @@ describe('site navigation', () => {
       '开始阅读',
       '案例集',
       '服务',
-      '资料',
+      '关于我们',
       '交流群',
     ])
     expect(nav.find((item) => item.text === '服务')?.link).toBe('/help/')
-    expect(nav.find((item) => item.text === '资料')?.link).toBe('/resources/')
+    expect(nav.find((item) => item.text === '关于我们')?.link).toBe('/about/')
   })
 
   it('documents /help/ as paid custom service rather than a free questionnaire', () => {

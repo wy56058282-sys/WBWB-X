@@ -236,7 +236,7 @@ describe('custom service conversion page', () => {
     expect(Array.from(main?.children ?? []).slice(0, 3).map((item) => item.className)).toEqual([
       'wbx-service-section wbx-service-journey',
       'wbx-service-hero',
-      'wbx-service-section wbx-service-guests',
+      'wbx-service-section wbx-service-problems',
     ])
   })
 
@@ -272,63 +272,18 @@ describe('custom service conversion page', () => {
     expect(values[2].textContent).not.toContain('·')
   })
 
-  it('replaces the repeated registration panel with all six supplied guest teachers', () => {
+  it('keeps the legacy registration fragment on the workshop and moves team content out of service', () => {
     mountServicePage()
-    const guests = document.querySelector('#workshop-registration')
-    const heading = guests?.querySelector(':scope > .wbx-service-section__heading')
-    const images = Array.from(guests?.querySelectorAll<HTMLImageElement>('.wbx-service-guest img') ?? [])
-    expect(heading?.querySelector('.wbx-service-section__title-group h2')?.textContent).toBe('场景教练和前线部署工程师（FDE）')
-    expect(heading?.querySelector('.wbx-service-section__summary')?.textContent?.trim()).toBe('来自产品、设计、运营与 AI 实践的一线嘉宾，共同带你完成真实场景实战。')
-    expect(guests?.textContent).not.toContain('微信扫码报名并支付')
-    expect(images.map((image) => image.getAttribute('src'))).toEqual([
-      '/WBWB-X/article-assets/service/guest-wang-xiangxu.png',
-      '/WBWB-X/article-assets/service/guest-huang-xueling.png',
-      '/WBWB-X/article-assets/service/guest-li-zehui.png',
-      '/WBWB-X/article-assets/service/guest-wang-jinsong.png',
-      '/WBWB-X/article-assets/service/guest-liu-pengzhen.png',
-      '/WBWB-X/article-assets/service/guest-ding-yihao.png',
-    ])
-    expect(images.map((image) => image.getAttribute('alt'))).toEqual([
-      '嘉宾老师王翔旭', '嘉宾老师黄学铃', '嘉宾老师李泽慧', '嘉宾老师王劲松', '嘉宾老师刘鹏振', '嘉宾老师丁怡豪',
-    ])
-    expect(images.every((image) => image.getAttribute('loading') === 'lazy')).toBe(true)
-  })
-
-  it('offers an accessible mentor application contact below the guest grid', async () => {
-    mountServicePage()
-    const guests = document.querySelector('#workshop-registration')
-    const trigger = guests?.querySelector<HTMLButtonElement>('.wbx-service-join__trigger')
-    const popover = guests?.querySelector('.wbx-service-join__popover')
-
-    expect(guests?.lastElementChild?.classList.contains('wbx-service-join')).toBe(true)
-    expect(trigger?.textContent?.trim()).toBe('加入我们')
-    expect(trigger?.getAttribute('aria-controls')).toBe('mentor-join-popover')
-    expect(trigger?.getAttribute('aria-expanded')).toBe('false')
-    expect(popover?.getAttribute('id')).toBe('mentor-join-popover')
-    expect(popover?.querySelector('img')).toBeNull()
-    expect(popover?.textContent).toContain('主理人微信：NICKY_YI')
-    expect(popover?.querySelector('span')?.innerHTML).toBe('联系主理人沟通确认后加入导师与 FDE 团队')
-    expect(popover?.textContent).not.toContain('添加微信')
-
-    trigger?.click()
-    await nextTick()
-    expect(trigger?.getAttribute('aria-expanded')).toBe('true')
-    expect(popover?.getAttribute('aria-hidden')).toBe('false')
-
-    document.body.dispatchEvent(new Event('pointerdown', { bubbles: true }))
-    await nextTick()
-    expect(trigger?.getAttribute('aria-expanded')).toBe('false')
-
-    trigger?.click()
-    await nextTick()
-    trigger?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
-    await nextTick()
-    expect(trigger?.getAttribute('aria-expanded')).toBe('false')
+    const workshop = document.querySelector<HTMLElement>('#workshop-registration')
+    expect(workshop?.classList.contains('wbx-service-hero')).toBe(true)
+    expect(workshop?.querySelector('#workshop-history')).not.toBeNull()
+    expect(document.querySelector('.wbx-service-guests')).toBeNull()
+    expect(document.body.textContent).not.toContain('场景教练和前线部署工程师（FDE）')
   })
 
   it('keeps business logic concise and repeats meaningful conversion actions', () => {
     mountServicePage()
-    expect(document.querySelectorAll('.wbx-service > header, .wbx-service-main > section')).toHaveLength(7)
+    expect(document.querySelectorAll('.wbx-service > header, .wbx-service-main > section')).toHaveLength(6)
     expect(document.querySelectorAll('a[href="#workshop-registration"]')).toHaveLength(2)
     expect(document.querySelectorAll('a[href="#enterprise-custom"]')).toHaveLength(1)
     expect(document.querySelectorAll('.wbx-service-problem__item')).toHaveLength(3)
