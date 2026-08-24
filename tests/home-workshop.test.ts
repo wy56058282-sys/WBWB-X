@@ -28,16 +28,95 @@ describe('homepage workshop card', () => {
   })
   afterEach(() => { apps.splice(0).forEach((app) => app.unmount()); vi.useRealTimers() })
 
-  it('shows one upcoming workshop between task categories and the system section', () => {
+  it('shows the complete workshop section between task categories and the system section', () => {
     harness.mountHomePage()
     const sections = Array.from(document.querySelectorAll<HTMLElement>('.wbx-home > section'))
     const workshop = document.querySelector<HTMLElement>('.wbx-home-workshop')
     expect(workshop?.textContent).toContain('第二期')
     expect(workshop?.textContent).toContain('2026 年 8 月 29 日')
-    expect(workshop?.querySelectorAll('.wbx-home-workshop__poster')).toHaveLength(1)
-    expect(workshop?.querySelector<HTMLAnchorElement>('.wbx-home-workshop__all')?.getAttribute('href')).toBe('/help/#workshop-registration')
+    expect(workshop?.id).toBe('workshop-registration')
+    expect(workshop?.classList.contains('wbx-workshop')).toBe(true)
+    expect(workshop?.classList.contains('wbx-service')).toBe(false)
+    expect(workshop?.querySelector('.wbx-workshop__panel')).not.toBeNull()
+    expect(workshop?.querySelectorAll('.wbx-workshop__edition')).toHaveLength(3)
+    expect(workshop?.querySelector('.wbx-workshop__poster-navigation')).not.toBeNull()
+    expect(workshop?.querySelector('.wbx-home-workshop__all')).toBeNull()
     expect(sections.indexOf(workshop!)).toBe(sections.indexOf(document.querySelector('.wbx-tasks')!) + 1)
     expect(sections.indexOf(workshop!)).toBe(sections.indexOf(document.querySelector('.wbx-system')!) - 1)
+  })
+
+  it('switches editions and poster pages in the full homepage workshop section', async () => {
+    harness.mountHomePage()
+    const workshop = document.querySelector('.wbx-home-workshop')
+    const editions = Array.from(workshop?.querySelectorAll<HTMLButtonElement>('.wbx-workshop__edition') ?? [])
+    const posterSource = () => workshop?.querySelector<HTMLImageElement>('.wbx-workshop__poster')?.getAttribute('src')
+
+    expect(editions.map((edition) => edition.getAttribute('aria-selected'))).toEqual(['false', 'true', 'false'])
+    expect(posterSource()).toContain('workshop-cover.png')
+    workshop?.querySelector<HTMLButtonElement>('.wbx-workshop__poster-control--next')?.click()
+    await nextTick()
+    expect(posterSource()).toContain('workshop-829-agenda.png')
+
+    editions[0]?.click()
+    await nextTick()
+    expect(editions.map((edition) => edition.getAttribute('aria-selected'))).toEqual(['true', 'false', 'false'])
+    expect(posterSource()).toContain('workshop-815.png')
+    expect(workshop?.querySelector('.wbx-workshop__poster-page')?.textContent?.trim()).toBe('1 / 4')
+  })
+
+  it('supports complete keyboard tab navigation and poster cycling', async () => {
+    harness.mountHomePage()
+    const workshop = document.querySelector('.wbx-home-workshop')
+    const editions = Array.from(workshop?.querySelectorAll<HTMLButtonElement>('.wbx-workshop__edition') ?? [])
+    const posterSource = () => workshop?.querySelector<HTMLImageElement>('.wbx-workshop__poster')?.getAttribute('src')
+    const next = () => workshop?.querySelector<HTMLButtonElement>('.wbx-workshop__poster-control--next')
+    const previous = () => workshop?.querySelector<HTMLButtonElement>('.wbx-workshop__poster-control--previous')
+
+    editions[1].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }))
+    await nextTick()
+    expect(editions[2].getAttribute('aria-selected')).toBe('true')
+    expect(document.activeElement).toBe(editions[2])
+    expect(next()).toBeNull()
+
+    editions[2].dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }))
+    await nextTick()
+    expect(editions[0].getAttribute('aria-selected')).toBe('true')
+    editions[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }))
+    await nextTick()
+    expect(editions[2].getAttribute('aria-selected')).toBe('true')
+    editions[0].click()
+    await nextTick()
+    editions[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }))
+    await nextTick()
+    expect(editions[2].getAttribute('aria-selected')).toBe('true')
+    expect(document.activeElement).toBe(editions[2])
+
+    editions[1].click()
+    await nextTick()
+    for (const expected of ['workshop-829-agenda.png', 'workshop-829-benefits.png', 'workshop-829-reminder.png', 'workshop-cover.png']) {
+      next()?.click()
+      await nextTick()
+      expect(posterSource()).toContain(expected)
+    }
+    previous()?.click()
+    await nextTick()
+    expect(posterSource()).toContain('workshop-829-reminder.png')
+  })
+
+  it('does not steal focus when an open QR is closed by another workshop control', async () => {
+    harness.mountHomePage()
+    const trigger = document.querySelector<HTMLButtonElement>('.wbx-home-workshop__registration-trigger')!
+    const thirdEdition = document.querySelectorAll<HTMLButtonElement>('.wbx-workshop__edition')[2]
+
+    trigger.click()
+    await nextTick()
+    thirdEdition.dispatchEvent(new Event('pointerdown', { bubbles: true }))
+    thirdEdition.focus()
+    thirdEdition.click()
+    await nextTick()
+
+    expect(document.activeElement).toBe(thirdEdition)
+    expect(document.querySelector('.wbx-home-workshop__registration-popover.is-open')).toBeNull()
   })
 
   it('opens and closes the registration QR through activation, Escape, and outside pointer input', async () => {
@@ -100,7 +179,7 @@ describe('homepage workshop card', () => {
     await nextTick()
 
     expect(document.querySelector('.wbx-home-workshop__registration-trigger')).toBeNull()
-    expect(document.querySelector<HTMLAnchorElement>('.wbx-home-workshop__recap')?.getAttribute('href')).toBe('/help/#workshop-history')
+    expect(document.querySelector<HTMLAnchorElement>('.wbx-home-workshop__recap')?.getAttribute('href')).toBe('#workshop-history')
   })
 
   it('refreshes the selected edition after the next workshop boundary', async () => {

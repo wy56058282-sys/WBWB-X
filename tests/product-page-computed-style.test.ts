@@ -14,6 +14,7 @@ if (!vpDocLinkRule) {
 const pageStyles = {
   cases: readFileSync('docs/.vitepress/theme/cases.css', 'utf8'),
   service: readFileSync('docs/.vitepress/theme/service.css', 'utf8'),
+  workshop: readFileSync('docs/.vitepress/theme/workshop.css', 'utf8'),
 }
 const sharedStyles = readFileSync('docs/.vitepress/theme/custom.css', 'utf8')
 
@@ -116,8 +117,7 @@ function assertCompactSurfaces(doc: Document) {
 
   if (doc.querySelector('.wbx-service')) {
     size('.wbx-service-eyebrow', '12px')
-    size('.wbx-service-hero__facts dt', '12px')
-    size('.wbx-service-hero__copy .wbx-service-action', '14px')
+    size('.wbx-service .wbx-service-action', '14px')
     size('.wbx-service-enterprise__benefit', '18px')
     size('.wbx-service-case small', '10px')
     size('.wbx-service-case strong', '15px')
@@ -173,6 +173,8 @@ describe('product page computed styles', () => {
           h1: '.wbx-cases h1',
           h2: '.wbx-cases h2',
           body: '.primary-copy',
+          bodyFontSize: '16px',
+          bodyLineHeight: '1.75',
           compact: {
             '.gallery-eyebrow': '12px',
             '.submit-eyebrow': '12px',
@@ -188,9 +190,9 @@ describe('product page computed styles', () => {
           css: pageStyles.service,
           markup: `
             <div class="VPDoc"><div class="vp-doc"><section class="wbx-service">
-              <header class="wbx-service-hero"><div class="wbx-service-hero__copy">
-                <p class="wbx-service-eyebrow">服务标签</p><h1>定制服务</h1><p class="wbx-service-hero__lead">服务正文</p><a class="wbx-service-action">预约</a>
-              </div><dl class="wbx-service-hero__facts"><div><dt>价格</dt><dd>¥39</dd></div></dl></header>
+              <header class="wbx-service-header"><div class="wbx-service-header__title">
+                <p class="wbx-service-eyebrow">服务标签</p><h1>定制服务</h1><p class="wbx-service-header__summary">服务正文</p><a class="wbx-service-action">预约</a>
+              </div></header>
               <section class="wbx-service-section"><div class="wbx-service-section__heading"><h2>服务范围</h2></div></section>
               <section class="wbx-service-section wbx-service-enterprise"><div class="wbx-service-enterprise__body"><p class="wbx-service-enterprise__benefit">辅助提示</p></div></section>
               <section class="wbx-service-section wbx-service-related"><div class="wbx-service-related__grid"><a class="wbx-service-case">
@@ -200,10 +202,11 @@ describe('product page computed styles', () => {
           `,
           h1: '.wbx-service h1',
           h2: '.wbx-service h2',
-          body: '.wbx-service-hero__lead',
+          body: '.wbx-service-header__summary',
+          bodyFontSize: '15px',
+          bodyLineHeight: '1.7',
           compact: {
             '.wbx-service-eyebrow': '12px',
-            '.wbx-service-hero__facts dt': '12px',
             '.wbx-service-action': '14px',
             '.wbx-service-case small': '10px',
             '.wbx-service-case strong': '15px',
@@ -240,8 +243,8 @@ describe('product page computed styles', () => {
           fontSize: bodyStyle.fontSize,
           lineHeight: bodyStyle.lineHeight,
         }).toMatchObject({
-          fontSize: '16px',
-          lineHeight: '1.75',
+          fontSize: page.bodyFontSize,
+          lineHeight: page.bodyLineHeight,
         })
 
         assertCompactSurfaces(document)
@@ -353,32 +356,55 @@ describe('product page computed styles', () => {
       installStyles(pageStyles.service, themes.light, viewportWidth)
       document.body.innerHTML = `
         <div class="vp-doc"><section class="wbx-service">
-          <header class="wbx-service-hero">
-            <div class="wbx-service-hero__copy"><p class="wbx-service-eyebrow">CUSTOM SERVICE</p><h1>先用一场工作坊</h1><a class="wbx-service-action wbx-service-action--primary">报名最近一期</a></div>
-            <figure class="wbx-service-hero__media"><a class="wbx-service-hero__poster-link"><img class="wbx-service-hero__poster"></a></figure>
-          </header>
+          <header class="wbx-service-header"><div class="wbx-service-header__title"><p class="wbx-service-eyebrow">CUSTOM SERVICE</p><h1>定制服务</h1></div></header>
           <section class="wbx-service-section"><ol class="wbx-service-path"><li class="wbx-service-path__item">工作坊</li><li class="wbx-service-path__item">诊断</li><li class="wbx-service-path__item">定制</li></ol></section>
           <section class="wbx-service-section wbx-service-enterprise"><div class="wbx-service-enterprise__body"><p class="wbx-service-enterprise__benefit">10 席位诊断免费</p><a class="wbx-service-action wbx-service-action--primary">先参加工作坊</a></div></section>
         </section></div>
       `
 
       const path = getComputedStyle(document.querySelector('.wbx-service-path')!)
-      const posterLink = getComputedStyle(document.querySelector('.wbx-service-hero__poster-link')!)
       const enterprise = getComputedStyle(document.querySelector('.wbx-service-enterprise')!)
       const benefit = getComputedStyle(document.querySelector('.wbx-service-enterprise__benefit')!)
       const action = getComputedStyle(document.querySelector('.wbx-service-enterprise .wbx-service-action')!)
 
       expect(path.gridTemplateColumns).toBe(pathColumns)
       expect(path.listStyleType).toBe('none')
-      expect(posterLink.transition).toContain('transform 180ms ease')
       expect(enterprise.backgroundColor).toBe('rgb(13, 16, 13)')
       expect(benefit.borderLeftWidth).toBe('6px')
       expect(action.minHeight).toBe('48px')
 
       if (viewportWidth === 390) {
         expect(action.width).toBe('100%')
-        expect(getComputedStyle(document.querySelector('.wbx-service-hero')!).minWidth).toBe('0')
         expect(getComputedStyle(document.querySelector('.wbx-service-section')!).minWidth).toBe('0')
+      }
+    },
+  )
+
+  it.each([
+    { viewportWidth: 1440, panelColumns: 'minmax(0, 1.08fr) minmax(320px, .92fr)' },
+    { viewportWidth: 900, panelColumns: '1fr' },
+    { viewportWidth: 390, panelColumns: '1fr' },
+  ])(
+    'keeps the homepage workshop responsive at $viewportWidth px',
+    ({ viewportWidth, panelColumns }) => {
+      installStyles(pageStyles.workshop, themes.light, viewportWidth)
+      document.body.innerHTML = `
+        <section class="wbx-home-workshop wbx-workshop">
+          <div class="wbx-workshop__panel">
+            <div class="wbx-workshop__copy"><p class="wbx-workshop__eyebrow">WORKSHOP</p><h2 class="wbx-workshop__promise">场景实战工作坊</h2><div class="wbx-workshop__actions"><div class="wbx-home-workshop__registration"><button class="wbx-workshop__action wbx-workshop__action--primary">报名</button></div></div></div>
+            <figure class="wbx-workshop__media"><a class="wbx-workshop__poster-link"><img class="wbx-workshop__poster"></a></figure>
+          </div>
+          <div class="wbx-workshop__editions"><button class="wbx-workshop__edition" aria-selected="true">第二期</button></div>
+        </section>
+      `
+
+      expect(getComputedStyle(document.querySelector('.wbx-workshop__panel')!).gridTemplateColumns).toBe(panelColumns)
+      expect(getComputedStyle(document.querySelector('.wbx-workshop__poster-link')!).transition).toContain('transform 180ms ease')
+      expect(getComputedStyle(document.querySelector('.wbx-workshop__edition')!).boxShadow).not.toBe('')
+
+      if (viewportWidth === 390) {
+        expect(getComputedStyle(document.querySelector('.wbx-workshop')!).minWidth).toBe('0')
+        expect(getComputedStyle(document.querySelector('.wbx-workshop__action')!).width).toBe('100%')
       }
     },
   )

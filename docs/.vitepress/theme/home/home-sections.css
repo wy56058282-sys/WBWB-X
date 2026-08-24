@@ -210,45 +210,6 @@
   font-size: 13px;
 }
 
-.wbx-home-workshop {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(240px, .62fr);
-  gap: 48px;
-  align-items: center;
-  width: min(100%, var(--wbx-content-width));
-  margin-inline: auto;
-  padding-top: var(--wbx-section-space);
-}
-
-.wbx-home-workshop__copy { min-width: 0; }
-.wbx-home-workshop .wbx-pixel-label { margin-bottom: 10px; color: var(--vp-c-brand-1); }
-.wbx-home-workshop__state { display: inline-block; margin: 0 0 10px; padding: 4px 8px; color: #0d100d; background: var(--wbx-accent); font-family: var(--wbx-pixel); font-size: 11px; }
-.wbx-home-workshop h2 { margin: 0; border: 0; font-size: clamp(30px, 3vw, 43px); font-weight: 820; line-height: 1.2; letter-spacing: -0.045em; }
-.wbx-home-workshop h2 span { color: var(--vp-c-brand-1); font-family: var(--wbx-pixel); font-size: .45em; letter-spacing: .08em; white-space: nowrap; }
-.wbx-home-workshop__audience { margin: 14px 0 20px; color: var(--wbx-muted); font-size: 15px; line-height: 1.7; }
-.wbx-home-workshop__facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0 0 24px; border-top: 1px solid var(--wbx-line); border-bottom: 1px solid var(--wbx-line); }
-.wbx-home-workshop__facts > div { min-width: 0; padding: 12px 0; }
-.wbx-home-workshop__facts dt { color: var(--wbx-muted); font-size: 12px; font-weight: 700; }
-.wbx-home-workshop__facts dd { margin: 4px 0 0; font-size: 14px; font-weight: 700; line-height: 1.5; }
-.wbx-home-workshop__actions { display: flex; flex-wrap: wrap; gap: 12px; }
-.wbx-home-workshop__registration { position: relative; }
-.wbx-home-workshop__registration-trigger,
-.wbx-home-workshop__recap,
-.wbx-home-workshop__all { display: inline-flex; min-height: var(--wbx-control-height); align-items: center; justify-content: center; border: 2px solid var(--wbx-ink); padding: 0 20px; color: var(--wbx-ink); background: var(--wbx-surface); cursor: pointer; font: inherit; font-size: 14px; font-weight: 700; text-decoration: none; }
-.wbx-home-workshop__registration-trigger,
-.wbx-home-workshop__recap { color: #0d100d; background: var(--wbx-accent); }
-.wbx-home-workshop__registration-trigger:hover,
-.wbx-home-workshop__registration-trigger:focus-visible,
-.wbx-home-workshop__recap:hover,
-.wbx-home-workshop__recap:focus-visible,
-.wbx-home-workshop__all:hover,
-.wbx-home-workshop__all:focus-visible { outline: var(--wbx-focus); outline-offset: 3px; box-shadow: var(--wbx-shadow); transform: translate(-2px, -2px); }
-.wbx-home-workshop__registration-popover { position: absolute; z-index: 20; bottom: calc(100% + 14px); left: 0; display: none; width: 240px; overflow: hidden; border: 2px solid var(--wbx-ink); background: var(--wbx-surface); box-shadow: 8px 8px 0 var(--wbx-accent); }
-.wbx-home-workshop__registration-popover.is-open { display: block; }
-.wbx-home-workshop__registration-popover img { display: block; width: 100%; height: auto; aspect-ratio: 1; }
-.wbx-home-workshop__registration-popover strong { display: block; padding: 10px 12px; text-align: center; font-size: 13px; }
-.wbx-home-workshop__poster { display: block; width: 100%; max-width: 360px; justify-self: end; height: auto; border: 3px solid var(--wbx-ink); background: var(--wbx-surface); box-shadow: 10px 10px 0 var(--wbx-accent); }
-
 .wbx-system {
   display: grid;
   grid-template-columns: 0.86fr 1.14fr;

@@ -81,10 +81,6 @@
     grid-template-columns: 1fr;
   }
 
-  .wbx-home-workshop {
-    gap: 32px;
-  }
-
 }
 
 @media (min-width: 761px) and (max-width: 900px) {
@@ -267,30 +263,6 @@
     margin: 52px 4px 0;
     padding: 36px 24px;
   }
-
-  .wbx-home-workshop {
-    grid-template-columns: 1fr;
-    gap: 24px;
-    padding-top: 48px;
-  }
-
-  .wbx-home-workshop__poster {
-    max-width: min(100%, 360px);
-    justify-self: start;
-  }
-
-  .wbx-home-workshop__facts {
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
-
-  .wbx-home-workshop__actions {
-    display: grid;
-  }
-
-  .wbx-home-workshop__registration-trigger,
-  .wbx-home-workshop__recap,
-  .wbx-home-workshop__all { width: 100%; }
 
   .wbx-system__steps {
     grid-template-columns: 1fr;
