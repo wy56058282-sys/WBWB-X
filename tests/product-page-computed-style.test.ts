@@ -391,10 +391,10 @@ describe('product page computed styles', () => {
       document.body.innerHTML = `
         <section class="wbx-home-workshop wbx-workshop">
           <div class="wbx-workshop__panel">
-            <div class="wbx-workshop__copy"><div class="wbx-workshop__heading"><p class="wbx-workshop__eyebrow">WORKSHOP</p><h2 id="workshop-title">WorkBuddy X 工作坊 <span class="wbx-workshop__title-edition">第二期</span></h2></div><div class="wbx-workshop__actions"><div class="wbx-home-workshop__registration"><button class="wbx-workshop__action wbx-workshop__action--primary">报名</button></div></div></div>
+            <div class="wbx-workshop__left"><div class="wbx-workshop__copy"><div class="wbx-workshop__heading"><p class="wbx-workshop__eyebrow">WORKSHOP</p><h2 id="workshop-title">WorkBuddy X 工作坊 <span class="wbx-workshop__title-edition">第二期</span></h2></div><div class="wbx-workshop__actions"><div class="wbx-home-workshop__registration"><button class="wbx-workshop__action wbx-workshop__action--primary">报名</button></div></div></div><div class="wbx-workshop__editions"><button class="wbx-workshop__edition" aria-selected="true">第二期</button></div></div>
             <figure class="wbx-workshop__media"><a class="wbx-workshop__poster-link"><img class="wbx-workshop__poster"></a></figure>
+            <div class="wbx-workshop__poster-navigation">海报导航</div>
           </div>
-          <div class="wbx-workshop__editions"><button class="wbx-workshop__edition" aria-selected="true">第二期</button></div>
         </section>
       `
 
@@ -411,6 +411,24 @@ describe('product page computed styles', () => {
       expect(workshopTitle.fontWeight).toBe('820')
       expect(workshopTitle.lineHeight).toBe('1.2')
       expect(workshopTitle.letterSpacing).toBe('-0.045em')
+
+      const left = getComputedStyle(document.querySelector('.wbx-workshop__left')!)
+      const media = getComputedStyle(document.querySelector('.wbx-workshop__media')!)
+      const navigation = getComputedStyle(document.querySelector('.wbx-workshop__poster-navigation')!)
+      const editions = getComputedStyle(document.querySelector('.wbx-workshop__editions')!)
+      if (viewportWidth === 1440) {
+        expect(left.display).toBe('flex')
+        expect(left.flexDirection).toBe('column')
+        expect(editions.marginTop).toBe('auto')
+        expect(media.gridArea).toBe('media')
+        expect(navigation.gridArea).toBe('navigation')
+      } else {
+        expect(left.display).toBe('contents')
+        expect(getComputedStyle(document.querySelector('.wbx-workshop__copy')!).order).toBe('1')
+        expect(media.order).toBe('2')
+        expect(navigation.order).toBe('3')
+        expect(editions.order).toBe('4')
+      }
 
       if (viewportWidth === 390) {
         expect(getComputedStyle(document.querySelector('.wbx-workshop')!).minWidth).toBe('0')

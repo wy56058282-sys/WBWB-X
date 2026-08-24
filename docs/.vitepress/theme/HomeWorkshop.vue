@@ -135,49 +135,70 @@ onBeforeUnmount(() => {
       role="tabpanel"
       :aria-labelledby="`workshop-tab-${selectedWorkshop.id}`"
     >
-      <div class="wbx-workshop__copy">
-        <div class="wbx-workshop__heading">
-          <p class="wbx-workshop__eyebrow">WORKBUDDY X WORKSHOP</p>
-          <p v-if="selectedStatus === 'past'" class="wbx-home-workshop__state">活动回顾</p>
-          <h2 id="workshop-title">WorkBuddy X 工作坊 <span class="wbx-workshop__title-edition">{{ selectedWorkshop.edition }}</span></h2>
-          <p class="wbx-workshop__summary">先用一场工作坊，找到值得定制的真问题</p>
-        </div>
-        <p class="wbx-workshop__audience">面向人群：创业者、管理者、设计师、超级个体、一人公司（OPC）</p>
-        <dl class="wbx-workshop__facts" :aria-label="`${selectedWorkshop.edition}工作坊信息`">
-          <div><dt>时间</dt><dd><span>{{ selectedWorkshop.fullDate }}</span><span>{{ selectedWorkshop.time }}</span></dd></div>
-          <div><dt>规模</dt><dd>{{ selectedWorkshop.capacity }}</dd></div>
-          <div><dt>地点</dt><dd><span>{{ selectedWorkshop.venue }}</span><span>{{ selectedWorkshop.area }}</span></dd></div>
-        </dl>
-        <div class="wbx-workshop__actions">
-          <div v-if="selectedStatus !== 'past'" ref="registration" class="wbx-home-workshop__registration">
-            <button
-              ref="trigger"
-              class="wbx-workshop__action wbx-workshop__action--primary wbx-home-workshop__registration-trigger"
-              type="button"
-              aria-controls="home-workshop-registration"
-              :aria-expanded="isRegistrationOpen"
-              @click="toggleRegistration"
-            >报名最近一期</button>
-            <div
-              id="home-workshop-registration"
-              class="wbx-home-workshop__registration-popover"
-              :class="{ 'is-open': isRegistrationOpen }"
-              :aria-hidden="!isRegistrationOpen"
-            >
-              <img v-if="isRegistrationOpen" :src="withBase(selectedWorkshop.registrationQrPath)" alt="粗门报名二维码" width="466" height="466">
-              <strong>微信扫码报名</strong>
-            </div>
+      <div class="wbx-workshop__left">
+        <div class="wbx-workshop__copy">
+          <div class="wbx-workshop__heading">
+            <p class="wbx-workshop__eyebrow">WORKBUDDY X WORKSHOP</p>
+            <p v-if="selectedStatus === 'past'" class="wbx-home-workshop__state">活动回顾</p>
+            <h2 id="workshop-title">WorkBuddy X 工作坊 <span class="wbx-workshop__title-edition">{{ selectedWorkshop.edition }}</span></h2>
+            <p class="wbx-workshop__summary">先用一场工作坊，找到值得定制的真问题</p>
           </div>
-          <a
-            v-else
-            ref="recap"
-            class="wbx-workshop__action wbx-workshop__action--primary wbx-home-workshop__recap"
-            :href="selectedWorkshop.activityDetailUrl || '#workshop-history'"
-            :target="selectedWorkshop.activityDetailUrl ? '_blank' : undefined"
-            :rel="selectedWorkshop.activityDetailUrl ? 'noopener noreferrer' : undefined"
-            :aria-label="selectedWorkshop.activityDetailUrl ? '查看活动回顾（在新页面打开）' : undefined"
-          >查看活动回顾</a>
-          <a class="wbx-workshop__action" :href="withBase('/help/#enterprise-custom')">了解企业服务</a>
+          <p class="wbx-workshop__audience">面向人群：创业者、管理者、设计师、超级个体、一人公司（OPC）</p>
+          <dl class="wbx-workshop__facts" :aria-label="`${selectedWorkshop.edition}工作坊信息`">
+            <div><dt>时间</dt><dd><span>{{ selectedWorkshop.fullDate }}</span><span>{{ selectedWorkshop.time }}</span></dd></div>
+            <div><dt>规模</dt><dd>{{ selectedWorkshop.capacity }}</dd></div>
+            <div><dt>地点</dt><dd><span>{{ selectedWorkshop.venue }}</span><span>{{ selectedWorkshop.area }}</span></dd></div>
+          </dl>
+          <div class="wbx-workshop__actions">
+            <div v-if="selectedStatus !== 'past'" ref="registration" class="wbx-home-workshop__registration">
+              <button
+                ref="trigger"
+                class="wbx-workshop__action wbx-workshop__action--primary wbx-home-workshop__registration-trigger"
+                type="button"
+                aria-controls="home-workshop-registration"
+                :aria-expanded="isRegistrationOpen"
+                @click="toggleRegistration"
+              >报名最近一期</button>
+              <div
+                id="home-workshop-registration"
+                class="wbx-home-workshop__registration-popover"
+                :class="{ 'is-open': isRegistrationOpen }"
+                :aria-hidden="!isRegistrationOpen"
+              >
+                <img v-if="isRegistrationOpen" :src="withBase(selectedWorkshop.registrationQrPath)" alt="粗门报名二维码" width="466" height="466">
+                <strong>微信扫码报名</strong>
+              </div>
+            </div>
+            <a
+              v-else
+              ref="recap"
+              class="wbx-workshop__action wbx-workshop__action--primary wbx-home-workshop__recap"
+              :href="selectedWorkshop.activityDetailUrl || '#workshop-history'"
+              :target="selectedWorkshop.activityDetailUrl ? '_blank' : undefined"
+              :rel="selectedWorkshop.activityDetailUrl ? 'noopener noreferrer' : undefined"
+              :aria-label="selectedWorkshop.activityDetailUrl ? '查看活动回顾（在新页面打开）' : undefined"
+            >查看活动回顾</a>
+            <a class="wbx-workshop__action" :href="withBase('/help/#enterprise-custom')">了解企业服务</a>
+          </div>
+        </div>
+        <div id="workshop-history" class="wbx-workshop__editions" role="tablist" aria-label="选择工作坊期次">
+          <button
+            v-for="(edition, index) in editions"
+            :id="`workshop-tab-${edition.id}`"
+            :key="edition.id"
+            class="wbx-workshop__edition"
+            type="button"
+            role="tab"
+            aria-controls="workshop-panel"
+            :aria-selected="selectedWorkshopIndex === index"
+            :tabindex="selectedWorkshopIndex === index ? 0 : -1"
+            :aria-label="`查看${edition.edition} ${edition.date} 工作坊信息`"
+            @click="selectWorkshop(index)"
+            @keydown="handleWorkshopTabKeydown($event, index)"
+          >
+            <img :src="withBase(edition.coverPath)" alt="" width="1800" height="2400">
+            <span><strong>{{ edition.edition }}</strong><span>{{ edition.date }}</span><small v-if="selectedWorkshopIndex === index">当前</small></span>
+          </button>
         </div>
       </div>
       <figure class="wbx-workshop__media">
@@ -194,33 +215,14 @@ onBeforeUnmount(() => {
         <div v-else class="wbx-workshop__poster-frame">
           <img class="wbx-workshop__poster wbx-home-workshop__poster" :src="withBase(selectedPosterPath)" :alt="`WorkBuddy 场景实战工作坊海报（${selectedWorkshop.edition}，第 ${selectedPosterIndex + 1} 页）`" width="1800" height="2400">
         </div>
-        <div class="wbx-workshop__poster-navigation" aria-label="切换海报页面">
-          <span class="wbx-workshop__poster-page" aria-live="polite">{{ selectedPosterIndex + 1 }} / {{ selectedWorkshop.posterPaths.length }}</span>
-          <div v-if="selectedWorkshop.posterPaths.length > 1" class="wbx-workshop__poster-actions">
-            <button class="wbx-workshop__poster-control wbx-workshop__poster-control--previous" type="button" aria-label="查看上一张海报" @click="selectAdjacentPoster(-1)"><span aria-hidden="true">←</span></button>
-            <button class="wbx-workshop__poster-control wbx-workshop__poster-control--next" type="button" aria-label="查看下一张海报" @click="selectAdjacentPoster(1)"><span aria-hidden="true">→</span></button>
-          </div>
-        </div>
       </figure>
-    </div>
-    <div id="workshop-history" class="wbx-workshop__editions" role="tablist" aria-label="选择工作坊期次">
-      <button
-        v-for="(edition, index) in editions"
-        :id="`workshop-tab-${edition.id}`"
-        :key="edition.id"
-        class="wbx-workshop__edition"
-        type="button"
-        role="tab"
-        aria-controls="workshop-panel"
-        :aria-selected="selectedWorkshopIndex === index"
-        :tabindex="selectedWorkshopIndex === index ? 0 : -1"
-        :aria-label="`查看${edition.edition} ${edition.date} 工作坊信息`"
-        @click="selectWorkshop(index)"
-        @keydown="handleWorkshopTabKeydown($event, index)"
-      >
-        <img :src="withBase(edition.coverPath)" alt="" width="1800" height="2400">
-        <span><strong>{{ edition.edition }}</strong><span>{{ edition.date }}</span><small v-if="selectedWorkshopIndex === index">当前</small></span>
-      </button>
+      <div class="wbx-workshop__poster-navigation" aria-label="切换海报页面">
+        <span class="wbx-workshop__poster-page" aria-live="polite">{{ selectedPosterIndex + 1 }} / {{ selectedWorkshop.posterPaths.length }}</span>
+        <div v-if="selectedWorkshop.posterPaths.length > 1" class="wbx-workshop__poster-actions">
+          <button class="wbx-workshop__poster-control wbx-workshop__poster-control--previous" type="button" aria-label="查看上一张海报" @click="selectAdjacentPoster(-1)"><span aria-hidden="true">←</span></button>
+          <button class="wbx-workshop__poster-control wbx-workshop__poster-control--next" type="button" aria-label="查看下一张海报" @click="selectAdjacentPoster(1)"><span aria-hidden="true">→</span></button>
+        </div>
+      </div>
     </div>
   </section>
 </template>
