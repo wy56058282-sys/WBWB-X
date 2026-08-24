@@ -391,7 +391,7 @@ describe('product page computed styles', () => {
       document.body.innerHTML = `
         <section class="wbx-home-workshop wbx-workshop">
           <div class="wbx-workshop__panel">
-            <div class="wbx-workshop__copy"><p class="wbx-workshop__eyebrow">WORKSHOP</p><h2 class="wbx-workshop__promise">场景实战工作坊</h2><div class="wbx-workshop__actions"><div class="wbx-home-workshop__registration"><button class="wbx-workshop__action wbx-workshop__action--primary">报名</button></div></div></div>
+            <div class="wbx-workshop__copy"><div class="wbx-workshop__heading"><p class="wbx-workshop__eyebrow">WORKSHOP</p><h2 id="workshop-title">WorkBuddy X 工作坊 <span class="wbx-workshop__title-edition">第二期</span></h2></div><div class="wbx-workshop__actions"><div class="wbx-home-workshop__registration"><button class="wbx-workshop__action wbx-workshop__action--primary">报名</button></div></div></div>
             <figure class="wbx-workshop__media"><a class="wbx-workshop__poster-link"><img class="wbx-workshop__poster"></a></figure>
           </div>
           <div class="wbx-workshop__editions"><button class="wbx-workshop__edition" aria-selected="true">第二期</button></div>
@@ -402,6 +402,11 @@ describe('product page computed styles', () => {
       expect(getComputedStyle(document.querySelector('.wbx-workshop__poster-link')!).transition).toContain('transform 180ms ease')
       expect(getComputedStyle(document.querySelector('.wbx-workshop__edition')!).boxShadow).not.toBe('')
       expect(getComputedStyle(document.querySelector('.wbx-workshop')!).marginLeft).toBe(titleInset)
+      const workshopTitle = getComputedStyle(document.querySelector('#workshop-title')!)
+      expect(workshopTitle.fontSize).toBe('clamp(30px, 3vw, 43px)')
+      expect(workshopTitle.fontWeight).toBe('820')
+      expect(workshopTitle.lineHeight).toBe('1.2')
+      expect(workshopTitle.letterSpacing).toBe('-0.045em')
 
       if (viewportWidth === 390) {
         expect(getComputedStyle(document.querySelector('.wbx-workshop')!).minWidth).toBe('0')
