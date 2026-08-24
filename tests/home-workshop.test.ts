@@ -56,6 +56,17 @@ describe('homepage workshop card', () => {
     expect(workshop?.querySelector('.wbx-workshop__tagline')).toBeNull()
   })
 
+  it('temporarily omits the enterprise service action without affecting workshop controls', () => {
+    harness.mountHomePage()
+    const workshop = document.querySelector('.wbx-home-workshop')
+
+    expect(workshop?.textContent).not.toContain('了解企业服务')
+    expect(workshop?.querySelector('a[href="/help/#enterprise-custom"]')).toBeNull()
+    expect(workshop?.querySelector('.wbx-home-workshop__registration-trigger')).not.toBeNull()
+    expect(workshop?.querySelector('.wbx-workshop__poster')).not.toBeNull()
+    expect(workshop?.querySelectorAll('.wbx-workshop__edition')).toHaveLength(3)
+  })
+
   it('switches editions and poster pages in the full homepage workshop section', async () => {
     harness.mountHomePage()
     const workshop = document.querySelector('.wbx-home-workshop')

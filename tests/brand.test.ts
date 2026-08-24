@@ -47,9 +47,9 @@ describe('brand configuration', () => {
     const path = 'docs/public/community/wechat-group.png'
     const qr = readFileSync(path)
 
-    expect(readPngDimensions(path)).toEqual({ width: 490, height: 490 })
+    expect(readPngDimensions(path)).toEqual({ width: 800, height: 800 })
     expect(createHash('sha256').update(qr).digest('hex')).toBe(
-      'd6c7aaf330525adbc842ddea331542504de0bfa001cbdc1ccf9ea7d02cd96ad3',
+      '5821b85b89fd3cab0e82ca37a5e25bb8573e3f8bd72cb42617f01a02a611637a',
     )
   })
 
@@ -171,7 +171,8 @@ describe('brand configuration', () => {
     expect(source).toContain('withBase(brand.qrPath)')
     expect(source).not.toContain('aria-modal=')
     expect(source).toContain('欢迎创客一起共创')
-    expect(source).toContain('二维码有效期至 8 月 20 日')
+    expect(source).toContain('二维码 9 月 1 日前有效')
+    expect(source).not.toContain('二维码有效期至 8 月 20 日')
     expect(source).not.toContain('二维码过期后')
     expect(source).toContain('aria-describedby="wbx-community-qr-help"')
     expect(source).not.toContain('wbx-community-qr-maintenance')

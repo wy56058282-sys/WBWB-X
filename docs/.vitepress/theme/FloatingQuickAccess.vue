@@ -9,7 +9,7 @@ const hoveredItem = ref<string | null>(null)
 const qrDialog = ref<HTMLElement | null>(null)
 const qrPopupStyle = ref<Record<string, string>>({})
 
-const TEACHING_MATERIALS_URL = 'https://pan.quark.cn/s/bf6971c32304?pwd=4yCv'
+const TEACHING_MATERIALS_URL = 'https://pan.quark.cn/s/4b2488289c79'
 const SPARKX_URL = 'https://www.sparkx.zone/'
 const CONTACT_EMAIL = 'contact@sparkx.zone'
 const QR_IMAGE_PATH = '/brand/wechat-official-qr.png'
@@ -38,7 +38,7 @@ function collapse() {
   isExpanded.value = false
 }
 
-const SHARE_URL = 'http://wbx.sparkx.zone/'
+const SHARE_URL = 'https://wbx.sparkx.zone/'
 
 async function copyLink() {
   try {

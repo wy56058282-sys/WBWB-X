@@ -96,7 +96,7 @@ describe('CommunityQr', () => {
     expect(dialog).not.toBeNull()
     expect(document.activeElement).toBe(before)
     expect(dialog?.querySelector('button')).toBeNull()
-    expect(dialog?.textContent).toContain('欢迎创客一起共创 · 二维码有效期至 8 月 20 日')
+    expect(dialog?.textContent).toContain('欢迎创客一起共创 · 二维码 9 月 1 日前有效')
   })
 
   it('delays preview close and cancels it when the pointer re-enters', async () => {

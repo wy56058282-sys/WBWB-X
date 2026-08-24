@@ -117,7 +117,7 @@ describe('floating quick access button', () => {
 
     // Wait for clipboard to be called with the site URL
     await vi.waitFor(() => {
-      expect(writeText).toHaveBeenCalledWith('http://wbx.sparkx.zone/')
+      expect(writeText).toHaveBeenCalledWith('https://wbx.sparkx.zone/')
     })
   })
 
@@ -136,7 +136,7 @@ describe('floating quick access button', () => {
     materialsButton?.click()
 
     expect(openSpy).toHaveBeenCalledWith(
-      'https://pan.quark.cn/s/bf6971c32304?pwd=4yCv',
+      'https://pan.quark.cn/s/4b2488289c79',
       '_blank',
       'noopener,noreferrer',
     )

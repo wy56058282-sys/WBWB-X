@@ -158,7 +158,7 @@ onBeforeUnmount(() => {
         />
 
         <p id="wbx-community-qr-help" class="wbx-community-qr__help">
-          欢迎创客一起共创 · 二维码有效期至 8 月 20 日
+          欢迎创客一起共创 · 二维码 9 月 1 日前有效
         </p>
       </section>
     </div>

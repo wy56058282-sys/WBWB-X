@@ -178,7 +178,6 @@ onBeforeUnmount(() => {
               :rel="selectedWorkshop.activityDetailUrl ? 'noopener noreferrer' : undefined"
               :aria-label="selectedWorkshop.activityDetailUrl ? '查看活动回顾（在新页面打开）' : undefined"
             >查看活动回顾</a>
-            <a class="wbx-workshop__action" :href="withBase('/help/#enterprise-custom')">了解企业服务</a>
           </div>
         </div>
         <div id="workshop-history" class="wbx-workshop__editions" role="tablist" aria-label="选择工作坊期次">
