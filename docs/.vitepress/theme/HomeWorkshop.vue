@@ -1,12 +1,25 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
-import { selectRelevantWorkshopEdition, workshopEditions } from '../workshop-editions'
+import {
+  homeWorkshopReferenceTime,
+  nextWorkshopBoundary,
+  selectRelevantWorkshopEdition,
+  workshopEditions,
+  type WorkshopEdition,
+} from '../workshop-editions'
 
-const selection = computed(() => selectRelevantWorkshopEdition(workshopEditions, new Date()))
+const props = defineProps<{
+  editions?: readonly WorkshopEdition[]
+}>()
+
+const editions = computed(() => props.editions ?? workshopEditions)
+const currentTime = ref(homeWorkshopReferenceTime)
+const selection = computed(() => selectRelevantWorkshopEdition(editions.value, currentTime.value))
 const isRegistrationOpen = ref(false)
 const registration = ref<HTMLElement | null>(null)
 const trigger = ref<HTMLButtonElement | null>(null)
+let refreshTimer: ReturnType<typeof window.setTimeout> | undefined
 
 function closeRegistration(restoreFocus = false) {
   isRegistrationOpen.value = false
@@ -29,11 +42,29 @@ function handleEscape(event: KeyboardEvent) {
   }
 }
 
+function scheduleWorkshopRefresh() {
+  if (refreshTimer !== undefined) {
+    window.clearTimeout(refreshTimer)
+    refreshTimer = undefined
+  }
+
+  const boundary = nextWorkshopBoundary(editions.value, currentTime.value)
+  if (boundary === undefined) return
+
+  refreshTimer = window.setTimeout(() => {
+    currentTime.value = new Date()
+    scheduleWorkshopRefresh()
+  }, Math.max(1, boundary - currentTime.value.getTime() + 1))
+}
+
 onMounted(() => {
+  currentTime.value = new Date()
+  scheduleWorkshopRefresh()
   document.addEventListener('pointerdown', handleOutsidePointer)
   window.addEventListener('keydown', handleEscape)
 })
 onBeforeUnmount(() => {
+  if (refreshTimer !== undefined) window.clearTimeout(refreshTimer)
   document.removeEventListener('pointerdown', handleOutsidePointer)
   window.removeEventListener('keydown', handleEscape)
 })

@@ -20,6 +20,8 @@ export interface WorkshopEdition {
 
 export type WorkshopEditionStatus = 'upcoming' | 'ongoing' | 'past'
 
+export const homeWorkshopReferenceTime = new Date('2026-08-24T00:00:00+08:00')
+
 export interface WorkshopEditionSelection {
   edition: WorkshopEdition
   status: WorkshopEditionStatus
@@ -91,7 +93,7 @@ export function selectRelevantWorkshopEdition(
 ): WorkshopEditionSelection | undefined {
   const nowValue = now.getTime()
   const notEnded = editions
-    .filter((edition) => dateValue(edition.endsAt) >= nowValue)
+    .filter((edition) => dateValue(edition.endsAt) > nowValue)
     .sort((left, right) => dateValue(left.startsAt) - dateValue(right.startsAt))
 
   if (notEnded[0]) {
@@ -107,4 +109,16 @@ export function selectRelevantWorkshopEdition(
   return mostRecentlyEnded
     ? { edition: mostRecentlyEnded, status: 'past' }
     : undefined
+}
+
+export function nextWorkshopBoundary(
+  editions: readonly WorkshopEdition[],
+  now: Date,
+) {
+  const nowValue = now.getTime()
+  return editions
+    .flatMap((edition) => [edition.startsAt, edition.endsAt])
+    .map((value) => dateValue(value))
+    .filter((value) => value > nowValue)
+    .sort((left, right) => left - right)[0]
 }

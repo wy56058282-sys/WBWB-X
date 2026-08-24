@@ -25,6 +25,10 @@ describe('selectRelevantWorkshopEdition', () => {
     expect(selectRelevantWorkshopEdition(editions, new Date('2026-08-29T16:00:00+08:00'))).toMatchObject({ edition: { id: 'ongoing' }, status: 'ongoing' })
   })
 
+  it('treats the exact end instant as past', () => {
+    expect(selectRelevantWorkshopEdition(editions.slice(1, 2), new Date('2026-08-29T18:00:00+08:00'))).toMatchObject({ edition: { id: 'ongoing' }, status: 'past' })
+  })
+
   it('uses the most recently ended edition as a detail recap', () => {
     expect(selectRelevantWorkshopEdition(editions.slice(0, 1), new Date('2026-08-20T12:00:00+08:00'))).toMatchObject({ edition: { id: 'past-with-detail', activityDetailUrl: 'https://example.com/recap' }, status: 'past' })
   })

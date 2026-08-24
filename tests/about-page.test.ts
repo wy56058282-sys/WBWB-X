@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createApp, nextTick, type App } from 'vue'
 
@@ -25,6 +26,16 @@ describe('about page', () => {
     expect(resources.default).toContain('title: 资料')
   })
 
+  it('uses VitePress-compatible About metadata without a literal title placeholder', () => {
+    const source = readFileSync('docs/about/index.md', 'utf8')
+    expect(source).toContain('title: 关于我们')
+    expect(source).toContain('description: 认识 WorkBuddy-X 的场景教练和前线部署工程师团队。')
+    expect(source).toContain('breadcrumbTitle: 关于我们')
+    expect(source).toContain('titleTemplate: false')
+    expect(source).not.toContain('%s')
+    expect(nav.find((item) => item.link === '/about/')?.text).toBe('关于我们')
+  })
+
   it('contains the existing six team members and accessible join interaction', async () => {
     mountAboutPage()
     const people = Array.from(document.querySelectorAll<HTMLImageElement>('.wbx-about-member img'))
@@ -39,5 +50,22 @@ describe('about page', () => {
     await nextTick()
     expect(trigger?.getAttribute('aria-expanded')).toBe('true')
     expect(popover?.textContent).toContain('主理人微信：NICKY_YI')
+  })
+
+  it('closes the join contact on Escape and outside pointer input', async () => {
+    mountAboutPage()
+    const trigger = document.querySelector<HTMLButtonElement>('.wbx-about-join__trigger')
+
+    trigger?.click()
+    await nextTick()
+    trigger?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
+    await nextTick()
+    expect(trigger?.getAttribute('aria-expanded')).toBe('false')
+
+    trigger?.click()
+    await nextTick()
+    document.body.dispatchEvent(new Event('pointerdown', { bubbles: true }))
+    await nextTick()
+    expect(trigger?.getAttribute('aria-expanded')).toBe('false')
   })
 })

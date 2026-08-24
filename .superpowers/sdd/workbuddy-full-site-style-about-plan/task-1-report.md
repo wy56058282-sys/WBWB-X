@@ -83,3 +83,70 @@ Tests  41 passed (41)
 ## Concerns
 
 - The successful final build emits VitePress's advisory that some bundles exceed 500 kB. This is pre-existing build tooling guidance and was not changed by this task.
+
+---
+
+# Fix round 1 report
+
+## Implementation summary
+
+- Made the homepage workshop selection hydration-safe by using the exported fixed `homeWorkshopReferenceTime` during SSR and initial hydration, then switching to the client clock on mount.
+- Added one boundary-based refresh timer. It schedules exactly for the next workshop start/end boundary, refreshes the selection, reschedules itself, and is cleared on unmount.
+- Made workshop end instants exclusive: an edition is past at its exact `endsAt` value.
+- Added component rendering coverage for second QR activation, ARIA linkage, ongoing registration, external recap, internal recap fallback, and the automatic boundary refresh.
+- Added About join Escape/outside closure, frontmatter/title-template, About-nav, and responsive CSS contract coverage.
+- Changed the About frontmatter to `titleTemplate: false`, eliminating the literal `%s` in the browser title.
+
+## Focused TDD evidence
+
+### RED
+
+Command:
+
+```sh
+pnpm test tests/workshop-editions.test.ts tests/about-page.test.ts tests/home-workshop.test.ts tests/workshop-page-style.test.ts
+```
+
+Exact result:
+
+```text
+Test Files  3 failed | 1 passed (4)
+Tests  4 failed | 12 passed (16)
+```
+
+The failures were the expected exclusive-end boundary (`ongoing` returned instead of `past`), the incompatible `%s` title template, and missing past-detail/fallback rendering because the component had no injected edition data/state handling.
+
+An intermediate focused run also exposed the Vue compiler rule that `<script setup>` cannot export an ES module value. The stable reference time was moved into the shared workshop module before rerunning the suite.
+
+### GREEN
+
+Command:
+
+```sh
+pnpm test tests/workshop-editions.test.ts tests/about-page.test.ts tests/home-workshop.test.ts tests/workshop-page-style.test.ts
+```
+
+Exact result:
+
+```text
+Test Files  4 passed (4)
+Tests  17 passed (17)
+```
+
+## Full verification
+
+- `pnpm test` — exit 0; `Test Files 64 passed (64)` and `Tests 399 passed (399)`.
+- `pnpm run check:links` — exit 0; `Checked 17 internal Markdown links: 0 broken`.
+- `pnpm build` — exit 0; client/server bundles built and pages rendered successfully.
+
+## Self-review
+
+- Confirmed the server and first hydrated render both use the same fixed reference time; mounted clients immediately adopt the real clock.
+- Confirmed the refresh delay is calculated from the nearest future start/end boundary rather than polling.
+- Confirmed the `endsAt > now` rule changes only the requested exact-end behavior.
+- Confirmed the About title uses an existing VitePress-compatible `titleTemplate: false` pattern and the new test rejects `%s`.
+- Ran `git diff --check`; no whitespace errors.
+
+## Concerns
+
+- The successful build still emits VitePress's non-blocking chunk-size advisory for bundles over 500 kB.
