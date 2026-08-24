@@ -5,7 +5,7 @@ describe('workshop and About responsive styles', () => {
   it('keeps the full workshop panel, poster, facts, and editions in the homepage stylesheet', () => {
     const styles = readFileSync('docs/.vitepress/theme/workshop.css', 'utf8')
 
-    expect(styles).toMatch(/\.wbx-workshop__panel\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1\.08fr\) minmax\(320px, \.92fr\)/s)
+    expect(styles).toMatch(/\.wbx-workshop__panel\s*\{[^}]*grid-template-columns:\s*minmax\(0, 570px\) minmax\(320px, 486px\)[^}]*justify-content:\s*space-between/s)
     expect(styles).toMatch(/\.wbx-workshop__poster\s*\{[^}]*width:\s*100%[^}]*aspect-ratio:\s*3 \/ 4/s)
     expect(styles).toMatch(/\.wbx-workshop__facts\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)/s)
     expect(styles).toMatch(/\.wbx-workshop__editions\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)/s)

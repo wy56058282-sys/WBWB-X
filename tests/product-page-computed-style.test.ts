@@ -381,12 +381,12 @@ describe('product page computed styles', () => {
   )
 
   it.each([
-    { viewportWidth: 1440, panelColumns: 'minmax(0, 1.08fr) minmax(320px, .92fr)', titleInset: '52px' },
-    { viewportWidth: 900, panelColumns: '1fr', titleInset: '52px' },
-    { viewportWidth: 390, panelColumns: '1fr', titleInset: '4px' },
+    { viewportWidth: 1440, panelColumns: 'minmax(0, 570px) minmax(320px, 486px)', sectionWidth: 'calc(100% - 104px)', titleInset: '52px' },
+    { viewportWidth: 900, panelColumns: '1fr', sectionWidth: 'calc(100% - 104px)', titleInset: '52px' },
+    { viewportWidth: 390, panelColumns: '1fr', sectionWidth: 'calc(100% - 8px)', titleInset: '4px' },
   ])(
     'keeps the homepage workshop responsive at $viewportWidth px',
-    ({ viewportWidth, panelColumns, titleInset }) => {
+    ({ viewportWidth, panelColumns, sectionWidth, titleInset }) => {
       installStyles(pageStyles.workshop, themes.light, viewportWidth)
       document.body.innerHTML = `
         <section class="wbx-home-workshop wbx-workshop">
@@ -398,10 +398,14 @@ describe('product page computed styles', () => {
         </section>
       `
 
-      expect(getComputedStyle(document.querySelector('.wbx-workshop__panel')!).gridTemplateColumns).toBe(panelColumns)
+      const panel = getComputedStyle(document.querySelector('.wbx-workshop__panel')!)
+      expect(panel.gridTemplateColumns).toBe(panelColumns)
       expect(getComputedStyle(document.querySelector('.wbx-workshop__poster-link')!).transition).toContain('transform 180ms ease')
       expect(getComputedStyle(document.querySelector('.wbx-workshop__edition')!).boxShadow).not.toBe('')
-      expect(getComputedStyle(document.querySelector('.wbx-workshop')!).marginLeft).toBe(titleInset)
+      const workshop = getComputedStyle(document.querySelector('.wbx-workshop')!)
+      expect(workshop.width).toBe(sectionWidth)
+      expect(workshop.marginLeft).toBe(titleInset)
+      if (viewportWidth === 1440) expect(panel.justifyContent).toBe('space-between')
       const workshopTitle = getComputedStyle(document.querySelector('#workshop-title')!)
       expect(workshopTitle.fontSize).toBe('clamp(30px, 3vw, 43px)')
       expect(workshopTitle.fontWeight).toBe('820')

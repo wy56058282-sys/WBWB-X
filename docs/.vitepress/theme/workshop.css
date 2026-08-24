@@ -1,7 +1,7 @@
 .wbx-workshop {
   display: grid;
   grid-template-columns: 1fr;
-  width: min(calc(100% - 52px), var(--wbx-content-width));
+  width: calc(100% - 104px);
   margin: 0 auto 0 52px;
   padding: var(--wbx-section-space) 0 64px;
   color: var(--wbx-ink);
@@ -15,7 +15,7 @@
 .wbx-workshop__eyebrow { margin-bottom: 14px; color: var(--vp-c-brand-1); font-family: var(--wbx-pixel); font-size: 12px; font-weight: 700; letter-spacing: .09em; }
 .wbx-workshop__title-edition { margin-left: 12px; color: var(--vp-c-brand-1); font-family: var(--wbx-pixel); font-size: 16px; font-weight: 800; letter-spacing: .09em; white-space: nowrap; }
 .wbx-workshop__summary { max-width: 540px; margin: 12px 0 0; color: var(--wbx-muted); font-size: 15px; line-height: 1.7; text-align: left; }
-.wbx-workshop__panel { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(320px, .92fr); order: 1; gap: 48px; align-items: start; margin-bottom: 30px; }
+.wbx-workshop__panel { display: grid; grid-template-columns: minmax(0, 570px) minmax(320px, 486px); order: 1; justify-content: space-between; gap: 48px; align-items: start; margin-bottom: 30px; }
 .wbx-workshop__copy { min-width: 0; }
 .wbx-workshop .wbx-workshop__promise { max-width: 640px; margin-bottom: 10px; font-size: 36px; font-weight: 850; line-height: 1.28; }
 .wbx-workshop__tagline { margin-bottom: 8px; font-size: 20px; font-weight: 800; line-height: 1.4; }
@@ -73,7 +73,7 @@
 }
 
 @media (max-width: 760px) {
-  .wbx-workshop { width: calc(100% - 4px); margin-left: 4px; }
+  .wbx-workshop { width: calc(100% - 8px); margin-left: 4px; }
 }
 
 @media (max-width: 640px) {
