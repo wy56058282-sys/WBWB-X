@@ -78,18 +78,18 @@ describe('home hero icon navigation', () => {
     const css = readHomeStyle()
     const card = baseRule(css, '.wbx-reading-card')
     const interaction = css.match(
-      /\.wbx-reading-card:hover,\s*\.wbx-reading-card:focus-visible\s*\{([^}]*)\}/s,
+      /@media \(hover: hover\) and \(pointer: fine\)[\s\S]*?\.wbx-reading-card:hover\s*\{([^}]*)\}/s,
     )?.[1]
 
     expect(card).toMatch(
       /transition:\s*border-color var\(--wbx-motion-base\) ease, box-shadow var\(--wbx-motion-base\) ease, transform var\(--wbx-motion-base\) ease;/,
     )
     expect(interaction).toBeDefined()
-    expect(interaction).toMatch(/border-color:\s*var\(--wbx-line\);/)
+    expect(interaction).toMatch(/border-color:\s*color-mix\(/)
     expect(interaction).toMatch(
-      /box-shadow:\s*var\(--wbx-shadow-soft\);/,
+      /box-shadow:\s*var\(--wbx-shadow-hover\);/,
     )
-    expect(interaction).toMatch(/transform:\s*translateY\(-2px\);/)
+    expect(interaction).toMatch(/transform:\s*translateY\(-4px\);/)
     expect(interaction).not.toMatch(/translate\(/)
   })
 

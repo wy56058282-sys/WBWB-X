@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
-import { baseRule, cardClearance, rotatedCardBounds } from './helpers/css-rules'
+import { baseRule } from './helpers/css-rules'
 import { useHomePageHarness } from './helpers/home-page-harness'
 import { readHomeStyle } from './helpers/read-theme-style'
 
@@ -29,7 +29,7 @@ describe('home hero icon navigation', () => {
     expect(document.querySelector('.wbx-sticker-page__trigger')).toBeNull()
   })
 
-  it('keeps the desktop hero copy boundary on the card centerline', () => {
+  it('keeps a balanced two-column hero with a regular icon grid', () => {
     const css = readHomeStyle()
     const stage = baseRule(css, '.wbx-hero__stage')
     const compactDesktop = css.slice(
@@ -41,9 +41,8 @@ describe('home hero icon navigation', () => {
     expect(compactDesktop).toMatch(
       /\.wbx-hero__stage\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/s,
     )
-    expect(compactDesktop).toMatch(
-      /\.wbx-icon-card--buddy\s*\{[^}]*left:\s*calc\(35% \+ 10px\);/s,
-    )
+    expect(baseRule(css, '.wbx-hero__art')).toMatch(/grid-template-columns:\s*repeat\(2, 126px\)/)
+    expect(compactDesktop).not.toMatch(/\.wbx-icon-card--buddy\s*\{/)
   })
 
   it('does not import or style the retired partner reveal', () => {
@@ -97,16 +96,18 @@ describe('home hero icon navigation', () => {
 
   it('reverses the hero copy and secondary action in dark mode', () => {
     const style = document.createElement('style')
-    style.textContent = readHomeStyle().replaceAll('var(--wbx-ink)', '#f3f5ed')
+    style.textContent = readHomeStyle()
+      .replaceAll('var(--wbx-ink)', '#f3f5ed')
+      .replaceAll('var(--wbx-text-strong)', '#f3f5ed')
+      .replaceAll('var(--wbx-text-body)', '#d7dcd3')
     document.head.append(style)
     document.documentElement.classList.add('dark')
     harness.mountHomePage()
 
-    const expected = 'rgb(243, 245, 237)'
-    expect(getComputedStyle(document.querySelector('#wbx-hero-title')!).color).toBe(expected)
-    expect(getComputedStyle(document.querySelector('.wbx-hero__summary')!).color).toBe(expected)
-    expect(getComputedStyle(document.querySelector('.wbx-update-ticker')!).color).toBe(expected)
-    expect(getComputedStyle(document.querySelector('.wbx-button--outline')!).color).toBe(expected)
+    expect(getComputedStyle(document.querySelector('#wbx-hero-title')!).color).toBe('rgb(243, 245, 237)')
+    expect(getComputedStyle(document.querySelector('.wbx-hero__summary')!).color).toBe('rgb(215, 220, 211)')
+    expect(getComputedStyle(document.querySelector('.wbx-update-ticker')!).color).toBe('rgb(243, 245, 237)')
+    expect(getComputedStyle(document.querySelector('.wbx-button--outline')!).color).toBe('rgb(243, 245, 237)')
 
     style.remove()
     document.documentElement.classList.remove('dark')
@@ -126,7 +127,7 @@ describe('home hero icon navigation', () => {
     )
   })
 
-  it('gives only the homepage primary CTA the approved arrow handoff motion', () => {
+  it('gives the homepage CTA a restrained two-pixel arrow response', () => {
     harness.mountHomePage()
 
     const cta = document.querySelector<HTMLAnchorElement>('.wbx-hero-cta')
@@ -137,12 +138,7 @@ describe('home hero icon navigation', () => {
     expect(cta?.querySelectorAll('[aria-hidden="true"]')).toHaveLength(2)
     expect(document.querySelector('.wbx-button--outline .wbx-hero-cta__arrow')).toBeNull()
 
-    expect(css).toMatch(
-      /\.wbx-hero-cta::before\s*\{[^}]*linear-gradient\(90deg, transparent, rgba\(255, 255, 255, 0\.2\), transparent\);[^}]*transition:\s*left 0\.5s ease;/s,
-    )
-    expect(css).toMatch(
-      /\.wbx-hero-cta:is\(:hover, :focus-visible\) \.wbx-hero-cta__arrow::before\s*\{[^}]*transform:\s*scale\(1\);/s,
-    )
+    expect(css).toMatch(/\.wbx-hero-cta::before\s*\{[^}]*display:\s*none;/s)
     expect(css).toMatch(
       /\.wbx-hero-cta__arrow\s*>\s*\.hn\s*\{[^}]*font-size:\s*28px;/s,
     )
@@ -150,17 +146,10 @@ describe('home hero icon navigation', () => {
       /\.wbx-hero-cta__arrow\s*\{[^}]*border-radius:\s*0 var\(--wbx-radius-md\) var\(--wbx-radius-md\) 0;/s,
     )
     expect(css).toMatch(
-      /\.wbx-hero-cta__arrow--in\s*\{[^}]*transform:\s*translate\(-56px, 56px\) rotate\(-45deg\);/s,
+      /\.wbx-hero-cta:is\(:hover, :focus-visible\) \.wbx-hero-cta__arrow--out\s*\{[^}]*transform:\s*translateX\(2px\) rotate\(-45deg\);/s,
     )
-    expect(css).toMatch(
-      /\.wbx-hero-cta:is\(:hover, :focus-visible\) \.wbx-hero-cta__arrow--out\s*\{[^}]*transform:\s*translate\(56px, -56px\) rotate\(-45deg\);/s,
-    )
-    expect(css).toMatch(
-      /\.wbx-hero-cta:is\(:hover, :focus-visible\) \.wbx-hero-cta__arrow--in\s*\{[^}]*opacity:\s*1;[^}]*transform:\s*translate\(0, 0\) rotate\(-45deg\);/s,
-    )
-    expect(css).toMatch(
-      /\.wbx-hero-cta:active\s*\{[^}]*box-shadow:\s*0 4px 12px rgba\(50, 230, 185, 0\.28\);/s,
-    )
+    expect(css).toMatch(/\.wbx-hero-cta__arrow--in\s*\{[^}]*display:\s*none;/s)
+    expect(css).toMatch(/\.wbx-hero-cta:active\s*\{[^}]*transform:\s*translateY\(0\);/s)
     expect(css).toMatch(
       /@media\s*\(prefers-reduced-motion:\s*reduce\)\s*\{[\s\S]*?\.wbx-hero-cta::before[\s\S]*?\.wbx-hero-cta__arrow/s,
     )
@@ -274,86 +263,24 @@ describe('home hero icon navigation', () => {
     )
   })
 
-  it('uses the approved mobile hero card placement', () => {
+  it('uses the approved mobile hero card grid', () => {
     const css = readHomeStyle()
     const mobile = css.slice(
       css.indexOf('@media (max-width: 760px)'),
-      css.indexOf('@media (max-width: 444px)'),
+      css.indexOf('@media (max-width: 420px)'),
     )
 
-    expect(mobile).toMatch(
-      /\.wbx-icon-card--book\s*\{[^}]*--wbx-icon-rotation:\s*-30deg;/s,
-    )
-    expect(mobile).toMatch(
-      /\.wbx-icon-card--flow\s*\{[^}]*right:\s*calc\(8% \+ 10px\);/s,
-    )
+    expect(mobile).toMatch(/\.wbx-hero__art\s*\{[^}]*grid-template-columns:\s*repeat\(2, 90px\);[^}]*gap:\s*18px;/s)
+    expect(mobile).not.toMatch(/--wbx-icon-rotation/)
   })
 
-  it('positions the Part 4 people icon safely at every hero breakpoint', () => {
+  it('keeps every hero icon in normal grid flow at every breakpoint', () => {
     const css = readHomeStyle()
-    const people = baseRule(css, '.wbx-icon-card--people')
-    const work = baseRule(css, '.wbx-icon-card--work')
-    const boundaryStart = css.indexOf('@media (max-width: 444px)')
-    const mobileStart = css.indexOf('@media (max-width: 420px)')
+    const iconCard = baseRule(css, '.wbx-icon-card')
 
-    expect(boundaryStart, 'missing the 444px collision boundary').toBeGreaterThan(
-      -1,
-    )
-    expect(mobileStart, 'missing the 420px mobile layout boundary').toBeGreaterThan(
-      boundaryStart,
-    )
-
-    const boundaryCss = css.slice(boundaryStart, mobileStart)
-    const boundaryPeople = boundaryCss.match(
-      /\.wbx-icon-card--people\s*\{([^}]*)\}/s,
-    )?.[1]
-
-    expect(
-      boundaryPeople,
-      'missing the people-card override at the 444px boundary',
-    ).toBeDefined()
-
-    const desktopCases = [
-      { viewport: 961, artWidth: 445, cardSize: 108 },
-      { viewport: 1080, artWidth: 504, cardSize: 108 },
-    ]
-
-    for (const { viewport, artWidth, cardSize } of desktopCases) {
-      expect(
-        cardClearance(
-          rotatedCardBounds(people, artWidth, cardSize),
-          rotatedCardBounds(work, artWidth, cardSize),
-        ),
-        `${viewport}px viewport must retain 24px between the rotated people and work cards`,
-      ).toBeGreaterThanOrEqual(24)
-    }
-
-    expect(css).toMatch(
-      /\.wbx-icon-card--people\s*\{[^}]*bottom:\s*55px;[^}]*left:\s*5%;/s,
-    )
-    expect(css).toMatch(
-      /@media\s*\(max-width:\s*960px\)\s*\{[\s\S]*?\.wbx-icon-card--people\s*\{[^}]*top:\s*270px;[^}]*bottom:\s*auto;[^}]*left:\s*1%;/,
-    )
-    expect(css).not.toMatch(
-      /@media\s*\(max-width:\s*780px\)\s*\{[\s\S]*?\.wbx-icon-card--people/,
-    )
-    expect(boundaryPeople).toMatch(
-      /top:\s*auto;[^}]*bottom:\s*50px;[^}]*left:\s*4%;/s,
-    )
-
-    for (const viewport of [421, 444]) {
-      const paintedPeople = rotatedCardBounds(
-        `${boundaryPeople}\n${people}`,
-        viewport - 28,
-        90,
-        380,
-      )
-
-      expect(
-        paintedPeople.bottom,
-        `${viewport}px viewport must keep the painted people card above the metrics band`,
-      ).toBeLessThanOrEqual(340)
-    }
+    expect(iconCard).toMatch(/position:\s*relative/)
+    expect(iconCard).not.toMatch(/animation:/)
+    expect(css).not.toMatch(/\.wbx-icon-card--(?:buddy|book|flow|work|people)\s*\{/)
   })
 
 })

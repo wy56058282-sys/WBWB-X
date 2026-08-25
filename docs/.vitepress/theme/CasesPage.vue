@@ -11,6 +11,7 @@ import {
   type EnterpriseCaseKind,
 } from '../enterprise-case-catalog'
 import { isServiceFormUrl, serviceConfig } from '../service-config'
+import { marketingReveal as vMarketingReveal } from './marketingReveal'
 import './cases.css'
 
 const query = ref('')
@@ -128,7 +129,7 @@ onBeforeUnmount(() => {
   <section class="wbx-cases" aria-labelledby="case-gallery-title">
     <div class="wbx-cases-layout-grid">
       <main class="wbx-cases-main-column">
-        <header class="wbx-cases-hero wbx-page-header">
+        <header v-marketing-reveal class="wbx-cases-hero wbx-page-header">
           <div class="wbx-cases-hero__copy">
             <p class="wbx-pixel-label">CASE LIBRARY</p>
             <h1 id="case-gallery-title">案例集</h1>
@@ -165,7 +166,13 @@ onBeforeUnmount(() => {
 
         <section class="wbx-cases-gallery-results">
           <ul v-if="cases.length" class="wbx-cases-grid" aria-live="polite">
-          <li v-for="(item, index) in cases" :key="item.route" class="wbx-case-card">
+          <li
+            v-for="(item, index) in cases"
+            :key="item.route"
+            v-marketing-reveal
+            class="wbx-case-card"
+            :data-reveal-order="index < 3 ? index + 1 : undefined"
+          >
             <a
               class="wbx-case-card__link"
               :href="withBase(item.route)"
@@ -228,7 +235,13 @@ onBeforeUnmount(() => {
           </div>
           <section id="enterprise-results" class="wbx-cases-gallery-results" role="tabpanel" :aria-labelledby="enterpriseKind === 'scene' ? 'enterprise-scenes-tab' : 'enterprise-catalog-cases-tab'">
             <ul v-if="enterpriseCases.length" class="wbx-cases-grid" aria-live="polite">
-              <li v-for="item in enterpriseCases" :key="`${item.kind}-${item.number}`" class="wbx-case-card wbx-enterprise-case-card">
+              <li
+                v-for="(item, index) in enterpriseCases"
+                :key="`${item.kind}-${item.number}`"
+                v-marketing-reveal
+                class="wbx-case-card wbx-enterprise-case-card wbx-interactive-card"
+                :data-reveal-order="index < 3 ? index + 1 : undefined"
+              >
                 <span class="wbx-enterprise-case-card__number">{{ String(item.number).padStart(3, '0') }}</span>
                 <span class="wbx-enterprise-case-card__tags"><span>{{ item.industry }}</span><span>{{ item.function }}</span></span>
                 <span class="wbx-enterprise-case-card__status">{{ item.sourceStatus }}</span>
@@ -250,7 +263,7 @@ onBeforeUnmount(() => {
         <label class="wbx-cases-search">
           <input v-model="query" type="search" aria-label="搜索案例" :placeholder="audience === 'personal' ? '搜索场景、成果或产品' : '搜索标题、摘要、行业或职能'" autocomplete="off">
         </label>
-        <section id="submit-case" class="wbx-cases-submit" aria-labelledby="submit-case-title">
+        <section id="submit-case" v-marketing-reveal class="wbx-cases-submit" aria-labelledby="submit-case-title">
         <div>
           <h2 id="submit-case-title">把你的工作方法带进案例集</h2>
           <p>分享真实任务、使用过程和结果，让下一位遇到相似问题的人少走一点弯路。</p>

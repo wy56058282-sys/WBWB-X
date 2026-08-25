@@ -111,7 +111,6 @@ final result: blocked
 - 本节替代上方历史 Task 5 中“浏览器不可用”的阻塞结论；历史记录保留用于说明之前的验收环境。
 
 final result: passed
-
 ---
 
 # 2026-08-25 首页星火集气泡 Design QA
@@ -471,5 +470,57 @@ The same browser viewport override was used for the desktop source and implement
 2. Reworked all surfaces to the main site tokens and responsive system, then added keyboard/focus and reduced-motion coverage.
 3. Updated SEO, content inventory, and legacy regression assertions; verified the result in light, dark, desktop, tablet, and mobile states.
 4. Restored the reference page's primary motion system: automatic typed commands, staged progress logs, Agent dispatch pulses, capability/file loops, model transitions, live task count, and viewport-triggered remote delivery.
+
+final result: passed
+
+---
+
+# WorkBuddy × Uxcel visual QA
+
+## Evidence
+
+- Source visual truth: `artifacts/visual-qa/uxcel-courses-reference.png`
+- Browser-rendered implementation: `artifacts/visual-qa/workbuddy-home-desktop.png`
+- Normalized implementation crop: `artifacts/visual-qa/workbuddy-home-desktop-normalized.png`
+- Full-view side-by-side comparison: `artifacts/visual-qa/uxcel-workbuddy-comparison.png`
+- Focused typography comparison: `artifacts/visual-qa/uxcel-workbuddy-typography-comparison.png`
+- Requested CSS viewport: `1440 × 900`; Browser runtime reported `1600 × 1000` CSS px because of the in-app browser scale.
+- Source pixels: `1265 × 712`; implementation pixels: `1759 × 1111`.
+- Density normalization: the implementation capture was cropped to the browser-rendered page region (`900 × 560`) and both views were proportionally fit into separate `780 × 500` white canvases. Neither image was stretched.
+- State: light theme, homepage, top of page. Additional browser checks covered desktop scroll state, tablet and mobile layouts, dark theme, tools product tabs, and case audience tabs.
+
+## Findings
+
+- No actionable P0, P1, or P2 differences remain.
+- Typography: the implementation uses the measured Uxcel hierarchy (`58/700/1.18` hero, `52/700/1.2` page title, `40/700/1.25` section title) with the existing Avenir/PingFang system stack. Chinese wrapping is denser than the English reference but remains within the approved WorkBuddy content and line-length constraints.
+- Spacing and layout rhythm: both pages use a left-copy/right-visual hero, generous white space, restrained surfaces, and regular navigation/card grids. WorkBuddy intentionally keeps its value strip, robot, official partner bubble, and brand-specific pixel accents.
+- Colors and tokens: semantic strong/body/muted/subtle colors match the approved light and dark palettes. Mint remains an accent rather than long-form text color.
+- Image quality and assets: existing WorkBuddy robot, SparkX official SVG, case covers, and HackerNoon icon font are preserved. No supplied logo or illustration was replaced with an approximation.
+- Copy and content: routes, labels, product names, service copy, forms, external links, and content classifications are unchanged.
+
+## Interaction and responsive evidence
+
+- Navigation switches at `scrollY > 24` to an opaque surface with a bottom border and light shadow; it remains visible in both directions.
+- One-time reveal uses threshold `0.14`, root margin `0px 0px -8% 0px`, `18px` translation, `320ms` duration, and `0/40/80ms` card staggering. Observed elements are released after first entry.
+- Tools tab interaction selected SparkX and updated the URL to `?product=sparkx` while showing `product-panel-sparkx`.
+- Case audience interaction selected 企业 and exposed the enterprise tabpanel without horizontal overflow.
+- Browser checks at requested `1440 × 900`, `1024 × 768`, and `390 × 844` found no horizontal overflow. Layouts resolve to three/two/one columns as specified.
+- Mobile headings resolve to `38px` page H1, `30px` section H2, and `20px` card H3; service CTA targets remain `48px` high.
+- Dark mode resolved strong/body/muted colors to `#f3f5ed`, `#d7dcd3`, and `#aeb4a7` on `#10120e`.
+- Browser console errors and warnings checked: none.
+
+## Focused comparison
+
+The focused comparison was needed because the full-view screenshots reduce text too far to judge weight and line-height reliably. `uxcel-workbuddy-typography-comparison.png` verifies the display/body hierarchy, line spacing, button density, and left-column rhythm while preserving WorkBuddy's Chinese content and brand art.
+
+## Comparison history
+
+1. Initial browser pass found two P2 issues: VitePress specificity reduced case-card titles to weight `600`, and legacy CTA/filter transitions still used exaggerated displacement.
+2. Fixes: raised the case title selector specificity to preserve `700`; removed filter/tab displacement; replaced the legacy CTA arrow handoff with a `2px` icon response; restricted card hover elevation to fine-pointer devices.
+3. Post-fix evidence: case titles compute to `700`; tools and case tabs retain selection/URL behavior; desktop/tablet/mobile captures have no overflow; the final full-view and focused comparisons show the approved restrained hierarchy and motion language.
+
+## Follow-up polish
+
+- P3: after production content changes, refresh the stored comparison captures so line wrapping remains a useful regression baseline.
 
 final result: passed

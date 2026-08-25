@@ -64,18 +64,20 @@
 .wbx-system h2 {
   margin: 0;
   border: 0;
-  font-size: clamp(30px, 3vw, 43px);
-  font-weight: 820;
-  line-height: 1.2;
-  letter-spacing: -0.045em;
+  color: var(--wbx-text-strong);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.035em;
 }
 
 .wbx-section__heading > p {
   max-width: 540px;
   margin: 0 0 4px;
-  color: var(--wbx-muted);
-  font-size: 15px;
-  line-height: 1.7;
+  color: var(--wbx-text-muted);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.65;
 }
 
 .wbx-reading-grid {
@@ -103,12 +105,20 @@
   grid-column: 1 / -1;
 }
 
-.wbx-reading-card:hover,
 .wbx-reading-card:focus-visible {
   border-color: var(--wbx-line);
   outline: none;
-  box-shadow: var(--wbx-shadow-soft);
-  transform: translateY(-2px);
+  box-shadow: var(--wbx-shadow-hover);
+  transform: translateY(-4px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wbx-reading-card:hover {
+    border-color: color-mix(in srgb, var(--wbx-text-strong) 28%, var(--wbx-line));
+    outline: none;
+    box-shadow: var(--wbx-shadow-hover);
+    transform: translateY(-4px);
+  }
 }
 
 .wbx-reading-card__icon {
@@ -138,14 +148,15 @@
 
 .wbx-reading-card__content strong {
   margin-bottom: 7px;
-  font-size: 19px;
+  font-size: 22px;
+  font-weight: 700;
   line-height: 1.35;
 }
 
 .wbx-reading-card__content > span {
-  color: var(--wbx-muted);
-  font-size: 14px;
-  line-height: 1.55;
+  color: var(--wbx-text-body);
+  font-size: 17px;
+  line-height: 1.65;
 }
 
 .wbx-reading-card__content em {
@@ -195,10 +206,16 @@
   transition: background var(--wbx-motion-fast) ease;
 }
 
-.wbx-task-grid a:hover,
 .wbx-task-grid a:focus-visible {
   outline: none;
   background: var(--wbx-hover-surface);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wbx-task-grid a:hover {
+    outline: none;
+    background: var(--wbx-hover-surface);
+  }
 }
 
 .wbx-task-grid .hn {

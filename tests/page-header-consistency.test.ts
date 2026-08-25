@@ -33,8 +33,8 @@ describe('shared marketing page header', () => {
   it('defines one shared visual contract without page-specific heading overrides', () => {
     expect(sharedStyles).toMatch(/\.wbx-page-header\s*\{[^}]*padding:\s*24px 0 36px;/s)
     expect(sharedStyles).toMatch(/\.wbx-page-header > \.wbx-pixel-label,[^{]*\{[^}]*margin:\s*0 0 12px;/s)
-    expect(sharedStyles).toMatch(/\.wbx-page-header > h1,[^{]*\{[^}]*margin:\s*0 0 12px;[^}]*font-size:\s*clamp\(40px, 5vw, 64px\);[^}]*font-weight:\s*850;[^}]*line-height:\s*1\.08;[^}]*letter-spacing:\s*-0\.04em;/s)
-    expect(sharedStyles).toMatch(/\.wbx-page-header > p:last-child,[^{]*\{[^}]*max-width:\s*720px;[^}]*margin:\s*0;[^}]*font-size:\s*16px;[^}]*line-height:\s*1\.75;/s)
+    expect(sharedStyles).toMatch(/\.wbx-page-header > h1,[^{]*\{[^}]*margin:\s*0 0 12px;[^}]*font-size:\s*52px;[^}]*font-weight:\s*700;[^}]*line-height:\s*1\.2;[^}]*letter-spacing:\s*-0\.03em;/s)
+    expect(sharedStyles).toMatch(/\.wbx-page-header > p:last-child,[^{]*\{[^}]*max-width:\s*720px;[^}]*margin:\s*0;[^}]*font-size:\s*17px;[^}]*font-weight:\s*400;[^}]*line-height:\s*1\.65;/s)
 
     expect(casesStyles).not.toMatch(/\.wbx-cases h1\s*\{/)
     expect(toolsStyles).not.toMatch(/\.wbx-tools__header h1\s*\{/)

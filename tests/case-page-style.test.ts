@@ -143,8 +143,7 @@ describe('case collection page styles', () => {
   it('uses a stable responsive card grid with constrained cards', () => {
     const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
 
-    expect(source).toMatch(/\.wbx-cases-gallery-results \.wbx-cases-grid\s*\{[^}]*grid-template-columns:\s*repeat\(4, minmax\(0, 1fr\)\)/)
-    expect(source).toMatch(/@media \(max-width:\s*1439px\)[\s\S]*?\.wbx-cases-gallery-results \.wbx-cases-grid\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)/)
+    expect(source).toMatch(/\.wbx-cases-gallery-results \.wbx-cases-grid\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/)
     expect(source).toMatch(/@media \(max-width:\s*1279px\)[\s\S]*?\.wbx-cases-gallery-results \.wbx-cases-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)/)
     expect(source).toMatch(/@media \(max-width:\s*640px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.wbx-cases-gallery-results \.wbx-cases-grid\s*\{[^}]*grid-template-columns:\s*1fr/)
     expect(source).toMatch(/\.wbx-case-card__cover\s*\{[^}]*aspect-ratio:/)
@@ -415,7 +414,7 @@ describe('case collection page styles', () => {
     { viewportWidth: 1279, columns: 'repeat(2, minmax(0, 1fr))' },
     { viewportWidth: 1280, columns: 'repeat(3, minmax(0, 1fr))' },
     { viewportWidth: 1439, columns: 'repeat(3, minmax(0, 1fr))' },
-    { viewportWidth: 1440, columns: 'repeat(4, minmax(0, 1fr))' },
+    { viewportWidth: 1440, columns: 'repeat(3, minmax(0, 1fr))' },
   ])('uses $columns case cards at $viewportWidth px', ({ viewportWidth, columns }) => {
     const casesStyles = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
     const appliedStyles = document.createElement('style')

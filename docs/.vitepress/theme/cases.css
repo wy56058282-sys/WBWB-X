@@ -107,10 +107,11 @@
   margin-bottom: 0;
   border: 0;
   padding: 0;
-  font-size: 28px;
-  font-weight: 600;
-  line-height: 1.3;
-  letter-spacing: 0;
+  color: var(--wbx-text-strong);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.035em;
 }
 
 .wbx-cases-submit p:not(.wbx-cases-eyebrow) {
@@ -144,9 +145,9 @@
   color: var(--wbx-ink);
   background: var(--wbx-surface);
   font: inherit;
-  font-weight: 800;
+  font-weight: 600;
   cursor: pointer;
-  transition: background var(--wbx-motion-fast) ease, box-shadow var(--wbx-motion-fast) ease, transform var(--wbx-motion-fast) ease;
+  transition: color var(--wbx-motion-fast) var(--wbx-ease-standard), border-color var(--wbx-motion-fast) var(--wbx-ease-standard), background var(--wbx-motion-fast) var(--wbx-ease-standard), box-shadow var(--wbx-motion-fast) var(--wbx-ease-standard);
 }
 
 .wbx-enterprise-kind-tabs {
@@ -167,7 +168,6 @@
   color: #0d100d;
   background: var(--wbx-accent);
   box-shadow: var(--wbx-shadow-soft);
-  transform: translateY(-1px);
 }
 
 .wbx-enterprise-filter-group {
@@ -180,7 +180,7 @@
 
 .wbx-enterprise-filter-group > span {
   min-width: 3em;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .wbx-enterprise-filter-group button,
@@ -283,7 +283,7 @@
   font-weight: 700;
   white-space: nowrap;
   cursor: pointer;
-  transition: background var(--wbx-motion-fast) ease, box-shadow var(--wbx-motion-fast) ease, transform var(--wbx-motion-fast) ease;
+  transition: color var(--wbx-motion-fast) var(--wbx-ease-standard), border-color var(--wbx-motion-fast) var(--wbx-ease-standard), background var(--wbx-motion-fast) var(--wbx-ease-standard), box-shadow var(--wbx-motion-fast) var(--wbx-ease-standard);
 }
 
 .wbx-cases-category__indicator {
@@ -310,12 +310,11 @@
 .wbx-cases-empty button:hover,
 .wbx-cases-empty button:focus-visible {
   box-shadow: var(--wbx-shadow-soft);
-  transform: translateY(-1px);
 }
 
 .wbx-cases-gallery-results .wbx-cases-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
 }
 
@@ -391,15 +390,27 @@
   color: var(--wbx-ink);
   background: var(--wbx-surface);
   text-decoration: none;
-  transition: border-color var(--wbx-motion-fast) ease, box-shadow var(--wbx-motion-fast) ease, transform var(--wbx-motion-fast) ease;
+  transition: border-color var(--wbx-motion-fast) var(--wbx-ease-standard), box-shadow var(--wbx-motion-base) var(--wbx-ease-standard), transform var(--wbx-motion-base) var(--wbx-ease-standard);
 }
 
-.wbx-case-card__link:hover,
 .wbx-case-card__link:focus-visible {
   border-color: color-mix(in srgb, var(--wbx-accent) 55%, var(--wbx-line));
   color: var(--wbx-ink);
-  box-shadow: var(--wbx-shadow-soft);
-  transform: translateY(-1px);
+  box-shadow: var(--wbx-shadow-hover);
+  transform: translateY(-4px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wbx-case-card__link:hover {
+    border-color: color-mix(in srgb, var(--wbx-text-strong) 28%, var(--wbx-line));
+    color: var(--wbx-ink);
+    box-shadow: var(--wbx-shadow-hover);
+    transform: translateY(-4px);
+  }
+
+  .wbx-case-card__link:hover .wbx-case-card__cover {
+    transform: scale(1.015);
+  }
 }
 
 .wbx-case-card__cover {
@@ -408,6 +419,7 @@
   aspect-ratio: 16 / 9;
   object-fit: cover;
   background: var(--vp-c-bg-soft);
+  transition: transform var(--wbx-motion-base) var(--wbx-ease-standard);
 }
 
 .wbx-case-card__picture {
@@ -429,12 +441,13 @@
   line-height: 1.4;
 }
 
-.wbx-case-card__title {
+.vp-doc .wbx-case-card__title {
   display: -webkit-box;
   min-height: 2.7em;
   overflow: hidden;
-  color: var(--wbx-ink);
-  font-size: 18px;
+  color: var(--wbx-text-strong);
+  font-size: 22px;
+  font-weight: 700;
   line-height: 1.35;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -579,12 +592,6 @@
   margin-bottom: 8px;
 }
 
-@media (max-width: 1439px) {
-  .wbx-cases-gallery-results .wbx-cases-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
 @media (max-width: 1279px) {
   .wbx-cases-gallery-results .wbx-cases-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -663,6 +670,14 @@
 }
 
 @media (max-width: 640px) {
+  .wbx-cases h2 {
+    font-size: 30px;
+  }
+
+  .wbx-case-card__title {
+    font-size: 20px;
+  }
+
   .wbx-cases-submit,
   .wbx-case-service-cta {
     align-items: stretch;

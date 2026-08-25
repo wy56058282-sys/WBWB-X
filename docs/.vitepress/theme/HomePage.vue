@@ -5,6 +5,7 @@ import HomeAnalyticsStrip from './HomeAnalyticsStrip.vue'
 import HomeWorkshop from './HomeWorkshop.vue'
 import { readHomeAnalyticsConfig } from './homeAnalytics'
 import { homeUpdates } from './homeUpdates'
+import { marketingReveal as vMarketingReveal } from './marketingReveal'
 import './home.css'
 
 const homeAnalyticsConfig = readHomeAnalyticsConfig(import.meta.env)
@@ -241,10 +242,11 @@ const workflowSteps = [
 
     <HomeAnalyticsStrip
       v-if="homeAnalyticsConfig"
+      v-marketing-reveal
       :config="homeAnalyticsConfig"
     />
 
-    <section class="wbx-section wbx-reading" aria-labelledby="wbx-reading-title">
+    <section v-marketing-reveal class="wbx-section wbx-reading" aria-labelledby="wbx-reading-title">
       <div class="wbx-section__heading">
         <div>
           <p class="wbx-pixel-label">READING PATH / 01—04</p>
@@ -254,10 +256,12 @@ const workflowSteps = [
       </div>
       <div class="wbx-reading-grid">
         <a
-          v-for="path in readingPaths"
+          v-for="(path, index) in readingPaths"
           :key="path.meta"
-          class="wbx-reading-card"
+          v-marketing-reveal
+          class="wbx-reading-card wbx-interactive-card"
           :class="{ 'wbx-reading-card--featured': path.featured }"
+          :data-reveal-order="index < 3 ? index + 1 : undefined"
           :href="withBase(path.href)"
         >
           <span class="wbx-reading-card__icon">
@@ -276,7 +280,7 @@ const workflowSteps = [
       </div>
     </section>
 
-    <section class="wbx-section wbx-tasks" aria-labelledby="wbx-tasks-title">
+    <section v-marketing-reveal class="wbx-section wbx-tasks" aria-labelledby="wbx-tasks-title">
       <div class="wbx-section__heading wbx-section__heading--compact">
         <div>
           <p class="wbx-pixel-label">START WITH A REAL TASK</p>
@@ -285,7 +289,14 @@ const workflowSteps = [
         <p>不必从头读。带着问题进来，先跑通一个能验收的结果。</p>
       </div>
       <div class="wbx-task-grid">
-        <a v-for="task in taskCategories" :key="task.title" :href="withBase(task.href)">
+        <a
+          v-for="(task, index) in taskCategories"
+          :key="task.title"
+          v-marketing-reveal
+          class="wbx-interactive-card"
+          :data-reveal-order="index < 3 ? index + 1 : undefined"
+          :href="withBase(task.href)"
+        >
           <i class="hn" :class="task.icon" aria-hidden="true" />
           <strong>{{ task.title }}</strong>
           <span>{{ task.description }}</span>
@@ -293,9 +304,9 @@ const workflowSteps = [
       </div>
     </section>
 
-    <HomeWorkshop />
+    <HomeWorkshop v-marketing-reveal />
 
-    <section class="wbx-section wbx-system" aria-labelledby="wbx-system-title">
+    <section v-marketing-reveal class="wbx-section wbx-system" aria-labelledby="wbx-system-title">
       <div class="wbx-system__intro">
         <p class="wbx-pixel-label">FROM TASK TO TEAM</p>
         <h2 id="wbx-system-title">AI 时代，一起象限跃迁</h2>

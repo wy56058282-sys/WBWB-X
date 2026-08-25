@@ -1,6 +1,10 @@
 :root {
   --wbx-accent: #32e6b9;
   --wbx-ink: #0d100d;
+  --wbx-text-strong: #0d100d;
+  --wbx-text-body: #343934;
+  --wbx-text-muted: #656b60;
+  --wbx-text-subtle: #8a908b;
   --wbx-paper: #ffffff;
   --wbx-surface: #ffffff;
   --wbx-section-soft: #f7f9f8;
@@ -28,7 +32,8 @@
   --wbx-shadow-hover: 0 12px 32px rgb(13 16 13 / 10%);
   --wbx-shadow: var(--wbx-shadow-soft);
   --wbx-motion-fast: 160ms;
-  --wbx-motion-base: 220ms;
+  --wbx-motion-base: 240ms;
+  --wbx-motion-reveal: 320ms;
   --wbx-ease-standard: cubic-bezier(.22, 1, .36, 1);
   --wbx-content-width: 1104px;
   --wbx-content-wide: 1400px;
@@ -75,6 +80,10 @@
 
 .dark {
   --wbx-ink: #f3f5ed;
+  --wbx-text-strong: #f3f5ed;
+  --wbx-text-body: #d7dcd3;
+  --wbx-text-muted: #aeb4a7;
+  --wbx-text-subtle: #858c80;
   --wbx-paper: #10120e;
   --wbx-surface: #181b15;
   --wbx-section-soft: #151812;
@@ -127,6 +136,52 @@ body {
   background: var(--wbx-paper);
 }
 
+.wbx-pixel-label {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.wbx-marketing-reveal {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity var(--wbx-motion-reveal) var(--wbx-ease-standard),
+    transform var(--wbx-motion-reveal) var(--wbx-ease-standard);
+}
+
+.wbx-marketing-reveal[data-motion-ready]:not(.is-visible) {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.wbx-marketing-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.wbx-marketing-reveal[data-reveal-order='2'] { transition-delay: 40ms; }
+.wbx-marketing-reveal[data-reveal-order='3'] { transition-delay: 80ms; }
+
+.wbx-interactive-card {
+  transition:
+    transform var(--wbx-motion-base) var(--wbx-ease-standard),
+    border-color var(--wbx-motion-fast) var(--wbx-ease-standard),
+    box-shadow var(--wbx-motion-base) var(--wbx-ease-standard);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wbx-interactive-card:hover {
+    border-color: color-mix(in srgb, var(--wbx-text-strong) 28%, var(--wbx-line));
+    box-shadow: var(--wbx-shadow-hover);
+    transform: translateY(-4px);
+  }
+
+  .wbx-interactive-card:hover img {
+    transform: scale(1.015);
+  }
+}
+
 .wbx-page-header {
   padding: 24px 0 36px;
 }
@@ -142,26 +197,44 @@ body {
   margin: 0 0 12px;
   border: 0;
   padding: 0;
-  font-size: clamp(40px, 5vw, 64px);
-  font-weight: 850;
-  line-height: 1.08;
-  letter-spacing: -0.04em;
+  color: var(--wbx-text-strong);
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
 }
 
 .wbx-page-header > p:last-child,
 .wbx-page-header > :first-child > p:last-child {
   max-width: 720px;
   margin: 0;
-  color: var(--wbx-muted);
-  font-size: 16px;
-  line-height: 1.75;
+  color: var(--wbx-text-body);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.65;
+}
+
+@media (max-width: 640px) {
+  .wbx-page-header > h1,
+  .wbx-page-header > :first-child > h1 {
+    font-size: 38px;
+  }
+
+  .wbx-page-header > p:last-child,
+  .wbx-page-header > :first-child > p:last-child {
+    font-size: 16px;
+  }
+
+  .wbx-pixel-label {
+    font-size: 10px;
+  }
 }
 
 .VPDoc .vp-doc > div > h1 {
   margin: 0 0 34px;
   font-family: var(--wbx-body);
   font-size: 51.2px;
-  font-weight: 850;
+  font-weight: 700;
   line-height: 58.88px;
   letter-spacing: -2.816px;
 }
@@ -295,6 +368,19 @@ body {
   border-bottom: 0 !important;
 }
 
+.VPNavBar {
+  transition:
+    background-color var(--wbx-motion-base) var(--wbx-ease-standard),
+    border-color var(--wbx-motion-base) var(--wbx-ease-standard),
+    box-shadow var(--wbx-motion-base) var(--wbx-ease-standard);
+}
+
+.wbx-nav-scrolled .VPNavBar {
+  border-bottom: 1px solid var(--wbx-line) !important;
+  background: color-mix(in srgb, var(--wbx-paper) 96%, transparent);
+  box-shadow: 0 4px 18px rgb(13 16 13 / 5%);
+}
+
 .VPNavBar .divider,
 .VPNavBar .divider-line {
   background: transparent !important;
@@ -344,7 +430,7 @@ body {
 .VPNavBarTitle .title {
   gap: 10px;
   border-bottom: 0;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .VPNavBarMenuLink.active {
@@ -757,6 +843,13 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .wbx-marketing-reveal,
+  .wbx-marketing-reveal[data-motion-ready]:not(.is-visible) {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0ms;
+  }
+
   *,
   *::before,
   *::after {

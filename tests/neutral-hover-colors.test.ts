@@ -24,7 +24,7 @@ describe('neutral hover color system', () => {
       /\.VPSidebarItem \.link:hover,\s*\.VPSidebarItem \.link:focus-visible\s*\{[^{}]*background:\s*var\(--wbx-sidebar-hover-surface\);[^{}]*\}/,
     )
     expect(homeCss).toMatch(
-      /\.wbx-task-grid a:hover,[\s\S]*?background:\s*var\(--wbx-hover-surface\);/,
+      /@media \(hover: hover\) and \(pointer: fine\)[\s\S]*?\.wbx-task-grid a:hover\s*\{[^}]*background:\s*var\(--wbx-hover-surface\);/,
     )
   })
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import ServicePage from './ServicePage.vue'
+import { marketingReveal as vMarketingReveal } from './marketingReveal'
 import './tools.css'
 
 const products = [
@@ -55,13 +56,13 @@ onBeforeUnmount(() => window.removeEventListener('popstate', updateFromLocation)
 
 <template>
   <div class="wbx-tools">
-    <header class="wbx-tools__header wbx-page-header">
+    <header v-marketing-reveal class="wbx-tools__header wbx-page-header">
       <p class="wbx-pixel-label">PRODUCT TOOLKIT</p>
       <h1>工具集</h1>
       <p>汇集 WorkBuddy-X 正在构建的产品，帮助你按任务与场景找到合适的 AI 工具。</p>
     </header>
 
-    <div class="wbx-tools__tabs" role="tablist" aria-label="选择产品">
+    <div v-marketing-reveal class="wbx-tools__tabs" role="tablist" aria-label="选择产品">
       <button
         v-for="(product, index) in products"
         :id="`product-tab-${product.id}`"
@@ -93,6 +94,7 @@ onBeforeUnmount(() => window.removeEventListener('popstate', updateFromLocation)
       role="tabpanel"
       :aria-labelledby="`product-tab-${activeProduct}`"
       tabindex="0"
+      v-marketing-reveal
       class="wbx-tools__panel wbx-tools__placeholder"
     >
       <p class="wbx-pixel-label">COMING SOON</p>

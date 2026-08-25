@@ -32,7 +32,8 @@ describe('calm soft product design system', () => {
     expect(root).toMatch(/--wbx-content-wide:\s*1400px/)
     expect(root).toMatch(/--wbx-control-height:\s*48px/)
     expect(root).toMatch(/--wbx-motion-fast:\s*160ms/)
-    expect(root).toMatch(/--wbx-motion-base:\s*220ms/)
+    expect(root).toMatch(/--wbx-motion-base:\s*240ms/)
+    expect(root).toMatch(/--wbx-motion-reveal:\s*320ms/)
   })
 
   it('aligns the case, tool, and enterprise-service page shells to one wide content baseline', () => {

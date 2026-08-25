@@ -442,7 +442,7 @@ onMounted(() => {
       ;(entry.target as HTMLElement).classList.add('is-visible')
       revealObserver?.unobserve(entry.target)
     })
-  }, { threshold: 0.12 })
+  }, { threshold: 0.14, rootMargin: '0px 0px -8% 0px' })
   targets.forEach((target) => revealObserver?.observe(target))
 
   motionObserver = new IntersectionObserver((entries) => {

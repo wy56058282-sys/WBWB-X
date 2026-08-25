@@ -108,7 +108,7 @@ function installStyles(
   document.head.append(style)
 }
 
-function assertCompactSurfaces(doc: Document) {
+function assertCompactSurfaces(doc: Document, viewportWidth: number) {
   const size = (selector: string, expected: string) => {
     expect(getComputedStyle(doc.querySelector(selector)!).fontSize).toBe(expected)
   }
@@ -119,7 +119,7 @@ function assertCompactSurfaces(doc: Document) {
     size('.cta-eyebrow', '12px')
     size('.wbx-cases-categories button', '14px')
     size('.wbx-case-card__meta', '12px')
-    size('.wbx-case-card__title', '18px')
+    size('.wbx-case-card__title', viewportWidth <= 640 ? '20px' : '22px')
     size('.wbx-case-card__outcome', '14px')
     size('.wbx-case-card__product', '11px')
     size('.wbx-cases-submit .wbx-cases-action', '14px')
@@ -136,13 +136,13 @@ afterEach(() => {
 
 describe('product page computed styles', () => {
   it.each([
-    { label: 'desktop', viewportWidth: 1440, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: '1.08' },
-    { label: 'desktop boundary', viewportWidth: 960, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: '1.08' },
-    { label: 'tablet upper boundary', viewportWidth: 959, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: '1.08' },
-    { label: 'tablet', viewportWidth: 900, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: '1.08' },
-    { label: 'tablet lower boundary', viewportWidth: 641, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: '1.08' },
-    { label: 'mobile boundary', viewportWidth: 640, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: '1.08' },
-    { label: 'mobile', viewportWidth: 390, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: '1.08' },
+    { label: 'desktop', viewportWidth: 1440, fontSize: '52px', lineHeight: '1.2' },
+    { label: 'desktop boundary', viewportWidth: 960, fontSize: '52px', lineHeight: '1.2' },
+    { label: 'tablet upper boundary', viewportWidth: 959, fontSize: '52px', lineHeight: '1.2' },
+    { label: 'tablet', viewportWidth: 900, fontSize: '52px', lineHeight: '1.2' },
+    { label: 'tablet lower boundary', viewportWidth: 641, fontSize: '52px', lineHeight: '1.2' },
+    { label: 'mobile boundary', viewportWidth: 640, fontSize: '38px', lineHeight: '1.2' },
+    { label: 'mobile', viewportWidth: 390, fontSize: '38px', lineHeight: '1.2' },
   ])(
     'matches guide page typography at $label width without enlarging compact surfaces',
     ({ viewportWidth, fontSize, lineHeight }) => {
@@ -176,15 +176,15 @@ describe('product page computed styles', () => {
           h1: '.wbx-cases h1',
           h2: '.wbx-cases h2',
           body: '.primary-copy',
-          bodyFontSize: '16px',
-          bodyLineHeight: '1.75',
+          bodyFontSize: viewportWidth <= 640 ? '16px' : '17px',
+          bodyLineHeight: '1.65',
           compact: {
             '.gallery-eyebrow': '12px',
             '.submit-eyebrow': '12px',
             '.cta-eyebrow': '12px',
             '.wbx-cases-categories button': '14px',
             '.wbx-case-card__meta': '12px',
-            '.wbx-case-card__title': '18px',
+            '.wbx-case-card__title': viewportWidth <= 640 ? '20px' : '22px',
             '.wbx-case-card__outcome': '14px',
             '.wbx-case-card__product': '11px',
           },
@@ -206,14 +206,14 @@ describe('product page computed styles', () => {
         }).toMatchObject({
           fontSize,
           lineHeight,
-          fontWeight: '850',
+          fontWeight: '700',
         })
         expect({
           fontSize: h2Style.fontSize,
           fontWeight: h2Style.fontWeight,
         }).toMatchObject({
-          fontSize: '28px',
-          fontWeight: '600',
+          fontSize: viewportWidth <= 640 ? '30px' : '40px',
+          fontWeight: '700',
         })
         expect({
           fontSize: bodyStyle.fontSize,
@@ -223,7 +223,7 @@ describe('product page computed styles', () => {
           lineHeight: page.bodyLineHeight,
         })
 
-        assertCompactSurfaces(document)
+        assertCompactSurfaces(document, viewportWidth)
 
         if (page.css === pageStyles.cases) {
           expect(getComputedStyle(document.querySelector('.gallery-eyebrow')!).position).not.toBe('absolute')

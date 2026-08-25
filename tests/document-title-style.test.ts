@@ -17,7 +17,7 @@ describe('documentation title typography', () => {
     const style = getComputedStyle(title)
 
     expect(style.fontSize).toBe('51.2px')
-    expect(style.fontWeight).toBe('850')
+    expect(style.fontWeight).toBe('700')
     expect(style.lineHeight).toBe('58.88px')
     expect(style.letterSpacing).toBe('-2.816px')
     expect(style.marginBottom).toBe('34px')
@@ -29,7 +29,7 @@ describe('documentation title typography', () => {
 
     for (const title of titles) {
       expect(getComputedStyle(title).fontSize).not.toBe('51.2px')
-      expect(getComputedStyle(title).fontWeight).not.toBe('850')
+      expect(getComputedStyle(title).fontWeight).not.toBe('700')
     }
   })
 })

@@ -89,8 +89,8 @@
 
 .wbx-service [data-reveal] {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 640ms ease, transform 640ms cubic-bezier(.22, 1, .36, 1);
+  transform: translateY(18px);
+  transition: opacity var(--wbx-motion-reveal) var(--wbx-ease-standard), transform var(--wbx-motion-reveal) var(--wbx-ease-standard);
 }
 
 .wbx-service [data-reveal].is-visible {
@@ -109,22 +109,22 @@
 
 .wbx-service .wbx-service-hero__title {
   margin-top: 25px;
-  font-size: clamp(52px, 6.4vw, 88px);
-  font-weight: 850;
-  line-height: 1.05;
-  letter-spacing: -.06em;
+  font-size: 58px;
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -.04em;
 }
 
 .wbx-service h2 {
-  font-size: clamp(34px, 4.4vw, 54px);
-  font-weight: 820;
-  line-height: 1.18;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.25;
 }
 
 .wbx-service h3 {
-  font-size: clamp(25px, 2.5vw, 34px);
-  font-weight: 800;
-  line-height: 1.25;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
 .wbx-service :where(h1, h2) em {
@@ -143,8 +143,9 @@
   padding: 0 26px;
   color: var(--wbx-ink) !important;
   background: var(--wbx-surface);
-  font-size: 16px;
-  font-weight: 760;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
   text-decoration: none !important;
   transition: background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
@@ -182,9 +183,10 @@
 .wbx-service-hero__summary {
   max-width: 720px;
   margin: 28px auto 0;
-  color: var(--wbx-muted);
-  font-size: 18px;
-  line-height: 1.85;
+  color: var(--wbx-text-body);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.6;
 }
 
 .wbx-service-hero__actions,
@@ -500,9 +502,10 @@
 .wbx-service-heading > p:last-child {
   max-width: 680px;
   margin-top: 20px;
-  color: var(--wbx-muted);
+  color: var(--wbx-text-body);
   font-size: 17px;
-  line-height: 1.8;
+  font-weight: 400;
+  line-height: 1.65;
 }
 
 .wbx-service-compare {
@@ -1411,21 +1414,21 @@
   }
 
   .wbx-service .wbx-service-hero__title {
-    font-size: clamp(44px, 14vw, 60px);
+    font-size: 40px;
   }
 
   .wbx-service h2 {
-    font-size: 36px;
+    font-size: 30px;
   }
 
   .wbx-service h3 {
-    font-size: 25px;
+    font-size: 20px;
   }
 
   .wbx-service-hero__summary,
   .wbx-service-heading > p:last-child,
   .wbx-service-download > div > p:not(.wbx-service-tag) {
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .wbx-service-hero__actions,

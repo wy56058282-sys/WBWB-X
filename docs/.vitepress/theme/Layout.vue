@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import DefaultTheme from 'vitepress/theme'
 import { useData, useRoute, withBase } from 'vitepress'
-import { computed, defineAsyncComponent, onBeforeUnmount, onMounted } from 'vue'
+import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import {
   isCaseContributionRoute,
   isCaseDetailRoute,
@@ -30,6 +30,11 @@ const isCaseContribution = computed(() =>
   isCaseContributionRoute(route.path, site.value.base),
 )
 let hoverMedia: MediaQueryList | null = null
+const navScrolled = ref(false)
+
+function updateNavScrolled() {
+  navScrolled.value = window.scrollY > 24
+}
 
 function communityQrTrigger(target: EventTarget | null) {
   if (!(target instanceof Element)) return null
@@ -81,6 +86,8 @@ function handleCommunityQrPointerOut(event: PointerEvent) {
 
 onMounted(() => {
   hoverMedia = window.matchMedia('(hover: hover) and (pointer: fine)')
+  updateNavScrolled()
+  window.addEventListener('scroll', updateNavScrolled, { passive: true })
   document.addEventListener('click', handleCommunityQrTrigger, true)
   document.addEventListener('pointerover', handleCommunityQrPointerOver, true)
   document.addEventListener('pointerout', handleCommunityQrPointerOut, true)
@@ -92,6 +99,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+  window.removeEventListener('scroll', updateNavScrolled)
   document.removeEventListener('click', handleCommunityQrTrigger, true)
   document.removeEventListener('pointerover', handleCommunityQrPointerOver, true)
   document.removeEventListener('pointerout', handleCommunityQrPointerOut, true)
@@ -106,6 +114,7 @@ onBeforeUnmount(() => {
       'wbx-reading-layout': isReading,
       'wbx-cases-layout': isCaseIndex,
       'wbx-case-detail-layout': isCaseDetail || isCaseContribution,
+      'wbx-nav-scrolled': navScrolled,
     }"
   >
     <template #home-hero-before>

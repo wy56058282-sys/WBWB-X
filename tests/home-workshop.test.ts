@@ -35,7 +35,9 @@ describe('homepage workshop card', () => {
   it('defers workshop images until the section approaches the viewport', async () => {
     let reveal: IntersectionObserverCallback | undefined
     vi.stubGlobal('IntersectionObserver', class {
-      constructor(callback: IntersectionObserverCallback) { reveal = callback }
+      constructor(callback: IntersectionObserverCallback, options?: IntersectionObserverInit) {
+        if (options?.rootMargin === '600px 0px') reveal = callback
+      }
       observe() {}
       disconnect() {}
       unobserve() {}

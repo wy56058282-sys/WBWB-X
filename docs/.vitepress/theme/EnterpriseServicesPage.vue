@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
 import AboutPage from './AboutPage.vue'
+import { marketingReveal as vMarketingReveal } from './marketingReveal'
 import './enterprise-services.css'
 
 const contactEmail = 'contact@sparkx.zone'
@@ -46,20 +47,28 @@ const services = [
 
 <template>
   <div class="wbx-enterprise">
-    <header class="wbx-enterprise__hero wbx-page-header">
+    <header v-marketing-reveal class="wbx-enterprise__hero wbx-page-header">
       <p class="wbx-pixel-label">ENTERPRISE SERVICES</p>
       <h1>企业服务</h1>
       <p>从问题梳理到场景落地，把 AI 变成可执行、可验收、可复用的工作系统。你可以从需求诊断开始，也可以直接选择培训、工作坊或企业定制。</p>
     </header>
 
     <section class="wbx-enterprise__services" aria-labelledby="enterprise-services-title">
-      <div class="wbx-enterprise__heading">
+      <div v-marketing-reveal class="wbx-enterprise__heading">
         <p class="wbx-pixel-label">HOW WE WORK</p>
         <h2 id="enterprise-services-title">选择适合你的合作方式</h2>
         <p>还不确定从哪里开始？建议先进行需求诊断。</p>
       </div>
       <div class="wbx-enterprise__grid">
-        <article v-for="service in services" :id="service.id" :key="service.id" class="wbx-enterprise-service" :class="{ 'is-recommended': service.recommended }">
+        <article
+          v-for="(service, index) in services"
+          :id="service.id"
+          :key="service.id"
+          v-marketing-reveal
+          class="wbx-enterprise-service wbx-interactive-card"
+          :class="{ 'is-recommended': service.recommended }"
+          :data-reveal-order="index < 3 ? index + 1 : undefined"
+        >
           <div class="wbx-enterprise-service__meta">
             <p class="wbx-pixel-label">{{ service.label }}</p>
             <span v-if="service.recommended">推荐起点</span>
