@@ -105,8 +105,8 @@
   .wbx-update-ticker {
     width: min(100%, 320px);
     height: 28px;
+    margin-inline: auto;
     margin-bottom: -14px;
-    grid-template-columns: 28px minmax(0, 1fr);
     transform: translateY(-48px);
   }
 

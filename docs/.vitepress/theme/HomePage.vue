@@ -1,10 +1,4 @@
 <script setup lang="ts">
-import {
-  computed,
-  onBeforeUnmount,
-  onMounted,
-  ref,
-} from 'vue'
 import { withBase } from 'vitepress'
 import { brand } from '../brand'
 import HomeAnalyticsStrip from './HomeAnalyticsStrip.vue'
@@ -17,89 +11,6 @@ const homeAnalyticsConfig = readHomeAnalyticsConfig(import.meta.env)
 const sortedHomeUpdates = [...homeUpdates].sort((a, b) =>
   b.date.localeCompare(a.date),
 )
-const UPDATE_INTERVAL_MS = 6000
-const currentUpdateIndex = ref(0)
-const isUpdateHovered = ref(false)
-const isUpdateFocused = ref(false)
-const isUpdatePaused = computed(
-  () => isUpdateHovered.value || isUpdateFocused.value,
-)
-const prefersReducedMotion = ref(false)
-const updateTickerRef = ref<HTMLElement | null>(null)
-const currentHomeUpdate = computed(
-  () => sortedHomeUpdates[currentUpdateIndex.value],
-)
-let updateTimer: ReturnType<typeof window.setTimeout> | undefined
-let updateMotionQuery: MediaQueryList | undefined
-
-function scheduleUpdate() {
-  if (updateTimer !== undefined) {
-    window.clearTimeout(updateTimer)
-    updateTimer = undefined
-  }
-
-  if (
-    isUpdatePaused.value ||
-    prefersReducedMotion.value ||
-    sortedHomeUpdates.length < 2
-  ) {
-    return
-  }
-
-  updateTimer = window.setTimeout(() => {
-    currentUpdateIndex.value =
-      (currentUpdateIndex.value + 1) % sortedHomeUpdates.length
-    scheduleUpdate()
-  }, UPDATE_INTERVAL_MS)
-}
-
-function pauseUpdateHover() {
-  isUpdateHovered.value = true
-  scheduleUpdate()
-}
-
-function resumeUpdateHover() {
-  isUpdateHovered.value = false
-  scheduleUpdate()
-}
-
-function pauseUpdateFocus() {
-  isUpdateFocused.value = true
-  scheduleUpdate()
-}
-
-function handleUpdateFocusOut(event: FocusEvent) {
-  if (
-    event.relatedTarget instanceof Node &&
-    updateTickerRef.value?.contains(event.relatedTarget)
-  ) {
-    return
-  }
-
-  isUpdateFocused.value = false
-  scheduleUpdate()
-}
-
-function handleUpdateMotionChange(event: MediaQueryListEvent) {
-  prefersReducedMotion.value = event.matches
-  scheduleUpdate()
-}
-
-onMounted(() => {
-  updateMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-  prefersReducedMotion.value = updateMotionQuery.matches
-  updateMotionQuery.addEventListener('change', handleUpdateMotionChange)
-
-  scheduleUpdate()
-})
-
-onBeforeUnmount(() => {
-  if (updateTimer !== undefined) {
-    window.clearTimeout(updateTimer)
-    updateTimer = undefined
-  }
-  updateMotionQuery?.removeEventListener('change', handleUpdateMotionChange)
-})
 
 const valueProps = [
   { icon: 'hn-check-box', title: '场景实战', label: 'REAL-WORLD TASKS' },
@@ -195,16 +106,7 @@ const workflowSteps = [
     <section class="wbx-hero" aria-labelledby="wbx-hero-title">
       <div class="wbx-hero__stage">
         <div class="wbx-hero__copy">
-          <aside
-            ref="updateTickerRef"
-            class="wbx-update-ticker"
-            :class="{ 'is-paused': isUpdatePaused }"
-            aria-label="内容更新"
-            @mouseenter="pauseUpdateHover"
-            @mouseleave="resumeUpdateHover"
-            @focusin="pauseUpdateFocus"
-            @focusout="handleUpdateFocusOut"
-          >
+          <aside class="wbx-update-ticker" aria-label="内容更新">
             <span class="wbx-update-ticker__icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none">
                 <path d="M4 10v4h3l8 4V6l-8 4H4Z" />
@@ -213,17 +115,30 @@ const workflowSteps = [
               </svg>
             </span>
             <span class="wbx-update-ticker__content">
-              <a
-                :key="`${currentHomeUpdate.date}-${currentHomeUpdate.title}`"
-                class="wbx-update-ticker__link"
-                :href="withBase(currentHomeUpdate.href)"
-                :aria-label="`${currentHomeUpdate.date} ${currentHomeUpdate.title}`"
-              >
-                <span class="wbx-update-ticker__title-track">
-                  <span class="wbx-update-ticker__title">{{ currentHomeUpdate.title }}</span>
-                  <span class="wbx-update-ticker__title" aria-hidden="true">{{ currentHomeUpdate.title }}</span>
+              <span class="wbx-update-ticker__title-track">
+                <span class="wbx-update-ticker__title-group">
+                  <a
+                    v-for="update in sortedHomeUpdates"
+                    :key="`${update.date}-${update.title}`"
+                    class="wbx-update-ticker__link"
+                    :href="withBase(update.href)"
+                    :aria-label="`${update.date} ${update.title}`"
+                  >
+                    <span class="wbx-update-ticker__title">{{ update.title }}</span>
+                  </a>
                 </span>
-              </a>
+                <span class="wbx-update-ticker__title-group" aria-hidden="true">
+                  <a
+                    v-for="update in sortedHomeUpdates"
+                    :key="`duplicate-${update.date}-${update.title}`"
+                    class="wbx-update-ticker__link"
+                    :href="withBase(update.href)"
+                    tabindex="-1"
+                  >
+                    <span class="wbx-update-ticker__title">{{ update.title }}</span>
+                  </a>
+                </span>
+              </span>
             </span>
           </aside>
           <p class="wbx-pixel-label">27 CHAPTERS / 4 PARTS / ∞ WORKFLOWS</p>

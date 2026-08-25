@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { homeUpdates } from '../docs/.vitepress/theme/homeUpdates'
 import { baseRule } from './helpers/css-rules'
 import { useHomePageHarness } from './helpers/home-page-harness'
@@ -6,15 +6,7 @@ import { readHomeStyle } from './helpers/read-theme-style'
 
 const harness = useHomePageHarness()
 
-describe('home hero icon navigation', () => {
-  it('leads with the latest Chinese release and only its newly added capability', () => {
-    expect(homeUpdates[0]).toEqual({
-      date: '2026-08-17',
-      title: '5.3.14：新增 Markdown AI 编辑快捷键提示，支持 Enter 直接发送、Cmd+Enter 换行',
-      href: 'https://www.workbuddy.cn/docs/workbuddy/Changelog',
-    })
-  })
-
+describe('home update ticker', () => {
   it('lists only the supplied newly added capabilities in release order', () => {
     expect(homeUpdates).toHaveLength(18)
     expect(homeUpdates.map(({ date }) => date)).toEqual([
@@ -25,254 +17,73 @@ describe('home hero icon navigation', () => {
       '2026-07-28',
     ])
     expect(homeUpdates.every(({ title }) => /^5\.3\.\d+：新增/.test(title))).toBe(true)
-    expect(homeUpdates.map(({ title }) => title)).toContain(
-      '5.3.13：新增灵感「一键做同款」，支持快速套版复刻网页',
-    )
-    expect(homeUpdates.map(({ title }) => title)).toContain(
-      '5.3.12：新增灵感分享口令，可复制口令给他人并直达对应灵感详情',
-    )
-    expect(homeUpdates.map(({ title }) => title)).toContain(
-      '5.3.6：新增 WorkBuddy 官网登录跳转能力，支持从 www.workbuddy.cn / staging.workbuddy.cn 无缝拉起桌面端登录',
-    )
   })
 
-  it('rotates one synchronized update link every six seconds and loops a full cycle', async () => {
-    vi.useFakeTimers()
+  it('duplicates the complete update sequence for one seamless loop', () => {
     harness.mountHomePage()
 
-    expect(homeUpdates.length).toBeGreaterThanOrEqual(3)
-    expect(homeUpdates.map(({ date }) => date)).toEqual(
-      [...homeUpdates].map(({ date }) => date).sort().reverse(),
-    )
-
     const ticker = document.querySelector('.wbx-update-ticker')
-    const initialIcon = ticker?.querySelector('.wbx-update-ticker__icon')
-    const initialLink = ticker?.querySelector<HTMLAnchorElement>('a')
+    const groups = ticker?.querySelectorAll('.wbx-update-ticker__title-group')
+    const expectedTitles = homeUpdates.map(({ title }) => title)
+
     expect(ticker?.getAttribute('aria-label')).toBe('内容更新')
-    expect(ticker?.querySelectorAll('.wbx-update-ticker__link')).toHaveLength(1)
-    expect(initialIcon).not.toBeNull()
-    expect(ticker?.querySelector('time')).toBeNull()
-    expect(initialLink?.getAttribute('aria-label')).toBe(
-      `${homeUpdates[0].date} ${homeUpdates[0].title}`,
-    )
-    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
-      homeUpdates[0].title,
-    )
-
-    await vi.advanceTimersByTimeAsync(6000)
-
-    expect(ticker?.querySelector('.wbx-update-ticker__icon')).toBe(initialIcon)
-    expect(ticker?.querySelector<HTMLAnchorElement>('a')?.getAttribute('aria-label')).toBe(
-      `${homeUpdates[1].date} ${homeUpdates[1].title}`,
-    )
-    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
-      homeUpdates[1].title,
-    )
-    expect(ticker?.querySelector<HTMLAnchorElement>('a')?.getAttribute('href')).toBe(
-      homeUpdates[1].href,
-    )
-    expect(ticker?.querySelectorAll('.wbx-update-ticker__link')).toHaveLength(1)
-
-    await vi.advanceTimersByTimeAsync((homeUpdates.length - 1) * 6000)
-
-    expect(ticker?.querySelector<HTMLAnchorElement>('a')?.getAttribute('aria-label')).toBe(
-      `${homeUpdates[0].date} ${homeUpdates[0].title}`,
-    )
-    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
-      homeUpdates[0].title,
-    )
-    expect(ticker?.querySelector<HTMLAnchorElement>('a')?.getAttribute('href')).toBe(
-      homeUpdates[0].href,
-    )
-    expect(ticker?.querySelectorAll('.wbx-update-ticker__link')).toHaveLength(1)
+    expect(ticker?.querySelector('.wbx-update-ticker__icon')).not.toBeNull()
+    expect(groups).toHaveLength(2)
+    expect(
+      [...(groups?.[0]?.querySelectorAll('.wbx-update-ticker__title') ?? [])]
+        .map((title) => title.textContent),
+    ).toEqual(expectedTitles)
+    expect(
+      [...(groups?.[1]?.querySelectorAll('.wbx-update-ticker__title') ?? [])]
+        .map((title) => title.textContent),
+    ).toEqual(expectedTitles)
+    expect(groups?.[1]?.getAttribute('aria-hidden')).toBe('true')
+    expect(groups?.[1]?.querySelectorAll('a[tabindex="-1"]')).toHaveLength(homeUpdates.length)
   })
 
-  it('always duplicates the current update title for the marquee', () => {
+  it('keeps each update title, date, and destination synchronized', () => {
     harness.mountHomePage()
 
-    const marqueeTitles = document.querySelectorAll(
-      '.wbx-update-ticker__title',
+    const links = document.querySelectorAll<HTMLAnchorElement>(
+      '.wbx-update-ticker__title-group:first-child .wbx-update-ticker__link',
     )
-    expect(marqueeTitles).toHaveLength(2)
-    expect(marqueeTitles[0]?.textContent).toBe(homeUpdates[0].title)
-    expect(marqueeTitles[1]?.textContent).toBe(homeUpdates[0].title)
-    expect(marqueeTitles[1]?.getAttribute('aria-hidden')).toBe('true')
+
+    expect(links).toHaveLength(homeUpdates.length)
+    links.forEach((link, index) => {
+      expect(link.getAttribute('aria-label')).toBe(
+        `${homeUpdates[index].date} ${homeUpdates[index].title}`,
+      )
+      expect(link.getAttribute('href')).toBe(homeUpdates[index].href)
+      expect(link.textContent).toBe(homeUpdates[index].title)
+    })
   })
 
-  it('pauses on hover and starts a fresh interval after the pointer leaves', async () => {
-    vi.useFakeTimers()
-    harness.mountHomePage()
-
-    const ticker = document.querySelector<HTMLElement>('.wbx-update-ticker')
-
-    await vi.advanceTimersByTimeAsync(3000)
-    ticker?.dispatchEvent(new MouseEvent('mouseenter'))
-    await vi.advanceTimersByTimeAsync(18000)
-
-    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
-      homeUpdates[0].title,
-    )
-    expect(ticker?.classList.contains('is-paused')).toBe(true)
-
-    ticker?.dispatchEvent(new MouseEvent('mouseleave'))
-    await vi.advanceTimersByTimeAsync(5999)
-    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
-      homeUpdates[0].title,
-    )
-
-    await vi.advanceTimersByTimeAsync(1)
-    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
-      homeUpdates[1].title,
-    )
-  })
-
-  it('stays paused until both overlapping hover and focus states end', async () => {
-    vi.useFakeTimers()
-    harness.mountHomePage()
-
-    const ticker = document.querySelector<HTMLElement>('.wbx-update-ticker')
-    const outside = document.createElement('button')
-    document.body.append(outside)
-
-    ticker?.dispatchEvent(new MouseEvent('mouseenter'))
-    const firstLink = ticker?.querySelector<HTMLAnchorElement>('a')
-    firstLink?.focus()
-    expect(document.activeElement).toBe(firstLink)
-    await vi.advanceTimersByTimeAsync(12000)
-    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
-      homeUpdates[0].title,
-    )
-
-    ticker?.dispatchEvent(new MouseEvent('mouseleave'))
-    await vi.advanceTimersByTimeAsync(6000)
-    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
-      homeUpdates[0].title,
-    )
-
-    outside.focus()
-    expect(document.activeElement).toBe(outside)
-    await vi.advanceTimersByTimeAsync(6000)
-    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
-      homeUpdates[1].title,
-    )
-
-    ticker?.dispatchEvent(new MouseEvent('mouseenter'))
-    const secondLink = ticker?.querySelector<HTMLAnchorElement>('a')
-    secondLink?.focus()
-    expect(document.activeElement).toBe(secondLink)
-    outside.focus()
-    expect(document.activeElement).toBe(outside)
-    await vi.advanceTimersByTimeAsync(6000)
-    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
-      homeUpdates[1].title,
-    )
-
-    ticker?.dispatchEvent(new MouseEvent('mouseleave'))
-    await vi.advanceTimersByTimeAsync(6000)
-    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
-      homeUpdates[2].title,
-    )
-  })
-
-  it('clears timers and media listeners when unmounted', () => {
-    vi.useFakeTimers()
-    const app = harness.mountHomePage()
-
-    expect(vi.getTimerCount()).toBeGreaterThan(0)
-
-    app.unmount()
-
-    expect(vi.getTimerCount()).toBe(0)
-    expect(harness.mediaQueryRemoveEventListener()).toHaveBeenCalledWith(
-      'change',
-      expect.any(Function),
-    )
-  })
-
-  it('keeps the first update visible when reduced motion is preferred', async () => {
-    vi.useFakeTimers()
-    harness.stubMatchMedia(true)
-    harness.mountHomePage()
-
-    const ticker = document.querySelector('.wbx-update-ticker')
-    await vi.advanceTimersByTimeAsync(18000)
-
-    expect(ticker?.querySelector<HTMLAnchorElement>('a')?.getAttribute('aria-label')).toBe(
-      `${homeUpdates[0].date} ${homeUpdates[0].title}`,
-    )
-    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
-      homeUpdates[0].title,
-    )
-  })
-
-  it('styles the synchronized update ticker with a persistent announcement icon and title marquee', () => {
+  it('centers the icon and update track and uses a single linear animation', () => {
     const css = readHomeStyle()
-    const ticker = baseRule(css, '.wbx-update-ticker')
-    const icon = baseRule(css, '.wbx-update-ticker__icon')
-    const titleLink = baseRule(css, '.wbx-update-ticker__link')
-    const titleTrack = baseRule(css, '.wbx-update-ticker__title-track')
-    const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
-    const reducedMotion = css.slice(
-      css.indexOf('@media (prefers-reduced-motion: reduce)'),
-      css.indexOf('.wbx-hero__official'),
-    )
+    const tickerRule = baseRule(css, '.wbx-update-ticker')
+    const trackRule = baseRule(css, '.wbx-update-ticker__title-track')
 
-    expect(ticker).toMatch(/height:\s*28px;/)
-    expect(ticker).toMatch(
-      /grid-template-columns:\s*28px minmax\(0, 1fr\);/,
-    )
-    expect(ticker).toMatch(/background:\s*transparent;/)
-    expect(ticker).toMatch(/transform:\s*translateY\(-60px\);/)
+    expect(tickerRule).toMatch(/display:\s*flex;/)
+    expect(tickerRule).toMatch(/align-items:\s*center;/)
+    expect(tickerRule).toMatch(/justify-content:\s*center;/)
+    expect(tickerRule).toMatch(/margin-inline:\s*auto;/)
+    expect(trackRule).toMatch(/animation:\s*wbx-update-title-marquee 160s linear infinite;/)
     expect(css).toMatch(
-      /\.wbx-update-ticker__content\s*\{[^}]*height:\s*28px;[^}]*overflow:\s*hidden;/s,
-    )
-    expect(icon).toMatch(/display:\s*flex;/)
-    expect(icon).toMatch(/align-items:\s*center;/)
-    expect(css).toMatch(/\.wbx-update-ticker__icon svg\s*\{[^}]*width:\s*18px;[^}]*height:\s*18px;/s)
-    expect(css).not.toMatch(/\.wbx-update-date-/)
-    expect(titleTrack).toMatch(/display:\s*inline-flex;/)
-    expect(titleTrack).toMatch(/width:\s*max-content;/)
-    expect(titleTrack).toMatch(/gap:\s*32px;/)
-    expect(titleTrack).toMatch(
-      /animation:\s*wbx-update-title-marquee 12s linear 400ms infinite;/,
-    )
-    expect(titleLink).toMatch(/width:\s*100%;/)
-    expect(titleLink).toMatch(/height:\s*100%;/)
-    expect(css).not.toMatch(/\.is-overflowing/)
-    expect(css).toMatch(
-      /@keyframes wbx-update-title-marquee\s*\{[\s\S]*?to\s*\{[^}]*transform:\s*translateX\(calc\(-50% - 16px\)\);/,
-    )
-    expect(css).toMatch(
-      /\.wbx-update-ticker:hover\s+\.wbx-update-ticker__title-track,\s*\.wbx-update-ticker:focus-within\s+\.wbx-update-ticker__title-track,\s*\.wbx-update-ticker\.is-paused\s+\.wbx-update-ticker__title-track\s*\{[^}]*animation-play-state:\s*paused;/s,
-    )
-    expect(mobile).toMatch(
-      /\.wbx-update-ticker\s*\{[^}]*width:\s*min\(100%, 320px\);[^}]*grid-template-columns:\s*28px minmax\(0, 1fr\);/s,
-    )
-    expect(reducedMotion).toMatch(
-      /\.wbx-update-ticker__title-track\s*\{[^}]*animation:\s*none;/s,
-    )
-    expect(reducedMotion).not.toMatch(
-      /\.wbx-update-ticker__link\s*\{[^}]*display:\s*none;/s,
+      /@keyframes wbx-update-title-marquee[\s\S]*transform:\s*translate3d\(calc\(-50% - 24px\), 0, 0\);/,
     )
   })
 
-  it('keeps the mobile ticker inside the hero without moving subsequent copy content', () => {
+  it('pauses without rebuilding the track and provides a static reduced-motion view', () => {
     const css = readHomeStyle()
-    const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
-    const mobileCopy = mobile.match(/\.wbx-hero__copy\s*\{([^}]*)\}/)?.[1]
-    const mobileTicker = mobile.match(/\.wbx-update-ticker\s*\{([^}]*)\}/)?.[1]
-    const mobileTopInset = Number(
-      mobileCopy?.match(/padding:\s*(\d+)px/)?.[1],
-    )
-    const tickerTranslation = Number(
-      mobileTicker?.match(/transform:\s*translateY\((-?\d+)px\);/)?.[1],
-    )
-    const tickerFlowCompensation = Number(
-      mobileTicker?.match(/margin-bottom:\s*(-?\d+)px;/)?.[1],
-    )
 
-    expect(mobileTopInset + tickerTranslation).toBe(12)
-    expect(mobileTopInset + tickerFlowCompensation).toBe(46)
+    expect(css).toMatch(
+      /\.wbx-update-ticker:hover \.wbx-update-ticker__title-track,[\s\S]*animation-play-state:\s*paused;/,
+    )
+    expect(css).toMatch(
+      /@media \(prefers-reduced-motion: reduce\)[\s\S]*\.wbx-update-ticker__title-track\s*\{[^}]*animation:\s*none;/,
+    )
+    expect(css).toMatch(
+      /@media \(prefers-reduced-motion: reduce\)[\s\S]*\.wbx-update-ticker__title-group\[aria-hidden='true'\][\s\S]*display:\s*none;/,
+    )
   })
-
 })

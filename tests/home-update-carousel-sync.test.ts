@@ -48,8 +48,7 @@ function mountHomePage() {
 }
 
 describe('home update carousel synchronization', () => {
-  it('keeps date, title, and href on the same distinct-date fixture entry', async () => {
-    vi.useFakeTimers()
+  it('keeps every title, date, and href synchronized in the continuous track', () => {
     vi.stubGlobal(
       'matchMedia',
       vi.fn((query: string) => ({
@@ -73,29 +72,17 @@ describe('home update carousel synchronization', () => {
     )
     mountHomePage()
 
-    const ticker = document.querySelector('.wbx-update-ticker')
-    expect(ticker?.querySelectorAll('.wbx-update-ticker__link')).toHaveLength(1)
-    expect(ticker?.querySelector<HTMLAnchorElement>('a')?.getAttribute('aria-label')).toBe(
-      `${fixtureHomeUpdates[0].date} ${fixtureHomeUpdates[0].title}`,
-    )
-    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
-      fixtureHomeUpdates[0].title,
-    )
-    expect(ticker?.querySelector<HTMLAnchorElement>('a')?.getAttribute('href')).toBe(
-      fixtureHomeUpdates[0].href,
-    )
+    const groups = document.querySelectorAll('.wbx-update-ticker__title-group')
+    const links = groups[0]?.querySelectorAll<HTMLAnchorElement>('.wbx-update-ticker__link')
 
-    await vi.advanceTimersByTimeAsync(6000)
-
-    expect(ticker?.querySelector<HTMLAnchorElement>('a')?.getAttribute('aria-label')).toBe(
-      `${fixtureHomeUpdates[1].date} ${fixtureHomeUpdates[1].title}`,
-    )
-    expect(ticker?.querySelector('.wbx-update-ticker__title')?.textContent).toBe(
-      fixtureHomeUpdates[1].title,
-    )
-    expect(ticker?.querySelector<HTMLAnchorElement>('a')?.getAttribute('href')).toBe(
-      fixtureHomeUpdates[1].href,
-    )
-    expect(ticker?.querySelectorAll('.wbx-update-ticker__link')).toHaveLength(1)
+    expect(groups).toHaveLength(2)
+    expect(links).toHaveLength(fixtureHomeUpdates.length)
+    links?.forEach((link, index) => {
+      expect(link.getAttribute('aria-label')).toBe(
+        `${fixtureHomeUpdates[index].date} ${fixtureHomeUpdates[index].title}`,
+      )
+      expect(link.getAttribute('href')).toBe(fixtureHomeUpdates[index].href)
+      expect(link.textContent).toBe(fixtureHomeUpdates[index].title)
+    })
   })
 })
