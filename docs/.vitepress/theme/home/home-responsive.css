@@ -176,24 +176,33 @@
     left: 4%;
   }
 
-  .wbx-hero__official {
+  .wbx-hero__sparkx-bubble {
+    right: 47px;
+    bottom: 78px;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+  }
+
+  .wbx-hero__sparkx-bubble::after {
+    bottom: -4.5px;
+    width: 9px;
+    height: 4.5px;
+    margin-left: -4.5px;
+  }
+
+  .wbx-hero__sparkx-logo {
+    border-radius: 7px;
+  }
+
+  .wbx-hero__official-ip-wrap {
     right: 12px;
     bottom: 0;
     width: 108px;
   }
 
-  .wbx-hero__official-label {
-    padding: 6px 8px;
-    font-size: 11px;
-  }
-
   .wbx-hero__official-ip {
     width: 106px;
-  }
-
-  .wbx-hero__official--cn {
-    bottom: 100px;
-    right: 12px;
   }
 
   .wbx-value-strip {

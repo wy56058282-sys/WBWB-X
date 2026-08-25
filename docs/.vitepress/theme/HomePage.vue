@@ -206,28 +206,25 @@ const workflowSteps = [
             <i class="hn hn-users" aria-hidden="true" />
           </a>
           <a
-            class="wbx-hero__official wbx-hero__official--cn"
-            href="https://www.workbuddy.cn/"
+            class="wbx-hero__sparkx-bubble"
+            href="https://www.sparkx.zone/"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="访问 WorkBuddy 中国版 v5.3.14"
+            aria-label="访问星火集"
           >
-            <span class="wbx-hero__official-label">中国版 v5.3.14</span>
+            <img
+              class="wbx-hero__sparkx-logo"
+              :src="withBase('/brand/partners/sparkx.svg')"
+              alt=""
+            >
           </a>
-          <a
-            class="wbx-hero__official"
-            href="https://www.workbuddy.ai/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="访问 WorkBuddy 国际版 v5.2.7"
-          >
-            <span class="wbx-hero__official-label">国际版 v5.2.7</span>
+          <span class="wbx-hero__official-ip-wrap" aria-hidden="true">
             <img
               class="wbx-hero__official-ip"
               :src="withBase('/brand/workbuddy-official-ip.png')"
               alt=""
             >
-          </a>
+          </span>
         </div>
       </div>
 

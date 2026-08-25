@@ -189,77 +189,85 @@ describe('home hero icon navigation', () => {
     ])
   })
 
-  it('adds a labelled WorkBuddy official-site IP link to the hero', () => {
+  it('replaces the WorkBuddy version links with one SparkX bubble', () => {
     harness.mountHomePage()
 
-    const official = document.querySelector<HTMLAnchorElement>('.wbx-hero__official:not(.wbx-hero__official--cn)')
-    const image = official?.querySelector<HTMLImageElement>('.wbx-hero__official-ip')
-
-    expect(official?.getAttribute('href')).toBe('https://www.workbuddy.ai/')
-    expect(official?.getAttribute('target')).toBe('_blank')
-    expect(official?.getAttribute('rel')).toBe('noopener noreferrer')
-    expect(official?.getAttribute('aria-label')).toBe('访问 WorkBuddy 国际版 v5.2.7')
-    expect(official?.querySelector('.wbx-hero__official-label')?.textContent).toBe(
-      '国际版 v5.2.7',
+    const sparkx = document.querySelector<HTMLAnchorElement>(
+      '.wbx-hero__sparkx-bubble',
     )
-    expect(image?.getAttribute('src')).toBe('/brand/workbuddy-official-ip.png')
-    expect(image?.getAttribute('alt')).toBe('')
+    const logo = sparkx?.querySelector<HTMLImageElement>(
+      '.wbx-hero__sparkx-logo',
+    )
+    const robot = document.querySelector<HTMLImageElement>(
+      '.wbx-hero__official-ip',
+    )
+
+    expect(sparkx?.getAttribute('href')).toBe('https://www.sparkx.zone/')
+    expect(sparkx?.getAttribute('target')).toBe('_blank')
+    expect(sparkx?.getAttribute('rel')).toBe('noopener noreferrer')
+    expect(sparkx?.getAttribute('aria-label')).toBe('访问星火集')
+    expect(logo?.getAttribute('src')).toBe('/brand/partners/sparkx.svg')
+    expect(logo?.getAttribute('alt')).toBe('')
+    expect(robot?.getAttribute('src')).toBe('/brand/workbuddy-official-ip.png')
+    expect(robot?.getAttribute('alt')).toBe('')
+    expect(document.querySelector('.wbx-hero__official-label')).toBeNull()
+    expect(
+      document.querySelector('a[href="https://www.workbuddy.cn/"]'),
+    ).toBeNull()
+    expect(
+      document.querySelector('a[href="https://www.workbuddy.ai/"]'),
+    ).toBeNull()
   })
 
-  it('adds a workbuddy.cn label above the official-site IP link', () => {
-    harness.mountHomePage()
-
-    const cn = document.querySelector<HTMLAnchorElement>('.wbx-hero__official--cn')
-
-    expect(cn?.getAttribute('href')).toBe('https://www.workbuddy.cn/')
-    expect(cn?.getAttribute('target')).toBe('_blank')
-    expect(cn?.getAttribute('rel')).toBe('noopener noreferrer')
-    expect(cn?.getAttribute('aria-label')).toBe('访问 WorkBuddy 中国版 v5.3.14')
-    expect(cn?.querySelector('.wbx-hero__official-label')?.textContent).toBe(
-      '中国版 v5.3.14',
-    )
-  })
-
-  it('positions the official-site IP link without duplicate hero metrics', () => {
+  it('floats the SparkX bubble above the retained robot', () => {
     const css = readHomeStyle()
-    const official = baseRule(css, '.wbx-hero__official')
-    const label = baseRule(css, '.wbx-hero__official-label')
-    const image = baseRule(css, '.wbx-hero__official-ip')
-    const officialInteraction = css.match(
-      /\.wbx-hero__official:hover,\s*\.wbx-hero__official:focus-visible\s*\{([^}]*)\}/s,
-    )?.[1]
-    const labelInteraction = css.match(
-      /\.wbx-hero__official:hover \.wbx-hero__official-label,\s*\.wbx-hero__official:focus-visible \.wbx-hero__official-label\s*\{([^}]*)\}/s,
+    const bubble = baseRule(css, '.wbx-hero__sparkx-bubble')
+    const tail = baseRule(css, '.wbx-hero__sparkx-bubble::after')
+    const logo = baseRule(css, '.wbx-hero__sparkx-logo')
+    const robotWrap = baseRule(css, '.wbx-hero__official-ip-wrap')
+    const robot = baseRule(css, '.wbx-hero__official-ip')
+    const bubbleInteraction = css.match(
+      /\.wbx-hero__sparkx-bubble:hover,\s*\.wbx-hero__sparkx-bubble:focus-visible\s*\{([^}]*)\}/s,
     )?.[1]
     const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
 
-    expect(official).toMatch(/right:\s*24px;/)
-    expect(official).toMatch(/bottom:\s*0;/)
-    expect(official).toMatch(/width:\s*154px;/)
-    expect(label).toMatch(/background:\s*#0d100d;/)
-    expect(label).toMatch(/color:\s*#fff;/)
-    expect(label).toMatch(/box-shadow:\s*0 10px 25px rgb\(0 0 0 \/ 28%\);/)
-    expect(label).toMatch(/animation:\s*wbx-official-label-float 4\.2s ease-in-out infinite;/)
-    expect(label).toMatch(/transition:\s*color 180ms ease, scale 180ms ease;/)
-    expect(label).toMatch(/scale:\s*1;/)
-    expect(image).toMatch(/width:\s*145px;/)
-    expect(image).not.toMatch(/animation:/)
+    expect(bubble).toMatch(/right:\s*75px;/)
+    expect(bubble).toMatch(/bottom:\s*107px;/)
+    expect(bubble).toMatch(/width:\s*52px;/)
+    expect(bubble).toMatch(/height:\s*52px;/)
+    expect(bubble).toMatch(/border-radius:\s*10px;/)
+    expect(bubble).toMatch(/background:\s*#6c5ce7;/i)
+    expect(bubble).toMatch(/box-shadow:\s*none;/)
+    expect(bubble).toMatch(
+      /animation:\s*wbx-sparkx-bubble-float 4\.2s ease-in-out infinite;/,
+    )
+    expect(bubble).not.toMatch(/transform:/)
+    expect(tail).toMatch(/bottom:\s*-6px;/)
+    expect(tail).toMatch(/background:\s*#6c5ce7;/i)
+    expect(tail).toMatch(/clip-path:\s*polygon\(0 0, 100% 0, 50% 100%\);/)
+    expect(logo).toMatch(/width:\s*100%;/)
+    expect(logo).toMatch(/height:\s*100%;/)
+    expect(robotWrap).toMatch(/right:\s*24px;/)
+    expect(robotWrap).toMatch(/bottom:\s*0;/)
+    expect(robotWrap).toMatch(/width:\s*154px;/)
+    expect(robot).toMatch(/width:\s*145px;/)
+    expect(robot).not.toMatch(/animation:/)
     expect(css).not.toContain('.wbx-hero__metrics')
-    expect(official).not.toMatch(/transition:/)
-    expect(officialInteraction).toBeDefined()
-    expect(officialInteraction).toMatch(/transform:\s*none;/)
-    expect(officialInteraction).not.toMatch(/translate/)
-    expect(labelInteraction).toBeDefined()
-    expect(labelInteraction).toMatch(/color:\s*var\(--wbx-accent\);/)
-    expect(labelInteraction).toMatch(/scale:\s*1\.08;/)
+    expect(bubbleInteraction).toBeDefined()
+    expect(bubbleInteraction).toMatch(/border-color:\s*var\(--wbx-ink\);/)
+    expect(bubbleInteraction).toMatch(/animation-play-state:\s*paused;/)
+    expect(bubbleInteraction).not.toMatch(/transform:/)
     expect(css).toMatch(
-      /\.wbx-hero__official:(?:hover|focus-visible) \.wbx-hero__official-label\s*\{[^}]*animation-play-state:\s*paused;/s,
+      /@keyframes wbx-sparkx-bubble-float\s*\{[\s\S]*?50%\s*\{[^}]*transform:\s*translateY\(-6px\);/s,
     )
     expect(css).toMatch(
-      /@media \(prefers-reduced-motion: reduce\)\s*\{[\s\S]*?\.wbx-hero__official-label\s*\{[^}]*animation:\s*none;/s,
+      /@media \(prefers-reduced-motion: reduce\)\s*\{[\s\S]*?\.wbx-hero__sparkx-bubble\s*\{[^}]*animation:\s*none;/s,
     )
     expect(mobile).toMatch(
-      /\.wbx-hero__official\s*\{[^}]*right:\s*12px;[^}]*bottom:\s*0;[^}]*width:\s*108px;/s,
+      /\.wbx-hero__sparkx-bubble\s*\{[^}]*right:\s*47px;[^}]*bottom:\s*78px;[^}]*width:\s*38px;[^}]*height:\s*38px;/s,
+    )
+    expect(mobile).toMatch(
+      /\.wbx-hero__official-ip-wrap\s*\{[^}]*right:\s*12px;[^}]*bottom:\s*0;[^}]*width:\s*108px;/s,
     )
     expect(mobile).toMatch(
       /\.wbx-hero__official-ip\s*\{[^}]*width:\s*106px;/s,
