@@ -20,7 +20,7 @@ function mountAboutPage() {
 
 describe('about page', () => {
   it('keeps resources addressable while moving the team into enterprise services', async () => {
-    expect(nav.map((item) => item.text)).toEqual(['首页', '开始阅读', '案例集', '工具集', '企业服务', '交流群'])
+    expect(nav.map((item) => item.text)).toEqual(['首页', '开始阅读', 'OPC 专区', '案例集', '工具集', '企业服务', '交流群'])
     expect(nav.find((item) => item.text === '企业服务')?.link).toBe('/services/')
     const resources = await import('../docs/resources/index.md?raw')
     expect(resources.default).toContain('title: 资料')

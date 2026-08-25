@@ -7,6 +7,7 @@ import { discoverCaseSidebar } from './case-sidebar'
 import { legacyRouteRedirectPlugin } from './legacy-routes'
 import { addLazyImageRendering } from './markdown-media'
 import { nav } from './navigation'
+import { opcSidebar } from './opc-sidebar'
 import { serviceConfig } from './service-config'
 import { sidebar } from './sidebar'
 
@@ -109,6 +110,7 @@ export default defineConfig({
     nav: nav.map((item) => ({ ...item })),
     sidebar: {
       '/wb-x/': [...sidebar],
+      '/opc/': [...opcSidebar],
       '/cases/': casesSidebar,
       '/community/case-contributing': casesSidebar,
     },

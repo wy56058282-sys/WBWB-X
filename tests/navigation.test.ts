@@ -17,6 +17,7 @@ describe('site navigation', () => {
     expect(nav.map((item) => item.text)).toEqual([
       '首页',
       '开始阅读',
+      'OPC 专区',
       '案例集',
       '工具集',
       '企业服务',

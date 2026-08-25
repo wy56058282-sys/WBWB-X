@@ -99,6 +99,10 @@
   transition: border-color var(--wbx-motion-base) ease, box-shadow var(--wbx-motion-base) ease, transform var(--wbx-motion-base) ease;
 }
 
+.wbx-reading-card--featured {
+  grid-column: 1 / -1;
+}
+
 .wbx-reading-card:hover,
 .wbx-reading-card:focus-visible {
   border-color: var(--wbx-line);

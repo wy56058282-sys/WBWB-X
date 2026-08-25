@@ -17,7 +17,8 @@ export function isHomeRoute(path: string, base: string) {
 }
 
 export function isReadingRoute(path: string, base: string) {
-  return stripBase(path, base).startsWith('/wb-x/')
+  const route = stripBase(path, base)
+  return route.startsWith('/wb-x/') || route.startsWith('/opc/')
 }
 
 export function isCaseIndexRoute(path: string, base: string) {

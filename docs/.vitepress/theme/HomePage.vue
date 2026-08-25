@@ -53,6 +53,15 @@ const readingPaths = [
     tags: ['团队落地', '行业路线'],
     href: '/wb-x/第四篇 岗位与行业落地/',
   },
+  {
+    icon: 'hn-robot',
+    meta: 'SPECIAL REPORT · 6 CHAPTERS',
+    title: 'OPC 专区：一人公司如何拥有一支 AI 团队',
+    description: '从 OPC 趋势、商业模式与政策机遇，到 WorkBuddy 解法、真实案例和生态合作。',
+    tags: ['一人公司', '超级个体'],
+    href: '/opc/',
+    featured: true,
+  },
 ]
 
 const taskCategories = [
@@ -247,7 +256,13 @@ const workflowSteps = [
         <p>从个人上手到组织落地，循序渐进，构建你的 WorkBuddy 工作系统。</p>
       </div>
       <div class="wbx-reading-grid">
-        <a v-for="path in readingPaths" :key="path.meta" class="wbx-reading-card" :href="withBase(path.href)">
+        <a
+          v-for="path in readingPaths"
+          :key="path.meta"
+          class="wbx-reading-card"
+          :class="{ 'wbx-reading-card--featured': path.featured }"
+          :href="withBase(path.href)"
+        >
           <span class="wbx-reading-card__icon">
             <i class="hn" :class="path.icon" aria-hidden="true" />
           </span>
