@@ -23,6 +23,9 @@ const themes = {
     accent: '#32e6b9',
     ink: '#0d100d',
     surface: '#ffffff',
+    sectionSoft: '#f7f9f8',
+    line: '#e3e7e4',
+    shadowSoft: '0 8px 24px rgb(13 16 13 / 6%)',
     hoverSurface: '#eceee9',
     vpBrand: '#176b55',
   },
@@ -30,6 +33,9 @@ const themes = {
     accent: '#32e6b9',
     ink: '#f3f5ed',
     surface: '#181b15',
+    sectionSoft: '#151812',
+    line: '#343a2f',
+    shadowSoft: '0 10px 30px rgb(0 0 0 / 24%)',
     hoverSurface: '#252922',
     vpBrand: '#32e6b9',
   },
@@ -40,6 +46,11 @@ function resolveThemeTokens(css: string, theme: (typeof themes)[keyof typeof the
     .replaceAll('var(--wbx-accent)', theme.accent)
     .replaceAll('var(--wbx-ink)', theme.ink)
     .replaceAll('var(--wbx-surface)', theme.surface)
+    .replaceAll('var(--wbx-section-soft)', theme.sectionSoft)
+    .replaceAll('var(--wbx-line)', theme.line)
+    .replaceAll('var(--wbx-shadow-soft)', theme.shadowSoft)
+    .replaceAll('var(--wbx-radius-lg)', '16px')
+    .replaceAll('var(--wbx-radius-md)', '10px')
     .replaceAll('var(--wbx-hover-surface)', theme.hoverSurface)
     .replaceAll('var(--vp-c-brand-1)', theme.vpBrand)
     .replaceAll('var(--wbx-pixel)', 'Silkscreen')
@@ -301,6 +312,63 @@ describe('product page computed styles', () => {
     expect(computed.outlineStyle).toBe('solid')
     expect(computed.outlineWidth).toBe('2px')
     expect(computed.boxShadow).toMatch(/(?:rgb\(13, 16, 13\)|#0d100d)/)
+  })
+
+  it('uses the shared soft surface treatment for WorkBuddy dynamic visuals', () => {
+    installStyles(pageStyles.service, themes.light, 1440)
+    document.body.innerHTML = `
+      <article class="wbx-service">
+        <div class="wbx-service-console">
+          <div class="wbx-service-console__bar"></div>
+          <div class="wbx-service-console__body"></div>
+          <form class="wbx-service-console__form">
+            <div class="wbx-service-console__input"><input><button></button></div>
+          </form>
+        </div>
+        <div class="wbx-service-flow"><strong>请求</strong><span>步骤</span><b>已交付</b></div>
+        <div class="wbx-service-deliverables"><span>文档</span></div>
+        <div class="wbx-service-files"><span>文件</span><strong>已归档</strong></div>
+        <div class="wbx-service-model"><div class="wbx-service-model__tabs"><button class="wbx-service-model__tab" aria-selected="true">混元</button></div><div class="wbx-service-model__detail">详情</div></div>
+      </article>
+    `
+
+    const consoleStyle = getComputedStyle(document.querySelector('.wbx-service-console')!)
+    expect(consoleStyle.borderWidth).toBe('1px')
+    expect(consoleStyle.borderColor).toBe('rgb(227, 231, 228)')
+    expect(consoleStyle.borderRadius).toBe('16px')
+    expect(consoleStyle.boxShadow).toBe('0 8px 24px rgb(13 16 13 / 6%)')
+
+    for (const selector of ['.wbx-service-flow', '.wbx-service-files', '.wbx-service-model']) {
+      const visual = getComputedStyle(document.querySelector(selector)!)
+      expect(visual.borderWidth).toBe('1px')
+      expect(visual.borderColor).toBe('rgb(227, 231, 228)')
+      expect(visual.borderRadius).toBe('12px')
+      expect(visual.boxShadow).toBe('0 8px 24px rgb(13 16 13 / 6%)')
+    }
+
+    expect(getComputedStyle(document.querySelector('.wbx-service-deliverables > span')!).borderRadius).toBe('10px')
+    expect(getComputedStyle(document.querySelector('.wbx-service-console__input input')!).borderRadius).toBe('10px')
+    expect(getComputedStyle(document.querySelector('.wbx-service-model__tab[aria-selected="true"]')!).backgroundColor).toBe('rgb(255, 255, 255)')
+  })
+
+  it('keeps the softened WorkBuddy visuals in the single-column mobile layout', () => {
+    installStyles(pageStyles.service, themes.light, 390)
+    document.body.innerHTML = `
+      <article class="wbx-service">
+        <div class="wbx-service-console"></div>
+        <article class="wbx-service-capability">
+          <span class="wbx-service-capability__number">01</span>
+          <div class="wbx-service-capability__copy">说明</div>
+          <div class="wbx-service-capability__visual"><div class="wbx-service-flow">流程</div></div>
+        </article>
+        <div class="wbx-service-deliverables"><span>文档</span></div>
+      </article>
+    `
+
+    expect(getComputedStyle(document.querySelector('.wbx-service-console')!).boxShadow).toBe('0 8px 24px rgb(13 16 13 / 6%)')
+    expect(getComputedStyle(document.querySelector('.wbx-service-capability')!).gridTemplateColumns).toBe('1fr')
+    expect(getComputedStyle(document.querySelector('.wbx-service-capability__visual')!).gridColumn).toBe('1')
+    expect(getComputedStyle(document.querySelector('.wbx-service-deliverables')!).gridTemplateColumns).toBe('1fr')
   })
 
   it.each([

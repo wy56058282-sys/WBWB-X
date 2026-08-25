@@ -12,7 +12,7 @@ describe('WorkBuddy product service styles', () => {
     expect(styles).toContain('var(--wbx-pixel)')
   })
 
-  it('keeps the original visuals and changes only their main accent', () => {
+  it('keeps the original dynamic behavior while using the shared visual tokens', () => {
     expect(styles).toMatch(/\.wbx-service\s*\{[^}]*--wb-ref-bg:\s*var\(--wbx-paper\);[^}]*--wb-ref-panel:\s*var\(--wbx-surface\);[^}]*--wb-ref-acc:\s*var\(--wbx-accent\);/s)
     expect(styles).toMatch(/\.dark \.wbx-service\s*\{[^}]*--wb-ref-bg:\s*var\(--wbx-paper\);[^}]*--wb-ref-panel:\s*var\(--wbx-surface\);[^}]*--wb-ref-ink:\s*var\(--wbx-ink\);/s)
     expect(styles).not.toContain('#c8f542')
@@ -20,7 +20,9 @@ describe('WorkBuddy product service styles', () => {
     expect(styles).not.toContain('.wbx-service .console-window')
     expect(styles).not.toContain('.wbx-service .net-box')
     expect(styles).not.toContain('.wbx-service .remote-stage')
-    expect(styles).toMatch(/\.wbx-service-console\s*\{[^}]*box-shadow:\s*8px 8px 0 var\(--wbx-accent\)/s)
+    expect(styles).toMatch(/\.wbx-service-console\s*\{[^}]*box-shadow:\s*var\(--wbx-shadow-soft\)/s)
+    expect(styles).toMatch(/\.wbx-service-flow span\s*\{[^}]*animation:\s*wbx-service-flow-step 5\.6s/s)
+    expect(styles).toMatch(/\.wbx-service-files span\s*\{[^}]*animation:\s*wbx-service-file-scan 5\.4s/s)
     expect(styles).toMatch(/\.wbx-service-swarm__path\.is-hot\s*\{[^}]*stroke:\s*var\(--wbx-accent\)/s)
     expect(styles).toMatch(/\.wbx-service-swarm__agent\.is-active circle,[\s\S]*?stroke:\s*var\(--wbx-accent\)/s)
     expect(styles).toMatch(/\.wbx-service-remote\s*\{[^}]*grid-template-columns:\s*minmax\(220px, \.72fr\) 180px minmax\(300px, 1\.3fr\)/s)
@@ -31,7 +33,7 @@ describe('WorkBuddy product service styles', () => {
     expect(baseRule(styles, '.wbx-service-console__body')).toMatch(/overflow-y:\s*auto/)
   })
 
-  it('uses the shared soft product treatment for static sections without restyling dynamic visuals', () => {
+  it('uses the shared soft product treatment across static and dynamic surfaces', () => {
     expect(baseRule(styles, '.wbx-service-button')).toMatch(/min-height:\s*var\(--wbx-control-height\)/)
     expect(baseRule(styles, '.wbx-service-button')).toMatch(/border:\s*1px solid var\(--wbx-line\)/)
     expect(baseRule(styles, '.wbx-service-button')).toMatch(/border-radius:\s*var\(--wbx-radius-md\)/)
@@ -41,11 +43,30 @@ describe('WorkBuddy product service styles', () => {
     expect(baseRule(styles, '.wbx-service-compare__card')).toMatch(/border:\s*1px solid var\(--wbx-line\)/)
     expect(baseRule(styles, '.wbx-service-compare__card')).toMatch(/border-radius:\s*var\(--wbx-radius-lg\)/)
     expect(baseRule(styles, '.wbx-service-compare__card')).toMatch(/box-shadow:\s*var\(--wbx-shadow-soft\)/)
-    expect(styles).toMatch(/\.wbx-service-console\s*\{[^}]*border:\s*2px solid var\(--wbx-ink\)/s)
+    expect(styles).toMatch(/\.wbx-service-console\s*\{[^}]*border:\s*1px solid var\(--wbx-line\)[^}]*border-radius:\s*var\(--wbx-radius-lg\)/s)
+    expect(baseRule(styles, '.wbx-service-flow,\n.wbx-service-files')).toMatch(/border:\s*1px solid var\(--wbx-line\)/)
+    expect(baseRule(styles, '.wbx-service-flow,\n.wbx-service-files')).toMatch(/border-radius:\s*12px/)
+    expect(baseRule(styles, '.wbx-service-model')).toMatch(/border-radius:\s*12px/)
+    expect(baseRule(styles, '.wbx-service-model')).toMatch(/box-shadow:\s*var\(--wbx-shadow-soft\)/)
     expect(baseRule(styles, '.wbx-service-swarm')).toMatch(/border:\s*1px solid var\(--wb-ref-line\)/)
     expect(baseRule(styles, '.wbx-service-swarm')).toMatch(/border-radius:\s*20px/)
     expect(baseRule(styles, '.wbx-service-swarm')).toMatch(/box-shadow:\s*var\(--wbx-shadow-soft\)/)
     expect(baseRule(styles, '.wbx-service-swarm')).not.toMatch(/2px solid var\(--wbx-ink\)/)
+  })
+
+  it('softens the remote-control devices without removing their motion states', () => {
+    const devices = baseRule(styles, '.wbx-service-phone,\n.wbx-service-laptop')
+    const phone = baseRule(styles, '.wbx-service-phone')
+
+    expect(devices).toMatch(/border:\s*1px solid var\(--wbx-line\)/)
+    expect(devices).toMatch(/box-shadow:\s*var\(--wbx-shadow-soft\)/)
+    expect(phone).toMatch(/display:\s*flex/)
+    expect(phone).toMatch(/height:\s*480px/)
+    expect(phone).toMatch(/border-radius:\s*24px/)
+    expect(baseRule(styles, '.wbx-service-phone footer')).toMatch(/margin-top:\s*auto/)
+    expect(styles).toMatch(/\.wbx-service-laptop\s*\{[^}]*border-radius:\s*var\(--wbx-radius-lg\)/s)
+    expect(styles).not.toMatch(/\.wbx-service-laptop\s*\{[^}]*8px 8px 0/s)
+    expect(styles).toMatch(/\.wbx-service-remote\[data-stage='running'\] \.wbx-service-laptop\s*\{[^}]*transform:\s*translateY\(-2px\)/s)
   })
 
   it('keeps the site shell and gives the product page a wide bounded canvas', () => {

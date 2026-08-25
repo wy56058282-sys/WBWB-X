@@ -6,7 +6,7 @@ import { readHomeStyle } from './helpers/read-theme-style'
 const harness = useHomePageHarness()
 
 describe('home hero icon navigation', () => {
-  it('renders the approved borderless homepage product footer', () => {
+  it('renders the homepage footer with the shared global footer layout', () => {
     harness.mountHomePage()
 
     const css = readHomeStyle()
@@ -14,7 +14,6 @@ describe('home hero icon navigation', () => {
     const attribution = footer?.querySelector<HTMLAnchorElement>('a')
     const footerRule = baseRule(css, '.wbx-home-footer')
     const innerRule = baseRule(css, '.wbx-home-footer__inner')
-    const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
 
     expect(footer?.textContent).toContain('以真实场景为主线的 WB-X 实战读本')
     expect(footer?.textContent).toContain('Pixel icons by HackerNoon')
@@ -23,14 +22,16 @@ describe('home hero icon navigation', () => {
     expect(attribution?.getAttribute('href')).toBe(
       'https://hackernoon.com/pixel-icon-library',
     )
-    expect(footerRule).toMatch(/border:\s*0;/)
-    expect(footerRule).toMatch(/background:\s*transparent;/)
-    expect(innerRule).toMatch(/display:\s*flex;/)
+    expect(footerRule).toMatch(/padding:\s*32px;/)
+    expect(footerRule).toMatch(/border-top:\s*1px solid var\(--wbx-line\);/)
+    expect(footerRule).toMatch(/background:\s*var\(--wbx-paper\);/)
+    expect(innerRule).toMatch(/display:\s*block;/)
     expect(innerRule).toMatch(/box-sizing:\s*border-box;/)
-    expect(innerRule).toMatch(/justify-content:\s*space-between;/)
-    expect(mobile).toMatch(
-      /\.wbx-home-footer__inner\s*\{[^}]*align-items:\s*center;[^}]*flex-direction:\s*column;[^}]*text-align:\s*center;/s,
-    )
+    expect(innerRule).toMatch(/max-width:\s*1440px;/)
+    expect(innerRule).toMatch(/padding:\s*0;/)
+    expect(innerRule).toMatch(/font-size:\s*14px;/)
+    expect(innerRule).toMatch(/line-height:\s*24px;/)
+    expect(innerRule).toMatch(/text-align:\s*center;/)
   })
 
   it('places the material actions directly after the system description', () => {
@@ -84,7 +85,7 @@ describe('home hero icon navigation', () => {
     )
   })
 
-  it('renders the halved IP as a borderless footer decoration', () => {
+  it('centers the halved IP as a borderless footer decoration', () => {
     harness.mountHomePage()
 
     const css = readHomeStyle()
@@ -96,11 +97,15 @@ describe('home hero icon navigation', () => {
     expect(document.querySelector('.wbx-community-ip')?.getAttribute('aria-hidden')).toBe('true')
     expect(image?.getAttribute('src')).toBe('/brand/workbuddy-ip.png')
     expect(image?.getAttribute('alt')).toBe('')
-    expect(decoration).toMatch(/justify-content:\s*flex-end;/)
+    expect(decoration).toMatch(/justify-content:\s*center;/)
+    expect(decoration).toMatch(/width:\s*100%;/)
+    expect(decoration).toMatch(/margin:\s*48px 0 0;/)
+    expect(decoration).toMatch(/padding-right:\s*0;/)
     expect(decoration).toMatch(/border:\s*0;/)
     expect(decoration).toMatch(/background:\s*transparent;/)
     expect(ip).toMatch(/width:\s*min\(100%, 187px\);/)
     expect(ip).toMatch(/height:\s*auto;/)
+    expect(ip).toMatch(/transform:\s*translateY\(15px\);/)
     expect(ip).not.toMatch(/animation:/)
     expect(mobile).toMatch(
       /\.wbx-community-ip\s*\{[^}]*justify-content:\s*center;[^}]*padding-right:\s*0;/s,

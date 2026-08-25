@@ -126,6 +126,13 @@ describe('case collection page styles', () => {
     expect(source).toMatch(/\.wbx-cases-categories button,\s*\.wbx-enterprise-kind-tabs button,\s*\.wbx-cases-empty button\s*\{[^}]*flex:\s*0 0 auto;[^}]*min-height:\s*36px;[^}]*padding:\s*0 12px;[^}]*font-size:\s*14px;[^}]*font-weight:\s*700;/s)
   })
 
+  it('uses the shared soft control treatment for enterprise filters', () => {
+    const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
+
+    expect(source).toMatch(/\.wbx-enterprise-filter-group button,\s*\.wbx-enterprise-results-bar button\s*\{[^}]*min-height:\s*32px[^}]*border:\s*1px solid var\(--wbx-line\)[^}]*border-radius:\s*var\(--wbx-radius-md\)/s)
+    expect(source).toMatch(/\.wbx-enterprise-filter-group button\[aria-pressed="true"\]\s*\{[^}]*border-color:\s*var\(--wbx-accent\)[^}]*background:\s*var\(--wbx-accent\)/s)
+  })
+
   it('uses the personal category hover treatment for enterprise content tabs', () => {
     const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
 

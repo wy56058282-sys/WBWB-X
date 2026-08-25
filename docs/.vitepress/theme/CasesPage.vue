@@ -20,6 +20,7 @@ const industry = ref('')
 const businessFunction = ref('')
 const toolsColumnAnchor = ref<HTMLElement | null>(null)
 const toolsColumn = ref<HTMLElement | null>(null)
+const resultsAnchor = ref<HTMLElement | null>(null)
 const toolsSticky = ref(false)
 const toolsFixed = ref(false)
 let toolsResizeObserver: ResizeObserver | undefined
@@ -54,9 +55,17 @@ function resetFilters() {
   businessFunction.value = ''
 }
 
-function selectAudience(next: 'personal' | 'enterprise') {
+async function selectAudience(next: 'personal' | 'enterprise') {
+  const previousResultsTop = resultsAnchor.value?.getBoundingClientRect().top
   audience.value = next
   resetFilters()
+  await nextTick()
+
+  if (window.innerWidth <= 1024 || previousResultsTop === undefined) return
+  const nextResultsTop = resultsAnchor.value?.getBoundingClientRect().top
+  if (nextResultsTop === undefined) return
+  const offset = Math.round(nextResultsTop - previousResultsTop)
+  if (offset) window.scrollBy(0, offset)
 }
 
 function selectEnterpriseKind(next: EnterpriseCaseKind) {
@@ -160,7 +169,7 @@ onBeforeUnmount(() => {
           </button>
         </div>
 
-        <section class="wbx-cases-gallery-results">
+        <section ref="resultsAnchor" class="wbx-cases-gallery-results">
           <ul v-if="cases.length" class="wbx-cases-grid" aria-live="polite">
           <li v-for="item in cases" :key="item.route" class="wbx-case-card">
             <a
@@ -214,7 +223,7 @@ onBeforeUnmount(() => {
             <span>共 {{ enterpriseCases.length }} 条</span>
             <button v-if="query || industry || businessFunction" type="button" @click="resetFilters">清空筛选</button>
           </div>
-          <section id="enterprise-results" class="wbx-cases-gallery-results" role="tabpanel" :aria-labelledby="enterpriseKind === 'scene' ? 'enterprise-scenes-tab' : 'enterprise-catalog-cases-tab'">
+          <section id="enterprise-results" ref="resultsAnchor" class="wbx-cases-gallery-results" role="tabpanel" :aria-labelledby="enterpriseKind === 'scene' ? 'enterprise-scenes-tab' : 'enterprise-catalog-cases-tab'">
             <ul v-if="enterpriseCases.length" class="wbx-cases-grid" aria-live="polite">
               <li v-for="item in enterpriseCases" :key="`${item.kind}-${item.number}`" class="wbx-case-card wbx-enterprise-case-card">
                 <span class="wbx-enterprise-case-card__number">{{ String(item.number).padStart(3, '0') }}</span>

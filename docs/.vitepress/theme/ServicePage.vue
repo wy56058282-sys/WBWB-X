@@ -317,7 +317,7 @@ const capabilities = [
   },
   {
     index: '02',
-    title: '文档、表格、图表、PPT，一句话产出',
+    title: '文档、表格、图表、PPT，',
     description: '从原始数据到完整报告，一条流水线完成分析、写作、画图和排版，拿到的是能直接使用的成品。',
     points: ['数据分析与结论成文', '图表随数据生成', 'PPT 自动排版'],
     visual: 'deliverables',
@@ -620,7 +620,7 @@ onBeforeUnmount(() => {
       <article v-for="capability in capabilities" :key="capability.index" class="wbx-service-capability" data-reveal>
         <span class="wbx-service-capability__number">{{ capability.index }}</span>
         <div class="wbx-service-capability__copy">
-          <h3>{{ capability.title }}</h3><p>{{ capability.description }}</p>
+          <h3>{{ capability.title }}<template v-if="capability.index === '02'"><br>一句话产出</template></h3><p>{{ capability.description }}</p>
           <ul><li v-for="point in capability.points" :key="point">{{ point }}</li></ul>
         </div>
         <div class="wbx-service-capability__visual">
@@ -650,7 +650,7 @@ onBeforeUnmount(() => {
     <section id="remote" class="wbx-service-section" aria-labelledby="remote-title">
       <div class="wbx-service-heading" data-reveal>
         <p class="wbx-service-tag">04 · REMOTE CONTROL</p>
-        <h2 id="remote-title">人不在电脑前，<br>活照样<em>推进</em>。</h2>
+        <h2 id="remote-title">人不在电脑前，活照样<em>推进</em>。</h2>
         <p>绑定微信、企业微信、飞书或钉钉，在手机上发一句话，家里的电脑就开始干活，结果直接回到聊天窗口。</p>
       </div>
       <div class="wbx-service-remote" :data-stage="remoteStage" data-reveal>

@@ -314,12 +314,10 @@
 .wbx-community-ip {
   display: flex;
   box-sizing: border-box;
-  justify-content: flex-end;
-  width: 100vw;
-  margin-top: 48px;
-  margin-right: calc(50% - 50vw);
-  margin-left: calc(50% - 50vw);
-  padding-right: calc(max((100vw - 1480px) / 2, 0px) + 140px);
+  justify-content: center;
+  width: 100%;
+  margin: 48px 0 0;
+  padding-right: 0;
   overflow: visible;
   border: 0;
   background: transparent;
@@ -329,26 +327,27 @@
   display: block;
   width: min(100%, 187px);
   height: auto;
+  transform: translateY(15px);
 }
 
 .wbx-home-footer {
-  padding-top: 24px;
-  border: 0;
+  padding: 32px;
+  border-top: 1px solid var(--wbx-line);
   color: var(--wbx-muted);
-  background: transparent;
+  background: var(--wbx-paper);
 }
 
 .wbx-home-footer__inner {
-  display: flex;
+  display: block;
   box-sizing: border-box;
-  align-items: center;
-  justify-content: space-between;
   gap: 24px;
   width: 100%;
-  max-width: 1480px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 28px 32px 36px;
-  font-size: 13px;
+  padding: 0;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
 }
 
 .wbx-home-footer__product,

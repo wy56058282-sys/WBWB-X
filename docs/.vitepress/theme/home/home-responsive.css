@@ -275,27 +275,6 @@
     width: min(100%, 150px);
   }
 
-  .wbx-home-footer {
-    padding-top: 0;
-  }
-
-  .wbx-home-footer__inner {
-    align-items: center;
-    flex-direction: column;
-    gap: 8px;
-    padding: 24px 20px 30px;
-    text-align: center;
-  }
-
-  .wbx-home-footer__product span,
-  .wbx-home-footer__product a {
-    display: block;
-  }
-
-  .wbx-home-footer__product span[aria-hidden='true'] {
-    display: none;
-  }
-
 }
 
 @media (max-width: 640px) {

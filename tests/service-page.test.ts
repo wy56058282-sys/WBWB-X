@@ -64,6 +64,18 @@ describe('WorkBuddy product service page', () => {
     ])
   })
 
+  it('uses the approved deliberate line breaks for remote control and document output headings', () => {
+    mountServicePage()
+
+    const remoteTitle = document.querySelector('#remote-title')!
+    const documentTitle = document.querySelectorAll('.wbx-service-capability h3')[1]!
+
+    expect(remoteTitle.querySelector('br')).toBeNull()
+    expect(remoteTitle.textContent?.replace(/\s+/g, '')).toBe('人不在电脑前，活照样推进。')
+    expect(documentTitle.querySelector('br')).not.toBeNull()
+    expect(documentTitle.innerHTML).toContain('PPT，<br>一句话产出')
+  })
+
   it('keeps every original dynamic visual structure', () => {
     mountServicePage()
 

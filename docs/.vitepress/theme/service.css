@@ -230,10 +230,10 @@
   max-width: 930px;
   margin: 64px auto 0;
   overflow: hidden;
-  border: 2px solid var(--wbx-ink);
-  border-radius: 8px;
+  border: 1px solid var(--wbx-line);
+  border-radius: var(--wbx-radius-lg);
   background: var(--wbx-surface);
-  box-shadow: 8px 8px 0 var(--wbx-accent);
+  box-shadow: var(--wbx-shadow-soft);
   text-align: left;
 }
 
@@ -284,6 +284,7 @@
   max-width: 78%;
   margin-left: auto;
   border: 1px solid color-mix(in srgb, var(--wbx-accent) 48%, var(--wbx-line));
+  border-radius: var(--wbx-radius-md);
   padding: 10px 14px;
   background: var(--wbx-accent-soft);
   font-size: 14px;
@@ -389,7 +390,8 @@
   align-items: center;
   gap: 12px;
   margin-top: 24px;
-  border: 1px solid var(--wbx-ink);
+  border: 1px solid color-mix(in srgb, var(--wbx-accent) 52%, var(--wbx-line));
+  border-radius: var(--wbx-radius-md);
   padding: 12px 16px;
   background: var(--wbx-accent-soft);
   animation: wbx-service-deliverable-in 480ms cubic-bezier(.22, 1, .36, 1);
@@ -453,8 +455,8 @@
 
 .wbx-service-console__input input {
   min-width: 0;
-  border: 1px solid var(--wbx-ink);
-  border-radius: 0;
+  border: 1px solid var(--wbx-line);
+  border-radius: var(--wbx-radius-md);
   padding: 12px 14px;
   color: var(--wbx-ink);
   background: var(--wbx-surface);
@@ -465,7 +467,8 @@
 .wbx-service-console__input button {
   display: grid;
   place-items: center;
-  border: 2px solid var(--wbx-ink);
+  border: 1px solid color-mix(in srgb, var(--wbx-accent) 60%, var(--wbx-ink));
+  border-radius: var(--wbx-radius-md);
   color: #0d100d;
   background: var(--wbx-accent);
   cursor: pointer;
@@ -872,18 +875,21 @@
 .wbx-service-files {
   display: grid;
   gap: 8px;
-  border: 2px solid var(--wbx-ink);
+  border: 1px solid var(--wbx-line);
+  border-radius: 12px;
   padding: 22px;
   background: var(--wbx-surface);
+  box-shadow: var(--wbx-shadow-soft);
 }
 
 .wbx-service-flow span,
 .wbx-service-files span {
   border: 1px solid var(--wbx-line);
+  border-radius: 8px;
   padding: 9px 12px;
   color: var(--wbx-muted);
-  font-family: var(--wbx-pixel);
-  font-size: 10px;
+  background: var(--wbx-section-soft);
+  font-size: 12px;
 }
 
 .wbx-service-flow span {
@@ -905,10 +911,11 @@
 
 .wbx-service-flow b,
 .wbx-service-files > strong {
-  border: 1px solid var(--wbx-ink);
+  border: 1px solid color-mix(in srgb, var(--wbx-accent) 52%, var(--wbx-line));
+  border-radius: 8px;
   padding: 10px 12px;
-  color: #0d100d;
-  background: var(--wbx-accent);
+  color: var(--wbx-ink);
+  background: var(--wbx-accent-soft);
   font-size: 12px;
 }
 
@@ -924,8 +931,10 @@
   align-content: center;
   gap: 8px;
   border: 1px solid var(--wbx-line);
+  border-radius: var(--wbx-radius-md);
   padding: 18px;
   background: var(--wbx-surface);
+  box-shadow: var(--wbx-shadow-soft);
   animation: wbx-service-card-breathe 4.2s ease-in-out infinite;
 }
 
@@ -973,21 +982,25 @@
 
 .wbx-service-model {
   overflow: hidden;
-  border: 2px solid var(--wbx-ink);
+  border: 1px solid var(--wbx-line);
+  border-radius: 12px;
   background: var(--wbx-surface);
+  box-shadow: var(--wbx-shadow-soft);
 }
 
 .wbx-service-model__tabs {
   display: flex;
+  gap: 4px;
   overflow-x: auto;
-  border-bottom: 1px solid var(--wbx-line);
+  padding: 4px;
+  background: var(--wbx-section-soft);
 }
 
 .wbx-service-model__tab {
   min-height: 42px;
   flex: 1 0 auto;
   border: 0;
-  border-right: 1px solid var(--wbx-line);
+  border-radius: 8px;
   padding: 0 10px;
   color: var(--wbx-muted);
   background: transparent;
@@ -997,8 +1010,9 @@
 }
 
 .wbx-service-model__tab[aria-selected='true'] {
-  color: #0d100d;
-  background: var(--wbx-accent);
+  color: var(--wbx-ink);
+  background: var(--wbx-surface);
+  box-shadow: 0 2px 8px rgb(13 16 13 / 8%);
 }
 
 .wbx-service-model__detail {
@@ -1036,13 +1050,17 @@
 
 .wbx-service-phone,
 .wbx-service-laptop {
-  border: 2px solid var(--wbx-ink);
+  border: 1px solid var(--wbx-line);
   background: var(--wbx-surface);
+  box-shadow: var(--wbx-shadow-soft);
 }
 
 .wbx-service-phone {
-  min-height: 480px;
-  border-radius: 30px;
+  display: flex;
+  height: 480px;
+  box-sizing: border-box;
+  flex-direction: column;
+  border-radius: 24px;
   padding: 30px 18px 18px;
 }
 
@@ -1060,6 +1078,7 @@
   height: 38px;
   place-items: center;
   color: #0d100d;
+  border-radius: var(--wbx-radius-md);
   background: var(--wbx-accent);
   font-size: 22px;
 }
@@ -1078,14 +1097,16 @@
 .wbx-service-phone > p {
   margin-top: 42px;
   border: 1px solid var(--wbx-line);
+  border-radius: var(--wbx-radius-md);
   padding: 12px;
-  background: var(--vp-c-bg-alt);
+  background: var(--wbx-section-soft);
   font-size: 13px;
 }
 
 .wbx-service-phone > div {
   margin-top: 18px;
-  border: 1px solid var(--wbx-ink);
+  border: 1px solid color-mix(in srgb, var(--wbx-accent) 45%, var(--wbx-line));
+  border-radius: var(--wbx-radius-md);
   padding: 12px;
   background: var(--wbx-accent-soft);
   animation: wbx-service-pop-in 380ms cubic-bezier(.22, 1, .36, 1);
@@ -1098,7 +1119,7 @@
 }
 
 .wbx-service-phone footer {
-  margin-top: 160px;
+  margin-top: auto;
   border: 1px solid var(--wbx-line);
   border-radius: 999px;
   padding: 8px 12px;
@@ -1123,9 +1144,9 @@
 }
 
 .wbx-service-remote__channels span:first-child {
-  border-color: var(--wbx-ink);
-  color: #0d100d;
-  background: var(--wbx-accent);
+  border-color: color-mix(in srgb, var(--wbx-accent) 55%, var(--wbx-line));
+  color: var(--wbx-ink);
+  background: var(--wbx-accent-soft);
 }
 
 .wbx-service-remote__channels .hn {
@@ -1140,8 +1161,8 @@
 
 .wbx-service-laptop {
   min-height: 330px;
+  border-radius: var(--wbx-radius-lg);
   padding: 24px;
-  box-shadow: 8px 8px 0 var(--wbx-line);
   transition: box-shadow 360ms ease, transform 360ms ease, filter 360ms ease;
 }
 
@@ -1151,12 +1172,13 @@
 
 .wbx-service-remote[data-stage='received'] .wbx-service-laptop,
 .wbx-service-remote[data-stage='running'] .wbx-service-laptop {
-  box-shadow: 8px 8px 0 var(--wbx-accent);
-  transform: translateY(-4px);
+  box-shadow: var(--wbx-shadow-hover);
+  transform: translateY(-2px);
 }
 
 .wbx-service-remote[data-stage='complete'] .wbx-service-laptop {
-  box-shadow: 8px 8px 0 color-mix(in srgb, var(--wbx-accent) 65%, var(--wbx-ink));
+  border-color: color-mix(in srgb, var(--wbx-accent) 55%, var(--wbx-line));
+  box-shadow: var(--wbx-shadow-soft);
 }
 
 .wbx-service-laptop header {
@@ -1183,7 +1205,9 @@
 
 .wbx-service-remote__run {
   margin-top: 28px;
-  border: 2px solid var(--wbx-ink);
+  min-height: 42px;
+  border: 1px solid var(--wbx-line);
+  border-radius: var(--wbx-radius-md);
   padding: 10px 16px;
   color: #0d100d;
   background: var(--wbx-accent);
@@ -1303,21 +1327,21 @@
 
 @keyframes wbx-service-flow-step {
   0%, 20%, 100% { border-color: var(--wbx-line); background: var(--wbx-surface); color: var(--wbx-muted); }
-  6%, 14% { border-color: var(--wbx-accent); background: var(--wbx-accent-soft); color: var(--wbx-ink); transform: translateX(5px); }
+  6%, 14% { border-color: var(--wbx-accent); background: var(--wbx-accent-soft); color: var(--wbx-ink); transform: translateX(2px); }
 }
 
 @keyframes wbx-service-result-ready {
   0%, 68%, 100% { transform: scale(1); }
-  76%, 88% { transform: scale(1.025); box-shadow: 4px 4px 0 var(--wbx-accent-soft); }
+  76%, 88% { transform: scale(1.012); box-shadow: 0 6px 18px rgb(13 16 13 / 8%); }
 }
 
 @keyframes wbx-service-card-breathe {
-  50% { border-color: var(--wbx-accent); transform: translateY(-4px); }
+  50% { border-color: var(--wbx-accent); transform: translateY(-2px); }
 }
 
 @keyframes wbx-service-file-scan {
   0%, 20%, 100% { border-color: var(--wbx-line); background: transparent; }
-  6%, 14% { border-color: var(--wbx-accent); background: var(--wbx-accent-soft); transform: translateX(5px); }
+  6%, 14% { border-color: var(--wbx-accent); background: var(--wbx-accent-soft); transform: translateX(2px); }
 }
 
 @keyframes wbx-service-model-swap {
@@ -1420,7 +1444,7 @@
 
   .wbx-service-console {
     margin-top: 46px;
-    box-shadow: 5px 5px 0 var(--wbx-accent);
+    box-shadow: var(--wbx-shadow-soft);
   }
 
   .wbx-service-console__bar strong {

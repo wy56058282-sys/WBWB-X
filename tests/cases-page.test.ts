@@ -56,6 +56,7 @@ afterEach(() => {
   globalThis.ResizeObserver = originalResizeObserver
   Object.defineProperty(window, 'innerWidth', { configurable: true, value: originalInnerWidth })
   Object.defineProperty(window, 'innerHeight', { configurable: true, value: originalInnerHeight })
+  vi.restoreAllMocks()
 })
 
 function mountCasesPage() {
@@ -171,6 +172,23 @@ describe('case gallery', () => {
     await nextTick()
     expect(kindTabs[1]?.getAttribute('aria-selected')).toBe('true')
     expect(document.querySelectorAll('.wbx-enterprise-case-card')).toHaveLength(100)
+  })
+
+  it('keeps the result grid anchored while switching audiences on desktop', async () => {
+    Object.defineProperty(window, 'innerWidth', { configurable: true, value: 1440 })
+    const scrollBy = vi.spyOn(window, 'scrollBy').mockImplementation(() => undefined)
+    vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function () {
+      if (this.matches('#personal-cases-panel .wbx-cases-gallery-results')) return { top: 520 } as DOMRect
+      if (this.matches('#enterprise-results')) return { top: 710 } as DOMRect
+      return { top: 0, bottom: 0, left: 0, right: 0, width: 0, height: 0 } as DOMRect
+    })
+    mountCasesPage()
+
+    document.querySelector<HTMLButtonElement>('#enterprise-cases-tab')?.click()
+    await nextTick()
+    await nextTick()
+
+    expect(scrollBy).toHaveBeenCalledWith(0, 190)
   })
 
   it('uses category-style icons for enterprise content tabs', async () => {
