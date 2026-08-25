@@ -317,21 +317,21 @@ const capabilities = [
   },
   {
     index: '02',
-    title: '文档、表格、图表、PPT，',
+    title: '文档、表格、图表、PPT，一句话产出',
     description: '从原始数据到完整报告，一条流水线完成分析、写作、画图和排版，拿到的是能直接使用的成品。',
     points: ['数据分析与结论成文', '图表随数据生成', 'PPT 自动排版'],
     visual: 'deliverables',
   },
   {
     index: '03',
-    title: '真正碰得到你的电脑',
+    title: '直接处理本地文件',
     description: '经你授权后，WorkBuddy 可以读写本地文件夹，批量清洗 Excel、提取发票并归类重命名。',
     points: ['批量读取和重命名', 'Excel 跨表清洗合并', '权限可控、操作留痕'],
     visual: 'files',
   },
   {
     index: '04',
-    title: '五枚大脑，随任务切换',
+    title: '按任务切换合适模型',
     description: '五款主流大模型内置任选。写代码、做调研或创作内容，不用换工具，只需切换更合适的模型。',
     points: ['按任务自由切换', '兼容 MCP 技能生态', '能力持续扩展'],
     visual: 'models',
@@ -473,8 +473,8 @@ onBeforeUnmount(() => {
     <header id="top" class="wbx-service-hero">
       <div class="wbx-service-hero__copy" data-reveal>
         <p class="wbx-service-tag">AI-NATIVE DESKTOP AGENT · 桌面智能体工作台</p>
-        <h1>一句话，<br>让 <em>AI</em> 替你上班。</h1>
-        <p class="wbx-service-hero__summary">WorkBuddy 是跑在你电脑上的智能体工作台。你只负责提需求，它来规划、拆解、执行，直接交付能用的成果——不是一堆建议，是成品。</p>
+        <h2 class="wbx-service-hero__title">一句话，<br>让 <em>AI</em> 替你上班。</h2>
+        <p class="wbx-service-hero__summary">WorkBuddy 是运行在电脑上的智能体工作台。你只需提出任务，它会规划、拆解并执行，交付可直接使用的文件与结果。</p>
         <div class="wbx-service-hero__actions">
           <a class="wbx-service-button wbx-service-button--primary" href="https://www.workbuddy.cn/" target="_blank" rel="noopener noreferrer">
             <i class="hn hn-arrow-right" aria-hidden="true" />
@@ -521,7 +521,7 @@ onBeforeUnmount(() => {
     <section id="shift" class="wbx-service-section" aria-labelledby="shift-title">
       <div class="wbx-service-heading" data-reveal>
         <p class="wbx-service-tag">01 · MINDSET</p>
-        <h2 id="shift-title">别再问「怎么办」，<br>直接说<em>「去办」</em>。</h2>
+        <h2 id="shift-title">不只给建议，直接交付结果</h2>
         <p>聊天机器人教你怎么做，WorkBuddy 直接替你做完。同样一句话，两种完全不同的结局。</p>
       </div>
       <div class="wbx-service-compare" :data-motion-state="compareMotionState" data-reveal>
@@ -553,7 +553,7 @@ onBeforeUnmount(() => {
     <section id="swarm" class="wbx-service-section" aria-labelledby="swarm-title">
       <div class="wbx-service-heading" data-reveal>
         <p class="wbx-service-tag">02 · AGENT SWARM</p>
-        <h2 id="swarm-title">一人指挥，<em>专家团</em>执行。</h2>
+        <h2 id="swarm-title">一个指令，多个 <em>Agent</em> 协同执行</h2>
         <p>指挥官接收指令后，动态派发给文档、数据、设计等专职 Agent。它们同时开工，再把结果汇总回你面前。</p>
       </div>
       <div class="wbx-service-swarm" :data-motion-state="swarmMotionState" data-reveal>
@@ -614,13 +614,13 @@ onBeforeUnmount(() => {
     <section id="capabilities" class="wbx-service-section" aria-labelledby="capabilities-title">
       <div class="wbx-service-heading" data-reveal>
         <p class="wbx-service-tag">03 · CAPABILITIES</p>
-        <h2 id="capabilities-title">从「动嘴」到「交付」，<br>中间全部<em>自动完成</em>。</h2>
+        <h2 id="capabilities-title">从任务到交付，全流程<em>自动完成</em></h2>
       </div>
 
       <article v-for="capability in capabilities" :key="capability.index" class="wbx-service-capability" data-reveal>
         <span class="wbx-service-capability__number">{{ capability.index }}</span>
         <div class="wbx-service-capability__copy">
-          <h3>{{ capability.title }}<template v-if="capability.index === '02'"><br>一句话产出</template></h3><p>{{ capability.description }}</p>
+          <h3>{{ capability.title }}</h3><p>{{ capability.description }}</p>
           <ul><li v-for="point in capability.points" :key="point">{{ point }}</li></ul>
         </div>
         <div class="wbx-service-capability__visual">
@@ -650,7 +650,7 @@ onBeforeUnmount(() => {
     <section id="remote" class="wbx-service-section" aria-labelledby="remote-title">
       <div class="wbx-service-heading" data-reveal>
         <p class="wbx-service-tag">04 · REMOTE CONTROL</p>
-        <h2 id="remote-title">人不在电脑前，活照样<em>推进</em>。</h2>
+        <h2 id="remote-title">不在电脑前，任务也能<em>继续</em></h2>
         <p>绑定微信、企业微信、飞书或钉钉，在手机上发一句话，家里的电脑就开始干活，结果直接回到聊天窗口。</p>
       </div>
       <div class="wbx-service-remote" :data-stage="remoteStage" data-reveal>
@@ -673,7 +673,7 @@ onBeforeUnmount(() => {
     <section id="skills" class="wbx-service-section wbx-service-skills" aria-labelledby="skills-title">
       <div class="wbx-service-heading" data-reveal>
         <p class="wbx-service-tag">05 · SKILLS</p>
-        <h2 id="skills-title">它会干的活，<br>比你想象的<em>多得多</em>。</h2>
+        <h2 id="skills-title">覆盖更多常见工作场景</h2>
       </div>
       <div class="wbx-service-skills__marquee" data-reveal>
         <div><span v-for="skill in [...skills, ...skills]" :key="`a-${skill}`">{{ skill }}</span></div>
@@ -684,7 +684,7 @@ onBeforeUnmount(() => {
     <section id="download" class="wbx-service-section wbx-service-download" aria-labelledby="download-title">
       <div data-reveal>
         <p class="wbx-service-tag">06 · GET STARTED</p>
-        <h2 id="download-title">把重复的那一半工作，<br><em>交出去</em>。</h2>
+        <h2 id="download-title">把重复工作交给 WorkBuddy</h2>
         <p>现在安装 WorkBuddy，让第一位数字同事今天入职——不打卡，不摸鱼，随叫随到。</p>
         <div class="wbx-service-download__actions">
           <a class="wbx-service-button wbx-service-button--primary" href="https://www.workbuddy.cn/" target="_blank" rel="noopener noreferrer">前往官网下载</a>

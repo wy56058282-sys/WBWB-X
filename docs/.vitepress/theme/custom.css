@@ -127,6 +127,36 @@ body {
   background: var(--wbx-paper);
 }
 
+.wbx-page-header {
+  padding: 24px 0 36px;
+}
+
+.wbx-page-header > .wbx-pixel-label,
+.wbx-page-header > :first-child > .wbx-pixel-label {
+  margin: 0 0 12px;
+  color: var(--vp-c-brand-1);
+}
+
+.wbx-page-header > h1,
+.wbx-page-header > :first-child > h1 {
+  margin: 0 0 12px;
+  border: 0;
+  padding: 0;
+  font-size: clamp(40px, 5vw, 64px);
+  font-weight: 850;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+
+.wbx-page-header > p:last-child,
+.wbx-page-header > :first-child > p:last-child {
+  max-width: 720px;
+  margin: 0;
+  color: var(--wbx-muted);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
 .VPDoc .vp-doc > div > h1 {
   margin: 0 0 34px;
   font-family: var(--wbx-body);

@@ -2,8 +2,16 @@
 import { withBase } from 'vitepress'
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 
-withDefaults(defineProps<{ embedded?: boolean }>(), {
+withDefaults(defineProps<{
+  embedded?: boolean
+  teamLabel?: string
+  teamTitle?: string
+  teamDescription?: string
+}>(), {
   embedded: false,
+  teamLabel: 'TEAM',
+  teamTitle: '场景教练和前线部署工程师（FDE）',
+  teamDescription: '来自产品、设计、运营与 AI 实践的一线嘉宾，共同带你完成真实场景实战。',
 })
 
 const teamMembers = [
@@ -53,10 +61,10 @@ onBeforeUnmount(() => {
     <section id="team" class="wbx-about__team" aria-labelledby="about-team-title">
       <div class="wbx-about__heading">
         <div>
-          <p class="wbx-pixel-label">TEAM</p>
-          <h2 id="about-team-title">场景教练和前线部署工程师（FDE）</h2>
+          <p class="wbx-pixel-label">{{ teamLabel }}</p>
+          <h2 id="about-team-title">{{ teamTitle }}</h2>
         </div>
-        <p>来自产品、设计、运营与 AI 实践的一线嘉宾，共同带你完成真实场景实战。</p>
+        <p>{{ teamDescription }}</p>
       </div>
       <div class="wbx-about-members">
         <figure v-for="member in teamMembers" :key="member.name" class="wbx-about-member">

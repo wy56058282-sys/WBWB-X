@@ -58,8 +58,8 @@ describe('approved visual polish', () => {
     expect(about).toMatch(/@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.wbx-about-member:hover[\s\S]*?transform:\s*none/)
   })
 
-  it('gives the enterprise hero enough width for deliberate line breaks', () => {
+  it('gives the enterprise hero and shared description deliberate widths', () => {
     expect(baseRule(enterprise, '.wbx-enterprise__hero')).toMatch(/max-width:\s*960px/)
-    expect(baseRule(enterprise, '.wbx-enterprise__hero > p:last-child')).toMatch(/max-width:\s*760px/)
+    expect(custom).toMatch(/\.wbx-page-header > p:last-child,[^{]*\{[^}]*max-width:\s*720px/s)
   })
 })

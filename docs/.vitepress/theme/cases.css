@@ -79,10 +79,6 @@
   width: var(--wbx-cases-fixed-width);
 }
 
-.wbx-cases-hero {
-  padding: 26px 0 36px;
-}
-
 .wbx-cases-hero__copy,
 .wbx-cases-main-column > .wbx-cases-categories {
   min-width: 0;
@@ -107,24 +103,6 @@
   margin-top: 0;
 }
 
-.wbx-cases h1 {
-  margin-bottom: 12px;
-  border: 0;
-  padding: 0;
-  font-size: 51.2px;
-  font-weight: 850;
-  line-height: 58.88px;
-  letter-spacing: 0;
-}
-
-.wbx-cases-brand {
-  font-weight: 850;
-}
-
-.wbx-cases-title-line {
-  display: block;
-}
-
 .wbx-cases h2 {
   margin-bottom: 0;
   border: 0;
@@ -135,7 +113,6 @@
   letter-spacing: 0;
 }
 
-.wbx-cases-hero__copy > p:last-child,
 .wbx-cases-submit p:not(.wbx-cases-eyebrow) {
   max-width: 620px;
   margin-bottom: 0;
@@ -620,17 +597,6 @@
   }
 }
 
-@media (max-width: 959px) {
-  .wbx-cases {
-    padding-top: 4px;
-  }
-
-  .wbx-cases h1 {
-    font-size: 44px;
-    line-height: 52.8px;
-  }
-}
-
 @media (max-width: 900px) {
   .wbx-cases-primary-tabs button,
   .wbx-enterprise-kind-tabs button {
@@ -697,11 +663,6 @@
   .wbx-case-service-cta {
     align-items: stretch;
     flex-direction: column;
-  }
-
-  .wbx-cases h1 {
-    font-size: 36px;
-    line-height: 43.2px;
   }
 
   .wbx-cases-search {

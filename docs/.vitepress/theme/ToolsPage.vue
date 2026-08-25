@@ -54,10 +54,10 @@ onBeforeUnmount(() => window.removeEventListener('popstate', updateFromLocation)
 
 <template>
   <div class="wbx-tools">
-    <header class="wbx-tools__header">
+    <header class="wbx-tools__header wbx-page-header">
       <p class="wbx-pixel-label">PRODUCT TOOLKIT</p>
       <h1>工具集</h1>
-      <p>从 WorkBuddy 开始，逐步了解 WorkBuddy-X 的产品工具。</p>
+      <p>汇集 WorkBuddy-X 正在构建的产品，帮助你按任务与场景找到合适的 AI 工具。</p>
     </header>
 
     <div class="wbx-tools__tabs" role="tablist" aria-label="选择产品">

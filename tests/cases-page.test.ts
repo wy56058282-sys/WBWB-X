@@ -174,7 +174,7 @@ describe('case gallery', () => {
     expect(document.querySelectorAll('.wbx-enterprise-case-card')).toHaveLength(100)
   })
 
-  it('keeps the result grid anchored while switching audiences on desktop', async () => {
+  it('keeps the viewport stationary while switching audiences', async () => {
     Object.defineProperty(window, 'innerWidth', { configurable: true, value: 1440 })
     const scrollBy = vi.spyOn(window, 'scrollBy').mockImplementation(() => undefined)
     vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function () {
@@ -186,9 +186,41 @@ describe('case gallery', () => {
 
     document.querySelector<HTMLButtonElement>('#enterprise-cases-tab')?.click()
     await nextTick()
+
+    expect(scrollBy).not.toHaveBeenCalled()
+    expect(document.querySelector('#enterprise-cases-tab')?.getAttribute('aria-selected')).toBe('true')
+  })
+
+  it('resets filters only when the audience actually changes', async () => {
+    mountCasesPage()
+
+    document.querySelector<HTMLButtonElement>('[data-category="内容创作"]')?.click()
+    await nextTick()
+    expect(document.querySelector('[data-category="内容创作"]')?.getAttribute('aria-pressed')).toBe('true')
+
+    document.querySelector<HTMLButtonElement>('#personal-cases-tab')?.click()
+    await nextTick()
+    expect(document.querySelector('[data-category="内容创作"]')?.getAttribute('aria-pressed')).toBe('true')
+
+    document.querySelector<HTMLButtonElement>('#enterprise-cases-tab')?.click()
+    await nextTick()
+    document.querySelector<HTMLButtonElement>('#personal-cases-tab')?.click()
+    await nextTick()
+    expect(document.querySelector('[data-category="全部"]')?.getAttribute('aria-pressed')).toBe('true')
+  })
+
+  it('moves selection and focus between audience tabs with arrow keys', async () => {
+    mountCasesPage()
+    const personalTab = document.querySelector<HTMLButtonElement>('#personal-cases-tab')!
+    const enterpriseTab = document.querySelector<HTMLButtonElement>('#enterprise-cases-tab')!
+
+    personalTab.focus()
+    personalTab.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }))
+    await nextTick()
     await nextTick()
 
-    expect(scrollBy).toHaveBeenCalledWith(0, 190)
+    expect(enterpriseTab.getAttribute('aria-selected')).toBe('true')
+    expect(document.activeElement).toBe(enterpriseTab)
   })
 
   it('uses category-style icons for enterprise content tabs', async () => {

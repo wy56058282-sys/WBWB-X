@@ -136,13 +136,13 @@ afterEach(() => {
 
 describe('product page computed styles', () => {
   it.each([
-    { label: 'desktop', viewportWidth: 1440, fontSize: '51.2px', lineHeight: '58.88px' },
-    { label: 'desktop boundary', viewportWidth: 960, fontSize: '51.2px', lineHeight: '58.88px' },
-    { label: 'tablet upper boundary', viewportWidth: 959, fontSize: '44px', lineHeight: '52.8px' },
-    { label: 'tablet', viewportWidth: 900, fontSize: '44px', lineHeight: '52.8px' },
-    { label: 'tablet lower boundary', viewportWidth: 641, fontSize: '44px', lineHeight: '52.8px' },
-    { label: 'mobile boundary', viewportWidth: 640, fontSize: '36px', lineHeight: '43.2px' },
-    { label: 'mobile', viewportWidth: 390, fontSize: '36px', lineHeight: '43.2px' },
+    { label: 'desktop', viewportWidth: 1440, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: '1.08' },
+    { label: 'desktop boundary', viewportWidth: 960, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: '1.08' },
+    { label: 'tablet upper boundary', viewportWidth: 959, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: '1.08' },
+    { label: 'tablet', viewportWidth: 900, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: '1.08' },
+    { label: 'tablet lower boundary', viewportWidth: 641, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: '1.08' },
+    { label: 'mobile boundary', viewportWidth: 640, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: '1.08' },
+    { label: 'mobile', viewportWidth: 390, fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: '1.08' },
   ])(
     'matches guide page typography at $label width without enlarging compact surfaces',
     ({ viewportWidth, fontSize, lineHeight }) => {
@@ -152,7 +152,7 @@ describe('product page computed styles', () => {
           markup: `
             <div class="VPDoc"><div class="vp-doc">
               <section class="wbx-cases">
-                <header class="wbx-cases-hero">
+                <header class="wbx-cases-hero wbx-page-header">
                   <div class="wbx-cases-hero__copy">
                   <h1>案例集</h1>
                   <div class="wbx-cases-filter-panel__heading"><p class="wbx-cases-eyebrow gallery-eyebrow">画廊标签</p><h2>浏览案例</h2></div>

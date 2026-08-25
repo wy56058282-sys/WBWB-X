@@ -34,6 +34,19 @@ function tabs() {
 }
 
 describe('tools page', () => {
+  it('explains the product portfolio and keeps the WorkBuddy hero below the page heading', () => {
+    mountToolsPage()
+
+    expect(document.querySelectorAll('h1')).toHaveLength(1)
+    expect(document.querySelector('.wbx-tools__header > p:last-child')?.textContent).toBe(
+      '汇集 WorkBuddy-X 正在构建的产品，帮助你按任务与场景找到合适的 AI 工具。',
+    )
+    expect(document.querySelector('.wbx-service-hero__title')?.tagName).toBe('H2')
+    expect(document.querySelector('.wbx-service-hero__summary')?.textContent).toBe(
+      'WorkBuddy 是运行在电脑上的智能体工作台。你只需提出任务，它会规划、拆解并执行，交付可直接使用的文件与结果。',
+    )
+  })
+
   it('uses a soft track with a raised white selected tab instead of a filled brand tab', () => {
     const styles = readFileSync('docs/.vitepress/theme/tools.css', 'utf8')
 
@@ -54,6 +67,13 @@ describe('tools page', () => {
       ['false', -1],
     ])
     expect(document.querySelector('.wbx-service')).not.toBeNull()
+  })
+
+  it('uses a compact, quiet placeholder for unreleased products', () => {
+    const styles = readFileSync('docs/.vitepress/theme/tools.css', 'utf8')
+
+    expect(styles).toMatch(/\.wbx-tools__placeholder\s*{[^}]*min-height:\s*240px[^}]*border-radius:\s*var\(--wbx-radius-lg\)[^}]*background:\s*var\(--wbx-section-soft\)[^}]*box-shadow:\s*none/s)
+    expect(styles).toMatch(/@media\s*\(max-width:\s*640px\)[\s\S]*?\.wbx-tools__placeholder\s*{[^}]*min-height:\s*200px/s)
   })
 
   it('restores a shared product selection and keeps placeholders factual', async () => {

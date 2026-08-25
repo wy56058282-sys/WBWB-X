@@ -34,6 +34,7 @@ describe('WorkBuddy product service page', () => {
     const help = readFileSync('docs/help/index.md', 'utf8')
 
     expect(tools).toContain('title: 工具集')
+    expect(tools).toContain('description: 汇集 WorkBuddy-X 旗下产品与 WorkBuddy 功能，按任务场景选择合适的 AI 工具。')
     expect(tools).toContain('<ToolsPage />')
     expect(help).toContain('search: false')
     expect(help).toContain('<LegacyPageRedirect target="/tools/" preserve-hash />')
@@ -50,8 +51,8 @@ describe('WorkBuddy product service page', () => {
       'skills',
       'download',
     ])
-    expect(document.querySelector('#top h1')?.textContent).toContain('一句话，让 AI 替你上班。')
-    expect(document.querySelector('#shift h2')?.textContent).toContain('直接说「去办」')
+    expect(document.querySelector('#top h2')?.textContent).toContain('一句话，让 AI 替你上班。')
+    expect(document.querySelector('#shift h2')?.textContent).toBe('不只给建议，直接交付结果')
     expect(document.querySelectorAll('.wbx-service-capability')).toHaveLength(4)
     expect(Array.from(document.querySelectorAll('.wbx-service-tag')).map((tag) => tag.textContent?.trim())).toEqual([
       'AI-NATIVE DESKTOP AGENT · 桌面智能体工作台',
@@ -64,16 +65,33 @@ describe('WorkBuddy product service page', () => {
     ])
   })
 
-  it('uses the approved deliberate line breaks for remote control and document output headings', () => {
+  it('removes unnecessary hard breaks while preserving the deliberate product-hero break', () => {
     mountServicePage()
 
     const remoteTitle = document.querySelector('#remote-title')!
     const documentTitle = document.querySelectorAll('.wbx-service-capability h3')[1]!
 
+    expect(document.querySelector('.wbx-service-hero__title br')).not.toBeNull()
     expect(remoteTitle.querySelector('br')).toBeNull()
-    expect(remoteTitle.textContent?.replace(/\s+/g, '')).toBe('人不在电脑前，活照样推进。')
-    expect(documentTitle.querySelector('br')).not.toBeNull()
-    expect(documentTitle.innerHTML).toContain('PPT，<br>一句话产出')
+    expect(remoteTitle.textContent).toBe('不在电脑前，任务也能继续')
+    expect(documentTitle.querySelector('br')).toBeNull()
+    expect(documentTitle.textContent).toBe('文档、表格、图表、PPT，一句话产出')
+  })
+
+  it('uses outcome-led section and capability titles', () => {
+    mountServicePage()
+
+    expect(document.querySelector('#shift-title')?.textContent).toBe('不只给建议，直接交付结果')
+    expect(document.querySelector('#swarm-title')?.textContent).toBe('一个指令，多个 Agent 协同执行')
+    expect(document.querySelector('#capabilities-title')?.textContent).toBe('从任务到交付，全流程自动完成')
+    expect(Array.from(document.querySelectorAll('.wbx-service-capability h3')).map((title) => title.textContent)).toEqual([
+      '自主规划，逐项执行',
+      '文档、表格、图表、PPT，一句话产出',
+      '直接处理本地文件',
+      '按任务切换合适模型',
+    ])
+    expect(document.querySelector('#skills-title')?.textContent).toBe('覆盖更多常见工作场景')
+    expect(document.querySelector('#download-title')?.textContent).toBe('把重复工作交给 WorkBuddy')
   })
 
   it('keeps every original dynamic visual structure', () => {

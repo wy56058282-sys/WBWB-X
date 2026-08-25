@@ -20,7 +20,6 @@ const industry = ref('')
 const businessFunction = ref('')
 const toolsColumnAnchor = ref<HTMLElement | null>(null)
 const toolsColumn = ref<HTMLElement | null>(null)
-const resultsAnchor = ref<HTMLElement | null>(null)
 const toolsSticky = ref(false)
 const toolsFixed = ref(false)
 let toolsResizeObserver: ResizeObserver | undefined
@@ -55,17 +54,10 @@ function resetFilters() {
   businessFunction.value = ''
 }
 
-async function selectAudience(next: 'personal' | 'enterprise') {
-  const previousResultsTop = resultsAnchor.value?.getBoundingClientRect().top
+function selectAudience(next: 'personal' | 'enterprise') {
+  if (audience.value === next) return
   audience.value = next
   resetFilters()
-  await nextTick()
-
-  if (window.innerWidth <= 1024 || previousResultsTop === undefined) return
-  const nextResultsTop = resultsAnchor.value?.getBoundingClientRect().top
-  if (nextResultsTop === undefined) return
-  const offset = Math.round(nextResultsTop - previousResultsTop)
-  if (offset) window.scrollBy(0, offset)
 }
 
 function selectEnterpriseKind(next: EnterpriseCaseKind) {
@@ -76,11 +68,11 @@ function selectEnterpriseKind(next: EnterpriseCaseKind) {
 function moveTab<T extends string>(event: KeyboardEvent, values: readonly T[], current: T, select: (value: T) => void) {
   if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return
   event.preventDefault()
+  const tabList = (event.currentTarget as HTMLElement).parentElement
   const direction = event.key === 'ArrowRight' ? 1 : -1
   const next = (values.indexOf(current) + direction + values.length) % values.length
   select(values[next])
-  void nextTick(() => (event.currentTarget as HTMLElement)?.parentElement
-    ?.querySelectorAll<HTMLElement>('[role="tab"]')[next]?.focus())
+  void nextTick(() => tabList?.querySelectorAll<HTMLElement>('[role="tab"]')[next]?.focus())
 }
 
 function updateToolsSticky() {
@@ -135,10 +127,11 @@ onBeforeUnmount(() => {
   <section class="wbx-cases" aria-labelledby="case-gallery-title">
     <div class="wbx-cases-layout-grid">
       <main class="wbx-cases-main-column">
-        <header class="wbx-cases-hero">
+        <header class="wbx-cases-hero wbx-page-header">
           <div class="wbx-cases-hero__copy">
-          <h1 id="case-gallery-title"><span class="wbx-cases-brand">WorkBuddy-X</span><span class="wbx-cases-title-line">案例集</span></h1>
-          <p>从真实场景出发，找到可以带走复用的工作方法。</p>
+            <p class="wbx-pixel-label">CASE LIBRARY</p>
+            <h1 id="case-gallery-title">案例集</h1>
+            <p>从真实场景出发，找到可以带走复用的工作方法。</p>
           </div>
         </header>
 
@@ -169,7 +162,7 @@ onBeforeUnmount(() => {
           </button>
         </div>
 
-        <section ref="resultsAnchor" class="wbx-cases-gallery-results">
+        <section class="wbx-cases-gallery-results">
           <ul v-if="cases.length" class="wbx-cases-grid" aria-live="polite">
           <li v-for="item in cases" :key="item.route" class="wbx-case-card">
             <a
@@ -223,7 +216,7 @@ onBeforeUnmount(() => {
             <span>共 {{ enterpriseCases.length }} 条</span>
             <button v-if="query || industry || businessFunction" type="button" @click="resetFilters">清空筛选</button>
           </div>
-          <section id="enterprise-results" ref="resultsAnchor" class="wbx-cases-gallery-results" role="tabpanel" :aria-labelledby="enterpriseKind === 'scene' ? 'enterprise-scenes-tab' : 'enterprise-catalog-cases-tab'">
+          <section id="enterprise-results" class="wbx-cases-gallery-results" role="tabpanel" :aria-labelledby="enterpriseKind === 'scene' ? 'enterprise-scenes-tab' : 'enterprise-catalog-cases-tab'">
             <ul v-if="enterpriseCases.length" class="wbx-cases-grid" aria-live="polite">
               <li v-for="item in enterpriseCases" :key="`${item.kind}-${item.number}`" class="wbx-case-card wbx-enterprise-case-card">
                 <span class="wbx-enterprise-case-card__number">{{ String(item.number).padStart(3, '0') }}</span>

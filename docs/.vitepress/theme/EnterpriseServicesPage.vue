@@ -5,63 +5,76 @@ import AboutPage from './AboutPage.vue'
 const contactEmail = 'contact@sparkx.zone'
 const services = [
   {
+    id: 'diagnosis',
+    label: '01 · DIAGNOSIS',
+    title: '需求诊断',
+    description: '先明确目标、输入、流程和交付标准，找到最适合当前阶段的合作方式。',
+    action: '预约需求诊断',
+    href: `mailto:${contactEmail}?subject=${encodeURIComponent('WorkBuddy-X 需求诊断咨询')}`,
+    recommended: true,
+  },
+  {
     id: 'training',
-    label: '01 · TRAINING',
+    label: '02 · TRAINING',
     title: '团队培训',
-    description: '围绕真实工作任务，帮助团队建立 WorkBuddy 的基础使用方法与协作共识。',
+    description: '适合需要统一基础方法和建立协作共识的团队。',
     action: '沟通培训需求',
     href: `mailto:${contactEmail}?subject=${encodeURIComponent('WorkBuddy-X 团队培训咨询')}`,
+    recommended: false,
   },
   {
     id: 'workshop',
-    label: '02 · WORKSHOP',
+    label: '03 · WORKSHOP',
     title: '场景工作坊',
-    description: '通过线下或线上实战，把一个明确场景拆成可执行、可验收的工作流程。',
+    description: '适合已有明确场景、希望通过实战验证工作流程的团队。',
     action: '查看近期活动',
     href: withBase('/#workshop-registration'),
-  },
-  {
-    id: 'diagnosis',
-    label: '03 · DIAGNOSIS',
-    title: '需求诊断',
-    description: '一起梳理目标、输入、流程与交付标准，判断下一步适合培训、工作坊还是定制。',
-    action: '预约需求诊断',
-    href: `mailto:${contactEmail}?subject=${encodeURIComponent('WorkBuddy-X 需求诊断咨询')}`,
+    recommended: false,
   },
   {
     id: 'custom',
     label: '04 · CUSTOM',
     title: '企业定制',
-    description: '针对已明确的企业场景，沟通专属 Skill、Agent 协作和工作流程的落地方式。',
+    description: '适合场景已经明确、需要专属 Skill、Agent 和工作流程落地的团队。',
     action: '沟通企业场景',
     href: `mailto:${contactEmail}?subject=${encodeURIComponent('WorkBuddy-X 企业定制咨询')}`,
+    recommended: false,
   },
 ] as const
 </script>
 
 <template>
   <div class="wbx-enterprise">
-    <header class="wbx-enterprise__hero">
+    <header class="wbx-enterprise__hero wbx-page-header">
       <p class="wbx-pixel-label">ENTERPRISE SERVICES</p>
-      <h1>从真实场景出发，<br>把 AI 变成可交付的工作系统。</h1>
-      <p>围绕团队学习、场景验证与企业落地，先把当前最重要的问题说清楚，再选择合适的合作方式。</p>
+      <h1>企业服务</h1>
+      <p>从问题梳理到场景落地，把 AI 变成可执行、可验收、可复用的工作系统。你可以从需求诊断开始，也可以直接选择培训、工作坊或企业定制。</p>
     </header>
 
     <section class="wbx-enterprise__services" aria-labelledby="enterprise-services-title">
       <div class="wbx-enterprise__heading">
-        <p class="wbx-pixel-label">WHAT WE DO</p>
-        <h2 id="enterprise-services-title">企业服务</h2>
+        <p class="wbx-pixel-label">HOW WE WORK</p>
+        <h2 id="enterprise-services-title">选择适合你的合作方式</h2>
+        <p>还不确定从哪里开始？建议先进行需求诊断。</p>
       </div>
       <div class="wbx-enterprise__grid">
-        <article v-for="service in services" :id="service.id" :key="service.id" class="wbx-enterprise-service">
-          <p class="wbx-pixel-label">{{ service.label }}</p>
-          <h2>{{ service.title }}</h2>
+        <article v-for="service in services" :id="service.id" :key="service.id" class="wbx-enterprise-service" :class="{ 'is-recommended': service.recommended }">
+          <div class="wbx-enterprise-service__meta">
+            <p class="wbx-pixel-label">{{ service.label }}</p>
+            <span v-if="service.recommended">推荐起点</span>
+          </div>
+          <h3>{{ service.title }}</h3>
           <p>{{ service.description }}</p>
           <a :href="service.href">{{ service.action }}</a>
         </article>
       </div>
     </section>
 
-    <AboutPage embedded />
+    <AboutPage
+      embedded
+      team-label="DELIVERY TEAM"
+      team-title="场景教练与前线部署工程师（FDE）"
+      team-description="汇集产品、设计、运营与 AI 实践者，为培训、工作坊和企业场景落地提供一线支持。"
+    />
   </div>
 </template>

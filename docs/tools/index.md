@@ -1,7 +1,7 @@
 ---
 title: 工具集
 titleTemplate: false
-description: 了解 WorkBuddy，并关注 SparkX 与 SunFun 的后续产品介绍。
+description: 汇集 WorkBuddy-X 旗下产品与 WorkBuddy 功能，按任务场景选择合适的 AI 工具。
 breadcrumbTitle: 工具集
 aside: false
 outline: false

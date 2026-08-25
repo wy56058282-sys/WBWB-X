@@ -29,14 +29,24 @@ function mountPage() {
 }
 
 describe('enterprise services page', () => {
-  it('breaks the hero title after the comma', () => {
+  it('uses the approved page heading and cooperation-path description', () => {
     mountPage()
 
     const title = document.querySelector('.wbx-enterprise__hero h1')
+    const description = document.querySelector('.wbx-enterprise__hero > p:last-child')
 
-    expect(title?.querySelector('br')).not.toBeNull()
-    expect(title?.childNodes[0]?.textContent).toBe('从真实场景出发，')
-    expect(title?.textContent).toBe('从真实场景出发，把 AI 变成可交付的工作系统。')
+    expect(title?.querySelector('br')).toBeNull()
+    expect(title?.textContent).toBe('企业服务')
+    expect(description?.textContent).toBe('从问题梳理到场景落地，把 AI 变成可执行、可验收、可复用的工作系统。你可以从需求诊断开始，也可以直接选择培训、工作坊或企业定制。')
+  })
+
+  it('introduces a single, non-repeating service choice section', () => {
+    mountPage()
+
+    expect(document.querySelectorAll('h1')).toHaveLength(1)
+    expect(document.querySelector('.wbx-enterprise__heading .wbx-pixel-label')?.textContent).toBe('HOW WE WORK')
+    expect(document.querySelector('#enterprise-services-title')?.textContent).toBe('选择适合你的合作方式')
+    expect(document.querySelector('.wbx-enterprise__heading > p:last-child')?.textContent).toBe('还不确定从哪里开始？建议先进行需求诊断。')
   })
 
   it('uses compact service-card spacing and a container-free embedded team', () => {
@@ -44,7 +54,7 @@ describe('enterprise services page', () => {
     mountPage()
 
     const card = getComputedStyle(document.querySelector('.wbx-enterprise-service')!)
-    const cardTitle = getComputedStyle(document.querySelector('.wbx-enterprise-service h2')!)
+    const cardTitle = getComputedStyle(document.querySelector('.wbx-enterprise-service h3')!)
     const description = getComputedStyle(document.querySelector('.wbx-enterprise-service > p:not(.wbx-pixel-label)')!)
     const team = getComputedStyle(document.querySelector('#team')!)
 
@@ -66,15 +76,17 @@ describe('enterprise services page', () => {
     mountPage()
     const cards = Array.from(document.querySelectorAll<HTMLElement>('.wbx-enterprise-service'))
 
-    expect(cards.map((card) => card.id)).toEqual(['training', 'workshop', 'diagnosis', 'custom'])
-    expect(cards.map((card) => card.querySelector('h2')?.textContent)).toEqual([
+    expect(cards.map((card) => card.id)).toEqual(['diagnosis', 'training', 'workshop', 'custom'])
+    expect(cards.map((card) => card.querySelector('h3')?.textContent)).toEqual([
+      '需求诊断',
       '团队培训',
       '场景工作坊',
-      '需求诊断',
       '企业定制',
     ])
-    expect(cards[1]?.querySelector('a')?.getAttribute('href')).toBe('/WBWB-X/#workshop-registration')
-    expect(cards.filter((_, index) => index !== 1).every((card) => card.querySelector('a')?.getAttribute('href')?.startsWith('mailto:contact@sparkx.zone'))).toBe(true)
+    expect(cards[0]?.classList.contains('is-recommended')).toBe(true)
+    expect(cards[0]?.textContent).toContain('推荐起点')
+    expect(cards[2]?.querySelector('a')?.getAttribute('href')).toBe('/WBWB-X/#workshop-registration')
+    expect(cards.filter((_, index) => index !== 2).every((card) => card.querySelector('a')?.getAttribute('href')?.startsWith('mailto:contact@sparkx.zone'))).toBe(true)
     expect(document.body.textContent).not.toMatch(/¥|￥|元\/|套餐价/)
   })
 
@@ -85,6 +97,9 @@ describe('enterprise services page', () => {
     expect(document.querySelectorAll('#team .wbx-about-member')).toHaveLength(6)
     expect(document.querySelector('.wbx-about__header')).toBeNull()
     expect(document.querySelectorAll('#about-team-title')).toHaveLength(1)
+    expect(document.querySelector('#team .wbx-pixel-label')?.textContent).toBe('DELIVERY TEAM')
+    expect(document.querySelector('#about-team-title')?.textContent).toBe('场景教练与前线部署工程师（FDE）')
+    expect(document.querySelector('.wbx-about__heading > p')?.textContent).toBe('汇集产品、设计、运营与 AI 实践者，为培训、工作坊和企业场景落地提供一线支持。')
   })
 
   it('closes Join Us from a global Escape key and restores trigger focus', async () => {

@@ -196,15 +196,12 @@ describe('case collection page styles', () => {
     expect(themeSource).toContain("app.component('CasesPage', CasesPage)")
     expect(indexSource).toContain('<CasesPage />')
     expect(indexSource).not.toContain('# WorkBuddy WB-X 案例集')
-    expect(pageSource).toContain(
-      '<span class="wbx-cases-brand">WorkBuddy-X</span><span class="wbx-cases-title-line">案例集</span>',
-    )
-    expect(pageSource).not.toContain('wbx-cases-header__eyebrow')
+    expect(pageSource).toContain('<p class="wbx-pixel-label">CASE LIBRARY</p>')
+    expect(pageSource).toContain('<h1 id="case-gallery-title">案例集</h1>')
+    expect(pageSource).not.toContain('wbx-cases-brand')
     expect(pageSource).not.toContain('CONTRIBUTE A CASE')
-    expect(styles).toMatch(
-      /\.wbx-cases-brand\s*\{[^}]*font-weight:\s*850;/s,
-    )
-    expect(styles).toMatch(/\.wbx-cases-title-line\s*\{[^}]*display:\s*block/s)
+    expect(styles).not.toContain('.wbx-cases-brand')
+    expect(styles).not.toContain('.wbx-cases-title-line')
   })
 
   it('removes the page eyebrow and excludes remaining labels from body copy', () => {
@@ -223,7 +220,7 @@ describe('case collection page styles', () => {
     expect(source).toMatch(/\.wbx-cases-layout \.VPDoc \.content-container\s*\{[^}]*max-width:\s*688px/s)
     expect(source).toMatch(/@media \(min-width:\s*1025px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.wbx-cases-layout \.VPDoc \.content-container\s*\{[^}]*max-width:\s*none/s)
     expect(source).not.toMatch(/\.wbx-cases-layout \.VPDoc[^{]*\{[^}]*padding(?:-inline|-left|-right):/s)
-    expect(source).toMatch(/\.wbx-cases h1\s*\{[^}]*font-weight:\s*850[^}]*line-height:\s*58\.88px[^}]*letter-spacing:\s*0/s)
+    expect(source).not.toMatch(/\.wbx-cases h1\s*\{/)
     expect(source).toMatch(/\.wbx-cases-categories button,\s*\.wbx-enterprise-kind-tabs button,\s*\.wbx-cases-empty button\s*\{[^}]*border:\s*1px solid var\(--wbx-line\)[^}]*border-radius:\s*var\(--wbx-radius-md\)/s)
     expect(source).toMatch(/\.wbx-cases-categories button:hover,\s*\.wbx-cases-categories button\[aria-pressed="true"\],\s*\.wbx-enterprise-kind-tabs button:hover,\s*\.wbx-enterprise-kind-tabs button\[aria-selected="true"\],\s*\.wbx-cases-empty button:hover\s*\{[^}]*color:\s*#0d100d[^}]*background:\s*var\(--wbx-accent\)/s)
     expect(source).toMatch(/\.wbx-cases \.wbx-cases-action:hover,\s*\.wbx-cases \.wbx-cases-action:focus-visible\s*\{[^}]*color:\s*#0d100d[^}]*background:\s*var\(--wbx-accent\)/s)
@@ -261,8 +258,8 @@ describe('case collection page styles', () => {
   })
 
   it.each([
-    { viewportWidth: 900, expectedPaddingTop: '4px' },
-    { viewportWidth: 390, expectedPaddingTop: '4px' },
+    { viewportWidth: 900, expectedPaddingTop: '0px' },
+    { viewportWidth: 390, expectedPaddingTop: '0px' },
   ])(
     'keeps the guide content baseline at $viewportWidth px',
     ({ viewportWidth, expectedPaddingTop }) => {

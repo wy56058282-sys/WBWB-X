@@ -107,7 +107,7 @@
   letter-spacing: .1em;
 }
 
-.wbx-service h1 {
+.wbx-service .wbx-service-hero__title {
   margin-top: 25px;
   font-size: clamp(52px, 6.4vw, 88px);
   font-weight: 850;
@@ -494,6 +494,7 @@
   margin-top: 0;
   border-top: 0;
   padding-top: 0;
+  text-wrap: balance;
 }
 
 .wbx-service-heading > p:last-child {
@@ -1409,7 +1410,7 @@
     padding: 52px 20px 64px;
   }
 
-  .wbx-service h1 {
+  .wbx-service .wbx-service-hero__title {
     font-size: clamp(44px, 14vw, 60px);
   }
 

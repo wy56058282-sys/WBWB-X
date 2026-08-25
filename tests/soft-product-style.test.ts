@@ -63,8 +63,8 @@ describe('calm soft product design system', () => {
   })
 
   it('keeps the enterprise hero compact and removes the embedded team wrapper surface', () => {
-    expect(baseRule(enterpriseServices, '.wbx-enterprise__hero')).toMatch(/padding:\s*10px 0 48px/)
-    expect(baseRule(enterpriseServices, '.wbx-enterprise__hero h1')).toMatch(/text-wrap:\s*balance/)
+    expect(baseRule(custom, '.wbx-page-header')).toMatch(/padding:\s*24px 0 36px/)
+    expect(baseRule(enterpriseServices, '.wbx-enterprise__hero')).toMatch(/max-width:\s*960px/)
     const teamRule = baseRule(enterpriseServices, '.wbx-enterprise > .wbx-about .wbx-about__team')
     expect(teamRule).toMatch(/border:\s*0/)
     expect(teamRule).toMatch(/background:\s*transparent/)
