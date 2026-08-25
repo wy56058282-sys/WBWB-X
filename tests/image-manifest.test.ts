@@ -313,7 +313,11 @@ describe('article image replacement inventory', () => {
       'utf8',
     )
 
-    expect(chapter23).toContain(`<video controls preload="metadata" src="${videoPaths[0]}">`)
-    expect(chapter24).toContain(`<video controls preload="metadata" src="${videoPaths[1]}">`)
+    expect(chapter23).toContain(
+      `<video controls preload="none" poster="/article-assets/source-calibration/ch23/video-001-poster.webp" src="${videoPaths[0]}">`,
+    )
+    expect(chapter24).toContain(
+      `<video controls preload="none" poster="/article-assets/source-calibration/ch24/video-001-poster.webp" src="${videoPaths[1]}">`,
+    )
   })
 })

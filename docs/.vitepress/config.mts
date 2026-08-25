@@ -1,10 +1,11 @@
 import { resolve } from 'node:path'
 import { defineConfig } from 'vitepress'
-import { withMermaid } from 'vitepress-plugin-mermaid'
+import { MermaidMarkdown } from 'vitepress-plugin-mermaid'
 import { brand } from './brand'
 import { assertServiceChannelAssets } from './build-data-boundaries'
 import { discoverCaseSidebar } from './case-sidebar'
 import { legacyRouteRedirectPlugin } from './legacy-routes'
+import { addLazyImageRendering } from './markdown-media'
 import { nav } from './navigation'
 import { serviceConfig } from './service-config'
 import { sidebar } from './sidebar'
@@ -17,6 +18,22 @@ const umamiCollectionStartedAt = process.env.VITE_WBX_UMAMI_COLLECTION_STARTED_A
 const umamiTrackingEnabled = Boolean(umamiWebsiteId && umamiShareUrl && umamiCollectionStartedAt)
 const BAIDU_ANALYTICS_URL = 'https://hm.baidu.com/hm.js?7a23a8966a0536ac9ba595d6a0544f07'
 const workshopBuildTime = new Date().toISOString()
+const MERMAID_CONFIG_ID = 'virtual:mermaid-config'
+const RESOLVED_MERMAID_CONFIG_ID = `\0${MERMAID_CONFIG_ID}`
+
+function mermaidConfigPlugin() {
+  return {
+    name: 'wbx-mermaid-config',
+    resolveId(id: string) {
+      if (id === MERMAID_CONFIG_ID) return RESOLVED_MERMAID_CONFIG_ID
+    },
+    load(id: string) {
+      if (id === RESOLVED_MERMAID_CONFIG_ID) {
+        return 'export default { securityLevel: "loose", startOnLoad: false }'
+      }
+    },
+  }
+}
 
 function canonicalPath(relativePath: string) {
   const normalized = relativePath.replace(/\\/g, '/')
@@ -26,14 +43,14 @@ function canonicalPath(relativePath: string) {
   return `/${normalized.replace(/\.md$/, '')}`
 }
 
-export default withMermaid(defineConfig({
+export default defineConfig({
   base: process.env.SITE_BASE ?? '/',
   srcExclude: ['superpowers/**', 'maintenance/**'],
   vite: {
     define: {
       __WBX_WORKSHOP_BUILD_TIME__: JSON.stringify(workshopBuildTime),
     },
-    plugins: [legacyRouteRedirectPlugin()],
+    plugins: [legacyRouteRedirectPlugin(), mermaidConfigPlugin()],
     server: {
       allowedHosts: process.env.WB_PREVIEW_HOST ? [process.env.WB_PREVIEW_HOST] : [],
     },
@@ -43,6 +60,12 @@ export default withMermaid(defineConfig({
   description: brand.seo.description,
   cleanUrls: true,
   lastUpdated: true,
+  markdown: {
+    config(md) {
+      MermaidMarkdown(md, undefined)
+      addLazyImageRendering(md)
+    },
+  },
   head: [
     ['script', { src: BAIDU_ANALYTICS_URL, async: '' }],
     ['meta', { name: 'author', content: brand.author }],
@@ -107,4 +130,4 @@ export default withMermaid(defineConfig({
       }
     ],
   },
-}))
+})

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import './about.css'
 
 withDefaults(defineProps<{
   embedded?: boolean
@@ -15,12 +16,12 @@ withDefaults(defineProps<{
 })
 
 const teamMembers = [
-  { name: '王翔旭', image: '/article-assets/service/guest-wang-xiangxu.png' },
-  { name: '黄学铃', image: '/article-assets/service/guest-huang-xueling.png' },
-  { name: '李泽慧', image: '/article-assets/service/guest-li-zehui.png' },
-  { name: '王劲松', image: '/article-assets/service/guest-wang-jinsong.png' },
-  { name: '刘鹏振', image: '/article-assets/service/guest-liu-pengzhen.png' },
-  { name: '丁怡豪', image: '/article-assets/service/guest-ding-yihao.png' },
+  { name: '王翔旭', image: '/article-assets/service/guest-wang-xiangxu.png', optimizedImage: '/article-assets/service/guest-wang-xiangxu-display.webp' },
+  { name: '黄学铃', image: '/article-assets/service/guest-huang-xueling.png', optimizedImage: '/article-assets/service/guest-huang-xueling-display.webp' },
+  { name: '李泽慧', image: '/article-assets/service/guest-li-zehui.png', optimizedImage: '/article-assets/service/guest-li-zehui-display.webp' },
+  { name: '王劲松', image: '/article-assets/service/guest-wang-jinsong.png', optimizedImage: '/article-assets/service/guest-wang-jinsong-display.webp' },
+  { name: '刘鹏振', image: '/article-assets/service/guest-liu-pengzhen.png', optimizedImage: '/article-assets/service/guest-liu-pengzhen-display.webp' },
+  { name: '丁怡豪', image: '/article-assets/service/guest-ding-yihao.png', optimizedImage: '/article-assets/service/guest-ding-yihao-display.webp' },
 ] as const
 
 const isJoinOpen = ref(false)
@@ -68,7 +69,10 @@ onBeforeUnmount(() => {
       </div>
       <div class="wbx-about-members">
         <figure v-for="member in teamMembers" :key="member.name" class="wbx-about-member">
-          <img :src="withBase(member.image)" :alt="`嘉宾老师${member.name}`" loading="lazy">
+          <picture>
+            <source type="image/webp" :srcset="withBase(member.optimizedImage)">
+            <img :src="withBase(member.image)" :alt="`嘉宾老师${member.name}`" loading="lazy" decoding="async">
+          </picture>
         </figure>
       </div>
       <div ref="join" class="wbx-about-join">

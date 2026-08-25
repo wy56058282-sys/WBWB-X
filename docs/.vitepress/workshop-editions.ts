@@ -15,7 +15,9 @@ export interface WorkshopEdition {
   venue: string
   area: string
   coverPath: string
+  thumbnailPath?: string
   posterPaths: readonly string[]
+  displayPosterPaths?: readonly string[]
   activityDetailUrl: string
   registrationQrPath: string
 }
@@ -50,7 +52,9 @@ export const workshopEditions: readonly WorkshopEdition[] = [
     venue,
     area,
     coverPath: '/article-assets/service/workshop-815.png',
-    posterPaths: ['/article-assets/service/workshop-815.png', '/article-assets/service/workshop-815-agenda.png', '/article-assets/service/workshop-815-benefits.png', '/article-assets/service/workshop-815-reminder.png'],
+    thumbnailPath: '/article-assets/service/workshop-815-thumb.webp',
+    posterPaths: ['/article-assets/service/workshop-815.png', '/article-assets/service/workshop-815-agenda.png', '/article-assets/service/workshop-815-benefits.png'],
+    displayPosterPaths: ['/article-assets/service/workshop-815-display.webp', '/article-assets/service/workshop-815-agenda-display.webp', '/article-assets/service/workshop-815-benefits-display.webp'],
     activityDetailUrl: 'https://mp.weixin.qq.com/s/q7Bq2kEmsYlgI4pTZ59srw',
     registrationQrPath: serviceConfig.workshop.registrationQrPath,
   },
@@ -67,7 +71,9 @@ export const workshopEditions: readonly WorkshopEdition[] = [
     venue,
     area,
     coverPath: serviceConfig.workshop.coverPath,
-    posterPaths: [serviceConfig.workshop.coverPath, '/article-assets/service/workshop-829-agenda.png', '/article-assets/service/workshop-829-benefits.png', '/article-assets/service/workshop-829-reminder.png'],
+    thumbnailPath: '/article-assets/service/workshop-cover-thumb.webp',
+    posterPaths: [serviceConfig.workshop.coverPath, '/article-assets/service/workshop-829-agenda.png', '/article-assets/service/workshop-829-benefits.png'],
+    displayPosterPaths: ['/article-assets/service/workshop-cover-display.webp', '/article-assets/service/workshop-829-agenda-display.webp', '/article-assets/service/workshop-829-benefits-display.webp'],
     activityDetailUrl: serviceConfig.workshop.activityDetailUrl,
     registrationQrPath: serviceConfig.workshop.registrationQrPath,
   },
@@ -84,7 +90,9 @@ export const workshopEditions: readonly WorkshopEdition[] = [
     venue,
     area,
     coverPath: '/article-assets/service/workshop-912.png',
+    thumbnailPath: '/article-assets/service/workshop-912-thumb.webp',
     posterPaths: ['/article-assets/service/workshop-912.png'],
+    displayPosterPaths: ['/article-assets/service/workshop-912-display.webp'],
     activityDetailUrl: '',
     registrationQrPath: serviceConfig.workshop.registrationQrPath,
   },

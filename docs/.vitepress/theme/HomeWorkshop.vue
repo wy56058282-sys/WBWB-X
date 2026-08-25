@@ -8,6 +8,7 @@ import {
   workshopEditions,
   type WorkshopEdition,
 } from '../workshop-editions'
+import './workshop.css'
 
 const props = defineProps<{
   editions?: readonly WorkshopEdition[]
@@ -20,15 +21,19 @@ const selectedWorkshopIndex = ref(Math.max(0, editions.value.findIndex((edition)
 const selectedPosterIndex = ref(0)
 const selectedWorkshop = computed(() => editions.value[selectedWorkshopIndex.value])
 const selectedPosterPath = computed(() => selectedWorkshop.value?.posterPaths[selectedPosterIndex.value])
+const selectedDisplayPosterPath = computed(() => selectedWorkshop.value?.displayPosterPaths?.[selectedPosterIndex.value])
 const selectedStatus = computed(() => {
   if (!selectedWorkshop.value) return undefined
   return selectRelevantWorkshopEdition([selectedWorkshop.value], currentTime.value)?.status
 })
 const isRegistrationOpen = ref(false)
+const shouldLoadImages = ref(typeof window !== 'undefined' && typeof window.IntersectionObserver !== 'function')
+const workshopSection = ref<HTMLElement | null>(null)
 const registration = ref<HTMLElement | null>(null)
 const trigger = ref<HTMLButtonElement | null>(null)
 const recap = ref<HTMLAnchorElement | null>(null)
 let refreshTimer: ReturnType<typeof window.setTimeout> | undefined
+let imageObserver: IntersectionObserver | undefined
 
 function closeRegistration(restoreFocus = false) {
   isRegistrationOpen.value = false
@@ -114,17 +119,30 @@ onMounted(() => {
   scheduleWorkshopRefresh()
   document.addEventListener('pointerdown', handleOutsidePointer)
   window.addEventListener('keydown', handleEscape)
+  if (typeof window.IntersectionObserver !== 'function') {
+    shouldLoadImages.value = true
+  } else {
+    imageObserver = new IntersectionObserver((entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return
+      shouldLoadImages.value = true
+      imageObserver?.disconnect()
+      imageObserver = undefined
+    }, { rootMargin: '600px 0px' })
+    if (workshopSection.value) imageObserver.observe(workshopSection.value)
+  }
 })
 onBeforeUnmount(() => {
   if (refreshTimer !== undefined) window.clearTimeout(refreshTimer)
   document.removeEventListener('pointerdown', handleOutsidePointer)
   window.removeEventListener('keydown', handleEscape)
+  imageObserver?.disconnect()
 })
 </script>
 
 <template>
   <section
     v-if="selectedWorkshop"
+    ref="workshopSection"
     id="workshop-registration"
     class="wbx-section wbx-home-workshop wbx-workshop"
     aria-labelledby="workshop-title"
@@ -178,6 +196,10 @@ onBeforeUnmount(() => {
               :aria-label="selectedWorkshop.activityDetailUrl ? '查看活动回顾（在新页面打开）' : undefined"
             >查看活动回顾</a>
           </div>
+          <p class="wbx-workshop__reminder">
+            <i class="hn hn-laptop-code" aria-hidden="true" />
+            <span>携带电脑</span>
+          </p>
         </div>
         <div id="workshop-history" class="wbx-workshop__editions" role="tablist" aria-label="选择工作坊期次">
           <button
@@ -194,7 +216,18 @@ onBeforeUnmount(() => {
             @click="selectWorkshop(index)"
             @keydown="handleWorkshopTabKeydown($event, index)"
           >
-            <img :src="withBase(edition.coverPath)" alt="" width="1800" height="2400">
+            <picture v-if="shouldLoadImages">
+              <source v-if="edition.thumbnailPath" type="image/webp" :srcset="withBase(edition.thumbnailPath)">
+              <img
+                :src="withBase(edition.coverPath)"
+                alt=""
+                width="1800"
+                height="2400"
+                loading="lazy"
+                decoding="async"
+              >
+            </picture>
+            <span v-else class="wbx-workshop__edition-placeholder" aria-hidden="true" />
             <span><strong>{{ edition.edition }}</strong><span>{{ edition.date }}</span><small v-if="selectedWorkshopIndex === index">当前</small></span>
           </button>
         </div>
@@ -208,10 +241,18 @@ onBeforeUnmount(() => {
           rel="noopener noreferrer"
           :aria-label="`查看工作坊活动详情（${selectedWorkshop.edition}，在新页面打开）`"
         >
-          <img class="wbx-workshop__poster wbx-home-workshop__poster" :src="withBase(selectedPosterPath)" :alt="`WorkBuddy 场景实战工作坊海报（${selectedWorkshop.edition}，第 ${selectedPosterIndex + 1} 页）`" width="1800" height="2400">
+          <picture v-if="shouldLoadImages">
+            <source v-if="selectedDisplayPosterPath" type="image/webp" :srcset="withBase(selectedDisplayPosterPath)">
+            <img class="wbx-workshop__poster wbx-home-workshop__poster" :src="withBase(selectedPosterPath)" :alt="`WorkBuddy 场景实战工作坊海报（${selectedWorkshop.edition}，第 ${selectedPosterIndex + 1} 页）`" width="1800" height="2400" decoding="async">
+          </picture>
+          <span v-else class="wbx-workshop__poster-placeholder" aria-hidden="true" />
         </a>
         <div v-else class="wbx-workshop__poster-frame">
-          <img class="wbx-workshop__poster wbx-home-workshop__poster" :src="withBase(selectedPosterPath)" :alt="`WorkBuddy 场景实战工作坊海报（${selectedWorkshop.edition}，第 ${selectedPosterIndex + 1} 页）`" width="1800" height="2400">
+          <picture v-if="shouldLoadImages">
+            <source v-if="selectedDisplayPosterPath" type="image/webp" :srcset="withBase(selectedDisplayPosterPath)">
+            <img class="wbx-workshop__poster wbx-home-workshop__poster" :src="withBase(selectedPosterPath)" :alt="`WorkBuddy 场景实战工作坊海报（${selectedWorkshop.edition}，第 ${selectedPosterIndex + 1} 页）`" width="1800" height="2400" decoding="async">
+          </picture>
+          <span v-else class="wbx-workshop__poster-placeholder" aria-hidden="true" />
         </div>
       </figure>
       <div class="wbx-workshop__poster-navigation" aria-label="切换海报页面">

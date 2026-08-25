@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  caseCoverOptimizedPath,
   caseCategories,
   filterCaseCatalog,
   validateCaseCatalog,
@@ -102,6 +103,13 @@ describe('case catalog validation', () => {
 })
 
 describe('case catalog discovery helpers', () => {
+  it('derives a WebP card image path without replacing the source cover', () => {
+    expect(caseCoverOptimizedPath('/article-assets/cases/cover.png'))
+      .toBe('/article-assets/cases/cover-card.webp')
+    expect(caseCoverOptimizedPath('/article-assets/cases/cover.jpg'))
+      .toBe('/article-assets/cases/cover-card.webp')
+  })
+
   it('lists all first and sorts categories', () => {
     expect(caseCategories(items)).toEqual(['全部', '内容创作', '数据分析'])
   })

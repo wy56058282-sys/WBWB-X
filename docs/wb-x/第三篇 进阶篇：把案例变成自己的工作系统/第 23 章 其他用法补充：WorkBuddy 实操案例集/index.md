@@ -57,7 +57,7 @@ Build a full-screen hero section for a creative portfolio using React, Vite, Tai
 6. prefers-reduced-motion 下禁用所有动画。
 ```
 
-<video controls preload="metadata" src="/article-assets/source-calibration/ch23/video-001.mp4"></video>
+<video controls preload="none" poster="/article-assets/source-calibration/ch23/video-001-poster.webp" src="/article-assets/source-calibration/ch23/video-001.mp4"></video>
 
 
 

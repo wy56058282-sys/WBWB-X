@@ -5,6 +5,7 @@ import HomeAnalyticsStrip from './HomeAnalyticsStrip.vue'
 import HomeWorkshop from './HomeWorkshop.vue'
 import { readHomeAnalyticsConfig } from './homeAnalytics'
 import { homeUpdates } from './homeUpdates'
+import './home.css'
 
 const homeAnalyticsConfig = readHomeAnalyticsConfig(import.meta.env)
 
@@ -310,7 +311,7 @@ const workflowSteps = [
     </section>
 
     <div class="wbx-community-ip" aria-hidden="true">
-      <img class="wbx-community__ip" :src="withBase('/brand/workbuddy-ip.png')" alt="">
+      <img class="wbx-community__ip" :src="withBase('/brand/workbuddy-ip.png')" alt="" loading="lazy" decoding="async" fetchpriority="low">
     </div>
 
   </main>

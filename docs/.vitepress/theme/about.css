@@ -16,6 +16,7 @@
 .wbx-about__heading > p { max-width: 540px; }
 .wbx-about-members { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .wbx-about-member { min-width: 0; margin: 0; overflow: hidden; border: 1px solid var(--wbx-line); border-radius: var(--wbx-radius-lg); background: var(--wbx-surface); box-shadow: var(--wbx-shadow-soft); transition: border-color var(--wbx-motion-fast) ease, box-shadow var(--wbx-motion-fast) ease, transform var(--wbx-motion-fast) var(--wbx-ease-standard); }
+.wbx-about-member picture { display: block; }
 .wbx-about-member img { display: block; width: 100%; height: auto; object-fit: contain; }
 
 @media (hover: hover) and (pointer: fine) {

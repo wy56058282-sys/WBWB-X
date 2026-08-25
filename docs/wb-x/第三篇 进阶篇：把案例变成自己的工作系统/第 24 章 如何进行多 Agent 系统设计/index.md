@@ -104,7 +104,7 @@ brief 角色先开工：去把 WorkBuddy 官网、产品介绍、专家团列表
 
 最后出来的片子，还挺不错的。
 
-<video controls preload="metadata" src="/article-assets/source-calibration/ch24/video-001.mp4"></video>
+<video controls preload="none" poster="/article-assets/source-calibration/ch24/video-001-poster.webp" src="/article-assets/source-calibration/ch24/video-001.mp4"></video>
 
 
 

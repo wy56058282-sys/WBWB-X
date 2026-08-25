@@ -192,7 +192,7 @@ describe('case collection page styles', () => {
     const pageSource = readFileSync('docs/.vitepress/theme/CasesPage.vue', 'utf8')
     const styles = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
 
-    expect(themeSource).toContain("import CasesPage from './CasesPage.vue'")
+    expect(themeSource).toContain("defineAsyncComponent(() => import('./CasesPage.vue'))")
     expect(themeSource).toContain("app.component('CasesPage', CasesPage)")
     expect(indexSource).toContain('<CasesPage />')
     expect(indexSource).not.toContain('# WorkBuddy WB-X 案例集')

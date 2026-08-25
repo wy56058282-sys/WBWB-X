@@ -2,30 +2,27 @@ import '@fontsource/silkscreen/400.css'
 import '@fontsource/silkscreen/700.css'
 import '@hackernoon/pixel-icon-library/fonts/iconfont.css'
 import DefaultTheme from 'vitepress/theme'
-import CasesPage from './CasesPage.vue'
-import CaseServiceCta from './CaseServiceCta.vue'
-import AboutPage from './AboutPage.vue'
+import { defineAsyncComponent } from 'vue'
 import Layout from './Layout.vue'
-import ServicePage from './ServicePage.vue'
-import ToolsPage from './ToolsPage.vue'
-import EnterpriseServicesPage from './EnterpriseServicesPage.vue'
-import LegacyPageRedirect from './LegacyPageRedirect.vue'
 import { legacyRouteTarget } from '../legacy-routes'
 import './custom.css'
 import './reading.css'
-import './home.css'
-import './workshop.css'
-import './cases.css'
-import './service.css'
-import './about.css'
-import './tools.css'
-import './enterprise-services.css'
 import './floating-quick-access.css'
+
+const Mermaid = defineAsyncComponent(() => import('vitepress-plugin-mermaid/Mermaid.vue'))
+const CasesPage = defineAsyncComponent(() => import('./CasesPage.vue'))
+const CaseServiceCta = defineAsyncComponent(() => import('./CaseServiceCta.vue'))
+const AboutPage = defineAsyncComponent(() => import('./AboutPage.vue'))
+const ServicePage = defineAsyncComponent(() => import('./ServicePage.vue'))
+const ToolsPage = defineAsyncComponent(() => import('./ToolsPage.vue'))
+const EnterpriseServicesPage = defineAsyncComponent(() => import('./EnterpriseServicesPage.vue'))
+const LegacyPageRedirect = defineAsyncComponent(() => import('./LegacyPageRedirect.vue'))
 
 export default {
   extends: DefaultTheme,
   Layout,
   enhanceApp({ app, router }) {
+    app.component('Mermaid', Mermaid)
     app.component('CasesPage', CasesPage)
     app.component('CaseServiceCta', CaseServiceCta)
     app.component('AboutPage', AboutPage)

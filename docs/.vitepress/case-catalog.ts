@@ -122,6 +122,10 @@ export function filterCaseCatalog(
   })
 }
 
+export function caseCoverOptimizedPath(cover: string) {
+  return cover.replace(/\.[^./]+$/, '-card.webp')
+}
+
 export function caseCategories(items: readonly CaseCatalogItem[]) {
   return [
     '全部',

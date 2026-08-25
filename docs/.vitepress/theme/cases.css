@@ -410,6 +410,10 @@
   background: var(--vp-c-bg-soft);
 }
 
+.wbx-case-card__picture {
+  display: block;
+}
+
 .wbx-case-card__content {
   display: grid;
   gap: 10px;

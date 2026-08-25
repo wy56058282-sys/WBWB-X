@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import DefaultTheme from 'vitepress/theme'
 import { useData, useRoute, withBase } from 'vitepress'
-import { computed, onBeforeUnmount, onMounted } from 'vue'
+import { computed, defineAsyncComponent, onBeforeUnmount, onMounted } from 'vue'
 import {
   isCaseContributionRoute,
   isCaseDetailRoute,
@@ -17,7 +17,8 @@ import CommunityQr, {
 } from './CommunityQr.vue'
 import DocImageLightbox from './DocImageLightbox.vue'
 import FloatingQuickAccess from './FloatingQuickAccess.vue'
-import HomePage from './HomePage.vue'
+
+const HomePage = defineAsyncComponent(() => import('./HomePage.vue'))
 
 const route = useRoute()
 const { site } = useData()
@@ -83,6 +84,11 @@ onMounted(() => {
   document.addEventListener('click', handleCommunityQrTrigger, true)
   document.addEventListener('pointerover', handleCommunityQrPointerOver, true)
   document.addEventListener('pointerout', handleCommunityQrPointerOut, true)
+  if (import.meta.env.PROD) {
+    const startMonitoring = () => import('./performanceMetrics').then(({ startPerformanceMonitoring }) => startPerformanceMonitoring())
+    if ('requestIdleCallback' in window) window.requestIdleCallback(startMonitoring)
+    else window.setTimeout(startMonitoring, 0)
+  }
 })
 
 onBeforeUnmount(() => {

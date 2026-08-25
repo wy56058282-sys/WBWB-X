@@ -107,12 +107,20 @@ describe('case gallery', () => {
 
     const firstCard = document.querySelector<HTMLAnchorElement>('.wbx-case-card__link')
     const firstImage = firstCard?.querySelector('img')
+    const firstSource = firstCard?.querySelector('source')
+    const secondImage = document.querySelectorAll<HTMLImageElement>('.wbx-case-card__cover')[1]
     const selectedCategory = document.querySelector<HTMLButtonElement>('[data-category="全部"]')
 
     expect(firstCard?.getAttribute('href')).toBe('/WBWB-X/cases/submissions/excel-store-analysis/')
     expect(firstCard?.getAttribute('aria-label')).toBe('查看案例：Excel 门店经营分析')
     expect(firstCard?.querySelectorAll('button, a')).toHaveLength(0)
     expect(firstImage?.getAttribute('alt')).toBe('门店经营 Excel 看板')
+    expect(firstImage?.getAttribute('loading')).toBe('eager')
+    expect(firstImage?.getAttribute('fetchpriority')).toBe('high')
+    expect(firstSource?.getAttribute('srcset'))
+      .toBe('/WBWB-X/article-assets/cases/excel-cover-card.webp')
+    expect(secondImage?.getAttribute('loading')).toBe('lazy')
+    expect(secondImage?.getAttribute('fetchpriority')).toBe('low')
     expect(selectedCategory?.getAttribute('aria-pressed')).toBe('true')
     expect(selectedCategory?.querySelector('[aria-hidden="true"]')?.classList.contains('hn')).toBe(true)
     expect(selectedCategory?.querySelector('[aria-hidden="true"]')?.classList.contains('hn-check-circle-solid')).toBe(true)

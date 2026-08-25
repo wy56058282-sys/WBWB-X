@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import ServicePage from './ServicePage.vue'
+import './tools.css'
 
 const products = [
   { id: 'workbuddy', name: 'WorkBuddy' },

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
 import AboutPage from './AboutPage.vue'
+import './enterprise-services.css'
 
 const contactEmail = 'contact@sparkx.zone'
 const services = [

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { withBase } from 'vitepress'
-import { caseCategories, filterCaseCatalog } from '../case-catalog'
+import { caseCategories, caseCoverOptimizedPath, filterCaseCatalog } from '../case-catalog'
 import { data } from '../case-catalog.data'
 import {
   enterpriseCaseCatalog,
@@ -11,6 +11,7 @@ import {
   type EnterpriseCaseKind,
 } from '../enterprise-case-catalog'
 import { isServiceFormUrl, serviceConfig } from '../service-config'
+import './cases.css'
 
 const query = ref('')
 const category = ref('全部')
@@ -164,13 +165,22 @@ onBeforeUnmount(() => {
 
         <section class="wbx-cases-gallery-results">
           <ul v-if="cases.length" class="wbx-cases-grid" aria-live="polite">
-          <li v-for="item in cases" :key="item.route" class="wbx-case-card">
+          <li v-for="(item, index) in cases" :key="item.route" class="wbx-case-card">
             <a
               class="wbx-case-card__link"
               :href="withBase(item.route)"
               :aria-label="`查看案例：${item.title}`"
             >
-              <img class="wbx-case-card__cover" :src="withBase(item.cover)" :alt="item.coverAlt" loading="lazy">
+              <picture class="wbx-case-card__picture">
+                <source :srcset="withBase(caseCoverOptimizedPath(item.cover))" type="image/webp">
+                <img
+                  class="wbx-case-card__cover"
+                  :src="withBase(item.cover)"
+                  :alt="item.coverAlt"
+                  :loading="index === 0 ? 'eager' : 'lazy'"
+                  :fetchpriority="index === 0 ? 'high' : 'low'"
+                >
+              </picture>
               <span class="wbx-case-card__content">
                 <span class="wbx-case-card__meta">
                   <span>{{ item.category }}</span>

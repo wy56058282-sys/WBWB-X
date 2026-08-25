@@ -26,7 +26,48 @@ describe('homepage workshop card', () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date('2026-08-24T12:00:00+08:00'))
   })
-  afterEach(() => { apps.splice(0).forEach((app) => app.unmount()); vi.useRealTimers() })
+  afterEach(() => {
+    apps.splice(0).forEach((app) => app.unmount())
+    vi.unstubAllGlobals()
+    vi.useRealTimers()
+  })
+
+  it('defers workshop images until the section approaches the viewport', async () => {
+    let reveal: IntersectionObserverCallback | undefined
+    vi.stubGlobal('IntersectionObserver', class {
+      constructor(callback: IntersectionObserverCallback) { reveal = callback }
+      observe() {}
+      disconnect() {}
+      unobserve() {}
+      takeRecords() { return [] }
+      root = null
+      rootMargin = '600px 0px'
+      thresholds = [0]
+    })
+
+    harness.mountHomePage()
+    const workshop = document.querySelector<HTMLElement>('.wbx-home-workshop')
+    expect(workshop?.querySelector('img')).toBeNull()
+    expect(workshop?.querySelector('.wbx-workshop__poster-placeholder')).not.toBeNull()
+
+    reveal?.([{ isIntersecting: true, target: workshop } as IntersectionObserverEntry], {} as IntersectionObserver)
+    await nextTick()
+
+    expect(workshop?.querySelector('.wbx-workshop__poster')).not.toBeNull()
+    expect(workshop?.querySelectorAll('.wbx-workshop__edition img')).toHaveLength(3)
+  })
+
+  it('uses responsive WebP derivatives with the original posters as fallbacks', () => {
+    harness.mountHomePage()
+    const workshop = document.querySelector<HTMLElement>('.wbx-home-workshop')
+
+    expect(workshop?.querySelector<HTMLSourceElement>('.wbx-workshop__edition source')?.srcset)
+      .toContain('workshop-815-thumb.webp')
+    expect(workshop?.querySelector<HTMLSourceElement>('.wbx-workshop__poster-link source')?.srcset)
+      .toContain('workshop-cover-display.webp')
+    expect(workshop?.querySelector<HTMLImageElement>('.wbx-workshop__poster')?.src)
+      .toContain('workshop-cover.png')
+  })
 
   it('shows the complete workshop section between task categories and the system section', () => {
     harness.mountHomePage()
@@ -67,6 +108,16 @@ describe('homepage workshop card', () => {
     expect(workshop?.querySelectorAll('.wbx-workshop__edition')).toHaveLength(3)
   })
 
+  it('shows the computer reminder immediately below the workshop action', () => {
+    harness.mountHomePage()
+    const actions = document.querySelector<HTMLElement>('.wbx-workshop__actions')
+    const reminder = actions?.nextElementSibling
+
+    expect(reminder?.classList.contains('wbx-workshop__reminder')).toBe(true)
+    expect(reminder?.textContent?.trim()).toBe('携带电脑')
+    expect(reminder?.querySelector('[aria-hidden="true"]')?.classList.contains('hn-laptop-code')).toBe(true)
+  })
+
   it('switches editions and poster pages in the full homepage workshop section', async () => {
     harness.mountHomePage()
     const workshop = document.querySelector('.wbx-home-workshop')
@@ -85,7 +136,7 @@ describe('homepage workshop card', () => {
     expect(posterSource()).toContain('workshop-815.png')
     expect(workshop?.querySelector('.wbx-home-workshop__state')).toBeNull()
     expect(workshop?.querySelector('.wbx-home-workshop__recap')?.textContent).toBe('查看活动回顾')
-    expect(workshop?.querySelector('.wbx-workshop__poster-page')?.textContent?.trim()).toBe('1 / 4')
+    expect(workshop?.querySelector('.wbx-workshop__poster-page')?.textContent?.trim()).toBe('1 / 3')
   })
 
   it('supports complete keyboard tab navigation and poster cycling', async () => {
@@ -117,14 +168,14 @@ describe('homepage workshop card', () => {
 
     editions[1].click()
     await nextTick()
-    for (const expected of ['workshop-829-agenda.png', 'workshop-829-benefits.png', 'workshop-829-reminder.png', 'workshop-cover.png']) {
+    for (const expected of ['workshop-829-agenda.png', 'workshop-829-benefits.png', 'workshop-cover.png']) {
       next()?.click()
       await nextTick()
       expect(posterSource()).toContain(expected)
     }
     previous()?.click()
     await nextTick()
-    expect(posterSource()).toContain('workshop-829-reminder.png')
+    expect(posterSource()).toContain('workshop-829-benefits.png')
   })
 
   it('does not steal focus when an open QR is closed by another workshop control', async () => {

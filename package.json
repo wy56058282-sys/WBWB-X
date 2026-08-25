@@ -14,7 +14,8 @@
     "check:repo": "node scripts/check-repository-hygiene.mjs",
     "check:links": "node scripts/check-content-links.mjs",
     "check:assets": "node scripts/check-replacement-assets.mjs",
-    "check": "pnpm test && pnpm run check:repo && pnpm run check:links && pnpm run check:assets && pnpm run build"
+    "check:performance": "node scripts/check-performance-budget.mjs",
+    "check": "pnpm test && pnpm run check:repo && pnpm run check:links && pnpm run check:assets && pnpm run build && pnpm run check:performance"
   },
   "devDependencies": {
     "@braintree/sanitize-url": "^7.1.2",

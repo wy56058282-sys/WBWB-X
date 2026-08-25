@@ -62,7 +62,7 @@ describe('maintenance CI contract', () => {
     expect(packageJson.packageManager).toBe('pnpm@11.9.0')
     expect(packageJson.engines.node).toBe('>=20')
     expect(packageJson.scripts.check).toBe(
-      'pnpm test && pnpm run check:repo && pnpm run check:links && pnpm run check:assets && pnpm run build',
+      'pnpm test && pnpm run check:repo && pnpm run check:links && pnpm run check:assets && pnpm run build && pnpm run check:performance',
     )
     expect(workflow).toContain('version: 11.9.0')
     expect(workflow).toContain('node-version: 24')
