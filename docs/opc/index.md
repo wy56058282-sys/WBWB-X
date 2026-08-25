@@ -5,7 +5,7 @@ description: 从 OPC 趋势、商业模式和政策机遇，到 WorkBuddy 超级
 breadcrumbTitle: OPC 白皮书
 ---
 
-# WorkBuddy OPC 白皮书
+# WorkBuddy OPC<br>从超级个体到超级团队
 
 **AI 时代一人公司的商业与技术重构：从超级个体到超级团队**
 

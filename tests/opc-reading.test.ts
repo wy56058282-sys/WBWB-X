@@ -2,6 +2,9 @@
 
 import { createHash } from 'node:crypto'
 import { existsSync, readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
+import { JSDOM } from 'jsdom'
+import { createMarkdownRenderer } from 'vitepress'
 import { describe, expect, it } from 'vitest'
 import config from '../docs/.vitepress/config'
 import { nav } from '../docs/.vitepress/navigation'
@@ -16,6 +19,22 @@ const chapterTitles = [
 ]
 
 describe('OPC reading area', () => {
+  it('renders the overview title as two explicit lines', async () => {
+    const markdown = await createMarkdownRenderer(resolve('docs'))
+    const html = await markdown.render(readFileSync('docs/opc/index.md', 'utf8'))
+    const heading = new JSDOM(html).window.document.querySelector('h1')
+    const titleNodes = [...(heading?.childNodes ?? [])]
+      .filter((node) => !(node instanceof node.ownerDocument!.defaultView!.HTMLAnchorElement))
+      .map((node) => (node.nodeName === 'BR' ? '<br>' : node.textContent?.trim()))
+      .filter(Boolean)
+
+    expect(titleNodes).toEqual([
+      'WorkBuddy OPC',
+      '<br>',
+      '从超级个体到超级团队',
+    ])
+  })
+
   it('exposes OPC in the primary navigation after the existing reading entry', () => {
     expect(nav.map((item) => [item.text, item.link])).toEqual([
       ['首页', '/'],
