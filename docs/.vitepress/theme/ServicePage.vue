@@ -14,19 +14,55 @@ const tickerCount = ref(12_847)
 const tickerPulse = ref(false)
 const swarmMotionState = ref<'idle' | 'dispatching'>('idle')
 const activeAgentIndices = ref<number[]>([])
+const completedAgentIndices = ref<number[]>([])
+const hotAgentIndices = ref<number[]>([])
+const swarmPulse = ref(false)
 const remoteStage = ref<'idle' | 'received' | 'running' | 'complete'>('idle')
+const compareMotionState = ref<'idle' | 'running' | 'complete'>('idle')
+const compareLeftMessages = ref<Array<{ id: string, kind: 'user' | 'assistant', text: string }>>([])
+const compareRightMessages = ref<Array<{ id: string, kind: 'user' | 'system', text: string }>>([])
+const compareProcessLines = ref<string[]>([])
+const compareDeliverablesVisible = ref(false)
 let revealObserver: IntersectionObserver | undefined
 let motionObserver: IntersectionObserver | undefined
 
 type Timer = ReturnType<typeof setTimeout>
 const consoleTimers = new Set<Timer>()
+const compareTimers = new Set<Timer>()
 const swarmTimers = new Set<Timer>()
 const remoteTimers = new Set<Timer>()
 const tickerTimers = new Set<Timer>()
 let autoScenarioIndex = 0
 let consoleAutoCycle = true
+let compareStarted = false
 let swarmStarted = false
 let remoteStarted = false
+let swarmFrame: number | undefined
+let swarmLastFrame = 0
+let swarmCycleIndex = 0
+
+type SwarmPoint = { x: number, y: number }
+type SwarmParticle = { id: number, agentIndex: number, progress: number, speed: number }
+
+const swarmCenter = { x: 450, y: 268 } as const
+const swarmAgentDefinitions = [
+  { abbr: 'DOC', label: '文档写作', task: '撰写报告第 3 章…', radius: 186 },
+  { abbr: 'DAT', label: '数据分析', task: '透视表计算中…', radius: 150 },
+  { abbr: 'PPT', label: 'PPT 设计', task: '排版 12 页幻灯片…', radius: 190 },
+  { abbr: 'WEB', label: '网络调研', task: '抓取 38 篇资料…', radius: 152 },
+  { abbr: 'DEV', label: '代码工程', task: '重构 utils.py…', radius: 186 },
+  { abbr: 'FS', label: '文件管家', task: '归档 23 个文件…', radius: 150 },
+  { abbr: 'VIS', label: '视觉设计', task: '生成 6 张配图…', radius: 190 },
+] as const
+const swarmNodes = ref<SwarmPoint[]>(swarmAgentDefinitions.map((agent, index) => {
+  const angle = (-90 + index * (360 / swarmAgentDefinitions.length)) * Math.PI / 180
+  return {
+    x: swarmCenter.x + Math.cos(angle) * agent.radius,
+    y: swarmCenter.y + Math.sin(angle) * agent.radius,
+  }
+}))
+const swarmParticles = ref<SwarmParticle[]>([])
+let swarmParticleId = 0
 
 const scenarios = [
   {
@@ -129,20 +165,109 @@ function runUserScenario(request: string) {
   schedule(consoleTimers, () => executeScenario(logs), 360)
 }
 
+function swarmControlPoint(point: SwarmPoint, agentIndex: number) {
+  const middleX = (swarmCenter.x + point.x) / 2
+  const middleY = (swarmCenter.y + point.y) / 2
+  const deltaX = point.x - swarmCenter.x
+  const deltaY = point.y - swarmCenter.y
+  const length = Math.hypot(deltaX, deltaY) || 1
+  const offset = agentIndex % 2 === 0 ? 24 : -24
+  return {
+    x: middleX - deltaY / length * offset,
+    y: middleY + deltaX / length * offset,
+  }
+}
+
+function swarmPath(agentIndex: number) {
+  const point = swarmNodes.value[agentIndex]
+  const control = swarmControlPoint(point, agentIndex)
+  return `M${swarmCenter.x},${swarmCenter.y} Q${control.x.toFixed(1)},${control.y.toFixed(1)} ${point.x.toFixed(1)},${point.y.toFixed(1)}`
+}
+
+function swarmParticlePoint(particle: SwarmParticle) {
+  const end = swarmNodes.value[particle.agentIndex]
+  const control = swarmControlPoint(end, particle.agentIndex)
+  const progress = Math.max(0, Math.min(1, particle.progress))
+  const inverse = 1 - progress
+  return {
+    x: inverse * inverse * swarmCenter.x + 2 * inverse * progress * control.x + progress * progress * end.x,
+    y: inverse * inverse * swarmCenter.y + 2 * inverse * progress * control.y + progress * progress * end.y,
+  }
+}
+
+function swarmAgentStatus(agentIndex: number) {
+  if (completedAgentIndices.value.includes(agentIndex)) return '✓ 完成'
+  if (activeAgentIndices.value.includes(agentIndex)) return swarmAgentDefinitions[agentIndex].task
+  return swarmAgentDefinitions[agentIndex].label
+}
+
+function animateSwarm(timestamp: number) {
+  const delta = swarmLastFrame ? Math.min(timestamp - swarmLastFrame, 40) : 16
+  swarmLastFrame = timestamp
+  const time = timestamp / 1000
+  swarmNodes.value = swarmAgentDefinitions.map((agent, index) => {
+    const angle = (-90 + index * (360 / swarmAgentDefinitions.length)) * Math.PI / 180
+    return {
+      x: swarmCenter.x + Math.cos(angle) * agent.radius + Math.sin(time * 0.55 + agent.radius) * 7,
+      y: swarmCenter.y + Math.sin(angle) * agent.radius + Math.cos(time * 0.48 + agent.abbr.length * 2) * 7,
+    }
+  })
+  swarmParticles.value = swarmParticles.value
+    .map((particle) => ({ ...particle, progress: particle.progress + delta / 1000 * particle.speed }))
+    .filter((particle) => particle.progress < 1)
+  swarmFrame = window.requestAnimationFrame(animateSwarm)
+}
+
+function startSwarmFrame() {
+  if (swarmFrame !== undefined || typeof window.requestAnimationFrame !== 'function') return
+  swarmLastFrame = 0
+  swarmFrame = window.requestAnimationFrame(animateSwarm)
+}
+
 function dispatchAgents() {
   if (!swarmStarted) return
   swarmMotionState.value = 'dispatching'
-  activeAgentIndices.value = autoScenarioIndex % 2 === 0 ? [1, 3, 6] : [2, 4, 7]
-  schedule(swarmTimers, () => {
-    swarmMotionState.value = 'idle'
-    activeAgentIndices.value = []
-    schedule(swarmTimers, dispatchAgents, 900)
-  }, 1300)
+  activeAgentIndices.value = []
+  completedAgentIndices.value = []
+  hotAgentIndices.value = []
+  swarmPulse.value = true
+  schedule(swarmTimers, () => { swarmPulse.value = false }, 600)
+
+  const targets = swarmCycleIndex % 2 === 0 ? [0, 2, 5] : [1, 3, 6]
+  swarmCycleIndex += 1
+  targets.forEach((agentIndex, targetIndex) => {
+    const stagger = targetIndex * 180
+    schedule(swarmTimers, () => {
+      hotAgentIndices.value = [...hotAgentIndices.value, agentIndex]
+      swarmParticles.value = [
+        ...swarmParticles.value,
+        { id: swarmParticleId++, agentIndex, progress: 0, speed: 0.82 },
+        { id: swarmParticleId++, agentIndex, progress: -0.18, speed: 0.72 },
+      ]
+    }, stagger)
+    schedule(swarmTimers, () => {
+      hotAgentIndices.value = hotAgentIndices.value.filter((index) => index !== agentIndex)
+    }, 1400 + stagger)
+    schedule(swarmTimers, () => {
+      activeAgentIndices.value = [...activeAgentIndices.value, agentIndex]
+    }, 760 + stagger)
+    schedule(swarmTimers, () => {
+      activeAgentIndices.value = activeAgentIndices.value.filter((index) => index !== agentIndex)
+      completedAgentIndices.value = [...completedAgentIndices.value, agentIndex]
+    }, 3400 + stagger)
+    schedule(swarmTimers, () => {
+      completedAgentIndices.value = completedAgentIndices.value.filter((index) => index !== agentIndex)
+      if (targetIndex !== targets.length - 1) return
+      swarmMotionState.value = 'idle'
+      schedule(swarmTimers, dispatchAgents, 540)
+    }, 4300 + stagger)
+  })
 }
 
 function startSwarmMotion() {
   if (swarmStarted) return
   swarmStarted = true
+  startSwarmFrame()
   schedule(swarmTimers, dispatchAgents, 700)
 }
 
@@ -239,6 +364,44 @@ function runRemoteDemo() {
   remoteStage.value = 'complete'
 }
 
+function completeCompareMotion() {
+  compareLeftMessages.value = [
+    { id: 'left-user', kind: 'user', text: '帮我把桌面的发票整理归档，再做个汇总表' },
+    { id: 'left-advice', kind: 'assistant', text: '好的！建议您按以下步骤操作：\n1. 在桌面新建按月份命名的文件夹\n2. 手动筛选出所有发票文件\n3. 逐张打开，核对金额与日期\n4. 分别移动进对应月份文件夹\n… 共 12 条建议，剩余部分需要您继续询问' },
+    { id: 'left-follow-up', kind: 'assistant', text: '请问还需要我为您列出更详细的步骤吗？' },
+  ]
+  compareRightMessages.value = [
+    { id: 'right-user', kind: 'user', text: '帮我把桌面的发票整理归档，再做个汇总表' },
+    { id: 'right-system', kind: 'system', text: '◉ 指挥官已接管 · 已派发 3 个 Agent' },
+  ]
+  compareProcessLines.value = [
+    '▸ 扫描 ~/Desktop · 发现 23 张发票',
+    '▸ OCR 识别 · 提取抬头/金额/日期',
+    '▸ 归档完成 · 写入汇总表',
+  ]
+  compareDeliverablesVisible.value = true
+  compareMotionState.value = 'complete'
+}
+
+function startCompareMotion() {
+  if (compareStarted) return
+  compareStarted = true
+  compareMotionState.value = 'running'
+
+  schedule(compareTimers, () => compareLeftMessages.value.push({ id: 'left-user', kind: 'user', text: '帮我把桌面的发票整理归档，再做个汇总表' }), 300)
+  schedule(compareTimers, () => compareRightMessages.value.push({ id: 'right-user', kind: 'user', text: '帮我把桌面的发票整理归档，再做个汇总表' }), 600)
+  schedule(compareTimers, () => compareLeftMessages.value.push({ id: 'left-advice', kind: 'assistant', text: '好的！建议您按以下步骤操作：\n1. 在桌面新建按月份命名的文件夹\n2. 手动筛选出所有发票文件\n3. 逐张打开，核对金额与日期\n4. 分别移动进对应月份文件夹\n… 共 12 条建议，剩余部分需要您继续询问' }), 1700)
+  schedule(compareTimers, () => compareLeftMessages.value.push({ id: 'left-follow-up', kind: 'assistant', text: '请问还需要我为您列出更详细的步骤吗？' }), 3200)
+  schedule(compareTimers, () => compareRightMessages.value.push({ id: 'right-system', kind: 'system', text: '◉ 指挥官已接管 · 已派发 3 个 Agent' }), 4200)
+  ;['▸ 扫描 ~/Desktop · 发现 23 张发票', '▸ OCR 识别 · 提取抬头/金额/日期', '▸ 归档完成 · 写入汇总表'].forEach((line, index) => {
+    schedule(compareTimers, () => compareProcessLines.value.push(line), 4900 + index * 700)
+  })
+  schedule(compareTimers, () => {
+    compareDeliverablesVisible.value = true
+    compareMotionState.value = 'complete'
+  }, 7000)
+}
+
 onMounted(() => {
   const targets = Array.from(document.querySelectorAll<HTMLElement>('.wbx-service [data-reveal]'))
   const reduceMotion = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -249,6 +412,8 @@ onMounted(() => {
     consoleLogs.value = scenario.logs.slice()
     consoleProgress.value = 100
     consoleStage.value = 'complete'
+    compareStarted = true
+    completeCompareMotion()
     remoteStage.value = 'complete'
     targets.forEach((target) => target.classList.add('is-visible'))
     return
@@ -264,6 +429,7 @@ onMounted(() => {
 
   if (typeof IntersectionObserver === 'undefined') {
     targets.forEach((target) => target.classList.add('is-visible'))
+    startCompareMotion()
     startSwarmMotion()
     startRemoteMotion()
     return
@@ -281,12 +447,15 @@ onMounted(() => {
   motionObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return
+      if ((entry.target as HTMLElement).classList.contains('wbx-service-compare')) startCompareMotion()
       if ((entry.target as HTMLElement).classList.contains('wbx-service-swarm')) startSwarmMotion()
       if ((entry.target as HTMLElement).classList.contains('wbx-service-remote')) startRemoteMotion()
     })
   }, { threshold: 0.2 })
   const swarm = document.querySelector('.wbx-service-swarm')
   const remote = document.querySelector('.wbx-service-remote')
+  const compare = document.querySelector('.wbx-service-compare')
+  if (compare) motionObserver.observe(compare)
   if (swarm) motionObserver.observe(swarm)
   if (remote) motionObserver.observe(remote)
 })
@@ -294,7 +463,8 @@ onMounted(() => {
 onBeforeUnmount(() => {
   revealObserver?.disconnect()
   motionObserver?.disconnect()
-  ;[consoleTimers, swarmTimers, remoteTimers, tickerTimers].forEach(clearTimers)
+  ;[consoleTimers, compareTimers, swarmTimers, remoteTimers, tickerTimers].forEach(clearTimers)
+  if (swarmFrame !== undefined) window.cancelAnimationFrame(swarmFrame)
 })
 </script>
 
@@ -354,19 +524,28 @@ onBeforeUnmount(() => {
         <h2 id="shift-title">别再问「怎么办」，<br>直接说<em>「去办」</em>。</h2>
         <p>聊天机器人教你怎么做，WorkBuddy 直接替你做完。同样一句话，两种完全不同的结局。</p>
       </div>
-      <div class="wbx-service-compare" data-reveal>
+      <div class="wbx-service-compare" :data-motion-state="compareMotionState" data-reveal>
         <article class="wbx-service-compare__card is-muted">
           <header><strong>传统聊天机器人</strong><span>仅输出建议</span></header>
-          <p class="wbx-service-compare__prompt">帮我分析这份销售数据</p>
-          <p>你可以先清洗数据，再按地区、产品和时间维度分析，然后制作图表……</p>
+          <div class="wbx-service-compare__chat">
+            <p v-for="message in compareLeftMessages" :key="message.id" class="wbx-service-compare__message" :class="`is-${message.kind}`">{{ message.text }}</p>
+          </div>
           <footer>产出文件：0 · 需要你动手的：全部</footer>
         </article>
         <i class="hn hn-arrow-right wbx-service-compare__arrow" aria-hidden="true" />
         <article class="wbx-service-compare__card is-active">
           <header><strong>WorkBuddy 智能体</strong><span>直接交付</span></header>
-          <p class="wbx-service-compare__prompt">帮我分析这份销售数据</p>
-          <ul><li>已清洗 3,842 行数据</li><li>已生成 6 张趋势图</li><li>已导出报告与数据附表</li></ul>
-          <footer>产出文件：2 · 需要你动手的：验收</footer>
+          <div class="wbx-service-compare__chat">
+            <p v-for="message in compareRightMessages" :key="message.id" class="wbx-service-compare__message" :class="`is-${message.kind}`">{{ message.text }}</p>
+            <div v-if="compareProcessLines.length" class="wbx-service-compare__process">
+              <span v-for="line in compareProcessLines" :key="line">{{ line }}</span>
+            </div>
+            <div v-if="compareDeliverablesVisible" class="wbx-service-compare__deliverables">
+              <div class="wbx-service-compare__deliverable"><i class="hn hn-chart-line" aria-hidden="true" /><span><strong>报销汇总_2026H1.xlsx</strong><small>23 行 · 4 列 · 含透视表</small></span></div>
+              <div class="wbx-service-compare__deliverable"><i class="hn hn-folder-open" aria-hidden="true" /><span><strong>发票归档/</strong><small>6 个子文件夹 · 23 个文件</small></span></div>
+            </div>
+          </div>
+          <footer>产出文件：2 · 需要你动手的：验收 · 耗时 2 分 47 秒</footer>
         </article>
       </div>
     </section>
@@ -378,18 +557,55 @@ onBeforeUnmount(() => {
         <p>指挥官接收指令后，动态派发给文档、数据、设计等专职 Agent。它们同时开工，再把结果汇总回你面前。</p>
       </div>
       <div class="wbx-service-swarm" :data-motion-state="swarmMotionState" data-reveal>
-        <svg class="wbx-service-swarm__map" viewBox="0 0 900 510" role="img" aria-label="指挥官连接七个专职 Agent 的协作网络">
-          <g class="wbx-service-swarm__links">
-            <line x1="450" y1="255" x2="450" y2="68"/><line x1="450" y1="255" x2="650" y2="120"/><line x1="450" y1="255" x2="720" y2="280"/><line x1="450" y1="255" x2="600" y2="420"/><line x1="450" y1="255" x2="300" y2="420"/><line x1="450" y1="255" x2="180" y2="280"/><line x1="450" y1="255" x2="250" y2="120"/>
+        <svg class="wbx-service-swarm__map" viewBox="0 0 900 560" role="img" aria-label="指挥官动态派发任务给七个专职 Agent 的协作网络">
+          <g class="wbx-service-swarm__grid" aria-hidden="true">
+            <circle v-for="radius in [95, 180, 262]" :key="radius" :cx="swarmCenter.x" :cy="swarmCenter.y" :r="radius" />
+            <line :x1="swarmCenter.x - 262" :y1="swarmCenter.y" :x2="swarmCenter.x + 262" :y2="swarmCenter.y" />
+            <line :x1="swarmCenter.x" :y1="swarmCenter.y - 262" :x2="swarmCenter.x" :y2="swarmCenter.y + 262" />
           </g>
-          <g class="wbx-service-swarm__node is-core"><circle cx="450" cy="255" r="66"/><text x="450" y="252">指挥官</text><text x="450" y="278">ORCHESTRATOR</text></g>
-          <g class="wbx-service-swarm__node" :class="{ 'is-active': activeAgentIndices.includes(1) }"><circle cx="450" cy="68" r="44"/><text x="450" y="72">文档</text></g>
-          <g class="wbx-service-swarm__node" :class="{ 'is-active': activeAgentIndices.includes(2) }"><circle cx="650" cy="120" r="44"/><text x="650" y="124">数据</text></g>
-          <g class="wbx-service-swarm__node" :class="{ 'is-active': activeAgentIndices.includes(3) }"><circle cx="720" cy="280" r="44"/><text x="720" y="284">PPT</text></g>
-          <g class="wbx-service-swarm__node" :class="{ 'is-active': activeAgentIndices.includes(4) }"><circle cx="600" cy="420" r="44"/><text x="600" y="424">网络</text></g>
-          <g class="wbx-service-swarm__node" :class="{ 'is-active': activeAgentIndices.includes(5) }"><circle cx="300" cy="420" r="44"/><text x="300" y="424">代码</text></g>
-          <g class="wbx-service-swarm__node" :class="{ 'is-active': activeAgentIndices.includes(6) }"><circle cx="180" cy="280" r="44"/><text x="180" y="284">文件</text></g>
-          <g class="wbx-service-swarm__node" :class="{ 'is-active': activeAgentIndices.includes(7) }"><circle cx="250" cy="120" r="44"/><text x="250" y="124">视觉</text></g>
+          <g class="wbx-service-swarm__links" aria-hidden="true">
+            <path
+              v-for="(_, index) in swarmAgentDefinitions"
+              :key="`path-${index}`"
+              class="wbx-service-swarm__path"
+              :class="{ 'is-hot': hotAgentIndices.includes(index) }"
+              :d="swarmPath(index)"
+            />
+          </g>
+          <g class="wbx-service-swarm__particles" aria-hidden="true">
+            <circle
+              v-for="particle in swarmParticles.filter((item) => item.progress >= 0)"
+              :key="particle.id"
+              class="wbx-service-swarm__particle"
+              :cx="swarmParticlePoint(particle).x"
+              :cy="swarmParticlePoint(particle).y"
+              r="3"
+            />
+          </g>
+          <g class="wbx-service-swarm__agents">
+            <g
+              v-for="(agent, index) in swarmAgentDefinitions"
+              :key="agent.abbr"
+              class="wbx-service-swarm__agent"
+              :class="{ 'is-active': activeAgentIndices.includes(index), 'is-done': completedAgentIndices.includes(index) }"
+              :transform="`translate(${swarmNodes[index].x.toFixed(1)},${swarmNodes[index].y.toFixed(1)})`"
+            >
+              <g class="wbx-service-swarm__agent-inner">
+                <circle r="32" />
+                <text class="wbx-service-swarm__abbr" y="4">{{ agent.abbr }}</text>
+              </g>
+              <text class="wbx-service-swarm__status" y="52">{{ swarmAgentStatus(index) }}</text>
+            </g>
+            <g class="wbx-service-swarm__core" :class="{ 'is-pulsing': swarmPulse }" :transform="`translate(${swarmCenter.x},${swarmCenter.y})`">
+              <g class="wbx-service-swarm__core-inner">
+                <circle class="wbx-service-swarm__core-fill" r="46" />
+                <circle class="wbx-service-swarm__core-ring" r="37" />
+                <text class="wbx-service-swarm__core-symbol" y="6">❯_</text>
+              </g>
+              <text class="wbx-service-swarm__core-label" y="76">指挥官</text>
+              <text class="wbx-service-swarm__core-subtitle" y="93">ORCHESTRATOR</text>
+            </g>
+          </g>
         </svg>
         <dl><div><dt>7+</dt><dd>专职 Agent 随叫随到</dd></div><div><dt>并行</dt><dd>多任务同时推进</dd></div><div><dt>&lt;1s</dt><dd>任务拆解与派发</dd></div></dl>
       </div>

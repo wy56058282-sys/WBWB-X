@@ -21,7 +21,7 @@ describe('calm soft product design system', () => {
     expect(root).toMatch(/--wbx-line:\s*#e3e7e4/)
     expect(root).toMatch(/--wbx-radius-sm:\s*6px/)
     expect(root).toMatch(/--wbx-radius-md:\s*10px/)
-    expect(root).toMatch(/--wbx-radius-lg:\s*12px/)
+    expect(root).toMatch(/--wbx-radius-lg:\s*16px/)
     expect(root).toMatch(/--wbx-surface-soft:/)
     expect(root).toMatch(
       /--wbx-shadow-soft:\s*0 8px 24px rgb\(13 16 13 \/ 6%\)/,
@@ -62,10 +62,13 @@ describe('calm soft product design system', () => {
     expect(baseRule(about, '.wbx-about-member')).toMatch(/border-radius:\s*var\(--wbx-radius-lg\)/)
   })
 
-  it('keeps the enterprise hero compact and aligns the embedded team surface with service cards', () => {
+  it('keeps the enterprise hero compact and removes the embedded team wrapper surface', () => {
     expect(baseRule(enterpriseServices, '.wbx-enterprise__hero')).toMatch(/padding:\s*10px 0 48px/)
     expect(baseRule(enterpriseServices, '.wbx-enterprise__hero h1')).toMatch(/text-wrap:\s*balance/)
-    expect(baseRule(enterpriseServices, '.wbx-enterprise > .wbx-about .wbx-about__team')).toMatch(/background:\s*var\(--wbx-surface\)/)
+    const teamRule = baseRule(enterpriseServices, '.wbx-enterprise > .wbx-about .wbx-about__team')
+    expect(teamRule).toMatch(/border:\s*0/)
+    expect(teamRule).toMatch(/background:\s*transparent/)
+    expect(teamRule).toMatch(/box-shadow:\s*none/)
   })
 
   it('keeps navigation and controls quiet instead of using hard offset shadows', () => {

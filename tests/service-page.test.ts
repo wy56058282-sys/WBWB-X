@@ -72,7 +72,10 @@ describe('WorkBuddy product service page', () => {
     expect(document.querySelector('#top .console-window')).toBeNull()
     expect(document.querySelector('#shift .wbx-service-compare > .wbx-service-compare__card.is-muted')).not.toBeNull()
     expect(document.querySelector('#shift .vs-grid')).toBeNull()
-    expect(document.querySelector('#swarm .wbx-service-swarm__map[viewBox="0 0 900 510"]')).not.toBeNull()
+    expect(document.querySelector('#swarm .wbx-service-swarm__map[viewBox="0 0 900 560"]')).not.toBeNull()
+    expect(document.querySelectorAll('#swarm .wbx-service-swarm__grid circle')).toHaveLength(3)
+    expect(document.querySelectorAll('#swarm .wbx-service-swarm__path')).toHaveLength(7)
+    expect(document.querySelectorAll('#swarm .wbx-service-swarm__agent')).toHaveLength(7)
     expect(document.querySelector('#swarm .net-box')).toBeNull()
     expect(document.querySelector('#capabilities .wbx-service-flow')).not.toBeNull()
     expect(document.querySelector('#capabilities .wbx-service-deliverables')).not.toBeNull()
@@ -172,16 +175,59 @@ describe('WorkBuddy product service page', () => {
     expect(swarm.dataset.motionState).toBe('idle')
     expect(remote.dataset.stage).toBe('idle')
 
-    await vi.advanceTimersByTimeAsync(1100)
+    await vi.advanceTimersByTimeAsync(1600)
     await nextTick()
     expect(swarm.dataset.motionState).toBe('dispatching')
-    expect(document.querySelectorAll('.wbx-service-swarm__node.is-active').length).toBeGreaterThan(0)
+    expect(document.querySelectorAll('.wbx-service-swarm__agent.is-active').length).toBeGreaterThan(0)
     expect(remote.dataset.stage).toBe('running')
 
     await vi.advanceTimersByTimeAsync(1800)
     await nextTick()
     expect(remote.dataset.stage).toBe('complete')
     expect(document.querySelector('.wbx-service-remote__state')?.textContent).toContain('已交付 · 3 个文件')
+  })
+
+  it('moves dispatched agents through task, completion, and ready states', async () => {
+    vi.useFakeTimers()
+    mountServicePage()
+
+    await vi.advanceTimersByTimeAsync(1600)
+    await nextTick()
+    expect(document.querySelectorAll('.wbx-service-swarm__agent.is-active').length).toBeGreaterThan(0)
+    expect(document.querySelector('.wbx-service-swarm__agent.is-active .wbx-service-swarm__status')?.textContent).toContain('撰写报告')
+
+    await vi.advanceTimersByTimeAsync(3200)
+    await nextTick()
+    expect(document.querySelectorAll('.wbx-service-swarm__agent.is-done').length).toBeGreaterThan(0)
+    expect(document.querySelector('.wbx-service-swarm__agent.is-done .wbx-service-swarm__status')?.textContent).toContain('完成')
+
+    await vi.advanceTimersByTimeAsync(800)
+    await nextTick()
+    expect(document.querySelectorAll('.wbx-service-swarm__agent:is(.is-active, .is-done)')).toHaveLength(0)
+  })
+
+  it('plays the original mindset comparison sequence when the section becomes active', async () => {
+    vi.useFakeTimers()
+    mountServicePage()
+    await nextTick()
+
+    const compare = document.querySelector<HTMLElement>('.wbx-service-compare')!
+    expect(compare.dataset.motionState).toBe('running')
+    expect(document.querySelectorAll('.wbx-service-compare__message')).toHaveLength(0)
+
+    await vi.advanceTimersByTimeAsync(700)
+    await nextTick()
+    expect(document.querySelectorAll('.wbx-service-compare__message.is-user')).toHaveLength(2)
+
+    await vi.advanceTimersByTimeAsync(3800)
+    await nextTick()
+    expect(document.querySelector('.wbx-service-compare__message.is-system')?.textContent).toContain('指挥官已接管')
+
+    await vi.advanceTimersByTimeAsync(2800)
+    await nextTick()
+    expect(compare.dataset.motionState).toBe('complete')
+    expect(document.querySelectorAll('.wbx-service-compare__process span')).toHaveLength(3)
+    expect(document.querySelectorAll('.wbx-service-compare__deliverable')).toHaveLength(2)
   })
 
   it('keeps activities, diagnosis conversion, and team content out of service', () => {

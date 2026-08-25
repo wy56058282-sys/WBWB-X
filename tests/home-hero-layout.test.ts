@@ -59,21 +59,57 @@ describe('home hero icon navigation', () => {
     expect(homeCss).not.toContain('.wbx-partner-sticker')
   })
 
-  it('uses black icon cards with green pixel icons', () => {
+  it('uses theme surface icon cards with green pixel icons and soft shadows', () => {
     const css = readHomeStyle()
 
     expect(css).not.toMatch(
       /\.wbx-hero__art\s*\{[^}]*background:\s*#0d100d;/s,
     )
+    const themes = [
+      { surface: '#ffffff', expected: 'rgb(255, 255, 255)' },
+      { surface: '#181b15', expected: 'rgb(24, 27, 21)' },
+    ]
+    themes.forEach(({ surface, expected }) => {
+      const style = document.createElement('style')
+      style.textContent = css
+        .replaceAll('var(--wbx-surface)', surface)
+        .replaceAll('var(--wbx-line)', '#e3e7e4')
+        .replaceAll('var(--wbx-accent)', '#32e6b9')
+        .replaceAll('var(--wbx-shadow-soft)', '0 8px 24px rgb(13 16 13 / 6%)')
+      document.head.append(style)
+      document.body.innerHTML = '<a class="wbx-icon-card"><i class="hn"></i></a>'
+
+      const card = getComputedStyle(document.querySelector('.wbx-icon-card')!)
+      expect(card.backgroundColor).toBe(expected)
+      expect(card.color).toBe('rgb(50, 230, 185)')
+      expect(card.boxShadow).toBe('0 8px 24px rgb(13 16 13 / 6%)')
+
+      style.remove()
+      document.body.replaceChildren()
+    })
     expect(css).toMatch(
-      /\.wbx-icon-card\s*\{[^}]*color:\s*var\(--wbx-accent\);[^}]*background:\s*#0d100d;/s,
-    )
-    expect(css).toMatch(
-      /\.wbx-hero__copy\s*>\s*\.wbx-pixel-label\s*\{[^}]*color:\s*#0d100d;/s,
+      /\.wbx-hero__copy\s*>\s*\.wbx-pixel-label\s*\{[^}]*color:\s*var\(--wbx-ink\);/s,
     )
     expect(css).toMatch(
       /\.wbx-hero__monogram\s*\{[^}]*top:\s*42px;[^}]*right:\s*48px;/s,
     )
+  })
+
+  it('reverses the hero copy and secondary action in dark mode', () => {
+    const style = document.createElement('style')
+    style.textContent = readHomeStyle().replaceAll('var(--wbx-ink)', '#f3f5ed')
+    document.head.append(style)
+    document.documentElement.classList.add('dark')
+    harness.mountHomePage()
+
+    const expected = 'rgb(243, 245, 237)'
+    expect(getComputedStyle(document.querySelector('#wbx-hero-title')!).color).toBe(expected)
+    expect(getComputedStyle(document.querySelector('.wbx-hero__summary')!).color).toBe(expected)
+    expect(getComputedStyle(document.querySelector('.wbx-update-ticker')!).color).toBe(expected)
+    expect(getComputedStyle(document.querySelector('.wbx-button--outline')!).color).toBe(expected)
+
+    style.remove()
+    document.documentElement.classList.remove('dark')
   })
 
   it('uses only the outer hero border', () => {

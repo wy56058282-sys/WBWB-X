@@ -21,7 +21,8 @@ describe('WorkBuddy product service styles', () => {
     expect(styles).not.toContain('.wbx-service .net-box')
     expect(styles).not.toContain('.wbx-service .remote-stage')
     expect(styles).toMatch(/\.wbx-service-console\s*\{[^}]*box-shadow:\s*8px 8px 0 var\(--wbx-accent\)/s)
-    expect(styles).toMatch(/\.wbx-service-swarm__node\.is-core circle\s*\{[^}]*fill:\s*var\(--wbx-accent\)/s)
+    expect(styles).toMatch(/\.wbx-service-swarm__path\.is-hot\s*\{[^}]*stroke:\s*var\(--wbx-accent\)/s)
+    expect(styles).toMatch(/\.wbx-service-swarm__agent\.is-active circle,[\s\S]*?stroke:\s*var\(--wbx-accent\)/s)
     expect(styles).toMatch(/\.wbx-service-remote\s*\{[^}]*grid-template-columns:\s*minmax\(220px, \.72fr\) 180px minmax\(300px, 1\.3fr\)/s)
   })
 
@@ -41,7 +42,10 @@ describe('WorkBuddy product service styles', () => {
     expect(baseRule(styles, '.wbx-service-compare__card')).toMatch(/border-radius:\s*var\(--wbx-radius-lg\)/)
     expect(baseRule(styles, '.wbx-service-compare__card')).toMatch(/box-shadow:\s*var\(--wbx-shadow-soft\)/)
     expect(styles).toMatch(/\.wbx-service-console\s*\{[^}]*border:\s*2px solid var\(--wbx-ink\)/s)
-    expect(styles).toMatch(/\.wbx-service-swarm\s*\{[^}]*border:\s*2px solid var\(--wbx-ink\)/s)
+    expect(baseRule(styles, '.wbx-service-swarm')).toMatch(/border:\s*1px solid var\(--wb-ref-line\)/)
+    expect(baseRule(styles, '.wbx-service-swarm')).toMatch(/border-radius:\s*20px/)
+    expect(baseRule(styles, '.wbx-service-swarm')).toMatch(/box-shadow:\s*var\(--wbx-shadow-soft\)/)
+    expect(baseRule(styles, '.wbx-service-swarm')).not.toMatch(/2px solid var\(--wbx-ink\)/)
   })
 
   it('keeps the site shell and gives the product page a wide bounded canvas', () => {

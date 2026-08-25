@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createApp, nextTick, type App } from 'vue'
+import { readFileSync } from 'node:fs'
 
 vi.mock('vitepress', () => ({ withBase: (path: string) => `/WBWB-X${path}` }))
 
@@ -8,8 +9,16 @@ import EnterpriseServicesPage from '../docs/.vitepress/theme/EnterpriseServicesP
 const apps: App[] = []
 afterEach(() => {
   apps.splice(0).forEach((app) => app.unmount())
+  document.head.querySelectorAll('style[data-enterprise-test]').forEach((style) => style.remove())
   document.body.replaceChildren()
 })
+
+function installStyles() {
+  const style = document.createElement('style')
+  style.dataset.enterpriseTest = ''
+  style.textContent = `${readFileSync('docs/.vitepress/theme/about.css', 'utf8')}\n${readFileSync('docs/.vitepress/theme/enterprise-services.css', 'utf8')}`
+  document.head.append(style)
+}
 
 function mountPage() {
   const host = document.createElement('div')
@@ -20,13 +29,37 @@ function mountPage() {
 }
 
 describe('enterprise services page', () => {
-  it('lets the hero title wrap naturally instead of forcing a line break', () => {
+  it('breaks the hero title after the comma', () => {
     mountPage()
 
     const title = document.querySelector('.wbx-enterprise__hero h1')
 
-    expect(title?.querySelector('br')).toBeNull()
+    expect(title?.querySelector('br')).not.toBeNull()
+    expect(title?.childNodes[0]?.textContent).toBe('从真实场景出发，')
     expect(title?.textContent).toBe('从真实场景出发，把 AI 变成可交付的工作系统。')
+  })
+
+  it('uses compact service-card spacing and a container-free embedded team', () => {
+    installStyles()
+    mountPage()
+
+    const card = getComputedStyle(document.querySelector('.wbx-enterprise-service')!)
+    const cardTitle = getComputedStyle(document.querySelector('.wbx-enterprise-service h2')!)
+    const description = getComputedStyle(document.querySelector('.wbx-enterprise-service > p:not(.wbx-pixel-label)')!)
+    const team = getComputedStyle(document.querySelector('#team')!)
+
+    expect(card.display).toBe('flex')
+    expect(card.flexDirection).toBe('column')
+    expect(card.paddingTop).toBe('28px')
+    expect(cardTitle.marginTop).toBe('0px')
+    expect(cardTitle.paddingTop).toBe('0px')
+    expect(cardTitle.borderTopWidth).toBe('0px')
+    expect(Number.parseFloat(description.minHeight)).toBe(0)
+    expect(description.marginBottom).toBe('20px')
+    expect(team.paddingTop).toBe('0px')
+    expect(team.borderTopWidth).toBe('0px')
+    expect(team.boxShadow).toBe('none')
+    expect(team.backgroundColor).toBe('rgba(0, 0, 0, 0)')
   })
 
   it('offers four scoped services with real destinations', () => {

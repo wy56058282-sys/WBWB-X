@@ -4,24 +4,25 @@
 .wbx-enterprise { padding: 20px 0 80px; color: var(--wbx-ink); }
 .wbx-enterprise :where(h1, h2, p) { margin-top: 0; }
 .wbx-enterprise :where(h1, h2) { border: 0; padding: 0; letter-spacing: -0.03em; }
-.wbx-enterprise__hero { max-width: 860px; padding: 10px 0 48px; }
+.wbx-enterprise__hero { max-width: 960px; padding: 10px 0 48px; }
 .wbx-enterprise__hero .wbx-pixel-label,
 .wbx-enterprise__heading .wbx-pixel-label,
 .wbx-enterprise-service .wbx-pixel-label { margin-bottom: 12px; color: var(--vp-c-brand-1); }
 .wbx-enterprise__hero h1 { margin-bottom: 24px; font-size: clamp(42px, 5.4vw, 68px); font-weight: 850; line-height: 1.12; text-wrap: balance; }
-.wbx-enterprise__hero > p:last-child { max-width: 700px; margin-bottom: 0; color: var(--wbx-muted); font-size: 17px; line-height: 1.75; }
+.wbx-enterprise__hero > p:last-child { max-width: 760px; margin-bottom: 0; color: var(--wbx-muted); font-size: 17px; line-height: 1.75; }
 .wbx-enterprise__services { padding-bottom: var(--wbx-section-space); }
 .wbx-enterprise__heading { margin-bottom: 24px; }
-.wbx-enterprise__heading h2 { margin-bottom: 0; font-size: 32px; }
+.wbx-enterprise__heading h2 { margin-top: 0; margin-bottom: 0; border-top: 0; padding-top: 0; font-size: 32px; }
 .wbx-enterprise__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-.wbx-enterprise-service { scroll-margin-top: 96px; padding: 30px; border: 1px solid var(--wbx-line); border-radius: var(--wbx-radius-lg); background: var(--wbx-surface); box-shadow: var(--wbx-shadow-soft); }
-.wbx-enterprise-service h2 { margin-bottom: 12px; font-size: 25px; }
-.wbx-enterprise-service > p:not(.wbx-pixel-label) { min-height: 76px; margin-bottom: 24px; color: var(--wbx-muted); line-height: 1.7; }
-.wbx-enterprise-service > a { display: inline-flex; min-height: var(--wbx-control-height); align-items: center; justify-content: center; border: 1px solid var(--wbx-line); border-radius: var(--wbx-radius-md); padding: 0 18px; color: #0d100d; background: var(--wbx-accent); font-weight: 700; text-decoration: none; transition: transform var(--wbx-motion-fast) ease, box-shadow var(--wbx-motion-fast) ease; }
+.wbx-enterprise-service { display: flex; flex-direction: column; scroll-margin-top: 96px; padding: 28px; border: 1px solid var(--wbx-line); border-radius: var(--wbx-radius-lg); background: var(--wbx-surface); box-shadow: var(--wbx-shadow-soft); }
+.wbx-enterprise-service h2 { margin: 0 0 10px; padding-top: 0; border-top: 0; font-size: 25px; }
+.wbx-enterprise-service > p:not(.wbx-pixel-label) { min-height: 0; margin: 0 0 20px; color: var(--wbx-muted); line-height: 1.7; }
+.wbx-enterprise-service > a { display: inline-flex; min-height: var(--wbx-control-height); align-self: flex-start; align-items: center; justify-content: center; margin-top: auto; border: 1px solid var(--wbx-line); border-radius: var(--wbx-radius-md); padding: 0 18px; color: #0d100d; background: var(--wbx-accent); font-weight: 700; text-decoration: none; transition: transform var(--wbx-motion-fast) ease, box-shadow var(--wbx-motion-fast) ease; }
 .wbx-enterprise-service > a:hover { transform: translateY(-1px); box-shadow: var(--wbx-shadow-soft); }
 .wbx-enterprise-service > a:focus-visible { outline: var(--wbx-focus); outline-offset: 3px; }
 .wbx-enterprise > .wbx-about { padding-top: 0; }
-.wbx-enterprise > .wbx-about .wbx-about__team { padding: 32px; background: var(--wbx-surface); }
+.wbx-enterprise > .wbx-about .wbx-about__team { padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+.wbx-enterprise > .wbx-about .wbx-about__heading h2 { margin-top: 0; border-top: 0; padding-top: 0; }
 
 .wbx-legacy-redirect { max-width: 720px; margin: 80px auto; padding: 32px; border: 1px solid var(--wbx-line); border-radius: var(--wbx-radius-lg); text-align: center; background: var(--wbx-surface); }
 
@@ -30,5 +31,5 @@
   .wbx-enterprise__hero { padding-bottom: 36px; }
   .wbx-enterprise__grid { grid-template-columns: 1fr; }
   .wbx-enterprise-service > p:not(.wbx-pixel-label) { min-height: 0; }
-  .wbx-enterprise > .wbx-about .wbx-about__team { padding: 28px 20px; }
+  .wbx-enterprise > .wbx-about .wbx-about__team { padding: 0; }
 }

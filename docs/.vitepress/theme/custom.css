@@ -23,7 +23,7 @@
     "Microsoft YaHei", sans-serif;
   --wbx-radius-sm: 6px;
   --wbx-radius-md: 10px;
-  --wbx-radius-lg: 12px;
+  --wbx-radius-lg: 16px;
   --wbx-shadow-soft: 0 8px 24px rgb(13 16 13 / 6%);
   --wbx-shadow-hover: 0 12px 32px rgb(13 16 13 / 10%);
   --wbx-shadow: var(--wbx-shadow-soft);

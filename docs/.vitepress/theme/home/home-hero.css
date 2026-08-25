@@ -31,7 +31,7 @@
   overflow: hidden;
   border: 0;
   transform: translateY(-60px);
-  color: #0d100d;
+  color: var(--wbx-ink);
   background: transparent;
 }
 
@@ -46,7 +46,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  color: #0d100d;
+  color: var(--wbx-ink);
 }
 
 .wbx-update-ticker__icon svg {
@@ -112,13 +112,13 @@
 }
 
 .wbx-hero__copy > .wbx-pixel-label {
-  color: #0d100d;
+  color: var(--wbx-ink);
 }
 
 .wbx-hero__copy h1 {
   max-width: 720px;
-  margin: 24px 0 18px;
-  color: #0d100d;
+  margin: 12px 0 18px;
+  color: var(--wbx-ink);
   font-size: clamp(52px, 4.7vw, 70px);
   font-weight: 850;
   line-height: 1.06;
@@ -129,7 +129,7 @@
 .wbx-hero__summary {
   max-width: 680px;
   margin: 0;
-  color: #1a1d13;
+  color: var(--wbx-ink);
   font-size: 19px;
   font-weight: 540;
   line-height: 1.85;
@@ -151,9 +151,9 @@
   min-width: 210px;
   min-height: var(--wbx-control-height);
   padding: 0 28px;
-  border: 1px solid #0d100d;
+  border: 1px solid var(--wbx-ink);
   border-radius: var(--wbx-radius-md);
-  color: #0d100d !important;
+  color: var(--wbx-ink) !important;
   font-size: 16px;
   font-weight: 760;
   text-decoration: none !important;
@@ -278,7 +278,7 @@
   position: absolute;
   top: 42px;
   right: 48px;
-  color: #0d100d;
+  color: var(--wbx-ink);
   font-family: var(--wbx-pixel);
   font-size: 30px;
   letter-spacing: -0.08em;
@@ -292,10 +292,10 @@
   width: 126px;
   height: 126px;
   place-items: center;
-  border: 1px solid rgb(50 230 185 / 45%);
+  border: 1px solid var(--wbx-line);
   color: var(--wbx-accent);
-  background: #0d100d;
-  box-shadow: 0 10px 25px rgb(0 0 0 / 28%);
+  background: var(--wbx-surface);
+  box-shadow: var(--wbx-shadow-soft);
   text-decoration: none;
   transform: rotate(var(--wbx-icon-rotation));
   scale: 1;
@@ -310,7 +310,7 @@
 .wbx-icon-card:focus-visible {
   z-index: 2;
   color: var(--wbx-accent);
-  box-shadow: 0 16px 34px rgb(50 230 185 / 18%);
+  box-shadow: var(--wbx-shadow-hover);
   scale: 1.1;
   animation-play-state: paused;
 }

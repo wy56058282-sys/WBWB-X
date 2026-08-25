@@ -56,7 +56,7 @@
 }
 
 .wbx-section__heading .wbx-pixel-label {
-  margin-bottom: 9px;
+  margin-bottom: 12px;
   color: color-mix(in srgb, var(--wbx-accent) 50%, var(--wbx-ink));
 }
 
@@ -228,7 +228,7 @@
 }
 
 .wbx-system__intro .wbx-pixel-label {
-  margin-bottom: 18px;
+  margin-bottom: 12px;
   color: color-mix(in srgb, var(--wbx-accent) 50%, var(--wbx-ink));
 }
 
