@@ -306,7 +306,7 @@ const workflowSteps = [
         </div>
       </div>
 
-      <div class="wbx-value-strip" aria-label="小白书价值">
+      <div class="wbx-value-strip" aria-label="白皮书价值">
         <div v-for="item in valueProps" :key="item.title" class="wbx-value-strip__item">
           <i class="hn" :class="item.icon" aria-hidden="true" />
           <span>
@@ -371,7 +371,7 @@ const workflowSteps = [
       <div class="wbx-system__intro">
         <p class="wbx-pixel-label">FROM TASK TO TEAM</p>
         <h2 id="wbx-system-title">AI 时代，一起象限跃迁</h2>
-        <p class="wbx-system__description">小白书真正关心的不是“AI 会什么”，而是如何把一个结果沉淀成稳定、可协作、可复用的工作系统。</p>
+        <p class="wbx-system__description">白皮书真正关心的不是“AI 会什么”，而是如何把一个结果沉淀成稳定、可协作、可复用的工作系统。</p>
         <div class="wbx-system__actions">
           <a
             class="wbx-button wbx-button--primary wbx-system__download"

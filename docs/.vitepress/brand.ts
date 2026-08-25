@@ -19,8 +19,8 @@ export interface BrandConfig {
 
 export const brand: BrandConfig = {
   siteName: 'WorkBuddy-X',
-  contentName: 'WorkBuddy 实战小白书',
-  contentShortName: 'WorkBuddy小白书',
+  contentName: 'WorkBuddy 实战白皮书',
+  contentShortName: 'WorkBuddy白皮书',
   shortMark: 'WB-X',
   accent: '#32E6B9',
   origin: 'https://wbx.sparkx.zone',
@@ -30,7 +30,7 @@ export const brand: BrandConfig = {
   qrPath: '/community/wechat-group.png',
   ogImagePath: '/og/workbuddy-wb-x-guide-20260803.png',
   seo: {
-    title: 'WorkBuddy 教程与使用指南｜WorkBuddy WB-X 实战小白书',
+    title: 'WorkBuddy 教程与使用指南｜WorkBuddy WB-X 实战白皮书',
     description:
       '系统的 WorkBuddy 中文教程与使用指南，涵盖安装入门、真实案例、Skills、连接器、自动化和多智能体实践。',
     keywords:

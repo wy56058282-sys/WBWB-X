@@ -101,7 +101,7 @@ function redirectDocument(target, suffixScript = 'location.search + location.has
     <title>正在跳转 | WorkBuddy WB-X</title>
     <script>location.replace(${scriptTarget} + ${suffixScript})</script>
   </head>
-  <body><a href="${escapedTarget}">前往新版 WorkBuddy 小白书</a></body>
+  <body><a href="${escapedTarget}">前往新版 WorkBuddy 白皮书</a></body>
 </html>
 `
 }

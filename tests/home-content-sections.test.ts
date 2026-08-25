@@ -27,6 +27,9 @@ describe('home hero icon navigation', () => {
   it('uses the approved homepage value labels', () => {
     harness.mountHomePage()
 
+    expect(document.querySelector('#wbx-hero-title')?.textContent).toBe(
+      'WorkBuddy白皮书',
+    )
     expect(
       document.querySelector('.wbx-hero__copy > .wbx-pixel-label')?.textContent,
     ).toBe('27 CHAPTERS / 4 PARTS / ∞ WORKFLOWS')

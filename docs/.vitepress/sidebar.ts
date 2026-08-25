@@ -5,7 +5,7 @@ const fourthPart = '/wb-x/第四篇 岗位与行业落地/'
 const appendix = '/wb-x/附录/'
 
 export const sidebar = [
-  { text: '小白书总览', link: '/wb-x/' },
+  { text: '白皮书总览', link: '/wb-x/' },
   { text: '阅读指南', link: '/wb-x/reading-guide/' },
   {
     text: '第一篇 · 使用手册',

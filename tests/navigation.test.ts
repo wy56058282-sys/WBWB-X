@@ -46,7 +46,7 @@ describe('site navigation', () => {
 
   it('uses the approved content brand in the sidebar overview', () => {
     expect(sidebar.slice(0, 2)).toEqual([
-      { text: '小白书总览', link: '/wb-x/' },
+      { text: '白皮书总览', link: '/wb-x/' },
       { text: '阅读指南', link: '/wb-x/reading-guide/' },
     ])
   })
@@ -66,7 +66,7 @@ describe('site navigation', () => {
   })
 
   it('uses the approved SEO title for the browser title', () => {
-    expect(config.title).toBe('WorkBuddy 教程与使用指南｜WorkBuddy WB-X 实战小白书')
+    expect(config.title).toBe('WorkBuddy 教程与使用指南｜WorkBuddy WB-X 实战白皮书')
   })
 
   it('keeps Git-derived update times without exposing page edit links', () => {

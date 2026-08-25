@@ -36,7 +36,7 @@ describe('published live-site alignment contract', () => {
     expect(existsSync('docs/resources/index.md')).toBe(true)
     expect(existsSync('docs/wb-x/reading-guide/index.md')).toBe(true)
     expect(sidebar.slice(0, 2)).toEqual([
-      { text: '小白书总览', link: '/wb-x/' },
+      { text: '白皮书总览', link: '/wb-x/' },
       { text: '阅读指南', link: '/wb-x/reading-guide/' },
     ])
   })

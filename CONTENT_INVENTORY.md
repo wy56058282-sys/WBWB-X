@@ -19,8 +19,8 @@ WorkBuddy WB-X 是一本以真实任务为主线的 WorkBuddy 中文社区实战
 | 项目 | 当前值 |
 | --- | --- |
 | 网站名称 | WorkBuddy WB-X |
-| 内容品牌 | WorkBuddy 实战小白书 |
-| 首页内容简称 | WorkBuddy小白书 |
+| 内容品牌 | WorkBuddy 实战白皮书 |
+| 首页内容简称 | WorkBuddy白皮书 |
 | 品牌短标 | WB-X |
 | 品牌色 | `#32E6B9` |
 | 内容作者 | WorkBuddy WB-X Contributors |
@@ -41,7 +41,7 @@ docs/.vitepress/brand.ts
 | 内容类型 | 数量 | 说明 |
 | --- | ---: | --- |
 | 对外 Markdown 页面 | 52 | 不含内部设计与实施记录 |
-| 小白书正文 | 27 章 | 第一篇 10 章、第二篇 11 章、第三篇 4 章、第四篇 2 章 |
+| 白皮书正文 | 27 章 | 第一篇 10 章、第二篇 11 章、第三篇 4 章、第四篇 2 章 |
 | 额外阅读 | 1 篇 | 《一章看懂 AI 工作系统》 |
 | 附录 | 3 篇 | 常用指令模板、场景速查表、个人版与企业版对比 |
 | 社区案例 | 7 个 | 涵盖资讯、简历、公众号、知识管理、创意开发和数据分析 |
@@ -53,7 +53,7 @@ docs/.vitepress/brand.ts
 按去除 Markdown 标记后的字符量粗略统计：
 
 - 27 章正文约 7.96 万字符。
-- 整个小白书区约 9.35 万字符。
+- 整个白皮书区约 9.35 万字符。
 - 7 个社区案例约 2.80 万字符。
 - 全部对外 Markdown 内容约 12.64 万字符。
 
@@ -72,13 +72,13 @@ docs/.vitepress/navigation.ts
 | 导航 | 路径 | 作用 |
 | --- | --- | --- |
 | 首页 | `/` | 品牌介绍、四段阅读路径、任务分类和共创入口 |
-| 开始阅读 | `/wb-x/` | 小白书总览及 27 章目录 |
+| 开始阅读 | `/wb-x/` | 白皮书总览及 27 章目录 |
 | 案例集 | `/cases/` | 社区真实案例及投稿入口 |
 | 工具集 | `/tools/` | 展示 WorkBuddy、SparkX 与 SunFun 产品矩阵 |
 | 企业服务 | `/services/` | 展示服务概览、FDE 团队与联系入口 |
 | 交流群 | 自定义弹窗 | 展示可定期替换的交流群二维码 |
 
-### 3.2 小白书侧边栏
+### 3.2 白皮书侧边栏
 
 配置文件：
 
@@ -86,8 +86,8 @@ docs/.vitepress/navigation.ts
 docs/.vitepress/sidebar.ts
 ```
 
-侧边栏仅在 `/wb-x/` 路径下显示。`小白书总览`之后紧接`阅读指南`，其页面为
-`/wb-x/reading-guide/`；社区、投稿和帮助页面不显示小白书侧边栏。
+侧边栏仅在 `/wb-x/` 路径下显示。`白皮书总览`之后紧接`阅读指南`，其页面为
+`/wb-x/reading-guide/`；社区、投稿和帮助页面不显示白皮书侧边栏。
 
 ### 3.3 旧路径兼容现状
 
@@ -121,7 +121,7 @@ docs/.vitepress/theme/home/home-responsive.css
 ### 4.1 主视觉
 
 - 像素风品牌主视觉。
-- 主标题：`WorkBuddy小白书`。
+- 主标题：`WorkBuddy白皮书`。
 - 文案重点：从 0 到 1 用起来，再从 1 到 100 沉淀为可复用工作系统。
 - 主要按钮：开始阅读。
 - 次要按钮：查看阅读路线。
@@ -185,7 +185,7 @@ docs/public/brand/partners/
 - HackerNoon Pixel Icons 署名。
 - WorkBuddy WB-X Contributors 版权信息。
 
-## 5. 小白书完整目录
+## 5. 白皮书完整目录
 
 内容根目录：
 
@@ -351,7 +351,7 @@ Case 正文应覆盖：
 
 | 页面 | 文件 | 作用 |
 | --- | --- | --- |
-| 阅读与学习指南 | `docs/wb-x/reading-guide/index.md` | 小白书侧边栏中紧随总览，为新手、任务实践者和团队负责人提供阅读路线 |
+| 阅读与学习指南 | `docs/wb-x/reading-guide/index.md` | 白皮书侧边栏中紧随总览，为新手、任务实践者和团队负责人提供阅读路线 |
 | 工具集 | `docs/tools/index.md` | 展示 WorkBuddy 产品能力及 SparkX、SunFun 产品预告 |
 | 企业服务 | `docs/services/index.md` | 展示服务概览、FDE 团队与联系入口 |
 | 旧产品页兼容入口 | `docs/help/index.md` | 非索引并跳转至工具集，保留旧锚点 |
@@ -481,7 +481,7 @@ docs/.vitepress/navigation.ts
 tests/navigation.test.ts
 ```
 
-### 10.3 更新小白书目录
+### 10.3 更新白皮书目录
 
 新增、删除或改名章节时同时修改：
 
