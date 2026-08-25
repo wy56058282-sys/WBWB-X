@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+
+withDefaults(defineProps<{ embedded?: boolean }>(), {
+  embedded: false,
+})
 
 const teamMembers = [
   { name: '王翔旭', image: '/article-assets/service/guest-wang-xiangxu.png' },
@@ -13,27 +17,40 @@ const teamMembers = [
 
 const isJoinOpen = ref(false)
 const join = ref<HTMLElement | null>(null)
+const joinTrigger = ref<HTMLButtonElement | null>(null)
 
-function closeJoin() {
+function closeJoin(restoreFocus = false) {
+  if (!isJoinOpen.value) return
   isJoinOpen.value = false
+  if (restoreFocus) nextTick(() => joinTrigger.value?.focus())
 }
 
 function handleJoinOutsideClick(event: PointerEvent) {
   if (!join.value?.contains(event.target as Node)) closeJoin()
 }
 
-onMounted(() => document.addEventListener('pointerdown', handleJoinOutsideClick))
-onBeforeUnmount(() => document.removeEventListener('pointerdown', handleJoinOutsideClick))
+function handleEscape(event: KeyboardEvent) {
+  if (event.key === 'Escape') closeJoin(true)
+}
+
+onMounted(() => {
+  document.addEventListener('pointerdown', handleJoinOutsideClick)
+  document.addEventListener('keydown', handleEscape)
+})
+onBeforeUnmount(() => {
+  document.removeEventListener('pointerdown', handleJoinOutsideClick)
+  document.removeEventListener('keydown', handleEscape)
+})
 </script>
 
 <template>
   <div class="wbx-about">
-    <header class="wbx-about__header">
+    <header v-if="!embedded" class="wbx-about__header">
       <p class="wbx-pixel-label">ABOUT WORKBUDDY-X</p>
       <h1>关于我们</h1>
     </header>
 
-    <section class="wbx-about__team" aria-labelledby="about-team-title">
+    <section id="team" class="wbx-about__team" aria-labelledby="about-team-title">
       <div class="wbx-about__heading">
         <div>
           <p class="wbx-pixel-label">TEAM</p>
@@ -48,12 +65,13 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', handleJoinOuts
       </div>
       <div ref="join" class="wbx-about-join">
         <button
+          ref="joinTrigger"
           class="wbx-about-join__trigger"
           type="button"
           aria-controls="about-join-popover"
           :aria-expanded="isJoinOpen"
           @click="isJoinOpen = !isJoinOpen"
-          @keydown.esc.stop="closeJoin"
+          @keydown.esc.stop="closeJoin(true)"
         >加入我们</button>
         <div
           id="about-join-popover"

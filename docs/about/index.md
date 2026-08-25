@@ -1,11 +1,12 @@
 ---
-title: 关于我们
+title: 页面已迁移
 titleTemplate: false
-description: 认识 WorkBuddy-X 的场景教练和前线部署工程师团队。
-breadcrumbTitle: 关于我们
+description: 团队介绍已迁移至企业服务。
+search: false
+head:
+  - [meta, { name: robots, content: noindex }]
 aside: false
 outline: false
-pageClass: custom-about-page
 ---
 
-<AboutPage />
+<LegacyPageRedirect target="/services/#team" />

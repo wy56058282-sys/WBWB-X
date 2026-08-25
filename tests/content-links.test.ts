@@ -16,6 +16,8 @@ const required = [
   'docs/wb-x/reading-guide/index.md',
   'docs/resources/index.md',
   'docs/cases/index.md',
+  'docs/tools/index.md',
+  'docs/services/index.md',
   'docs/help/index.md',
   'docs/community/contributing.md',
 ]

@@ -18,20 +18,21 @@ describe('site navigation', () => {
       '首页',
       '开始阅读',
       '案例集',
-      '服务',
-      '关于我们',
+      '工具集',
+      '企业服务',
       '交流群',
     ])
-    expect(nav.find((item) => item.text === '服务')?.link).toBe('/help/')
-    expect(nav.find((item) => item.text === '关于我们')?.link).toBe('/about/')
+    expect(nav.find((item) => item.text === '工具集')?.link).toBe('/tools/')
+    expect(nav.find((item) => item.text === '企业服务')?.link).toBe('/services/')
+    expect(nav.some((item) => item.link === '/help/' || item.link === '/about/')).toBe(false)
   })
 
-  it('documents /help/ as the product capability and service entry', () => {
+  it('documents the tools and enterprise-services entries', () => {
     const inventory = readFileSync('CONTENT_INVENTORY.md', 'utf8')
 
-    expect(inventory).toContain('| 产品能力与服务 | `/help/` | 展示多 Agent、桌面执行、远程控制与技能生态 |')
-    expect(inventory).toContain('| 产品能力与服务 | `docs/help/index.md` | 展示 WorkBuddy 产品能力与服务入口 |')
-    expect(inventory).not.toContain('| 提需求 | `/help/`')
+    expect(inventory).toContain('| 工具集 | `/tools/` | 展示 WorkBuddy、SparkX 与 SunFun 产品矩阵 |')
+    expect(inventory).toContain('| 企业服务 | `/services/` | 展示服务概览、FDE 团队与联系入口 |')
+    expect(inventory).not.toContain('| 产品能力与服务 | `/help/`')
   })
 
   it('contains all 27 numbered chapters and both appendices', () => {

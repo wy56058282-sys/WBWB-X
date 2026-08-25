@@ -7,6 +7,9 @@ import CaseServiceCta from './CaseServiceCta.vue'
 import AboutPage from './AboutPage.vue'
 import Layout from './Layout.vue'
 import ServicePage from './ServicePage.vue'
+import ToolsPage from './ToolsPage.vue'
+import EnterpriseServicesPage from './EnterpriseServicesPage.vue'
+import LegacyPageRedirect from './LegacyPageRedirect.vue'
 import { legacyRouteTarget } from '../legacy-routes'
 import './custom.css'
 import './reading.css'
@@ -15,6 +18,8 @@ import './workshop.css'
 import './cases.css'
 import './service.css'
 import './about.css'
+import './tools.css'
+import './enterprise-services.css'
 import './floating-quick-access.css'
 
 export default {
@@ -25,6 +30,9 @@ export default {
     app.component('CaseServiceCta', CaseServiceCta)
     app.component('AboutPage', AboutPage)
     app.component('ServicePage', ServicePage)
+    app.component('ToolsPage', ToolsPage)
+    app.component('EnterpriseServicesPage', EnterpriseServicesPage)
+    app.component('LegacyPageRedirect', LegacyPageRedirect)
     router.onBeforeRouteChange = (to) => legacyRouteTarget(to) ?? undefined
   },
 }

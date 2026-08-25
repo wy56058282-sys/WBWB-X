@@ -13,13 +13,33 @@ describe('calm soft product design system', () => {
   it('provides one semantic radius, surface, shadow, and motion contract', () => {
     const root = baseRule(custom, ':root')
 
+    expect(root).toMatch(/--wbx-paper:\s*#ffffff/)
+    expect(root).toMatch(/--wbx-section-soft:\s*#f7f9f8/)
+    expect(root).toMatch(/--wbx-line:\s*#e3e7e4/)
     expect(root).toMatch(/--wbx-radius-sm:\s*6px/)
     expect(root).toMatch(/--wbx-radius-md:\s*10px/)
     expect(root).toMatch(/--wbx-radius-lg:\s*12px/)
     expect(root).toMatch(/--wbx-surface-soft:/)
-    expect(root).toMatch(/--wbx-shadow-soft:/)
+    expect(root).toMatch(
+      /--wbx-shadow-soft:\s*0 8px 24px rgb\(13 16 13 \/ 6%\)/,
+    )
+    expect(root).toMatch(
+      /--wbx-shadow-hover:\s*0 12px 32px rgb\(13 16 13 \/ 10%\)/,
+    )
+    expect(root).toMatch(/--wbx-content-wide:\s*1200px/)
+    expect(root).toMatch(/--wbx-control-height:\s*48px/)
     expect(root).toMatch(/--wbx-motion-fast:\s*160ms/)
     expect(root).toMatch(/--wbx-motion-base:\s*220ms/)
+  })
+
+  it('keeps light page and navigation surfaces white without changing dark mode', () => {
+    const root = baseRule(custom, ':root')
+    const dark = baseRule(custom, '.dark')
+
+    expect(root).toMatch(/--vp-c-bg:\s*var\(--wbx-paper\)/)
+    expect(root).toMatch(/--vp-nav-bg-color:\s*rgb\(255 255 255 \/ 96%\)/)
+    expect(dark).toMatch(/--wbx-paper:\s*#10120e/)
+    expect(dark).toMatch(/--vp-nav-bg-color:\s*rgb\(16 18 14 \/ 94%\)/)
   })
 
   it('uses the shared soft radius on representative product surfaces', () => {

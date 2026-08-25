@@ -16,11 +16,12 @@ describe('published live-site alignment contract', () => {
       '首页',
       '开始阅读',
       '案例集',
-      '服务',
-      '关于我们',
+      '工具集',
+      '企业服务',
       '交流群',
     ])
-    expect(nav.find((item) => item.text === '关于我们')?.link).toBe('/about/')
+    expect(nav.find((item) => item.text === '工具集')?.link).toBe('/tools/')
+    expect(nav.find((item) => item.text === '企业服务')?.link).toBe('/services/')
   })
 
   it('keeps the published homepage labels, analytics strip, and download', () => {

@@ -11,14 +11,15 @@ describe('home analytics integration', () => {
 
   it('uses the homepage visual language and mobile 2x2 layout', () => {
     const css = readHomeStyle()
-    expect(css).toMatch(/\.wbx-home-analytics\s*\{[^}]*border:\s*2px solid/s)
+    expect(css).toMatch(/\.wbx-home-analytics\s*\{[^}]*border:\s*1px solid var\(--wbx-line\)/s)
     expect(css).toMatch(/\.wbx-home-analytics\s*\{[^}]*width:\s*82%/s)
     expect(css).toMatch(/\.wbx-home-analytics\s*\{[^}]*margin:\s*32px auto 0/s)
-    expect(css).toMatch(/\.wbx-home-analytics\s*\{[^}]*border-radius:\s*8px/s)
+    expect(css).toMatch(/\.wbx-home-analytics\s*\{[^}]*border-radius:\s*var\(--wbx-radius-lg\)/s)
     expect(css).toMatch(/\.wbx-home-analytics\s*\{[^}]*grid-template-columns:\s*190px 1fr/s)
-    expect(css).toMatch(/\.wbx-home-analytics\s*\{[^}]*box-shadow:\s*0 8px 0 var\(--wbx-ink\)/s)
-    expect(css).toMatch(/\.wbx-home-analytics__status\s*\{[^}]*border-right:\s*1px solid var\(--wbx-ink\)/s)
-    expect(css).toMatch(/\.wbx-home-analytics dl > div\s*\{[^}]*border-right:\s*1px solid var\(--wbx-ink\)/s)
+    expect(css).toMatch(/\.wbx-home-analytics\s*\{[^}]*background:\s*var\(--wbx-surface\)/s)
+    expect(css).toMatch(/\.wbx-home-analytics\s*\{[^}]*box-shadow:\s*var\(--wbx-shadow-soft\)/s)
+    expect(css).toMatch(/\.wbx-home-analytics__status\s*\{[^}]*border-right:\s*1px solid var\(--wbx-line\)/s)
+    expect(css).toMatch(/\.wbx-home-analytics dl > div\s*\{[^}]*border-right:\s*1px solid var\(--wbx-line\)/s)
     expect(css).toMatch(/@media \(max-width:\s*640px\)[\s\S]*\.wbx-home-analytics dl\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/)
   })
 

@@ -247,8 +247,8 @@ const workflowSteps = [
           <span class="wbx-hero__monogram">{{ brand.shortMark }}</span>
           <a
             class="wbx-icon-card wbx-icon-card--buddy"
-            :href="withBase('/help/')"
-            aria-label="前往定制服务"
+            :href="withBase('/tools/')"
+            aria-label="了解 WorkBuddy"
           >
             <i class="hn hn-face-grin" aria-hidden="true" />
           </a>

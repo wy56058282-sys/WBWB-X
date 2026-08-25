@@ -34,10 +34,10 @@
   width: 82%;
   margin: 32px auto 0;
   overflow: hidden;
-  border: 2px solid var(--wbx-ink);
-  border-radius: 8px;
-  background: var(--vp-c-bg);
-  box-shadow: 0 8px 0 var(--wbx-ink);
+  border: 1px solid var(--wbx-line);
+  border-radius: var(--wbx-radius-lg);
+  background: var(--wbx-surface);
+  box-shadow: var(--wbx-shadow-soft);
 }
 
 .wbx-home-analytics__status {
@@ -46,7 +46,7 @@
   justify-content: center;
   gap: 16px;
   padding: 16px 28px;
-  border-right: 1px solid var(--wbx-ink);
+  border-right: 1px solid var(--wbx-line);
 }
 
 .wbx-home-analytics__live-dot {
@@ -95,7 +95,7 @@
   gap: 4px 16px;
   min-width: 0;
   padding: 16px 26px;
-  border-right: 1px solid var(--wbx-ink);
+  border-right: 1px solid var(--wbx-line);
 }
 
 .wbx-home-analytics dl > div:last-child {
@@ -167,4 +167,3 @@
   line-height: 1.6;
   letter-spacing: 0.08em;
 }
-

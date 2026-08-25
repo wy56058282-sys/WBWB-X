@@ -198,8 +198,12 @@
 /* Mobile responsive */
 @media (max-width: 760px) {
   .wbx-fab {
-    right: 16px;
-    bottom: 16px;
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(16px, env(safe-area-inset-bottom));
+  }
+
+  .wbx-home :is(.wbx-hero__actions, .wbx-workshop__actions, .wbx-system__actions) {
+    padding-right: var(--wbx-mobile-fab-safe-space);
   }
 
   .wbx-fab__toggle {

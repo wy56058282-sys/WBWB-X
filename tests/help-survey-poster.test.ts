@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 
+const toolsPage = readFileSync('docs/tools/index.md', 'utf8')
 const helpPage = readFileSync('docs/help/index.md', 'utf8')
 const casesPage = readFileSync('docs/.vitepress/theme/CasesPage.vue', 'utf8')
 const servicePage = readFileSync('docs/.vitepress/theme/ServicePage.vue', 'utf8')
@@ -38,12 +39,13 @@ describe('help survey poster layout', () => {
     expect(rule).not.toMatch(/max-height:/)
   })
 
-  it('uses the compact service page shell', () => {
-    expect(helpPage).toContain('pageClass: custom-service-page')
-    expect(helpPage).toContain('lastUpdated: false')
-    expect(helpPage).toContain('title: WorkBuddy 产品能力与服务')
-    expect(helpPage).toContain('多 Agent 协作、桌面执行、远程控制与技能生态')
-    expect(helpPage).toContain('<ServicePage />')
+  it('publishes the WorkBuddy product through the tools shell', () => {
+    expect(toolsPage).toContain('pageClass: custom-tools-page')
+    expect(toolsPage).toContain('lastUpdated: false')
+    expect(toolsPage).toContain('title: 工具集')
+    expect(toolsPage).toContain('<ToolsPage />')
+    expect(helpPage).toContain('search: false')
+    expect(helpPage).toContain('<LegacyPageRedirect target="/tools/" preserve-hash />')
     expect(casesStyles).toMatch(/\.wbx-cases-submit__qr\s*{[\s\S]*?width:\s*min\(100%,\s*280px\)/)
   })
 })

@@ -6,6 +6,7 @@ import { legacyRouteTarget } from '../docs/.vitepress/legacy-routes'
 import {
   generateLegacyRedirects,
   generateReadingGuideRedirects,
+  generateRetiredPageRedirects,
   legacyTargetForBuiltFile,
   writeLegacyMappings,
 } from '../scripts/generate-legacy-redirects.mjs'
@@ -43,6 +44,14 @@ describe('legacy small-book routes', () => {
       legacyRouteTarget('/WBWB-X/guide/reading-guide/', '//WBWB-X//'),
     ).toBe('/WBWB-X/wb-x/reading-guide/')
     expect(legacyRouteTarget('/reading-guide', '/WBWB-X/')).toBeNull()
+  })
+
+  it('redirects retired product and about routes to their new public homes', () => {
+    expect(legacyRouteTarget('/help/')).toBe('/tools/')
+    expect(legacyRouteTarget('/help/?from=old#remote')).toBe('/tools/?from=old#remote')
+    expect(legacyRouteTarget('/about/')).toBe('/services/#team')
+    expect(legacyRouteTarget('/about/?from=old')).toBe('/services/?from=old#team')
+    expect(legacyRouteTarget('/WBWB-X/help/#skills', '/WBWB-X/')).toBe('/WBWB-X/tools/#skills')
   })
 
   it('maps only built wb-x HTML files to clean public targets', () => {
@@ -126,6 +135,23 @@ describe('legacy small-book routes', () => {
       expect(html).toContain('location.search + location.hash')
       expect(html).toContain('rel="canonical"')
     }
+  })
+
+  it('writes base-aware static redirects for retired help and about pages', () => {
+    const dist = mkdtempSync(join(tmpdir(), 'retired-pages-'))
+    const written = generateRetiredPageRedirects(dist, '/WBWB-X/')
+    const help = readFileSync(join(dist, 'help/index.html'), 'utf8')
+    const about = readFileSync(join(dist, 'about/index.html'), 'utf8')
+
+    expect(written).toEqual([
+      join(dist, 'help/index.html'),
+      join(dist, 'about/index.html'),
+    ])
+    expect(help).toContain('location.replace("/WBWB-X/tools/" + location.search + location.hash)')
+    expect(help).toContain('content="noindex"')
+    expect(help).toContain('https://wbx.sparkx.zone/WBWB-X/tools/')
+    expect(about).toContain('location.replace("/WBWB-X/services/" + location.search + "#team")')
+    expect(about).toContain('https://wbx.sparkx.zone/WBWB-X/services/')
   })
 
   it('fails when the wb-x build root is missing or empty', () => {

@@ -84,7 +84,7 @@ export function legacyTargetForBuiltFile(relativePath, base = '/') {
   return target.startsWith(`/${CURRENT_ROOT}/`) ? withBase(base, target) : null
 }
 
-function redirectDocument(target) {
+function redirectDocument(target, suffixScript = 'location.search + location.hash') {
   const escapedTarget = escapeHtml(target)
   const scriptTarget = JSON.stringify(target)
     .replace(/</g, '\\u003C')
@@ -99,7 +99,7 @@ function redirectDocument(target) {
     <meta http-equiv="refresh" content="0; url=${escapedTarget}">
     <link rel="canonical" href="${CANONICAL_ORIGIN}${escapedTarget}">
     <title>正在跳转 | WorkBuddy WB-X</title>
-    <script>location.replace(${scriptTarget} + location.search + location.hash)</script>
+    <script>location.replace(${scriptTarget} + ${suffixScript})</script>
   </head>
   <body><a href="${escapedTarget}">前往新版 WorkBuddy 小白书</a></body>
 </html>
@@ -186,9 +186,33 @@ export function generateReadingGuideRedirects(distRoot, base = '/') {
   return writeLegacyMappings(mappings, resolvedDistRoot, mappings.length)
 }
 
+export function generateRetiredPageRedirects(distRoot, base = '/') {
+  const resolvedDistRoot = resolve(distRoot)
+  const redirects = [
+    {
+      path: 'help/index.html',
+      target: withBase(base, '/tools/'),
+      suffixScript: 'location.search + location.hash',
+    },
+    {
+      path: 'about/index.html',
+      target: withBase(base, '/services/'),
+      suffixScript: 'location.search + "#team"',
+    },
+  ]
+
+  return redirects.map(({ path, target, suffixScript }) => {
+    const redirectPath = resolve(resolvedDistRoot, path)
+    mkdirSync(dirname(redirectPath), { recursive: true })
+    writeFileSync(redirectPath, redirectDocument(target, suffixScript))
+    return redirectPath
+  })
+}
+
 if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {
   const distRoot = resolve(process.argv[2] ?? 'docs/.vitepress/dist')
   const base = process.env.SITE_BASE ?? '/'
   generateLegacyRedirects(distRoot, base)
   generateReadingGuideRedirects(distRoot, base)
+  generateRetiredPageRedirects(distRoot, base)
 }

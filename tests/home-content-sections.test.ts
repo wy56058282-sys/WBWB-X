@@ -1,11 +1,29 @@
+import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { baseRule } from './helpers/css-rules'
 import { useHomePageHarness } from './helpers/home-page-harness'
 import { readHomeStyle } from './helpers/read-theme-style'
 
 const harness = useHomePageHarness()
+const workshopCss = readFileSync('docs/.vitepress/theme/workshop.css', 'utf8')
 
 describe('home hero icon navigation', () => {
+  it('keeps the homepage wide and avoids wrapping every section in a card', () => {
+    const css = readHomeStyle()
+    const home = baseRule(css, '.wbx-home')
+    const readingCard = baseRule(css, '.wbx-reading-card')
+    const taskGrid = baseRule(css, '.wbx-task-grid')
+    const workshop = baseRule(workshopCss, '.wbx-workshop')
+
+    expect(home).toMatch(/max-width:\s*1480px;/)
+    expect(readingCard).not.toMatch(/box-shadow:/)
+    expect(taskGrid).not.toMatch(/box-shadow:/)
+    expect(workshop).toMatch(/padding:\s*var\(--wbx-section-space\) 0 64px;/)
+    expect(workshop).not.toMatch(/border:/)
+    expect(workshop).not.toMatch(/border-radius:/)
+    expect(workshop).not.toMatch(/box-shadow:/)
+  })
+
   it('uses the approved homepage value labels', () => {
     harness.mountHomePage()
 
@@ -108,7 +126,7 @@ describe('home hero icon navigation', () => {
     )
   })
 
-  it('uses the approved light-gray system panel palette', () => {
+  it('uses the shared secondary surface and card palette', () => {
     const css = readHomeStyle()
     const system = baseRule(css, '.wbx-system')
     const introLabel = baseRule(css, '.wbx-system__intro .wbx-pixel-label')
@@ -121,13 +139,13 @@ describe('home hero icon navigation', () => {
 
     expect(system).toMatch(/color:\s*#0d100d;/)
     expect(system).toMatch(/--wbx-ink:\s*#0d100d;/)
-    expect(system).toMatch(/background:\s*#f3f4f2;/)
+    expect(system).toMatch(/background:\s*var\(--wbx-section-soft\);/)
     expect(introLabel).toMatch(
       /color:\s*color-mix\(in srgb, var\(--wbx-accent\) 50%, var\(--wbx-ink\)\);/,
     )
     expect(introCopy).toMatch(/color:\s*#0d100d;/)
-    expect(steps).toMatch(/background:\s*#d9e0dc;/)
-    expect(step).toMatch(/background:\s*#ffffff;/)
+    expect(steps).toMatch(/background:\s*var\(--wbx-line\);/)
+    expect(step).toMatch(/background:\s*var\(--wbx-surface\);/)
     expect(number).toMatch(
       /color:\s*color-mix\(in srgb, var\(--wbx-accent\) 50%, var\(--wbx-ink\)\);/,
     )

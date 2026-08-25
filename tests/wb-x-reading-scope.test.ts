@@ -30,7 +30,8 @@ describe('WB-X reading visual scope', () => {
     for (const path of [
       '/',
       '/cases/',
-      '/help/',
+      '/tools/',
+      '/services/',
       '/reading-guide/',
       '/community/',
     ]) {

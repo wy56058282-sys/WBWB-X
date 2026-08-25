@@ -5,6 +5,7 @@ vi.mock('vitepress', () => ({ withBase: (path: string) => `/WBWB-X${path}` }))
 vi.mock('../docs/.vitepress/case-catalog.data', () => ({ data: [] }))
 
 import ServicePage from '../docs/.vitepress/theme/ServicePage.vue'
+import { readFileSync } from 'node:fs'
 
 const apps: App[] = []
 
@@ -28,6 +29,15 @@ function mountServicePage() {
 }
 
 describe('WorkBuddy product service page', () => {
+  it('is published through the tools route while help becomes a hidden redirect', () => {
+    const tools = readFileSync('docs/tools/index.md', 'utf8')
+    const help = readFileSync('docs/help/index.md', 'utf8')
+
+    expect(tools).toContain('title: 工具集')
+    expect(tools).toContain('<ToolsPage />')
+    expect(help).toContain('search: false')
+    expect(help).toContain('<LegacyPageRedirect target="/tools/" preserve-hash />')
+  })
   it('renders the complete reference content flow inside the site shell', () => {
     mountServicePage()
 

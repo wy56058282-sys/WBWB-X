@@ -358,11 +358,14 @@ describe('floating quick access button', () => {
 
     const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
 
-    expect(mobile).toMatch(/\.wbx-fab\s*\{[^}]*right:\s*16px;/s)
-    expect(mobile).toMatch(/\.wbx-fab\s*\{[^}]*bottom:\s*16px;/s)
+    expect(mobile).toMatch(/\.wbx-fab\s*\{[^}]*right:\s*max\(16px, env\(safe-area-inset-right\)\);/s)
+    expect(mobile).toMatch(/\.wbx-fab\s*\{[^}]*bottom:\s*max\(16px, env\(safe-area-inset-bottom\)\);/s)
     expect(mobile).toMatch(/\.wbx-fab__toggle\s*\{[^}]*width:\s*46px;/s)
     expect(mobile).toMatch(/\.wbx-fab__menu\s*\{[^}]*bottom:\s*58px;/s)
     expect(mobile).toMatch(/\.wbx-fab__item\s*\{[^}]*width:\s*40px;/s)
+    expect(mobile).toMatch(
+      /\.wbx-home :is\(\.wbx-hero__actions, \.wbx-workshop__actions, \.wbx-system__actions\)\s*\{[^}]*padding-right:\s*var\(--wbx-mobile-fab-safe-space\);/s,
+    )
   })
 
   it('has tooltip styles for hover labels', () => {

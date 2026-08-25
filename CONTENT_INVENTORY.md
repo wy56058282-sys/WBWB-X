@@ -45,7 +45,7 @@ docs/.vitepress/brand.ts
 | 额外阅读 | 1 篇 | 《一章看懂 AI 工作系统》 |
 | 附录 | 3 篇 | 常用指令模板、场景速查表、个人版与企业版对比 |
 | 社区案例 | 7 个 | 涵盖资讯、简历、公众号、知识管理、创意开发和数据分析 |
-| 支持与共创页面 | 4 个 | 阅读指南、产品能力与服务、参与共创、Case 投稿指南 |
+| 支持与共创页面 | 5 个 | 阅读指南、工具集、企业服务、参与共创、Case 投稿指南 |
 | 图片清单条目 | 270 | 覆盖 34 个页面 |
 | 原始校准素材 | 272 个 | 位于 `source-calibration` |
 | 替换素材文件 | 1 个 | 位于 `replacements` |
@@ -74,8 +74,8 @@ docs/.vitepress/navigation.ts
 | 首页 | `/` | 品牌介绍、四段阅读路径、任务分类和共创入口 |
 | 开始阅读 | `/wb-x/` | 小白书总览及 27 章目录 |
 | 案例集 | `/cases/` | 社区真实案例及投稿入口 |
-| 产品能力与服务 | `/help/` | 展示多 Agent、桌面执行、远程控制与技能生态 |
-| 资料 | `/resources/` | 资料整理页 |
+| 工具集 | `/tools/` | 展示 WorkBuddy、SparkX 与 SunFun 产品矩阵 |
+| 企业服务 | `/services/` | 展示服务概览、FDE 团队与联系入口 |
 | 交流群 | 自定义弹窗 | 展示可定期替换的交流群二维码 |
 
 ### 3.2 小白书侧边栏
@@ -352,7 +352,10 @@ Case 正文应覆盖：
 | 页面 | 文件 | 作用 |
 | --- | --- | --- |
 | 阅读与学习指南 | `docs/wb-x/reading-guide/index.md` | 小白书侧边栏中紧随总览，为新手、任务实践者和团队负责人提供阅读路线 |
-| 产品能力与服务 | `docs/help/index.md` | 展示 WorkBuddy 产品能力与服务入口 |
+| 工具集 | `docs/tools/index.md` | 展示 WorkBuddy 产品能力及 SparkX、SunFun 产品预告 |
+| 企业服务 | `docs/services/index.md` | 展示服务概览、FDE 团队与联系入口 |
+| 旧产品页兼容入口 | `docs/help/index.md` | 非索引并跳转至工具集，保留旧锚点 |
+| 旧关于页兼容入口 | `docs/about/index.md` | 非索引并跳转至企业服务团队区 |
 | 参与共创 | `docs/community/contributing.md` | 说明可贡献的内容和联系方式 |
 | Case 投稿指南 | `docs/community/case-contributing.md` | 定义社区案例结构、字段和审核标准 |
 

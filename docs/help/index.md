@@ -1,11 +1,13 @@
 ---
-title: WorkBuddy 产品能力与服务
+title: 页面已迁移
 titleTemplate: false
-description: 了解 WorkBuddy 如何通过多 Agent 协作、桌面执行、远程控制与技能生态直接交付工作成果。
+description: WorkBuddy 产品介绍已迁移至工具集。
+search: false
+head:
+  - [meta, { name: robots, content: noindex }]
 aside: false
 outline: false
 lastUpdated: false
-pageClass: custom-service-page
 ---
 
-<ServicePage />
+<LegacyPageRedirect target="/tools/" preserve-hash />

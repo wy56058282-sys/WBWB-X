@@ -13,7 +13,7 @@ vi.mock('../docs/.vitepress/case-catalog.data', () => ({
 import CasesPage from '../docs/.vitepress/theme/CasesPage.vue'
 import { serviceConfig } from '../docs/.vitepress/service-config'
 
-const help = readFileSync('docs/help/index.md', 'utf8')
+const tools = readFileSync('docs/tools/index.md', 'utf8')
 const servicePage = readFileSync('docs/.vitepress/theme/ServicePage.vue', 'utf8')
 const cases = readFileSync('docs/cases/index.md', 'utf8')
 const guide = readFileSync('docs/community/case-contributing.md', 'utf8')
@@ -48,7 +48,7 @@ describe('low-friction case submission flow', () => {
     expect(fallback?.getAttribute('href')).not.toMatch(/^\/help\//)
     expect(poster?.getAttribute('src')).toBe('/article-assets/source-calibration/help/001.png')
     expect(poster?.getAttribute('alt')).toContain('需求与案例投稿问卷二维码')
-    expect(help).toContain('<ServicePage />')
+    expect(tools).toContain('<ToolsPage />')
     expect(servicePage).not.toContain('需求与案例投稿问卷')
     expect(servicePage).not.toContain('scenario-survey')
   })

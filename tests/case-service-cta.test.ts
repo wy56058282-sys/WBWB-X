@@ -28,7 +28,7 @@ describe('case service CTA', () => {
     const link = cta?.querySelector('a')
 
     expect(cta?.textContent).toContain('有类似需求？')
-    expect(link?.getAttribute('href')).toBe('/help/')
+    expect(link?.getAttribute('href')).toBe('/services/#diagnosis')
     expect(link?.textContent).toContain('预约付费诊断')
     expect(cta?.querySelectorAll('a')).toHaveLength(1)
     expect(cta?.textContent).not.toMatch(/¥|二维码|表单/)

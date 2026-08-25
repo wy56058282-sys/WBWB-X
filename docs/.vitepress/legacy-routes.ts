@@ -1,6 +1,8 @@
 import type { Plugin } from 'vite'
 
 const readingGuideRoute = /^\/(?:guide\/)?reading-guide\/?([?#].*)?$/
+const retiredHelpRoute = /^\/help\/?([?#].*)?$/
+const retiredAboutRoute = /^\/about\/?(?:\?([^#]*))?(?:#.*)?$/
 
 function normalizeBase(base: string) {
   const normalized = base.replace(/^\/+|\/+$/g, '')
@@ -29,6 +31,17 @@ export function legacyRouteTarget(path: string, base = '/') {
       normalizedBase,
       `/wb-x/reading-guide/${readingGuideMatch[1] ?? ''}`,
     )
+  }
+
+  const retiredHelpMatch = basePath.match(retiredHelpRoute)
+  if (retiredHelpMatch) {
+    return withBase(normalizedBase, `/tools/${retiredHelpMatch[1] ?? ''}`)
+  }
+
+  const retiredAboutMatch = basePath.match(retiredAboutRoute)
+  if (retiredAboutMatch) {
+    const search = retiredAboutMatch[1] ? `?${retiredAboutMatch[1]}` : ''
+    return withBase(normalizedBase, `/services/${search}#team`)
   }
 
   if (!basePath.startsWith('/bluebook/')) return null
