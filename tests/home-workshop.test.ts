@@ -127,6 +127,9 @@ describe('homepage workshop card', () => {
     const posterSource = () => workshop?.querySelector<HTMLImageElement>('.wbx-workshop__poster')?.getAttribute('src')
 
     expect(editions.map((edition) => edition.getAttribute('aria-selected'))).toEqual(['false', 'true', 'false'])
+    expect(workshop?.textContent).not.toContain('当前')
+    expect(workshop?.querySelectorAll('.wbx-workshop__edition-status')).toHaveLength(1)
+    expect(editions[1]?.querySelector('.wbx-workshop__edition-status')).not.toBeNull()
     expect(posterSource()).toContain('workshop-cover.png')
     workshop?.querySelector<HTMLButtonElement>('.wbx-workshop__poster-control--next')?.click()
     await nextTick()
@@ -135,6 +138,8 @@ describe('homepage workshop card', () => {
     editions[0]?.click()
     await nextTick()
     expect(editions.map((edition) => edition.getAttribute('aria-selected'))).toEqual(['true', 'false', 'false'])
+    expect(editions[0]?.querySelector('.wbx-workshop__edition-status')).not.toBeNull()
+    expect(editions[1]?.querySelector('.wbx-workshop__edition-status')).toBeNull()
     expect(posterSource()).toContain('workshop-815.png')
     expect(workshop?.querySelector('.wbx-home-workshop__state')).toBeNull()
     expect(workshop?.querySelector('.wbx-home-workshop__recap')?.textContent).toBe('查看活动回顾')

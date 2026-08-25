@@ -11,13 +11,8 @@
     padding-left: 52px;
   }
 
-  .wbx-icon-card {
-    width: 108px;
-    height: 108px;
-  }
-
-  .wbx-icon-card .hn {
-    font-size: 68px;
+  .wbx-hero__whitepapers {
+    width: min(100%, 340px);
   }
 
 }
@@ -36,9 +31,12 @@
   }
 
   .wbx-hero__art {
-    grid-template-columns: repeat(3, 108px);
     min-height: 430px;
     padding: 64px 120px 130px 24px;
+  }
+
+  .wbx-hero__whitepapers {
+    width: min(100%, 350px);
   }
 
   .wbx-value-strip {
@@ -93,7 +91,7 @@
   .wbx-hero__copy h1 {
     margin-top: 18px;
     font-size: 40px;
-    line-height: 1.18;
+    line-height: 1.04;
   }
 
   .wbx-hero__summary {
@@ -111,25 +109,24 @@
   }
 
   .wbx-hero__art {
-    grid-template-columns: repeat(2, 90px);
-    gap: 18px;
     min-height: 380px;
-    padding: 60px 96px 116px 20px;
+    padding: 60px 108px 100px 24px;
+  }
+
+  .wbx-hero__whitepapers {
+    width: min(100%, 258px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .wbx-whitepaper-card--opc {
+    margin-top: 24px;
   }
 
   .wbx-hero__monogram {
     top: 38px;
     right: 25px;
     font-size: 20px;
-  }
-
-  .wbx-icon-card {
-    width: 90px;
-    height: 90px;
-  }
-
-  .wbx-icon-card .hn {
-    font-size: 57px;
   }
 
   .wbx-hero__sparkx-bubble {
@@ -235,7 +232,7 @@
 
   .wbx-system {
     gap: 36px;
-    margin: 52px 4px 0;
+    margin: 52px 0 0;
     padding: 36px 24px;
   }
 

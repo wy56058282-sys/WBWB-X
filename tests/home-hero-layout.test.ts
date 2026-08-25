@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs'
-import { describe, expect, it } from 'vitest'
+import { nextTick } from 'vue'
+import { describe, expect, it, vi } from 'vitest'
 import { baseRule } from './helpers/css-rules'
 import { useHomePageHarness } from './helpers/home-page-harness'
 import { readHomeStyle } from './helpers/read-theme-style'
@@ -29,7 +30,7 @@ describe('home hero icon navigation', () => {
     expect(document.querySelector('.wbx-sticker-page__trigger')).toBeNull()
   })
 
-  it('keeps a balanced two-column hero with a regular icon grid', () => {
+  it('keeps a balanced two-column hero with a staggered whitepaper shelf', () => {
     const css = readHomeStyle()
     const stage = baseRule(css, '.wbx-hero__stage')
     const compactDesktop = css.slice(
@@ -41,8 +42,8 @@ describe('home hero icon navigation', () => {
     expect(compactDesktop).toMatch(
       /\.wbx-hero__stage\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/s,
     )
-    expect(baseRule(css, '.wbx-hero__art')).toMatch(/grid-template-columns:\s*repeat\(2, 126px\)/)
-    expect(compactDesktop).not.toMatch(/\.wbx-icon-card--buddy\s*\{/)
+    expect(baseRule(css, '.wbx-hero__whitepapers')).toMatch(/grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/)
+    expect(compactDesktop).not.toMatch(/\.wbx-whitepaper-card--wbx\s*\{[^}]*position:\s*absolute/s)
   })
 
   it('does not import or style the retired partner reveal', () => {
@@ -58,34 +59,41 @@ describe('home hero icon navigation', () => {
     expect(homeCss).not.toContain('.wbx-partner-sticker')
   })
 
-  it('uses theme surface icon cards with green pixel icons and soft shadows', () => {
-    const css = readHomeStyle()
+  it('uses two labelled whitepaper covers instead of the retired icon grid', () => {
+    harness.mountHomePage()
 
-    expect(css).not.toMatch(
-      /\.wbx-hero__art\s*\{[^}]*background:\s*#0d100d;/s,
+    const links = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>('.wbx-whitepaper-card'),
     )
-    const themes = [
-      { surface: '#ffffff', expected: 'rgb(255, 255, 255)' },
-      { surface: '#181b15', expected: 'rgb(24, 27, 21)' },
-    ]
-    themes.forEach(({ surface, expected }) => {
-      const style = document.createElement('style')
-      style.textContent = css
-        .replaceAll('var(--wbx-surface)', surface)
-        .replaceAll('var(--wbx-line)', '#e3e7e4')
-        .replaceAll('var(--wbx-accent)', '#32e6b9')
-        .replaceAll('var(--wbx-shadow-soft)', '0 8px 24px rgb(13 16 13 / 6%)')
-      document.head.append(style)
-      document.body.innerHTML = '<a class="wbx-icon-card"><i class="hn"></i></a>'
 
-      const card = getComputedStyle(document.querySelector('.wbx-icon-card')!)
-      expect(card.backgroundColor).toBe(expected)
-      expect(card.color).toBe('rgb(50, 230, 185)')
-      expect(card.boxShadow).toBe('0 8px 24px rgb(13 16 13 / 6%)')
+    expect(links).toHaveLength(2)
+    expect(
+      links.map((link) => [
+        link.getAttribute('aria-label'),
+        link.getAttribute('href'),
+        link.querySelector('img')?.getAttribute('src'),
+      ]),
+    ).toEqual([
+      ['阅读 WorkBuddy X 白皮书', '/wb-x/', '/whitepapers/workbuddy-x-cover.webp'],
+      ['阅读 WorkBuddy OPC 白皮书', '/opc/', '/whitepapers/workbuddy-opc-cover.webp'],
+    ])
+    expect(document.querySelector('.wbx-icon-card')).toBeNull()
+  })
 
-      style.remove()
-      document.body.replaceChildren()
-    })
+  it('floats staggered covers without moving them in reduced-motion mode', () => {
+    const css = readHomeStyle()
+    const shelf = baseRule(css, '.wbx-hero__whitepapers')
+    const card = baseRule(css, '.wbx-whitepaper-card')
+    const wbxCard = baseRule(css, '.wbx-whitepaper-card--wbx')
+    const opcCard = baseRule(css, '.wbx-whitepaper-card--opc')
+
+    expect(shelf).toMatch(/align-items:\s*start/)
+    expect(card).toMatch(/aspect-ratio:\s*210\s*\/\s*297/)
+    expect(wbxCard).toMatch(/animation:\s*wbx-whitepaper-float-a 5\.2s/)
+    expect(opcCard).toMatch(/margin-top:\s*52px/)
+    expect(opcCard).toMatch(/animation:\s*wbx-whitepaper-float-b 5\.8s/)
+    expect(css).toMatch(/\.wbx-whitepaper-card:is\(:hover, :focus-visible\)\s*\{[^}]*animation-play-state:\s*paused;/s)
+    expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\)\s*\{[\s\S]*?\.wbx-whitepaper-card\s*\{[^}]*animation:\s*none;/s)
     expect(css).toMatch(
       /\.wbx-hero__copy\s*>\s*\.wbx-pixel-label\s*\{[^}]*color:\s*var\(--wbx-ink\);/s,
     )
@@ -94,23 +102,96 @@ describe('home hero icon navigation', () => {
     )
   })
 
+  it('types X and OPC after a fixed WorkBuddy label and keeps whitepaper on line two', async () => {
+    vi.useFakeTimers()
+    harness.mountHomePage()
+
+    const title = document.querySelector('#wbx-hero-title')
+    const rotating = title?.querySelector('.wbx-hero-title__rotating')
+
+    expect(title?.getAttribute('aria-label')).toBe('WorkBuddy X 与 OPC 白皮书')
+    expect(title?.querySelector('.wbx-hero-title__brand')?.textContent).toBe('WorkBuddy')
+    expect(title?.querySelector('.wbx-hero-title__line--subtitle')?.textContent).toBe('白皮书')
+    expect(rotating?.textContent).toBe('')
+
+    await vi.advanceTimersByTimeAsync(120)
+    expect(rotating?.textContent).toBe('X')
+
+    await vi.advanceTimersByTimeAsync(1840)
+    expect(rotating?.textContent).toBe('O')
+    await vi.advanceTimersByTimeAsync(240)
+    expect(rotating?.textContent).toBe('OPC')
+
+    await vi.advanceTimersByTimeAsync(2000)
+    expect(rotating?.textContent).toBe('X')
+  })
+
+  it('uses a darker brand accent for the rotating X and OPC title', () => {
+    const css = readHomeStyle()
+    const rotating = baseRule(css, '.wbx-hero-title__rotating')
+
+    expect(rotating).toMatch(/margin-left:\s*0\.22em;/)
+    expect(rotating).toMatch(
+      /color:\s*color-mix\(in srgb, var\(--wbx-accent\) 60%, var\(--wbx-ink\)\);/,
+    )
+  })
+
+  it('shows a static complete title and starts no typing timer for reduced motion', async () => {
+    vi.useFakeTimers()
+    const setTimer = vi.spyOn(globalThis, 'setTimeout')
+    harness.stubMatchMedia(true)
+    harness.mountHomePage()
+    await nextTick()
+
+    expect(document.querySelector('.wbx-hero-title__rotating')?.textContent).toBe('X / OPC')
+    expect(setTimer).not.toHaveBeenCalledWith(expect.any(Function), 120)
+    setTimer.mockRestore()
+  })
+
+  it('clears the title typing timer when the homepage unmounts', () => {
+    vi.useFakeTimers()
+    const clearTimer = vi.spyOn(globalThis, 'clearTimeout')
+    const app = harness.mountHomePage()
+    const rotating = document.querySelector('.wbx-hero-title__rotating')
+
+    expect(rotating).not.toBeNull()
+    app.unmount()
+    expect(clearTimer).toHaveBeenCalled()
+    expect(vi.getTimerCount()).toBe(0)
+    clearTimer.mockRestore()
+  })
+
   it('reverses the hero copy and secondary action in dark mode', () => {
     const style = document.createElement('style')
     style.textContent = readHomeStyle()
       .replaceAll('var(--wbx-ink)', '#f3f5ed')
       .replaceAll('var(--wbx-text-strong)', '#f3f5ed')
       .replaceAll('var(--wbx-text-body)', '#d7dcd3')
+      .replaceAll('var(--wbx-text-muted)', '#aeb4a7')
     document.head.append(style)
     document.documentElement.classList.add('dark')
     harness.mountHomePage()
 
     expect(getComputedStyle(document.querySelector('#wbx-hero-title')!).color).toBe('rgb(243, 245, 237)')
     expect(getComputedStyle(document.querySelector('.wbx-hero__summary')!).color).toBe('rgb(215, 220, 211)')
-    expect(getComputedStyle(document.querySelector('.wbx-update-ticker')!).color).toBe('rgb(243, 245, 237)')
+    expect(getComputedStyle(document.querySelector('.wbx-update-ticker')!).color).toBe('rgb(174, 180, 167)')
     expect(getComputedStyle(document.querySelector('.wbx-button--outline')!).color).toBe('rgb(243, 245, 237)')
 
     style.remove()
     document.documentElement.classList.remove('dark')
+  })
+
+  it('keeps update copy secondary until the link is hovered or focused', () => {
+    const css = readHomeStyle()
+    const ticker = baseRule(css, '.wbx-update-ticker')
+    const tickerIcon = baseRule(css, '.wbx-update-ticker__icon')
+    const interaction = css.match(
+      /\.wbx-update-ticker__link:hover,\s*\.wbx-update-ticker__link:focus-visible\s*\{([^}]*)\}/s,
+    )?.[1]
+
+    expect(ticker).toMatch(/color:\s*var\(--wbx-text-muted\);/)
+    expect(tickerIcon).toMatch(/color:\s*inherit;/)
+    expect(interaction).toMatch(/color:\s*var\(--wbx-text-body\);/)
   })
 
   it('uses only the outer hero border', () => {
@@ -135,7 +216,8 @@ describe('home hero icon navigation', () => {
 
     expect(cta?.getAttribute('href')).toBe('/wb-x/')
     expect(cta?.textContent).toContain('开始阅读')
-    expect(cta?.querySelectorAll('[aria-hidden="true"]')).toHaveLength(2)
+    expect(cta?.querySelectorAll('[aria-hidden="true"]')).toHaveLength(1)
+    expect(cta?.querySelector('.hn-arrow-right')).not.toBeNull()
     expect(document.querySelector('.wbx-button--outline .wbx-hero-cta__arrow')).toBeNull()
 
     expect(css).toMatch(/\.wbx-hero-cta::before\s*\{[^}]*display:\s*none;/s)
@@ -146,36 +228,14 @@ describe('home hero icon navigation', () => {
       /\.wbx-hero-cta__arrow\s*\{[^}]*border-radius:\s*0 var\(--wbx-radius-md\) var\(--wbx-radius-md\) 0;/s,
     )
     expect(css).toMatch(
-      /\.wbx-hero-cta:is\(:hover, :focus-visible\) \.wbx-hero-cta__arrow--out\s*\{[^}]*transform:\s*translateX\(2px\) rotate\(-45deg\);/s,
+      /\.wbx-hero-cta:is\(:hover, :focus-visible\) \.wbx-hero-cta__arrow > \.hn\s*\{[^}]*transform:\s*translateX\(2px\);/s,
     )
-    expect(css).toMatch(/\.wbx-hero-cta__arrow--in\s*\{[^}]*display:\s*none;/s)
+    expect(css).not.toMatch(/\.wbx-hero-cta__arrow--(?:in|out)/)
+    expect(css).not.toMatch(/\.wbx-hero-cta[^}]*rotate\(-45deg\)/s)
     expect(css).toMatch(/\.wbx-hero-cta:active\s*\{[^}]*transform:\s*translateY\(0\);/s)
     expect(css).toMatch(
       /@media\s*\(prefers-reduced-motion:\s*reduce\)\s*\{[\s\S]*?\.wbx-hero-cta::before[\s\S]*?\.wbx-hero-cta__arrow/s,
     )
-  })
-
-  it('offers five labelled links to distinct site sections', () => {
-    harness.mountHomePage()
-
-    const links = Array.from(
-      document.querySelectorAll<HTMLAnchorElement>('.wbx-hero__art .wbx-icon-card'),
-    )
-
-    expect(links).toHaveLength(5)
-
-    expect(
-      links.map((link) => [
-        link.getAttribute('aria-label'),
-        decodeURI(link.getAttribute('href') ?? ''),
-      ]),
-    ).toEqual([
-      ['了解 WorkBuddy', '/tools/'],
-      ['查看第一篇目录', '/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/'],
-      ['查看工作系统进阶篇', '/wb-x/第三篇 进阶篇：把案例变成自己的工作系统/'],
-      ['查看 Part 2 案例篇', '/wb-x/第二篇 案例篇：从一项任务到一支 AI 团队/'],
-      ['查看 Part 4 岗位与行业篇', '/wb-x/第四篇 岗位与行业落地/'],
-    ])
   })
 
   it('replaces the WorkBuddy version links with one SparkX bubble', () => {
@@ -263,24 +323,15 @@ describe('home hero icon navigation', () => {
     )
   })
 
-  it('uses the approved mobile hero card grid', () => {
+  it('uses a compact staggered whitepaper shelf on mobile', () => {
     const css = readHomeStyle()
     const mobile = css.slice(
       css.indexOf('@media (max-width: 760px)'),
       css.indexOf('@media (max-width: 420px)'),
     )
 
-    expect(mobile).toMatch(/\.wbx-hero__art\s*\{[^}]*grid-template-columns:\s*repeat\(2, 90px\);[^}]*gap:\s*18px;/s)
-    expect(mobile).not.toMatch(/--wbx-icon-rotation/)
-  })
-
-  it('keeps every hero icon in normal grid flow at every breakpoint', () => {
-    const css = readHomeStyle()
-    const iconCard = baseRule(css, '.wbx-icon-card')
-
-    expect(iconCard).toMatch(/position:\s*relative/)
-    expect(iconCard).not.toMatch(/animation:/)
-    expect(css).not.toMatch(/\.wbx-icon-card--(?:buddy|book|flow|work|people)\s*\{/)
+    expect(mobile).toMatch(/\.wbx-hero__whitepapers\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);[^}]*gap:\s*16px;/s)
+    expect(mobile).toMatch(/\.wbx-whitepaper-card--opc\s*\{[^}]*margin-top:\s*24px;/s)
   })
 
 })

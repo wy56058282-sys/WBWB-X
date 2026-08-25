@@ -126,8 +126,10 @@
   width: 86px;
   height: 86px;
   place-items: center;
-  color: #0d100d;
-  background: var(--wbx-accent);
+  border: 1px solid var(--wbx-line);
+  border-radius: 14px;
+  color: color-mix(in srgb, var(--wbx-accent) 60%, var(--wbx-ink));
+  background: var(--wbx-hover-surface);
 }
 
 .wbx-reading-card__icon .hn {
@@ -137,6 +139,10 @@
 .wbx-reading-card__content,
 .wbx-reading-card__content > * {
   display: block;
+}
+
+.wbx-reading-card__content {
+  min-width: 0;
 }
 
 .wbx-reading-card__content small {
@@ -154,9 +160,12 @@
 }
 
 .wbx-reading-card__content > span {
+  overflow: hidden;
   color: var(--wbx-text-body);
   font-size: 17px;
   line-height: 1.65;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .wbx-reading-card__content em {
@@ -176,7 +185,12 @@
 }
 
 .wbx-reading-card__arrow {
+  color: var(--wbx-text-subtle);
   font-size: 30px;
+}
+
+.wbx-reading-card:is(:hover, :focus-visible) .wbx-reading-card__arrow {
+  color: var(--wbx-text-muted);
 }
 
 .wbx-section__heading--compact {
@@ -203,18 +217,22 @@
   color: var(--wbx-ink) !important;
   background: var(--wbx-surface);
   text-decoration: none !important;
-  transition: background var(--wbx-motion-fast) ease;
+  transition: background var(--wbx-motion-fast) ease, border-color var(--wbx-motion-fast) ease;
 }
 
 .wbx-task-grid a:focus-visible {
+  border-color: color-mix(in srgb, var(--wbx-text-strong) 28%, var(--wbx-line));
   outline: none;
   background: var(--wbx-hover-surface);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .wbx-task-grid a:hover {
+    border-color: color-mix(in srgb, var(--wbx-text-strong) 28%, var(--wbx-line));
     outline: none;
     background: var(--wbx-hover-surface);
+    box-shadow: none;
+    transform: none;
   }
 }
 
@@ -223,6 +241,11 @@
   align-self: center;
   color: color-mix(in srgb, var(--wbx-accent) 50%, var(--wbx-ink));
   font-size: 35px;
+  transition: color var(--wbx-motion-fast) ease;
+}
+
+.wbx-task-grid a:is(:hover, :focus-visible) .hn {
+  color: color-mix(in srgb, var(--wbx-accent) 70%, var(--wbx-ink));
 }
 
 .wbx-task-grid strong {
@@ -238,8 +261,8 @@
   display: grid;
   grid-template-columns: 0.86fr 1.14fr;
   gap: 60px;
-  margin: 72px 52px 0;
-  padding: 56px;
+  margin: 72px 0 0;
+  padding: 56px 52px;
   border: 1px solid var(--wbx-line);
   border-radius: var(--wbx-radius-lg);
   --wbx-ink: #0d100d;

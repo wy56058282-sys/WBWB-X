@@ -228,7 +228,12 @@ onBeforeUnmount(() => {
               >
             </picture>
             <span v-else class="wbx-workshop__edition-placeholder" aria-hidden="true" />
-            <span><strong>{{ edition.edition }}</strong><span>{{ edition.date }}</span><small v-if="selectedWorkshopIndex === index">当前</small></span>
+            <span><strong>{{ edition.edition }}</strong><span>{{ edition.date }}</span></span>
+            <span
+              v-if="selectedWorkshopIndex === index"
+              class="wbx-workshop__edition-status"
+              aria-hidden="true"
+            />
           </button>
         </div>
       </div>

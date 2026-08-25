@@ -16,6 +16,7 @@ describe('home hero icon navigation', () => {
     const workshop = baseRule(workshopCss, '.wbx-workshop')
 
     expect(home).toMatch(/max-width:\s*1480px;/)
+    expect(home).toMatch(/--wbx-radius-lg:\s*20px;/)
     expect(readingCard).not.toMatch(/box-shadow:/)
     expect(taskGrid).not.toMatch(/box-shadow:/)
     expect(workshop).toMatch(/padding:\s*var\(--wbx-section-space\) 0 64px;/)
@@ -24,11 +25,22 @@ describe('home hero icon navigation', () => {
     expect(workshop).not.toMatch(/box-shadow:/)
   })
 
+  it('aligns the workshop panel with the shared section gutter', () => {
+    const workshop = baseRule(workshopCss, '.wbx-workshop')
+    const mobile = workshopCss.slice(workshopCss.indexOf('@media (max-width: 760px)'))
+
+    expect(workshop).toMatch(/width:\s*100%;/)
+    expect(workshop).toMatch(/margin:\s*0;/)
+    expect(mobile).not.toMatch(
+      /\.wbx-workshop\s*\{[^}]*width:\s*calc\(100% - 8px\);[^}]*margin-left:\s*4px;/s,
+    )
+  })
+
   it('uses the approved homepage value labels', () => {
     harness.mountHomePage()
 
-    expect(document.querySelector('#wbx-hero-title')?.textContent).toBe(
-      'WorkBuddy白皮书',
+    expect(document.querySelector('#wbx-hero-title')?.getAttribute('aria-label')).toBe(
+      'WorkBuddy X 与 OPC 白皮书',
     )
     expect(
       document.querySelector('.wbx-hero__copy > .wbx-pixel-label')?.textContent,
@@ -74,6 +86,18 @@ describe('home hero icon navigation', () => {
     expect(readingCards[0]?.querySelector('.hn-user')).toBeNull()
   })
 
+  it('uses calm rounded icon containers on reading-path cards', () => {
+    const css = readHomeStyle()
+    const icon = baseRule(css, '.wbx-reading-card__icon')
+
+    expect(icon).toMatch(/border:\s*1px solid var\(--wbx-line\);/)
+    expect(icon).toMatch(/border-radius:\s*14px;/)
+    expect(icon).toMatch(
+      /color:\s*color-mix\(in srgb, var\(--wbx-accent\) 60%, var\(--wbx-ink\)\);/,
+    )
+    expect(icon).toMatch(/background:\s*var\(--wbx-hover-surface\);/)
+  })
+
   it('uses the calm shared lift and shadow on reading-path cards', () => {
     const css = readHomeStyle()
     const card = baseRule(css, '.wbx-reading-card')
@@ -91,6 +115,43 @@ describe('home hero icon navigation', () => {
     )
     expect(interaction).toMatch(/transform:\s*translateY\(-4px\);/)
     expect(interaction).not.toMatch(/translate\(/)
+  })
+
+  it('keeps reading-path descriptions to one ellipsized line', () => {
+    const css = readHomeStyle()
+    const content = baseRule(css, '.wbx-reading-card__content')
+    const description = baseRule(css, '.wbx-reading-card__content > span')
+
+    expect(content).toMatch(/min-width:\s*0;/)
+    expect(description).toMatch(/overflow:\s*hidden;/)
+    expect(description).toMatch(/text-overflow:\s*ellipsis;/)
+    expect(description).toMatch(/white-space:\s*nowrap;/)
+  })
+
+  it('uses muted reading-path arrows that strengthen slightly on interaction', () => {
+    const css = readHomeStyle()
+    const arrow = baseRule(css, '.wbx-reading-card__arrow')
+    const interaction = baseRule(
+      css,
+      '.wbx-reading-card:is(:hover, :focus-visible) .wbx-reading-card__arrow',
+    )
+
+    expect(arrow).toMatch(/color:\s*var\(--wbx-text-subtle\);/)
+    expect(interaction).toMatch(/color:\s*var\(--wbx-text-muted\);/)
+  })
+
+  it('uses a layout-neutral green dot for the selected workshop edition', () => {
+    const edition = baseRule(workshopCss, '.wbx-workshop__edition')
+    const status = baseRule(workshopCss, '.wbx-workshop__edition-status')
+
+    expect(edition).toMatch(/position:\s*relative;/)
+    expect(status).toMatch(/position:\s*absolute;/)
+    expect(status).toMatch(/top:\s*8px;/)
+    expect(status).toMatch(/right:\s*8px;/)
+    expect(status).toMatch(/width:\s*8px;/)
+    expect(status).toMatch(/height:\s*8px;/)
+    expect(status).toMatch(/border-radius:\s*50%;/)
+    expect(status).toMatch(/background:\s*var\(--wbx-accent\);/)
   })
 
   it('aligns mobile reading icons with titles and arrows with tags', () => {
@@ -117,15 +178,16 @@ describe('home hero icon navigation', () => {
     )
   })
 
-  it('aligns the system panel with the reading cards and uses the shared radius', () => {
+  it('aligns the system panel width and heading with the homepage large cards', () => {
     const css = readHomeStyle()
     const system = baseRule(css, '.wbx-system')
     const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
 
-    expect(system).toMatch(/margin:\s*72px 52px 0;/)
+    expect(system).toMatch(/margin:\s*72px 0 0;/)
+    expect(system).toMatch(/padding:\s*56px 52px;/)
     expect(system).toMatch(/border-radius:\s*var\(--wbx-radius-lg\);/)
     expect(mobile).toMatch(
-      /\.wbx-system\s*\{[^}]*margin:\s*52px 4px 0;/s,
+      /\.wbx-system\s*\{[^}]*margin:\s*52px 0 0;[^}]*padding:\s*36px 24px;/s,
     )
   })
 
@@ -180,5 +242,23 @@ describe('home hero icon navigation', () => {
     expect(heading).not.toMatch(/border-top:/)
     expect(taskGrid).toMatch(/border:\s*1px solid var\(--wbx-line\);/)
     expect(taskGrid).toMatch(/border-radius:\s*var\(--wbx-radius-lg\);/)
+  })
+
+  it('keeps task-grid hover feedback inside the grid instead of lifting cells', () => {
+    const css = readHomeStyle()
+    const interaction = css.match(
+      /@media \(hover: hover\) and \(pointer: fine\)[\s\S]*?\.wbx-task-grid a:hover\s*\{([^}]*)\}/s,
+    )?.[1]
+    const iconInteraction = css.match(
+      /\.wbx-task-grid a:is\(:hover, :focus-visible\) \.hn\s*\{([^}]*)\}/s,
+    )?.[1]
+
+    expect(interaction).toBeDefined()
+    expect(interaction).toMatch(/border-color:\s*color-mix\(/)
+    expect(interaction).toMatch(/box-shadow:\s*none;/)
+    expect(interaction).toMatch(/transform:\s*none;/)
+    expect(iconInteraction).toMatch(
+      /color:\s*color-mix\(in srgb, var\(--wbx-accent\) 70%, var\(--wbx-ink\)\);/,
+    )
   })
 })

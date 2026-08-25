@@ -23,6 +23,7 @@ describe('Uxcel-inspired marketing visual system', () => {
     expect(root).toMatch(/--wbx-motion-base:\s*240ms/)
     expect(root).toMatch(/--wbx-motion-reveal:\s*320ms/)
     expect(root).toMatch(/--wbx-ease-standard:\s*cubic-bezier\(\.22,\s*1,\s*\.36,\s*1\)/)
+    expect(root).toMatch(/--wbx-radius-lg:\s*16px/)
 
     expect(dark).toMatch(/--wbx-text-strong:\s*#f3f5ed/)
     expect(dark).toMatch(/--wbx-text-body:\s*#d7dcd3/)
@@ -48,7 +49,7 @@ describe('Uxcel-inspired marketing visual system', () => {
 
     expect(heroTitle).toMatch(/font-size:\s*58px/)
     expect(heroTitle).toMatch(/font-weight:\s*700/)
-    expect(heroTitle).toMatch(/line-height:\s*1\.18/)
+    expect(heroTitle).toMatch(/line-height:\s*1\.04/)
     expect(heroLead).toMatch(/font-size:\s*20px/)
     expect(heroLead).toMatch(/font-weight:\s*400/)
     expect(heroLead).toMatch(/line-height:\s*1\.6/)

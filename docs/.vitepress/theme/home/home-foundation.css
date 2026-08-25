@@ -13,6 +13,7 @@
 }
 
 .wbx-home {
+  --wbx-radius-lg: 20px;
   width: 100%;
   max-width: 1480px;
   margin: 0 auto;

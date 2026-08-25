@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { withBase } from 'vitepress'
 import { brand } from '../brand'
 import HomeAnalyticsStrip from './HomeAnalyticsStrip.vue'
@@ -13,6 +14,98 @@ const homeAnalyticsConfig = readHomeAnalyticsConfig(import.meta.env)
 const sortedHomeUpdates = [...homeUpdates].sort((a, b) =>
   b.date.localeCompare(a.date),
 )
+
+const whitepapers = [
+  {
+    id: 'wbx',
+    title: 'WorkBuddy X 白皮书',
+    href: '/wb-x/',
+    cover: '/whitepapers/workbuddy-x-cover.webp',
+  },
+  {
+    id: 'opc',
+    title: 'WorkBuddy OPC 白皮书',
+    href: '/opc/',
+    cover: '/whitepapers/workbuddy-opc-cover.webp',
+  },
+]
+
+const rotatingTitles = ['X', 'OPC']
+const rotatingTitle = ref('')
+let rotatingTitleIndex = 0
+let titleTimer: ReturnType<typeof setTimeout> | undefined
+let reducedMotionQuery: MediaQueryList | undefined
+
+function clearTitleTimer() {
+  if (titleTimer === undefined) return
+  clearTimeout(titleTimer)
+  titleTimer = undefined
+}
+
+function scheduleTitleStep(callback: () => void, delay: number) {
+  clearTitleTimer()
+  titleTimer = setTimeout(() => {
+    titleTimer = undefined
+    callback()
+  }, delay)
+}
+
+function typeTitle() {
+  const title = rotatingTitles[rotatingTitleIndex]
+  rotatingTitle.value = title.slice(0, rotatingTitle.value.length + 1)
+
+  if (rotatingTitle.value === title) {
+    scheduleTitleStep(eraseTitle, 1600)
+    return
+  }
+
+  scheduleTitleStep(typeTitle, 120)
+}
+
+function eraseTitle() {
+  rotatingTitle.value = rotatingTitle.value.slice(0, -1)
+
+  if (rotatingTitle.value) {
+    scheduleTitleStep(eraseTitle, 80)
+    return
+  }
+
+  rotatingTitleIndex = (rotatingTitleIndex + 1) % rotatingTitles.length
+  scheduleTitleStep(typeTitle, 240)
+}
+
+function syncTitleMotion(reduced: boolean) {
+  clearTitleTimer()
+  rotatingTitleIndex = 0
+
+  if (reduced) {
+    rotatingTitle.value = 'X / OPC'
+    return
+  }
+
+  rotatingTitle.value = ''
+  scheduleTitleStep(typeTitle, 120)
+}
+
+function handleMotionPreference(event: MediaQueryListEvent) {
+  syncTitleMotion(event.matches)
+}
+
+onMounted(() => {
+  if (typeof globalThis.matchMedia !== 'function') {
+    syncTitleMotion(false)
+    return
+  }
+
+  reducedMotionQuery = globalThis.matchMedia('(prefers-reduced-motion: reduce)')
+  syncTitleMotion(reducedMotionQuery.matches)
+  reducedMotionQuery.addEventListener('change', handleMotionPreference)
+})
+
+onBeforeUnmount(() => {
+  clearTitleTimer()
+  reducedMotionQuery?.removeEventListener('change', handleMotionPreference)
+})
 
 const valueProps = [
   { icon: 'hn-check-box', title: '场景实战', label: 'REAL-WORLD TASKS' },
@@ -153,7 +246,15 @@ const workflowSteps = [
             </span>
           </aside>
           <p class="wbx-pixel-label">27 CHAPTERS / 4 PARTS / ∞ WORKFLOWS</p>
-          <h1 id="wbx-hero-title">{{ brand.contentShortName }}</h1>
+          <h1 id="wbx-hero-title" aria-label="WorkBuddy X 与 OPC 白皮书">
+            <span class="wbx-hero-title__visual" aria-hidden="true">
+              <span class="wbx-hero-title__line wbx-hero-title__line--primary">
+                <span class="wbx-hero-title__brand">WorkBuddy</span>
+                <span class="wbx-hero-title__rotating">{{ rotatingTitle }}</span>
+              </span>
+              <span class="wbx-hero-title__line wbx-hero-title__line--subtitle">白皮书</span>
+            </span>
+          </h1>
           <p class="wbx-hero__summary">
             WorkBuddy能干嘛？一套以真实工作为主线的WorkBuddy实践路径。带你从0到1先用起来，再从1到100把每次成功沉淀为可复用的工作系统，真正把AI变成生产力！
           </p>
@@ -161,51 +262,33 @@ const workflowSteps = [
             <a class="wbx-button wbx-button--primary wbx-hero-cta" :href="withBase('/wb-x/')">
               <span class="wbx-hero-cta__label">开始阅读</span>
               <span class="wbx-hero-cta__arrow">
-                <i class="hn hn-arrow-right wbx-hero-cta__arrow--out" aria-hidden="true" />
-                <i class="hn hn-arrow-right wbx-hero-cta__arrow--in" aria-hidden="true" />
+                <i class="hn hn-arrow-right" aria-hidden="true" />
               </span>
             </a>
             <a class="wbx-button wbx-button--outline" :href="withBase('/wb-x/reading-guide/')">查看阅读路线</a>
           </div>
         </div>
 
-        <div class="wbx-hero__art" aria-label="WorkBuddy 像素图标组合">
+        <div class="wbx-hero__art" aria-label="WorkBuddy 白皮书">
           <span class="wbx-hero__monogram">{{ brand.shortMark }}</span>
-          <a
-            class="wbx-icon-card wbx-icon-card--buddy"
-            :href="withBase('/tools/')"
-            aria-label="了解 WorkBuddy"
-          >
-            <i class="hn hn-face-grin" aria-hidden="true" />
-          </a>
-          <a
-            class="wbx-icon-card wbx-icon-card--book"
-            :href="withBase('/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/')"
-            aria-label="查看第一篇目录"
-          >
-            <i class="hn hn-book" aria-hidden="true" />
-          </a>
-          <a
-            class="wbx-icon-card wbx-icon-card--flow"
-            :href="withBase('/wb-x/第三篇 进阶篇：把案例变成自己的工作系统/')"
-            aria-label="查看工作系统进阶篇"
-          >
-            <i class="hn hn-sitemap" aria-hidden="true" />
-          </a>
-          <a
-            class="wbx-icon-card wbx-icon-card--work"
-            :href="withBase('/wb-x/第二篇 案例篇：从一项任务到一支 AI 团队/')"
-            aria-label="查看 Part 2 案例篇"
-          >
-            <i class="hn hn-briefcase" aria-hidden="true" />
-          </a>
-          <a
-            class="wbx-icon-card wbx-icon-card--people"
-            :href="withBase('/wb-x/第四篇 岗位与行业落地/')"
-            aria-label="查看 Part 4 岗位与行业篇"
-          >
-            <i class="hn hn-users" aria-hidden="true" />
-          </a>
+          <div class="wbx-hero__whitepapers">
+            <a
+              v-for="whitepaper in whitepapers"
+              :key="whitepaper.id"
+              class="wbx-whitepaper-card"
+              :class="`wbx-whitepaper-card--${whitepaper.id}`"
+              :href="withBase(whitepaper.href)"
+              :aria-label="`阅读 ${whitepaper.title}`"
+            >
+              <img
+                :src="withBase(whitepaper.cover)"
+                :alt="`${whitepaper.title}封面`"
+                width="720"
+                height="1018"
+                decoding="async"
+              >
+            </a>
+          </div>
           <a
             class="wbx-hero__sparkx-bubble"
             href="https://www.sparkx.zone/"

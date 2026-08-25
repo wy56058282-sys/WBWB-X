@@ -372,9 +372,9 @@ describe('product page computed styles', () => {
   })
 
   it.each([
-    { viewportWidth: 1440, panelColumns: 'minmax(0, 570px) minmax(320px, 486px)', sectionWidth: 'calc(100% - 104px)', titleInset: '52px' },
-    { viewportWidth: 900, panelColumns: '1fr', sectionWidth: 'calc(100% - 104px)', titleInset: '52px' },
-    { viewportWidth: 390, panelColumns: '1fr', sectionWidth: 'calc(100% - 8px)', titleInset: '4px' },
+    { viewportWidth: 1440, panelColumns: 'minmax(0, 570px) minmax(320px, 486px)', sectionWidth: '100%', titleInset: '0px' },
+    { viewportWidth: 900, panelColumns: '1fr', sectionWidth: '100%', titleInset: '0px' },
+    { viewportWidth: 390, panelColumns: '1fr', sectionWidth: '100%', titleInset: '0px' },
   ])(
     'keeps the homepage workshop responsive at $viewportWidth px',
     ({ viewportWidth, panelColumns, sectionWidth, titleInset }) => {
@@ -396,6 +396,11 @@ describe('product page computed styles', () => {
       const workshop = getComputedStyle(document.querySelector('.wbx-workshop')!)
       expect(workshop.width).toBe(sectionWidth)
       expect(workshop.marginLeft).toBe(titleInset)
+      const facts = document.createElement('dl')
+      facts.className = 'wbx-workshop__facts'
+      document.querySelector('.wbx-workshop__copy')!.append(facts)
+      expect(getComputedStyle(facts).borderTopColor).toBe('rgb(227, 231, 228)')
+      expect(getComputedStyle(facts).borderBottomColor).toBe('rgb(227, 231, 228)')
       if (viewportWidth === 1440) expect(panel.justifyContent).toBe('space-between')
       const workshopTitle = getComputedStyle(document.querySelector('#workshop-title')!)
       expect(workshopTitle.fontSize).toBe('clamp(30px, 3vw, 43px)')
