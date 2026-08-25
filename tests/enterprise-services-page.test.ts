@@ -20,6 +20,15 @@ function mountPage() {
 }
 
 describe('enterprise services page', () => {
+  it('lets the hero title wrap naturally instead of forcing a line break', () => {
+    mountPage()
+
+    const title = document.querySelector('.wbx-enterprise__hero h1')
+
+    expect(title?.querySelector('br')).toBeNull()
+    expect(title?.textContent).toBe('从真实场景出发，把 AI 变成可交付的工作系统。')
+  })
+
   it('offers four scoped services with real destinations', () => {
     mountPage()
     const cards = Array.from(document.querySelectorAll<HTMLElement>('.wbx-enterprise-service'))

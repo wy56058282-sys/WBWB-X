@@ -40,4 +40,16 @@ describe('WB-X reading surfaces', () => {
       /\.wbx-reading-layout \.vp-doc \.language-mermaid pre,[\s\S]*?border:\s*0/,
     )
   })
+
+  it('uses consistent internal spacing for tables, code blocks, and callouts', () => {
+    expect(css).toMatch(
+      /\.wbx-reading-layout \.vp-doc :is\(th, td\)\s*{[^}]*padding:\s*12px 16px/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-reading-layout \.vp-doc \.custom-block\s*{[^}]*padding:\s*20px 22px/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-reading-layout \.vp-doc div\[class\*="language-"\]\s*{[^}]*margin:\s*24px 0/s,
+    )
+  })
 })

@@ -31,7 +31,7 @@
   --wbx-motion-base: 220ms;
   --wbx-ease-standard: cubic-bezier(.22, 1, .36, 1);
   --wbx-content-width: 1104px;
-  --wbx-content-wide: 1200px;
+  --wbx-content-wide: 1400px;
   --wbx-section-space: 64px;
   --wbx-control-height: 48px;
   --wbx-mobile-fab-safe-space: 58px;
@@ -260,8 +260,46 @@ body {
   }
 }
 
-.VPNav {
-  border-bottom: 1px solid var(--wbx-line);
+.VPNav,
+.VPNavBar {
+  border-bottom: 0 !important;
+}
+
+.VPNavBar .divider,
+.VPNavBar .divider-line {
+  background: transparent !important;
+}
+
+.VPNavBar :is(.translations, .appearance, .social-links)::before {
+  display: none;
+}
+
+.VPNavBarSocialLinks .VPSocialLink[aria-label='星火集'] {
+  position: relative;
+}
+
+.VPNavBarSocialLinks .VPSocialLink[aria-label='星火集']::after {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  z-index: 20;
+  padding: 6px 9px;
+  border-radius: var(--wbx-radius-sm);
+  color: var(--wbx-paper);
+  background: var(--wbx-ink);
+  content: attr(aria-label);
+  font-size: 12px;
+  line-height: 1;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -3px);
+  transition: opacity var(--wbx-motion-fast) ease, transform var(--wbx-motion-fast) ease;
+  white-space: nowrap;
+}
+
+.VPNavBarSocialLinks .VPSocialLink[aria-label='星火集']:is(:hover, :focus-visible)::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
 }
 
 .VPNavBarTitle .logo {
@@ -327,6 +365,10 @@ body {
     backdrop-filter: blur(16px);
   }
 
+  .VPNavBar > .wrapper > .container {
+    max-width: var(--wbx-content-wide);
+  }
+
   .VPNavBar > .wrapper > .container > .title {
     background: transparent;
     -webkit-backdrop-filter: none;
@@ -342,7 +384,7 @@ body {
   }
 
   .VPNavBar.has-sidebar .container {
-    max-width: calc(var(--vp-layout-max-width) - 64px) !important;
+    max-width: var(--wbx-content-wide) !important;
   }
 
   .VPNavBar.has-sidebar .container > .title {
@@ -375,6 +417,7 @@ body {
   margin-right: -32px;
   padding-right: 32px;
   padding-bottom: 96px;
+  overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-color: rgb(92 104 94 / 28%) transparent;

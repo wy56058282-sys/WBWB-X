@@ -139,7 +139,6 @@ onBeforeUnmount(() => {
         <div class="wbx-workshop__copy">
           <div class="wbx-workshop__heading">
             <p class="wbx-workshop__eyebrow">WORKBUDDY X WORKSHOP</p>
-            <p v-if="selectedStatus === 'past'" class="wbx-home-workshop__state">活动回顾</p>
             <h2 id="workshop-title">WorkBuddy X 工作坊 <span class="wbx-workshop__title-edition">{{ selectedWorkshop.edition }}</span></h2>
             <p class="wbx-workshop__summary">先用一场工作坊，找到值得定制的真问题</p>
           </div>

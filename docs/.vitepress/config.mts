@@ -80,6 +80,7 @@ export default withMermaid(defineConfig({
     ]
   },
   themeConfig: {
+    outlineTitle: '本页目录',
     logo: brand.logoPath,
     siteTitle: brand.siteName,
     nav: nav.map((item) => ({ ...item })),

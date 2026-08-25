@@ -74,6 +74,10 @@ describe('site navigation', () => {
     expect(config.themeConfig?.editLink).toBeUndefined()
   })
 
+  it('uses a Chinese label for the document outline', () => {
+    expect(config.themeConfig?.outlineTitle).toBe('本页目录')
+  })
+
   it('recognizes the homepage at root and under the GitHub Pages base path', () => {
     expect(isHomeRoute('/', '/')).toBe(true)
     expect(isHomeRoute('/WBWB-X/', '/WBWB-X/')).toBe(true)

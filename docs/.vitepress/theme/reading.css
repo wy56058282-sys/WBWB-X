@@ -53,6 +53,27 @@
   background: color-mix(in srgb, var(--wbx-muted) 45%, transparent);
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .wbx-reading-layout .VPSidebar .nav {
+    scrollbar-color: transparent transparent;
+  }
+
+  .wbx-reading-layout .VPSidebar .nav::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+
+  .wbx-reading-layout .VPSidebar .nav:hover,
+  .wbx-reading-layout .VPSidebar .nav:focus-within {
+    scrollbar-color: color-mix(in srgb, var(--wbx-muted) 45%, transparent)
+      transparent;
+  }
+
+  .wbx-reading-layout .VPSidebar .nav:hover::-webkit-scrollbar-thumb,
+  .wbx-reading-layout .VPSidebar .nav:focus-within::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--wbx-muted) 45%, transparent);
+  }
+}
+
 .wbx-reading-layout .wbx-book-index {
   gap: 12px;
 }
@@ -113,8 +134,17 @@
   box-shadow: none;
 }
 
+.wbx-reading-layout .vp-doc div[class*="language-"] {
+  margin: 24px 0;
+}
+
 .wbx-reading-layout .vp-doc :is(table, .custom-block) {
   border-radius: var(--wbx-radius-md);
+}
+
+.wbx-reading-layout .vp-doc .custom-block {
+  margin: 24px 0;
+  padding: 20px 22px;
 }
 
 .wbx-reading-layout .vp-doc div[class*="language-"] > span.lang,
@@ -130,7 +160,14 @@
   overflow: hidden;
 }
 
-.wbx-reading-layout .vp-doc thead,
+.wbx-reading-layout .vp-doc :is(th, td) {
+  padding: 12px 16px;
+}
+
+.wbx-reading-layout .vp-doc thead {
+  background: var(--wbx-section-soft);
+}
+
 .wbx-reading-layout .vp-doc tbody tr:hover {
   background: var(--wbx-hover-surface);
 }

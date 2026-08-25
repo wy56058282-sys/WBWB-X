@@ -43,7 +43,7 @@ const services = [
   <div class="wbx-enterprise">
     <header class="wbx-enterprise__hero">
       <p class="wbx-pixel-label">ENTERPRISE SERVICES</p>
-      <h1>从真实场景出发，<br>把 AI 变成可交付的工作系统。</h1>
+      <h1>从真实场景出发，把 AI 变成可交付的工作系统。</h1>
       <p>围绕团队学习、场景验证与企业落地，先把当前最重要的问题说清楚，再选择合适的合作方式。</p>
     </header>
 

@@ -83,6 +83,8 @@ describe('homepage workshop card', () => {
     await nextTick()
     expect(editions.map((edition) => edition.getAttribute('aria-selected'))).toEqual(['true', 'false', 'false'])
     expect(posterSource()).toContain('workshop-815.png')
+    expect(workshop?.querySelector('.wbx-home-workshop__state')).toBeNull()
+    expect(workshop?.querySelector('.wbx-home-workshop__recap')?.textContent).toBe('查看活动回顾')
     expect(workshop?.querySelector('.wbx-workshop__poster-page')?.textContent?.trim()).toBe('1 / 4')
   })
 
@@ -189,6 +191,7 @@ describe('homepage workshop card', () => {
     const recap = document.querySelector<HTMLAnchorElement>('.wbx-home-workshop__recap')
 
     expect(document.querySelector('.wbx-home-workshop__registration-trigger')).toBeNull()
+    expect(document.querySelector('.wbx-home-workshop__state')).toBeNull()
     expect(recap?.getAttribute('href')).toBe('https://example.com/recap')
     expect(recap?.getAttribute('target')).toBe('_blank')
     expect(recap?.getAttribute('rel')).toBe('noopener noreferrer')

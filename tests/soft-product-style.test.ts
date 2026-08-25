@@ -8,6 +8,9 @@ const workshop = readFileSync('docs/.vitepress/theme/workshop.css', 'utf8')
 const cases = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
 const reading = readFileSync('docs/.vitepress/theme/reading.css', 'utf8')
 const about = readFileSync('docs/.vitepress/theme/about.css', 'utf8')
+const tools = readFileSync('docs/.vitepress/theme/tools.css', 'utf8')
+const enterpriseServices = readFileSync('docs/.vitepress/theme/enterprise-services.css', 'utf8')
+const service = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
 
 describe('calm soft product design system', () => {
   it('provides one semantic radius, surface, shadow, and motion contract', () => {
@@ -26,10 +29,19 @@ describe('calm soft product design system', () => {
     expect(root).toMatch(
       /--wbx-shadow-hover:\s*0 12px 32px rgb\(13 16 13 \/ 10%\)/,
     )
-    expect(root).toMatch(/--wbx-content-wide:\s*1200px/)
+    expect(root).toMatch(/--wbx-content-wide:\s*1400px/)
     expect(root).toMatch(/--wbx-control-height:\s*48px/)
     expect(root).toMatch(/--wbx-motion-fast:\s*160ms/)
     expect(root).toMatch(/--wbx-motion-base:\s*220ms/)
+  })
+
+  it('aligns the case, tool, and enterprise-service page shells to one wide content baseline', () => {
+    expect(baseRule(cases, '.wbx-cases-layout .VPDoc .container')).toMatch(/max-width:\s*calc\(var\(--wbx-content-wide\) \+ 64px\)/)
+    expect(baseRule(tools, '.wbx-tools__header')).toMatch(/width:\s*min\(var\(--wbx-content-wide\), 100%\)/)
+    expect(baseRule(tools, '.wbx-tools__tabs')).toMatch(/width:\s*min\(var\(--wbx-content-wide\), 100%\)/)
+    expect(baseRule(tools, '.wbx-tools__placeholder')).toMatch(/width:\s*min\(var\(--wbx-content-wide\), 100%\)/)
+    expect(baseRule(enterpriseServices, '.custom-enterprise-services-page .VPDoc:not(.has-sidebar) .container')).toMatch(/max-width:\s*calc\(var\(--wbx-content-wide\) \+ 64px\)/)
+    expect(baseRule(service, '.wbx-service')).toMatch(/max-width:\s*1200px/)
   })
 
   it('keeps light page and navigation surfaces white without changing dark mode', () => {
@@ -48,6 +60,12 @@ describe('calm soft product design system', () => {
     expect(baseRule(cases, '.wbx-case-card__link')).toMatch(/border-radius:\s*var\(--wbx-radius-lg\)/)
     expect(baseRule(reading, '.wbx-reading-layout .vp-doc :is(table, .custom-block)')).toMatch(/border-radius:\s*var\(--wbx-radius-md\)/)
     expect(baseRule(about, '.wbx-about-member')).toMatch(/border-radius:\s*var\(--wbx-radius-lg\)/)
+  })
+
+  it('keeps the enterprise hero compact and aligns the embedded team surface with service cards', () => {
+    expect(baseRule(enterpriseServices, '.wbx-enterprise__hero')).toMatch(/padding:\s*10px 0 48px/)
+    expect(baseRule(enterpriseServices, '.wbx-enterprise__hero h1')).toMatch(/text-wrap:\s*balance/)
+    expect(baseRule(enterpriseServices, '.wbx-enterprise > .wbx-about .wbx-about__team')).toMatch(/background:\s*var\(--wbx-surface\)/)
   })
 
   it('keeps navigation and controls quiet instead of using hard offset shadows', () => {

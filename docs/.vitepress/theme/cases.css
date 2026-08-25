@@ -16,7 +16,7 @@
 }
 
 .wbx-cases-layout .VPDoc .container {
-  max-width: 1104px;
+  max-width: calc(var(--wbx-content-wide) + 64px);
 }
 
 .wbx-cases-layout .VPDoc .content {
@@ -35,7 +35,7 @@
 
 .wbx-cases-layout-grid {
   display: grid;
-  grid-template-columns: minmax(0, 3fr) minmax(240px, 1fr);
+  grid-template-columns: minmax(0, 4fr) minmax(260px, 1fr);
   gap: 44px;
   align-items: start;
 }
@@ -326,7 +326,7 @@
 
 .wbx-cases-gallery-results .wbx-cases-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 18px;
 }
 
@@ -584,6 +584,12 @@
 
 .vp-doc .wbx-case-service-cta .wbx-cases-eyebrow {
   margin-bottom: 8px;
+}
+
+@media (max-width: 1439px) {
+  .wbx-cases-gallery-results .wbx-cases-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 1279px) {

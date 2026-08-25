@@ -8,6 +8,16 @@ afterEach(() => {
 })
 
 describe('desktop sidebar scrolling', () => {
+  it('reveals the reading sidebar scrollbar on hover or keyboard focus without affecting touch layouts', () => {
+    const readingCss = readFileSync('docs/.vitepress/theme/reading.css', 'utf8')
+
+    expect(readingCss).toMatch(/@media\s*\(hover:\s*hover\)\s*and\s*\(pointer:\s*fine\)/)
+    expect(readingCss).toMatch(/\.wbx-reading-layout \.VPSidebar \.nav\s*{[^}]*scrollbar-color:\s*transparent transparent/s)
+    expect(readingCss).toMatch(/\.wbx-reading-layout \.VPSidebar \.nav:hover,[\s\S]*?\.wbx-reading-layout \.VPSidebar \.nav:focus-within\s*{[^}]*scrollbar-color:\s*color-mix/s)
+    expect(readingCss).toMatch(/\.wbx-reading-layout \.VPSidebar \.nav::-webkit-scrollbar-thumb\s*{[^}]*background:\s*transparent/s)
+    expect(readingCss).toMatch(/\.wbx-reading-layout \.VPSidebar \.nav:hover::-webkit-scrollbar-thumb,[\s\S]*?\.wbx-reading-layout \.VPSidebar \.nav:focus-within::-webkit-scrollbar-thumb\s*{[^}]*background:\s*color-mix/s)
+  })
+
   it('keeps the logo curtain fixed and scrolls only the navigation below it', () => {
     const vitepressDefaults = document.createElement('style')
     vitepressDefaults.textContent = '.VPNavBarTitle .title { border-bottom: 1px solid #d7dbd0; }'
@@ -34,6 +44,7 @@ describe('desktop sidebar scrolling', () => {
 
     expect(getComputedStyle(sidebar).overflowY).toBe('hidden')
     expect(getComputedStyle(curtain).borderBottomWidth).toBe('0px')
+    expect(getComputedStyle(nav).overflowX).toBe('hidden')
     expect(getComputedStyle(nav).overflowY).toBe('auto')
     expect(getComputedStyle(nav).scrollbarGutter).toBe('auto')
     expect(getComputedStyle(title).borderBottomWidth).toBe('0px')

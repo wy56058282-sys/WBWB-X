@@ -111,6 +111,9 @@ describe('home hero icon navigation', () => {
       /\.wbx-hero-cta__arrow\s*>\s*\.hn\s*\{[^}]*font-size:\s*28px;/s,
     )
     expect(css).toMatch(
+      /\.wbx-hero-cta__arrow\s*\{[^}]*border-radius:\s*0 var\(--wbx-radius-md\) var\(--wbx-radius-md\) 0;/s,
+    )
+    expect(css).toMatch(
       /\.wbx-hero-cta__arrow--in\s*\{[^}]*transform:\s*translate\(-56px, 56px\) rotate\(-45deg\);/s,
     )
     expect(css).toMatch(

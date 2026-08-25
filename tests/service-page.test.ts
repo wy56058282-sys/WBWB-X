@@ -103,7 +103,9 @@ describe('WorkBuddy product service page', () => {
     mountServicePage()
 
     const console = document.querySelector<HTMLElement>('.wbx-service-console')!
+    const consoleBody = document.querySelector<HTMLElement>('.wbx-service-console__body')!
     const progress = document.querySelector<HTMLElement>('.wbx-service-console__progress')!
+    Object.defineProperty(consoleBody, 'scrollHeight', { configurable: true, value: 640 })
 
     expect(console.dataset.stage).toBe('idle')
     expect(progress.getAttribute('aria-valuenow')).toBe('0')
@@ -124,6 +126,7 @@ describe('WorkBuddy product service page', () => {
     expect(console.dataset.stage).toBe('complete')
     expect(progress.getAttribute('aria-valuenow')).toBe('100')
     expect(document.querySelector('.wbx-service-console__deliverable')?.textContent).toContain('已交付')
+    expect(consoleBody.scrollTop).toBe(640)
   })
 
   it('lets a user command take over the automatic hero simulation', async () => {

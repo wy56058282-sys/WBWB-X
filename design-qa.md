@@ -114,6 +114,50 @@ final result: passed
 
 ---
 
+# 2026-08-25 工具集产品 Tab Design QA
+
+## 对比目标与证据
+
+- 视觉参考：`/var/folders/w2/vy8c_ntd7gz4w0r14jl2s9v40000gn/T/TemporaryItems/NSIRD_screencaptureui_ELA1mc/截屏2026-08-25 08.50.00.png`，`1298 × 145` PNG。
+- 桌面实现：`design-qa-tools-page.png`，`1406 × 791` PNG；浏览器 CSS 视口约 `1422 × 800`，浅色主题，WorkBuddy 选中。
+- 手机实现：`design-qa-tools-mobile.png`，`462 × 1041` PNG；浏览器请求视口 `390 × 844`，运行时归一为约 `433 × 938` CSS 像素。
+- 同画面对照：`design-qa-tools-tabs-comparison.png`，`1362 × 354` PNG；参考图与实现重点区域在同一输入中上下排列。
+- 实现 Tab 重点区域实测为 `1200 × 63.98` CSS 像素；截图后端做了像素密度归一，未用截图像素反推 CSS 尺寸。
+
+## 必查视觉表面
+
+- 字体与排版：沿用主站 Avenir/PingFang 字体；选中项为 `700`，未选中项为 `600`，没有照搬参考图品牌字体。三个产品名称均单行完整显示。
+- 间距与布局：轨道使用 `8px` 内边距和间距、`16px` 圆角；三个选项均分可用宽度。手机端保持单行并允许 Tab 轨道横向滚动。
+- 色彩与令牌：轨道使用 `--wbx-section-soft`，选中项使用白色 `--wbx-surface`、细边框和轻阴影；薄荷绿只保留为键盘焦点环，不再铺满选中项。
+- 图片与资产：本组件没有图片资产，没有新增、替换或重绘图标。
+- 文案与内容：保留 `WorkBuddy`、`SparkX`、`SunFun`，与参考图产品数量和名称不同属于现有产品信息约束。
+
+## 交互、响应式与运行检查
+
+- 点击 SparkX 后 URL 为 `/tools/?product=sparkx`，`aria-selected="true"`，面板显示 `产品介绍筹备中`。
+- 从 SparkX 按 `End` 可选择 SunFun；重新点击 WorkBuddy 后动态产品页恢复。
+- 手机端轨道 `overflow-x: auto`，`scrollWidth 428px > clientWidth 369px`；页面宽度 `416px < 433px` 视口宽度，无页面级横向溢出。
+- 浏览器控制台错误数为 `0`。
+
+## 全视图与重点区域对比
+
+- 全视图显示工具集标题、Tab 与 WorkBuddy Hero 的原有顺序和宽度均保持不变。
+- 重点对照确认两者均采用浅灰轨道、白色选中浮层、细边框、轻阴影、深色选中文字和灰色未选中文字。
+- 实现按现有三个产品均分宽度；参考图为四个分类，数量差异不构成视觉偏差。
+
+## Findings
+
+- 无 P0、P1、P2 视觉、交互或响应式问题。
+- 剩余 P3：参考图选项文字更长，因此自然呈现不同的视觉宽度；当前三项短产品名保持均分更利于点击和对齐。
+
+## Comparison history
+
+- 初次实现即移除绿色整块选中态和竖向分隔线，完成白色浮层、轻边框与浅灰轨道；联合对照未发现需要返工的 P0/P1/P2 问题。
+
+final result: passed
+
+---
+
 # 2026-08-21 工作坊海报切换 Design QA
 
 ## 验收范围与证据

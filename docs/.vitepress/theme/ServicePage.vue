@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { withBase } from 'vitepress'
 
 const installGuidePath = '/wb-x/第一篇 使用手册：先把 WorkBuddy 用起来/第 2 章 WorkBuddy的下载、安装、登录与更新/'
@@ -9,6 +9,7 @@ const consoleStage = ref<'idle' | 'typing' | 'planning' | 'running' | 'complete'
 const consoleProgress = ref(0)
 const consoleLogs = ref<string[]>([])
 const consoleAgents = ref<string[]>([])
+const consoleBody = ref<HTMLElement | null>(null)
 const tickerCount = ref(12_847)
 const tickerPulse = ref(false)
 const swarmMotionState = ref<'idle' | 'dispatching'>('idle')
@@ -47,6 +48,11 @@ const scenarios = [
 
 const commandComplete = computed(() => consoleStage.value === 'complete')
 const remoteComplete = computed(() => remoteStage.value === 'complete')
+
+watch([currentRequest, consoleStage, consoleLogs, consoleAgents], () => {
+  if (!consoleBody.value) return
+  consoleBody.value.scrollTop = consoleBody.value.scrollHeight
+}, { flush: 'post' })
 
 function schedule(timers: Set<Timer>, callback: () => void, delay: number) {
   const timer = setTimeout(() => {
@@ -314,7 +320,7 @@ onBeforeUnmount(() => {
           <span aria-hidden="true" /><span aria-hidden="true" /><span aria-hidden="true" />
           <strong>WorkBuddy · 智能体工作台</strong><small>v2.1.0</small>
         </div>
-        <div class="wbx-service-console__body" aria-live="polite">
+        <div ref="consoleBody" class="wbx-service-console__body" aria-live="polite">
           <p class="wbx-service-console__request">{{ currentRequest ? `“${currentRequest}”` : '等待下一条任务指令…' }}</p>
           <div class="wbx-service-console__agents">
             <span v-for="agent in consoleAgents" :key="agent">{{ agent }}</span>

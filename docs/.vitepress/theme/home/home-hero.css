@@ -205,6 +205,7 @@
   flex: 0 0 44px;
   place-items: center;
   overflow: hidden;
+  border-radius: 0 var(--wbx-radius-md) var(--wbx-radius-md) 0;
   color: #ffffff;
   background: #0d100d;
 }

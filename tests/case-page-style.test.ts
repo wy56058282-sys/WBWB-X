@@ -60,6 +60,7 @@ function px(value: string) {
 
 function resolvedLength(value: string, availableWidth: number, fallback: number) {
   if (!value || value === 'auto' || value === 'none') return fallback
+  if (value.includes('var(')) return fallback
   if (value.endsWith('%')) return availableWidth * (px(value) / 100)
 
   const length = px(value)
@@ -135,7 +136,8 @@ describe('case collection page styles', () => {
   it('uses a stable responsive card grid with constrained cards', () => {
     const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
 
-    expect(source).toMatch(/\.wbx-cases-gallery-results \.wbx-cases-grid\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/)
+    expect(source).toMatch(/\.wbx-cases-gallery-results \.wbx-cases-grid\s*\{[^}]*grid-template-columns:\s*repeat\(4, minmax\(0, 1fr\)\)/)
+    expect(source).toMatch(/@media \(max-width:\s*1439px\)[\s\S]*?\.wbx-cases-gallery-results \.wbx-cases-grid\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)/)
     expect(source).toMatch(/@media \(max-width:\s*1279px\)[\s\S]*?\.wbx-cases-gallery-results \.wbx-cases-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)/)
     expect(source).toMatch(/@media \(max-width:\s*640px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.wbx-cases-gallery-results \.wbx-cases-grid\s*\{[^}]*grid-template-columns:\s*1fr/)
     expect(source).toMatch(/\.wbx-case-card__cover\s*\{[^}]*aspect-ratio:/)
@@ -150,7 +152,7 @@ describe('case collection page styles', () => {
     expect(source).toMatch(/@media \(min-width:\s*1025px\)[\s\S]*?\.wbx-cases-gallery-results\s*\{[^}]*min-height:\s*996px/)
   })
 
-  it('places cases and tools in a responsive 3:1 layout with a sticky desktop sidebar', () => {
+  it('places cases and tools in a responsive 4:1 layout with a sticky desktop sidebar', () => {
     const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
     const pageSource = readFileSync('docs/.vitepress/theme/CasesPage.vue', 'utf8')
 
@@ -159,7 +161,7 @@ describe('case collection page styles', () => {
     expect(pageSource).toContain('class="wbx-cases-tools-column"')
     expect(pageSource).toContain("'wbx-cases-tools-stack'")
     expect(pageSource).not.toContain('class="wbx-cases-outline"')
-    expect(source).toMatch(/\.wbx-cases-layout-grid\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*minmax\(0, 3fr\) minmax\(240px, 1fr\)/s)
+    expect(source).toMatch(/\.wbx-cases-layout-grid\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*minmax\(0, 4fr\) minmax\(260px, 1fr\)/s)
     expect(source).toMatch(/\.wbx-cases-tools-stack\.is-sticky\s*\{[^}]*position:\s*sticky[^}]*top:\s*var\(--wbx-cases-sticky-top\)/s)
     expect(source).toMatch(/\.wbx-cases-tools-column\s*\{[^}]*align-self:\s*stretch/s)
     expect(source).toMatch(/\.wbx-cases-tools-column\s*\{[^}]*margin-top:\s*26px/s)
@@ -210,7 +212,7 @@ describe('case collection page styles', () => {
     const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
     const pageSource = readFileSync('docs/.vitepress/theme/CasesPage.vue', 'utf8')
 
-    expect(source).toMatch(/\.wbx-cases-layout \.VPDoc \.container\s*\{[^}]*max-width:\s*1104px/s)
+    expect(source).toMatch(/\.wbx-cases-layout \.VPDoc \.container\s*\{[^}]*max-width:\s*calc\(var\(--wbx-content-wide\) \+ 64px\)/s)
     expect(source).toMatch(/\.wbx-cases-layout \.VPDoc \.content-container\s*\{[^}]*max-width:\s*688px/s)
     expect(source).toMatch(/@media \(min-width:\s*1025px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.wbx-cases-layout \.VPDoc \.content-container\s*\{[^}]*max-width:\s*none/s)
     expect(source).not.toMatch(/\.wbx-cases-layout \.VPDoc[^{]*\{[^}]*padding(?:-inline|-left|-right):/s)
@@ -237,7 +239,7 @@ describe('case collection page styles', () => {
     }
   })
 
-  it('matches the reading guide outer baseline without adding horizontal gutter overrides', () => {
+  it('widens the case collection without adding horizontal gutter overrides', () => {
     const vitepressDoc = readFileSync('node_modules/vitepress/dist/client/theme-default/components/VPDoc.vue', 'utf8')
     const casesStyles = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
     const serviceStyles = readFileSync('docs/.vitepress/theme/service.css', 'utf8')
@@ -246,7 +248,7 @@ describe('case collection page styles', () => {
     expect(vitepressDoc).toMatch(/@media \(min-width: 960px\)\s*\{\s*\.VPDoc\s*\{\s*padding:\s*48px 32px 0/s)
     expect(vitepressDoc).toMatch(/@media \(min-width: 1440px\)\s*\{(?:[^{}]|\{[^{}]*\})*?\.VPDoc:not\(\.has-sidebar\) \.container\s*\{\s*max-width:\s*1104px/s)
     expect(readingStyles).not.toMatch(/\.wbx-reading-layout \.VPDoc[^{]*\{[^}]*padding(?:-inline|-left|-right):/s)
-    expect(casesStyles).toMatch(/\.wbx-cases-layout \.VPDoc \.container\s*\{[^}]*max-width:\s*1104px/s)
+    expect(casesStyles).toMatch(/\.wbx-cases-layout \.VPDoc \.container\s*\{[^}]*max-width:\s*calc\(var\(--wbx-content-wide\) \+ 64px\)/s)
     expect(serviceStyles).toMatch(/\.custom-service-page \.VPDoc:not\(\.has-sidebar\) \.container\s*\{[^}]*max-width:\s*1480px/s)
     expect(serviceStyles).not.toMatch(/\.custom-service-page \.VP(?:Content|Doc)[^{]*\{[^}]*padding(?:-inline|-left|-right):/s)
   })
@@ -408,6 +410,8 @@ describe('case collection page styles', () => {
     { viewportWidth: 1201, columns: 'repeat(2, minmax(0, 1fr))' },
     { viewportWidth: 1279, columns: 'repeat(2, minmax(0, 1fr))' },
     { viewportWidth: 1280, columns: 'repeat(3, minmax(0, 1fr))' },
+    { viewportWidth: 1439, columns: 'repeat(3, minmax(0, 1fr))' },
+    { viewportWidth: 1440, columns: 'repeat(4, minmax(0, 1fr))' },
   ])('uses $columns case cards at $viewportWidth px', ({ viewportWidth, columns }) => {
     const casesStyles = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
     const appliedStyles = document.createElement('style')

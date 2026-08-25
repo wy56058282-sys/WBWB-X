@@ -1,14 +1,14 @@
-.custom-enterprise-services-page .VPDoc:not(.has-sidebar) .container { max-width: var(--wbx-content-width); }
+.custom-enterprise-services-page .VPDoc:not(.has-sidebar) .container { max-width: calc(var(--wbx-content-wide) + 64px); }
 .custom-enterprise-services-page .VPDoc:not(.has-sidebar) .content { max-width: none; }
 
 .wbx-enterprise { padding: 20px 0 80px; color: var(--wbx-ink); }
 .wbx-enterprise :where(h1, h2, p) { margin-top: 0; }
 .wbx-enterprise :where(h1, h2) { border: 0; padding: 0; letter-spacing: -0.03em; }
-.wbx-enterprise__hero { max-width: 860px; padding: 10px 0 72px; }
+.wbx-enterprise__hero { max-width: 860px; padding: 10px 0 48px; }
 .wbx-enterprise__hero .wbx-pixel-label,
 .wbx-enterprise__heading .wbx-pixel-label,
 .wbx-enterprise-service .wbx-pixel-label { margin-bottom: 12px; color: var(--vp-c-brand-1); }
-.wbx-enterprise__hero h1 { margin-bottom: 24px; font-size: clamp(42px, 5.4vw, 68px); font-weight: 850; line-height: 1.12; }
+.wbx-enterprise__hero h1 { margin-bottom: 24px; font-size: clamp(42px, 5.4vw, 68px); font-weight: 850; line-height: 1.12; text-wrap: balance; }
 .wbx-enterprise__hero > p:last-child { max-width: 700px; margin-bottom: 0; color: var(--wbx-muted); font-size: 17px; line-height: 1.75; }
 .wbx-enterprise__services { padding-bottom: var(--wbx-section-space); }
 .wbx-enterprise__heading { margin-bottom: 24px; }
@@ -21,12 +21,14 @@
 .wbx-enterprise-service > a:hover { transform: translateY(-1px); box-shadow: var(--wbx-shadow-soft); }
 .wbx-enterprise-service > a:focus-visible { outline: var(--wbx-focus); outline-offset: 3px; }
 .wbx-enterprise > .wbx-about { padding-top: 0; }
+.wbx-enterprise > .wbx-about .wbx-about__team { padding: 32px; background: var(--wbx-surface); }
 
 .wbx-legacy-redirect { max-width: 720px; margin: 80px auto; padding: 32px; border: 1px solid var(--wbx-line); border-radius: var(--wbx-radius-lg); text-align: center; background: var(--wbx-surface); }
 
 @media (max-width: 720px) {
   .wbx-enterprise { padding-top: 0; }
-  .wbx-enterprise__hero { padding-bottom: 52px; }
+  .wbx-enterprise__hero { padding-bottom: 36px; }
   .wbx-enterprise__grid { grid-template-columns: 1fr; }
   .wbx-enterprise-service > p:not(.wbx-pixel-label) { min-height: 0; }
+  .wbx-enterprise > .wbx-about .wbx-about__team { padding: 28px 20px; }
 }

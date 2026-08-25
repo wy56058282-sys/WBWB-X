@@ -25,6 +25,25 @@ describe('WorkBuddy product service styles', () => {
     expect(styles).toMatch(/\.wbx-service-remote\s*\{[^}]*grid-template-columns:\s*minmax\(220px, \.72fr\) 180px minmax\(300px, 1\.3fr\)/s)
   })
 
+  it('keeps the first console at the original fixed height so the page does not jump', () => {
+    expect(baseRule(styles, '.wbx-service-console__body')).toMatch(/height:\s*430px/)
+    expect(baseRule(styles, '.wbx-service-console__body')).toMatch(/overflow-y:\s*auto/)
+  })
+
+  it('uses the shared soft product treatment for static sections without restyling dynamic visuals', () => {
+    expect(baseRule(styles, '.wbx-service-button')).toMatch(/min-height:\s*var\(--wbx-control-height\)/)
+    expect(baseRule(styles, '.wbx-service-button')).toMatch(/border:\s*1px solid var\(--wbx-line\)/)
+    expect(baseRule(styles, '.wbx-service-button')).toMatch(/border-radius:\s*var\(--wbx-radius-md\)/)
+    expect(baseRule(styles, '.wbx-service-section')).toMatch(/border-bottom:\s*0/)
+    expect(baseRule(styles, '.wbx-service-section')).toMatch(/background:\s*var\(--wbx-paper\)/)
+    expect(baseRule(styles, '.wbx-service-heading')).toMatch(/margin-bottom:\s*48px/)
+    expect(baseRule(styles, '.wbx-service-compare__card')).toMatch(/border:\s*1px solid var\(--wbx-line\)/)
+    expect(baseRule(styles, '.wbx-service-compare__card')).toMatch(/border-radius:\s*var\(--wbx-radius-lg\)/)
+    expect(baseRule(styles, '.wbx-service-compare__card')).toMatch(/box-shadow:\s*var\(--wbx-shadow-soft\)/)
+    expect(styles).toMatch(/\.wbx-service-console\s*\{[^}]*border:\s*2px solid var\(--wbx-ink\)/s)
+    expect(styles).toMatch(/\.wbx-service-swarm\s*\{[^}]*border:\s*2px solid var\(--wbx-ink\)/s)
+  })
+
   it('keeps the site shell and gives the product page a wide bounded canvas', () => {
     expect(styles).toMatch(/\.custom-service-page \.VPDoc:not\(\.has-sidebar\) \.container\s*\{[^}]*max-width:\s*1480px/s)
     expect(styles).toMatch(/\.wbx-service\s*\{[^}]*max-width:\s*1200px[^}]*overflow-x:\s*clip/s)

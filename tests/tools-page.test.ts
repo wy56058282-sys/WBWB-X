@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createApp, nextTick, type App } from 'vue'
+import { readFileSync } from 'node:fs'
 
 vi.mock('vitepress', () => ({ withBase: (path: string) => `/WBWB-X${path}` }))
 vi.mock('../docs/.vitepress/case-catalog.data', () => ({ data: [] }))
@@ -33,6 +34,16 @@ function tabs() {
 }
 
 describe('tools page', () => {
+  it('uses a soft track with a raised white selected tab instead of a filled brand tab', () => {
+    const styles = readFileSync('docs/.vitepress/theme/tools.css', 'utf8')
+
+    expect(styles).toMatch(/\.wbx-tools__tabs\s*{[^}]*display:\s*flex[^}]*gap:\s*8px[^}]*padding:\s*8px[^}]*border-radius:\s*16px[^}]*background:\s*var\(--wbx-section-soft\)/s)
+    expect(styles).toMatch(/\.wbx-tools__tabs button\s*{[^}]*border:\s*1px solid transparent[^}]*border-radius:\s*var\(--wbx-radius-md\)/s)
+    expect(styles).toMatch(/\.wbx-tools__tabs button\[aria-selected="true"\]\s*{[^}]*border-color:\s*var\(--wbx-line\)[^}]*background:\s*var\(--wbx-surface\)[^}]*box-shadow:\s*var\(--wbx-shadow-soft\)/s)
+    expect(styles).not.toMatch(/\.wbx-tools__tabs button\[aria-selected="true"\]\s*{[^}]*background:\s*var\(--wbx-accent\)/s)
+    expect(styles).toMatch(/@media\s*\(max-width:\s*640px\)[\s\S]*?\.wbx-tools__tabs\s*{[^}]*overflow-x:\s*auto/s)
+  })
+
   it('shows WorkBuddy by default and exposes three accessible product tabs', () => {
     mountToolsPage()
 
