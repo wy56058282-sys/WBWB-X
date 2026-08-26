@@ -188,6 +188,24 @@ describe('homepage workshop card', () => {
     expect(workshop?.querySelector('.wbx-workshop__poster-page')?.textContent?.trim()).toBe('1 / 3')
   })
 
+  it('keeps the enterprise WeChat QR out of the edition-card row', async () => {
+    mountWorkshop([
+      edition({ id: 'past', edition: '往期', startsAt: '2026-08-15T14:00:00+08:00', endsAt: '2026-08-15T18:00:00+08:00' }),
+      edition({ id: 'open', edition: '报名期', startsAt: '2026-08-29T14:00:00+08:00', endsAt: '2026-08-29T18:00:00+08:00', registrationQrPath: '/enterprise-wechat-form.png' }),
+    ])
+    await nextTick()
+
+    const tabs = document.querySelectorAll<HTMLButtonElement>('.wbx-workshop__edition')
+    expect(document.querySelector('.wbx-workshop__registration-qr')).toBeNull()
+    expect(document.querySelector('.wbx-workshop__editions-row')?.classList.contains('has-registration-qr')).toBe(false)
+
+    tabs[0]?.click()
+    await nextTick()
+
+    expect(document.querySelector('.wbx-workshop__registration-qr')).toBeNull()
+    expect(document.querySelector('.wbx-workshop__editions-row')?.classList.contains('has-registration-qr')).toBe(false)
+  })
+
   it('uses HackerNoon pixel arrows for poster navigation', () => {
     harness.mountHomePage()
     const previous = document.querySelector<HTMLButtonElement>('.wbx-workshop__poster-control--previous')

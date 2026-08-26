@@ -218,40 +218,42 @@ onBeforeUnmount(() => {
             <span v-if="hiddenAttendeeCount" class="wbx-workshop__attendee-overflow" :aria-label="`另有 ${hiddenAttendeeCount} 位报名者`">+{{ hiddenAttendeeCount }}</span>
           </div>
         </div>
-        <div id="workshop-history" class="wbx-workshop__editions" role="tablist" aria-label="选择工作坊期次">
-          <button
-            v-for="(edition, index) in editions"
-            :id="`workshop-tab-${edition.id}`"
-            :key="edition.id"
-            class="wbx-workshop__edition"
-            type="button"
-            role="tab"
-            aria-controls="workshop-panel"
-            :aria-selected="selectedWorkshopIndex === index"
-            :tabindex="selectedWorkshopIndex === index ? 0 : -1"
-            :aria-label="`查看${edition.edition} ${edition.date} 工作坊信息`"
-            @click="selectWorkshop(index)"
-            @keydown="handleWorkshopTabKeydown($event, index)"
-          >
-            <picture v-if="shouldLoadImages">
-              <source v-if="edition.thumbnailPath" type="image/webp" :srcset="withBase(edition.thumbnailPath)">
-              <img
-                :src="withBase(edition.coverPath)"
-                alt=""
-                width="1800"
-                height="2400"
-                loading="lazy"
-                decoding="async"
-              >
-            </picture>
-            <span v-else class="wbx-workshop__edition-placeholder" aria-hidden="true" />
-            <span><strong>{{ edition.edition }}</strong><span>{{ edition.date }}</span></span>
-            <span
-              v-if="selectedWorkshopIndex === index"
-              class="wbx-workshop__edition-status"
-              aria-hidden="true"
-            />
-          </button>
+        <div class="wbx-workshop__editions-row">
+          <div id="workshop-history" class="wbx-workshop__editions" role="tablist" aria-label="选择工作坊期次">
+            <button
+              v-for="(edition, index) in editions"
+              :id="`workshop-tab-${edition.id}`"
+              :key="edition.id"
+              class="wbx-workshop__edition"
+              type="button"
+              role="tab"
+              aria-controls="workshop-panel"
+              :aria-selected="selectedWorkshopIndex === index"
+              :tabindex="selectedWorkshopIndex === index ? 0 : -1"
+              :aria-label="`查看${edition.edition} ${edition.date} 工作坊信息`"
+              @click="selectWorkshop(index)"
+              @keydown="handleWorkshopTabKeydown($event, index)"
+            >
+              <picture v-if="shouldLoadImages">
+                <source v-if="edition.thumbnailPath" type="image/webp" :srcset="withBase(edition.thumbnailPath)">
+                <img
+                  :src="withBase(edition.coverPath)"
+                  alt=""
+                  width="1800"
+                  height="2400"
+                  loading="lazy"
+                  decoding="async"
+                >
+              </picture>
+              <span v-else class="wbx-workshop__edition-placeholder" aria-hidden="true" />
+              <span><strong>{{ edition.edition }}</strong><span>{{ edition.date }}</span></span>
+              <span
+                v-if="selectedWorkshopIndex === index"
+                class="wbx-workshop__edition-status"
+                aria-hidden="true"
+              />
+            </button>
+          </div>
         </div>
       </div>
       <figure class="wbx-workshop__media">
