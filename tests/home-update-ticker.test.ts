@@ -60,13 +60,19 @@ describe('home update ticker', () => {
 
   it('centers the icon and update track and uses a single linear animation', () => {
     const css = readHomeStyle()
+    const stageRule = baseRule(css, '.wbx-hero__stage')
     const tickerRule = baseRule(css, '.wbx-update-ticker')
+    const monogramRule = baseRule(css, '.wbx-hero__monogram')
     const trackRule = baseRule(css, '.wbx-update-ticker__title-track')
 
+    expect(stageRule).toMatch(/--wbx-hero-meta-center:\s*54px;/)
     expect(tickerRule).toMatch(/display:\s*flex;/)
     expect(tickerRule).toMatch(/align-items:\s*center;/)
     expect(tickerRule).toMatch(/justify-content:\s*center;/)
-    expect(tickerRule).toMatch(/margin-inline:\s*auto;/)
+    expect(tickerRule).toMatch(/position:\s*absolute;/)
+    expect(tickerRule).toMatch(/top:\s*calc\(var\(--wbx-hero-meta-center\) - 14px\);/)
+    expect(tickerRule).toMatch(/transform:\s*none;/)
+    expect(monogramRule).toMatch(/top:\s*calc\(var\(--wbx-hero-meta-center\) - 12px\);/)
     expect(trackRule).toMatch(/animation:\s*wbx-update-title-marquee 160s linear infinite;/)
     expect(css).toMatch(
       /@keyframes wbx-update-title-marquee[\s\S]*transform:\s*translate3d\(calc\(-50% - 24px\), 0, 0\);/,

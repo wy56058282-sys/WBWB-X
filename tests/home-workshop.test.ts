@@ -110,14 +110,56 @@ describe('homepage workshop card', () => {
     expect(workshop?.querySelectorAll('.wbx-workshop__edition')).toHaveLength(3)
   })
 
-  it('shows the computer reminder immediately below the workshop action', () => {
+  it('shows the computer reminder immediately to the right of the workshop action', () => {
     harness.mountHomePage()
     const actions = document.querySelector<HTMLElement>('.wbx-workshop__actions')
-    const reminder = actions?.nextElementSibling
+    const reminder = document.querySelector<HTMLElement>('.wbx-workshop__reminder')
 
+    expect(reminder?.parentElement).toBe(actions)
+    expect(actions?.lastElementChild).toBe(reminder)
     expect(reminder?.classList.contains('wbx-workshop__reminder')).toBe(true)
     expect(reminder?.textContent?.trim()).toBe('携带电脑')
     expect(reminder?.querySelector('[aria-hidden="true"]')?.classList.contains('hn-laptop-code')).toBe(true)
+  })
+
+  it('shows registration status until the exact end instant and then marks the edition ended', async () => {
+    vi.setSystemTime(new Date('2026-08-15T17:59:59+08:00'))
+    mountWorkshop([edition({})])
+    await nextTick()
+
+    const statusFact = () => document.querySelector<HTMLElement>('.wbx-workshop__fact--status')
+    expect(statusFact()?.querySelector('dt')?.textContent).toBe('状态')
+    expect(statusFact()?.querySelector('dd')?.textContent).toBe('报名中')
+    expect(document.querySelector('.wbx-home-workshop__registration-trigger')).not.toBeNull()
+
+    await vi.advanceTimersByTimeAsync(1_001)
+    await nextTick()
+
+    expect(statusFact()?.querySelector('dd')?.textContent).toBe('已结束')
+    expect(document.querySelector('.wbx-home-workshop__registration-trigger')).toBeNull()
+    expect(document.querySelector('.wbx-home-workshop__recap')).not.toBeNull()
+  })
+
+  it.each([0, 1, 8, 9])('shows a stable attendee row for %i uploaded avatars', (count) => {
+    const attendees = Array.from({ length: count }, (_, index) => ({
+      name: `报名者${index + 1}`,
+      imagePath: `/attendee-${index + 1}.png`,
+      optimizedImagePath: index === 0 ? '/attendee-1.webp' : undefined,
+    }))
+    mountWorkshop([edition({ attendees })])
+
+    const row = document.querySelector<HTMLElement>('.wbx-workshop__attendees')
+    const avatars = document.querySelectorAll<HTMLImageElement>('.wbx-workshop__attendee img')
+    const overflow = document.querySelector<HTMLElement>('.wbx-workshop__attendee-overflow')
+
+    expect(row === null).toBe(count === 0)
+    expect(avatars).toHaveLength(Math.min(count, 8))
+    expect(overflow?.textContent ?? '').toBe(count > 8 ? `+${count - 8}` : '')
+    if (count > 0) {
+      expect(row?.getAttribute('aria-label')).toBe(`本期已展示 ${Math.min(count, 8)} 位报名者，共 ${count} 位`)
+      expect(avatars[0]?.alt).toBe('报名者1头像')
+      expect(document.querySelector<HTMLSourceElement>('.wbx-workshop__attendee source')?.getAttribute('srcset')).toContain('attendee-1.webp')
+    }
   })
 
   it('switches editions and poster pages in the full homepage workshop section', async () => {
@@ -144,6 +186,19 @@ describe('homepage workshop card', () => {
     expect(workshop?.querySelector('.wbx-home-workshop__state')).toBeNull()
     expect(workshop?.querySelector('.wbx-home-workshop__recap')?.textContent).toBe('查看活动回顾')
     expect(workshop?.querySelector('.wbx-workshop__poster-page')?.textContent?.trim()).toBe('1 / 3')
+  })
+
+  it('uses HackerNoon pixel arrows for poster navigation', () => {
+    harness.mountHomePage()
+    const previous = document.querySelector<HTMLButtonElement>('.wbx-workshop__poster-control--previous')
+    const next = document.querySelector<HTMLButtonElement>('.wbx-workshop__poster-control--next')
+
+    expect(previous?.getAttribute('aria-label')).toBe('查看上一张海报')
+    expect(previous?.querySelector('.hn-arrow-left')?.getAttribute('aria-hidden')).toBe('true')
+    expect(previous?.textContent?.trim()).toBe('')
+    expect(next?.getAttribute('aria-label')).toBe('查看下一张海报')
+    expect(next?.querySelector('.hn-arrow-right')?.getAttribute('aria-hidden')).toBe('true')
+    expect(next?.textContent?.trim()).toBe('')
   })
 
   it('supports complete keyboard tab navigation and poster cycling', async () => {

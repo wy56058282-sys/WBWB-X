@@ -23,6 +23,19 @@ describe('home analytics integration', () => {
     expect(css).toMatch(/@media \(max-width:\s*640px\)[\s\S]*\.wbx-home-analytics dl\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/)
   })
 
+  it('stacks each metric value, Chinese label, and English label on compact desktops', () => {
+    const css = readHomeStyle()
+    const compact = css.slice(
+      css.indexOf('@media (max-width: 1100px)'),
+      css.indexOf('@media (max-width: 640px)'),
+    )
+
+    expect(compact).toMatch(/\.wbx-home-analytics dl > div\s*{[^}]*grid-template-columns:\s*1fr;[^}]*justify-items:\s*start;[^}]*text-align:\s*left;/s)
+    expect(compact).toMatch(/\.wbx-home-analytics dd\s*{[^}]*order:\s*1;/s)
+    expect(compact).toMatch(/\.wbx-home-analytics dt\s*{[^}]*order:\s*2;/s)
+    expect(compact).toMatch(/\.wbx-home-analytics dl small\s*{[^}]*order:\s*3;/s)
+  })
+
   it('keeps the visible status compact like the reference strip', () => {
     const source = readFileSync('docs/.vitepress/theme/HomeAnalyticsStrip.vue', 'utf8')
     const css = readHomeStyle()

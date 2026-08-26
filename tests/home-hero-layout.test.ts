@@ -98,7 +98,10 @@ describe('home hero icon navigation', () => {
       /\.wbx-hero__copy\s*>\s*\.wbx-pixel-label\s*\{[^}]*color:\s*var\(--wbx-ink\);/s,
     )
     expect(css).toMatch(
-      /\.wbx-hero__monogram\s*\{[^}]*top:\s*42px;[^}]*right:\s*48px;/s,
+      /\.wbx-hero__stage\s*\{[^}]*--wbx-hero-meta-center:\s*54px;/s,
+    )
+    expect(css).toMatch(
+      /\.wbx-hero__monogram\s*\{[^}]*top:\s*calc\(var\(--wbx-hero-meta-center\) - 12px\);[^}]*right:\s*48px;/s,
     )
   })
 

@@ -47,17 +47,21 @@ describe('OPC reading area', () => {
     ])
   })
 
-  it('uses the shared reading layout and a dedicated seven-entry sidebar', () => {
+  it('uses the shared reading layout with overview links separated from the chapter group', () => {
     expect(isReadingRoute('/opc/', '/')).toBe(true)
     expect(isReadingRoute('/WBWB-X/opc/chapter-2/', '/WBWB-X/')).toBe(true)
 
-    const sidebars = config.themeConfig?.sidebar as Record<string, Array<{ text: string; link: string }>>
+    const sidebars = config.themeConfig?.sidebar as Record<string, Array<unknown>>
     expect(sidebars['/opc/']).toEqual([
       { text: 'OPC 白皮书总览', link: '/opc/' },
-      ...chapterTitles.map((title, index) => ({
-        text: `第 ${index + 1} 章 ${title}`,
-        link: `/opc/chapter-${index + 1}/`,
-      })),
+      { text: '阅读指南', link: '/opc/#推荐阅读方式' },
+      {
+        text: '章节目录',
+        items: chapterTitles.map((title, index) => ({
+          text: `第 ${index + 1} 章 ${title}`,
+          link: `/opc/chapter-${index + 1}/`,
+        })),
+      },
     ])
   })
 

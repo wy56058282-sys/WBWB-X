@@ -70,6 +70,9 @@ describe('enterprise services page', () => {
     expect(team.borderTopWidth).toBe('0px')
     expect(team.boxShadow).toBe('none')
     expect(team.backgroundColor).toBe('rgba(0, 0, 0, 0)')
+    expect(readFileSync('docs/.vitepress/theme/enterprise-services.css', 'utf8')).toMatch(
+      /\.custom-enterprise-services-page\s*\{[^}]*overflow-x:\s*clip;/s,
+    )
   })
 
   it('offers four scoped services with real destinations', () => {
@@ -85,21 +88,30 @@ describe('enterprise services page', () => {
     ])
     expect(cards[0]?.classList.contains('is-recommended')).toBe(true)
     expect(cards[0]?.textContent).toContain('推荐起点')
+    expect(cards[0]?.querySelector('a')?.getAttribute('href')).toBe('/WBWB-X/cases/#submit-case')
     expect(cards[2]?.querySelector('a')?.getAttribute('href')).toBe('/WBWB-X/#workshop-registration')
-    expect(cards.filter((_, index) => index !== 2).every((card) => card.querySelector('a')?.getAttribute('href')?.startsWith('mailto:contact@sparkx.zone'))).toBe(true)
+    expect([cards[1], cards[3]].every((card) => card.querySelector('a')?.getAttribute('href')?.startsWith('mailto:contact@sparkx.zone'))).toBe(true)
     expect(document.body.textContent).not.toMatch(/¥|￥|元\/|套餐价/)
   })
 
-  it('reuses the existing six-person team without duplicating the About header', () => {
+  it('shows seven AI service architects before the empty FDE recruitment section', () => {
     mountPage()
 
-    expect(document.querySelector('#team')).not.toBeNull()
-    expect(document.querySelectorAll('#team .wbx-about-member')).toHaveLength(6)
+    const coaches = document.querySelector('#team')
+    const fde = document.querySelector('#fde')
+
+    expect(coaches).not.toBeNull()
+    expect(fde).not.toBeNull()
+    expect(coaches?.compareDocumentPosition(fde!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(document.querySelectorAll('#team .wbx-about-member')).toHaveLength(7)
+    expect(document.querySelectorAll('#fde .wbx-fde-member')).toHaveLength(0)
     expect(document.querySelector('.wbx-about__header')).toBeNull()
     expect(document.querySelectorAll('#about-team-title')).toHaveLength(1)
-    expect(document.querySelector('#team .wbx-pixel-label')?.textContent).toBe('DELIVERY TEAM')
-    expect(document.querySelector('#about-team-title')?.textContent).toBe('场景教练与前线部署工程师（FDE）')
-    expect(document.querySelector('.wbx-about__heading > p')?.textContent).toBe('汇集产品、设计、运营与 AI 实践者，为培训、工作坊和企业场景落地提供一线支持。')
+    expect(document.querySelector('#team .wbx-pixel-label')?.textContent).toBe('AI SERVICE ARCHITECTS')
+    expect(document.querySelector('#about-team-title')?.textContent).toBe('AI 服务架构师（ASC）')
+    expect(document.querySelector('#fde-title')?.textContent).toBe('前线部署工程师（FDE）')
+    expect(document.querySelector('.wbx-fde-recruit__title')?.textContent).toContain('工程师资料将陆续补充')
+    expect(document.querySelector<HTMLButtonElement>('.wbx-about-join__trigger')?.textContent).toBe('申请入驻')
   })
 
   it('closes Join Us from a global Escape key and restores trigger focus', async () => {

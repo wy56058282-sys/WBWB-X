@@ -74,11 +74,11 @@ describe('home hero icon navigation', () => {
     expect(actions).toMatch(/width:\s*min\(100%, 370px\);/)
     expect(actions).toMatch(/margin-top:\s*24px;/)
     expect(button).toMatch(/min-width:\s*0;/)
-    expect(download).toMatch(/background:\s*var\(--wbx-accent\);/)
-    expect(download).toMatch(/color:\s*#0d100d !important;/)
-    expect(download).toMatch(/border-color:\s*var\(--wbx-accent\);/)
+    expect(download).toMatch(/background:\s*var\(--wbx-ink\);/)
+    expect(download).toMatch(/color:\s*var\(--wbx-surface\) !important;/)
+    expect(download).toMatch(/border-color:\s*var\(--wbx-ink\);/)
     expect(css).toMatch(
-      /\.wbx-system__actions \.wbx-system__download:(?:hover|focus-visible)[^{]*\{[^}]*color:\s*#0d100d !important;[^}]*border-color:\s*var\(--wbx-accent\);/s,
+      /\.wbx-system__actions \.wbx-system__download:(?:hover|focus-visible)[^{]*\{[^}]*color:\s*var\(--wbx-surface\) !important;[^}]*border-color:\s*var\(--wbx-ink\);[^}]*background:\s*var\(--wbx-ink\);/s,
     )
     expect(mobile).toMatch(
       /\.wbx-system__actions\s*\{[^}]*width:\s*100%;/s,

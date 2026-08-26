@@ -7,7 +7,7 @@ describe('workshop and About responsive styles', () => {
 
     expect(styles).toMatch(/\.wbx-workshop__panel\s*\{[^}]*grid-template-columns:\s*minmax\(0, 570px\) minmax\(320px, 486px\)[^}]*justify-content:\s*space-between/s)
     expect(styles).toMatch(/\.wbx-workshop__poster\s*\{[^}]*width:\s*100%[^}]*aspect-ratio:\s*3 \/ 4/s)
-    expect(styles).toMatch(/\.wbx-workshop__facts\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)/s)
+    expect(styles).toMatch(/\.wbx-workshop__facts\s*\{[^}]*grid-template-columns:\s*repeat\(4, minmax\(0, 1fr\)/s)
     expect(styles).toMatch(/\.wbx-workshop__editions\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)/s)
     expect(styles).toMatch(/\.wbx-workshop__edition\[aria-selected="true"\]\s*\{[^}]*box-shadow:/s)
   })
@@ -24,8 +24,8 @@ describe('workshop and About responsive styles', () => {
 
   it('keeps About member images uncropped across desktop and mobile grids', () => {
     const styles = readFileSync('docs/.vitepress/theme/about.css', 'utf8')
-    expect(styles).toMatch(/\.wbx-about-members\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/s)
-    expect(styles).toMatch(/\.wbx-about-member img\s*\{[^}]*width:\s*100%[^}]*height:\s*auto[^}]*object-fit:\s*contain/s)
+    expect(styles).toMatch(/\.wbx-about-members\s*\{[^}]*grid-template-columns:\s*repeat\(4, minmax\(0, 1fr\)\)/s)
+    expect(styles).toMatch(/\.wbx-about-member img\s*\{[^}]*width:\s*100%[^}]*height:\s*100%[^}]*object-fit:\s*contain[^}]*transform:\s*translateX\(20px\) scale\(1\.4\)[^}]*transform-origin:\s*right bottom/s)
     expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-about-members\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/s)
     expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-about-members\s*\{[^}]*grid-template-columns:\s*1fr/s)
   })

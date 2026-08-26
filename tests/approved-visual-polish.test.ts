@@ -49,12 +49,11 @@ describe('approved visual polish', () => {
 
   it('gives mentor cards a restrained desktop hover motion', () => {
     const member = baseRule(about, '.wbx-about-member')
-    const hover = baseRule(about, '.wbx-about-member:hover')
 
     expect(member).toMatch(/transition:[^;]*var\(--wbx-motion-fast\)/)
-    expect(hover).toMatch(/transform:\s*translateY\(-3px\)/)
-    expect(hover).toMatch(/box-shadow:\s*var\(--wbx-shadow-hover\)/)
-    expect(about).toMatch(/@media \(hover: hover\) and \(pointer: fine\)/)
+    expect(about).toMatch(/@media \(hover: hover\) and \(pointer: fine\)[\s\S]*?\.wbx-about-member:hover,\s*\.wbx-about-member:focus-within\s*\{[^}]*transform:\s*translateY\(-3px\)/)
+    expect(about).toMatch(/\.wbx-about-member:hover,\s*\.wbx-about-member:focus-within\s*\{[^}]*box-shadow:\s*var\(--wbx-shadow-hover\)/)
+    expect(about).toMatch(/\.wbx-about-member:hover img,\s*\.wbx-about-member:focus-within img\s*\{[^}]*transform:\s*translateX\(0\) scale\(1\.5\)/)
     expect(about).toMatch(/@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.wbx-about-member:hover[\s\S]*?transform:\s*none/)
   })
 

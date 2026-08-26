@@ -220,12 +220,32 @@ describe('home hero icon navigation', () => {
     expect(copy).toMatch(/color:\s*var\(--wbx-text-body\);/)
   })
 
-  it('keeps workshop controls readable on the mint surface in dark mode', () => {
+  it('uses an inverse primary action and a neutral poster count across themes', () => {
     const page = baseRule(workshopCss, '.wbx-workshop__poster-page')
     const control = baseRule(workshopCss, '.wbx-workshop__poster-control')
+    const primary = baseRule(workshopCss, '.wbx-workshop__action--primary')
 
-    expect(page).toMatch(/color:\s*#0d100d;/)
+    expect(page).toMatch(/border:\s*1px solid var\(--wbx-line\);/)
+    expect(page).toMatch(/color:\s*var\(--wbx-ink\);/)
+    expect(page).toMatch(/background:\s*var\(--wbx-surface\);/)
     expect(control).toMatch(/color:\s*#0d100d;/)
+    expect(primary).toMatch(/border-color:\s*var\(--wbx-ink\);/)
+    expect(primary).toMatch(/color:\s*var\(--wbx-surface\);/)
+    expect(primary).toMatch(/background:\s*var\(--wbx-ink\);/)
+    expect(workshopCss).toMatch(
+      /\.wbx-workshop__action--primary:(?:hover|focus-visible)[^{]*\{[^}]*color:\s*var\(--wbx-surface\);[^}]*background:\s*var\(--wbx-ink\);/s,
+    )
+  })
+
+  it('uses four workshop facts on desktop and a 2x2 fact grid on mobile', () => {
+    const facts = baseRule(workshopCss, '.wbx-workshop__facts')
+
+    expect(facts).toMatch(/grid-template-columns:\s*repeat\(4, minmax\(0, 1fr\)\);/)
+    expect(workshopCss).toMatch(
+      /@media \(max-width: 640px\)[\s\S]*?\.wbx-workshop__facts\s*{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/,
+    )
+    expect(baseRule(workshopCss, '.wbx-workshop__attendee img')).toMatch(/border-radius:\s*50%;/)
+    expect(baseRule(workshopCss, '.wbx-workshop__attendees')).toMatch(/justify-content:\s*flex-start;/)
   })
 
   it('uses the approved system heading without the retired materials callout', () => {

@@ -1,3 +1,4 @@
+.custom-enterprise-services-page { overflow-x: clip; }
 .custom-enterprise-services-page .VPDoc:not(.has-sidebar) .container { max-width: calc(var(--wbx-content-wide) + 64px); }
 .custom-enterprise-services-page .VPDoc:not(.has-sidebar) .content { max-width: none; }
 

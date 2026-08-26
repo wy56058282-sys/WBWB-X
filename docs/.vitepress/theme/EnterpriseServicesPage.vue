@@ -12,7 +12,7 @@ const services = [
     title: '需求诊断',
     description: '先明确目标、输入、流程和交付标准，找到最适合当前阶段的合作方式。',
     action: '预约需求诊断',
-    href: `mailto:${contactEmail}?subject=${encodeURIComponent('WorkBuddy-X 需求诊断咨询')}`,
+    href: withBase('/cases/#submit-case'),
     recommended: true,
   },
   {
@@ -82,9 +82,9 @@ const services = [
 
     <AboutPage
       embedded
-      team-label="DELIVERY TEAM"
-      team-title="场景教练与前线部署工程师（FDE）"
-      team-description="汇集产品、设计、运营与 AI 实践者，为培训、工作坊和企业场景落地提供一线支持。"
+      team-label="AI SERVICE ARCHITECTS"
+      team-title="AI 服务架构师（ASC）"
+      team-description="汇集产品、设计、运营与 AI 实践者，为培训、工作坊与企业场景提供架构指导。"
     />
   </div>
 </template>

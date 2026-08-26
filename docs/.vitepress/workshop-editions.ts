@@ -20,6 +20,13 @@ export interface WorkshopEdition {
   displayPosterPaths?: readonly string[]
   activityDetailUrl: string
   registrationQrPath: string
+  attendees?: readonly WorkshopAttendee[]
+}
+
+export interface WorkshopAttendee {
+  name?: string
+  imagePath: string
+  optimizedImagePath?: string
 }
 
 export type WorkshopEditionStatus = 'upcoming' | 'ongoing' | 'past'

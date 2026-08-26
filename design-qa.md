@@ -114,6 +114,167 @@ final result: passed
 
 ---
 
+# 2026-08-26 ASC 公司标志预留区 Design QA
+
+## Evidence
+
+- Source visual truth: the user-annotated `/services/#team` browser screenshot in this task, represented by the pre-change browser capture `artifacts/visual-qa/asc-logo-space-before.jpg` (`1458 × 1004`).
+- Browser-rendered implementation: `artifacts/visual-qa/asc-logo-space-after.jpg` (`1458 × 1004`).
+- Full-view combined comparison: `artifacts/visual-qa/asc-logo-space-comparison.jpg` (`1474 × 1015`).
+- Responsive evidence: `artifacts/visual-qa/asc-logo-space-mobile.jpg` (`462 × 1041`); requested viewport `390 × 844`, browser runtime CSS viewport `433px` wide, device scale factor `1`.
+- State: `/services/#team`, desktop and narrow layouts, light and dark themes; hover state rechecked after the spacing change.
+- Density normalization: before and after desktop captures use identical browser viewport and density; the comparison page fits both images proportionally without stretching.
+
+## Findings and comparison history
+
+- The approved change moves the entire ASC text stack down exactly `20px`: the measured name offset changes from `42.55px` to `62.55px` relative to the card top across all seven cards.
+- The new top-left area remains intentionally empty for future company logos; no placeholder, fake logo, generated mark, or asset approximation was introduced.
+- Fonts and typography: names, titles, secondary copy, weights, line heights, wrapping, and hierarchy are unchanged.
+- Spacing and layout rhythm: only the text stack top padding changes from `42px` to `62px`; card size, four/two/one-column grid, gaps, radii, borders, and section rhythm remain unchanged.
+- Colors and tokens: light and dark surfaces and semantic text tokens remain unchanged; dark mode resolves the name to `rgb(243, 245, 237)` on the existing `rgb(24, 27, 21)` card surface.
+- Image quality and assets: all seven supplied transparent portraits remain unchanged and bottom-aligned. Hover still uses `scale(1.5)` and measures a `0.56px` border/subpixel difference at the card bottom, with no visible gap.
+- Copy and content: teacher names and titles are unchanged. Desktop and narrow layouts report no horizontal overflow; browser console errors: `0`.
+- No actionable P0, P1, or P2 differences remain.
+
+final result: passed
+
+---
+
+# 2026-08-26 ASC 悬停照片底部贴合 Design QA
+
+## Evidence
+
+- Source visual truth: `/var/folders/w2/vy8c_ntd7gz4w0r14jl2s9v40000gn/T/TemporaryItems/NSIRD_screencaptureui_TkZqdu/截屏2026-08-26 18.03.41.png` (`904 × 540`).
+- Browser-rendered implementation: `artifacts/visual-qa/asc-hover-bottom-aligned-viewport.png` (`1458 × 1004`).
+- Combined comparison: `artifacts/visual-qa/asc-hover-bottom-comparison.png` (`1474 × 1015`).
+- State: desktop light theme, `/services/#team`, 魏心语 ASC 卡片悬停；浏览器 CSS 视口 `1458 × 1004`，device scale factor `1`。
+- Density normalization: source and implementation were proportionally fit into the comparison canvas without stretching; the focused implementation remains at its browser-rendered aspect ratio.
+
+## Findings and comparison history
+
+- Before the fix, the portrait hover transform included `translateY(-8px)`, which enlarged the portrait but opened a visible gap above the card bottom.
+- The hover transform now keeps the existing `scale(1.5)` and right-bottom transform origin while removing vertical translation; the portrait therefore grows left/up while remaining anchored to the card bottom.
+- Browser measurement after the fix: card bottom `623.65px`, portrait bottom `623.09px`, difference `0.56px`; this is the border/subpixel edge and is not a visible gap.
+- The card retains `overflow: hidden`; desktop `scrollWidth` and `clientWidth` both equal `1458px`, so the enlarged portrait creates no horizontal overflow.
+- Typography, copy, color tokens, card size, responsive grid, source portrait, and non-hover layout are unchanged. Browser console errors: `0`.
+- No actionable P0, P1, or P2 differences remain.
+
+final result: passed
+
+---
+
+# 2026-08-26 王翎旭透明照片更新 QA
+
+- 使用用户提供的 `01.png` 原图替换王翎旭 ASC 卡片照片，未重绘、裁切或调整人物外观。
+- PNG 与无损 WebP 均为 `900 × 842`、RGBA 透明资源；资源版本已更新，避免浏览器继续读取旧白底缓存。
+- 桌面亮色、桌面暗色与 `390 × 844` 窄屏检查通过：白色矩形背景已移除，人物仍保持右下对齐，卡片无横向溢出。
+- 回归测试验证照片背景采样点透明，相关测试通过。
+
+final result: passed
+
+---
+
+# ASC teacher card detail QA
+
+## Evidence
+
+- Browser-rendered implementation: `artifacts/visual-qa/asc-photo-size-desktop.png`
+- Viewports checked: desktop browser viewport and mobile override (`390 × 844` requested; browser runtime reported `433 × 938` CSS px).
+- States checked: light theme, dark theme, desktop four-column grid, mobile single-column grid.
+
+## Findings
+
+- 王翎旭介绍精确显示为 `原平安、汇丰产品负责人 原阿里、腾讯设计专家`，不再包含中文分号。
+- 刘鹏振主抬头精确显示为 `dwin 青年 OPC 主理人`，不再包含“定猬”。
+- 7 张 ASC 照片容器尺寸保持不变，人物图层统一使用 `transform: scale(1.4)` 放大 40%，继续使用 `object-fit: contain` 并以右下角为缩放原点；人物向左、向上延伸且未遮挡姓名或抬头。
+- ASC 卡片尺寸、4/2/1 列响应式网格及文字结构保持不变；FDE 模块未调整。
+- 桌面与移动端均无横向溢出；暗色模式文字对比正常；浏览器控制台无错误或警告。
+- No actionable P0, P1, or P2 differences remain.
+
+final result: passed
+
+---
+
+# 2026-08-26 王翎旭卡片校正 QA
+
+## Evidence
+
+- Source visual truth: `/Users/wangyi/Desktop/有言品牌/老师/01.png` and the approved browser annotation requesting the corrected name and two-line title treatment.
+- Browser-rendered implementation: `artifacts/visual-qa/asc-wang-lingxu-desktop.png`.
+- Focused same-scale comparison: `artifacts/visual-qa/asc-wang-lingxu-comparison.png`.
+- Viewport: desktop `1422 × 800`, device scale factor `1`; light and dark states checked.
+
+## Findings
+
+- Typography and copy: the card now reads `王翎旭`, with `Quadr-X 产品总监` as the primary line and `三分设 主理人` as the second line.
+- Spacing and layout: the existing card grid, left-copy/right-photo structure, padding, radii, and section rhythm remain unchanged.
+- Colors and tokens: both light and dark themes retain the established semantic text and surface colors.
+- Image quality: the newly supplied transparent portrait replaces only this member's existing portrait source; the image remains contained, sharp, and unstretched.
+- Console errors and warnings checked: none.
+- No actionable P0, P1, or P2 differences remain.
+
+final result: passed
+
+---
+
+# 2026-08-26 ASC cards design QA
+
+## Evidence
+
+- Source visual truth: the seven user-supplied transparent portraits in `docs/public/article-assets/service/asc/` and the approved browser annotations for the enterprise-service team section.
+- Browser-rendered implementation: `/services/#team` at desktop `1422 × 800` and mobile `390 × 844`; light and dark themes were checked.
+- State: seven AI service architects in the approved order, with HTML profile text on the left and the corresponding portrait on the right.
+
+## Results
+
+- Desktop resolves to four cards on the first row and three on the second; tablet resolves to two columns; mobile resolves to one column.
+- Portraits use transparent PNG fallbacks and lossless WebP sources with `object-fit: contain`; no portrait is stretched or cropped.
+- The mobile layout has no horizontal overflow, and the dark theme preserves readable title, body, and secondary-text contrast.
+- Browser console errors and warnings checked: none.
+- No actionable P0, P1, or P2 visual issues remain.
+
+final result: passed
+
+---
+
+# 2026-08-26 OPC 侧边栏结构 Design QA
+
+## 对比目标与证据
+
+- 源视觉真值：`/var/folders/w2/vy8c_ntd7gz4w0r14jl2s9v40000gn/T/TemporaryItems/NSIRD_screencaptureui_NsTl5c/截屏2026-08-26 10.26.58.png`，`466 × 442` PNG。
+- 浏览器实现全视图：`/private/tmp/opc-sidebar-implementation.png`，`1458 × 1004` PNG；桌面 CSS 视口约 `1458 × 1004`。
+- 浏览器实现重点区域：`/private/tmp/opc-sidebar-focus.png`，`311 × 491` PNG；截图后端做了像素密度归一。
+- 状态：OPC 总览、浅色主题、侧边栏展开；源图与重点区域已在同一比较输入中检查。
+
+## 必查视觉表面
+
+- 字体与排版：沿用阅读页现有字体、字重与章节层级；新增“阅读指南”和“章节目录”没有引入新的排版规则。
+- 间距与布局：总览和阅读指南位于第一组；章节目录为第二组，组间使用现有分割线与内边距。六个章节保持原顺序。
+- 色彩与令牌：总览继续使用薄荷绿选中态；分割线、普通文字和侧栏表面复用现有亮暗主题令牌。暗色主题实测文字与分割线均可见。
+- 图片与资产：侧边栏没有图片资产，本轮未新增或替换任何图像、图标或装饰资产。
+- 文案与内容：新增“阅读指南”并指向总览页“推荐阅读方式”锚点；章节标题、正文和路由均未改变。
+
+## 全视图与重点区域对比
+
+- 全视图确认 OPC 正文宽度、右侧本页目录和章节内容未变化，页面无横向溢出。
+- 重点区域确认结构与参考一致：顶部为总览与阅读指南，随后是分割线，再进入章节分组。
+- 参考图中的“阅读指南”呈灰色表面属于悬停视觉；实现继续使用站点现有侧边栏悬停表面，没有为 OPC 添加独立颜色规则。
+
+## 交互、响应式与运行检查
+
+- 点击“阅读指南”后 URL 进入 `/opc/#推荐阅读方式`，目标标题存在并进入当前视口。
+- 手机布局下通过 `Menu` 打开侧边栏，宽度为 `320px`；总览、阅读指南、章节目录和六章均可见，页面无横向溢出。
+- 暗色主题下侧栏背景、辅助文字和分割线使用对应深色令牌；浏览器 warning/error 为 `0`。
+
+## Findings 与比较历史
+
+- 无 P0、P1 或 P2 视觉、交互、响应式问题。
+- 初次实现即复用 WB-X 的现有分组结构和侧边栏样式；联合对照未发现需要返工的中高优先级偏差。
+
+final result: passed
+
+---
+
 # Agent Swarm shared-card QA
 
 ## Evidence

@@ -26,6 +26,9 @@ const selectedStatus = computed(() => {
   if (!selectedWorkshop.value) return undefined
   return selectRelevantWorkshopEdition([selectedWorkshop.value], currentTime.value)?.status
 })
+const selectedAttendees = computed(() => selectedWorkshop.value?.attendees ?? [])
+const visibleAttendees = computed(() => selectedAttendees.value.slice(0, 8))
+const hiddenAttendeeCount = computed(() => Math.max(0, selectedAttendees.value.length - visibleAttendees.value.length))
 const isRegistrationOpen = ref(false)
 const shouldLoadImages = ref(typeof window !== 'undefined' && typeof window.IntersectionObserver !== 'function')
 const workshopSection = ref<HTMLElement | null>(null)
@@ -165,6 +168,7 @@ onBeforeUnmount(() => {
             <div><dt>时间</dt><dd><span>{{ selectedWorkshop.fullDate }}</span><span>{{ selectedWorkshop.time }}</span></dd></div>
             <div><dt>规模</dt><dd>{{ selectedWorkshop.capacity }}</dd></div>
             <div><dt>地点</dt><dd><span>{{ selectedWorkshop.venue }}</span><span>{{ selectedWorkshop.area }}</span></dd></div>
+            <div class="wbx-workshop__fact--status" :class="{ 'is-ended': selectedStatus === 'past' }"><dt>状态</dt><dd>{{ selectedStatus === 'past' ? '已结束' : '报名中' }}</dd></div>
           </dl>
           <div class="wbx-workshop__actions">
             <div v-if="selectedStatus !== 'past'" ref="registration" class="wbx-home-workshop__registration">
@@ -195,11 +199,24 @@ onBeforeUnmount(() => {
               :rel="selectedWorkshop.activityDetailUrl ? 'noopener noreferrer' : undefined"
               :aria-label="selectedWorkshop.activityDetailUrl ? '查看活动回顾（在新页面打开）' : undefined"
             >查看活动回顾</a>
+            <p class="wbx-workshop__reminder">
+              <i class="hn hn-laptop-code" aria-hidden="true" />
+              <span>携带电脑</span>
+            </p>
           </div>
-          <p class="wbx-workshop__reminder">
-            <i class="hn hn-laptop-code" aria-hidden="true" />
-            <span>携带电脑</span>
-          </p>
+          <div
+            v-if="selectedAttendees.length"
+            class="wbx-workshop__attendees"
+            :aria-label="`本期已展示 ${visibleAttendees.length} 位报名者，共 ${selectedAttendees.length} 位`"
+          >
+            <span v-for="(attendee, index) in visibleAttendees" :key="`${attendee.imagePath}-${index}`" class="wbx-workshop__attendee">
+              <picture>
+                <source v-if="attendee.optimizedImagePath" type="image/webp" :srcset="withBase(attendee.optimizedImagePath)">
+                <img :src="withBase(attendee.imagePath)" :alt="attendee.name ? `${attendee.name}头像` : ''" width="40" height="40" loading="lazy" decoding="async">
+              </picture>
+            </span>
+            <span v-if="hiddenAttendeeCount" class="wbx-workshop__attendee-overflow" :aria-label="`另有 ${hiddenAttendeeCount} 位报名者`">+{{ hiddenAttendeeCount }}</span>
+          </div>
         </div>
         <div id="workshop-history" class="wbx-workshop__editions" role="tablist" aria-label="选择工作坊期次">
           <button
@@ -263,8 +280,8 @@ onBeforeUnmount(() => {
       <div class="wbx-workshop__poster-navigation" aria-label="切换海报页面">
         <span class="wbx-workshop__poster-page" aria-live="polite">{{ selectedPosterIndex + 1 }} / {{ selectedWorkshop.posterPaths.length }}</span>
         <div v-if="selectedWorkshop.posterPaths.length > 1" class="wbx-workshop__poster-actions">
-          <button class="wbx-workshop__poster-control wbx-workshop__poster-control--previous" type="button" aria-label="查看上一张海报" @click="selectAdjacentPoster(-1)"><span aria-hidden="true">←</span></button>
-          <button class="wbx-workshop__poster-control wbx-workshop__poster-control--next" type="button" aria-label="查看下一张海报" @click="selectAdjacentPoster(1)"><span aria-hidden="true">→</span></button>
+          <button class="wbx-workshop__poster-control wbx-workshop__poster-control--previous" type="button" aria-label="查看上一张海报" @click="selectAdjacentPoster(-1)"><i class="hn hn-arrow-left" aria-hidden="true" /></button>
+          <button class="wbx-workshop__poster-control wbx-workshop__poster-control--next" type="button" aria-label="查看下一张海报" @click="selectAdjacentPoster(1)"><i class="hn hn-arrow-right" aria-hidden="true" /></button>
         </div>
       </div>
     </div>
