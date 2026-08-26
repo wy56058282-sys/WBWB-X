@@ -40,8 +40,9 @@ describe('calm soft product design system', () => {
   it('aligns the case, tool, and enterprise-service page shells to one wide content baseline', () => {
     expect(baseRule(cases, '.wbx-cases-layout .VPDoc .container')).toMatch(/max-width:\s*calc\(var\(--wbx-content-wide\) \+ 64px\)/)
     expect(baseRule(tools, '.wbx-tools__header')).toMatch(/width:\s*min\(var\(--wbx-content-wide\), 100%\)/)
-    expect(baseRule(tools, '.wbx-tools__tabs')).toMatch(/width:\s*min\(var\(--wbx-content-wide\), 100%\)/)
+    expect(baseRule(tools, '.wbx-tools__tabs')).toMatch(/width:\s*min\(760px, calc\(100% - 32px\)\)/)
     expect(baseRule(tools, '.wbx-tools__placeholder')).toMatch(/width:\s*min\(var\(--wbx-content-wide\), 100%\)/)
+    expect(baseRule(tools, '.wbx-tools__panel .wbx-service')).toMatch(/max-width:\s*var\(--wbx-content-wide\)/)
     expect(baseRule(enterpriseServices, '.custom-enterprise-services-page .VPDoc:not(.has-sidebar) .container')).toMatch(/max-width:\s*calc\(var\(--wbx-content-wide\) \+ 64px\)/)
     expect(baseRule(service, '.wbx-service')).toMatch(/max-width:\s*1200px/)
   })

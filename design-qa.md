@@ -111,6 +111,42 @@ final result: blocked
 - 本节替代上方历史 Task 5 中“浏览器不可用”的阻塞结论；历史记录保留用于说明之前的验收环境。
 
 final result: passed
+
+---
+
+# Agent Swarm shared-card QA
+
+## Evidence
+
+- Source visual truth: Browser Comment 1 conversation screenshot at `1474 × 1015`, plus the approved annotations “放到动图卡片里面” and “这部分上移到 01 上面”. The source attachment has no local filesystem path.
+- Browser-rendered implementation: `design-qa-agent-swarm.png`
+- CSS viewport: `1440 × 900`; implementation pixels: `1759 × 1111` at the in-app browser's native capture density.
+- State: WorkBuddy product tab, Agent Swarm anchor, light theme. Dark theme and `390 × 844` responsive layout were checked separately.
+
+## Full-view and focused comparison
+
+- The heading and description remain above the visualization as approved.
+- The three metrics and animated network now share one `1336px` rounded card, split approximately `395px / 940px` on desktop.
+- On mobile the same card becomes one column, with metrics above the horizontally scrollable animation and a light internal divider.
+- `SKILLS · 工作场景` now appears immediately before `01 · MINDSET`; subsequent numbered sections keep their existing labels.
+- A focused region check was required because the change concerns card containment, divider placement, and responsive composition.
+
+## Required fidelity surfaces
+
+- Fonts and typography: existing WorkBuddy hierarchy and weights are unchanged.
+- Spacing and layout rhythm: the previous external gap is removed; internal padding and a divider establish one surface.
+- Colors and visual tokens: existing surface, line, accent, and shadow tokens are reused in light and dark themes.
+- Image quality and asset fidelity: the existing animated SVG remains unchanged and sharp.
+- Copy and content: metrics, headings, description, and animation labels are unchanged; only the Skills eyebrow becomes non-numbered.
+
+## Findings and comparison history
+
+- No actionable P0, P1, or P2 mismatch remains.
+- Initial state: metrics were a separate left block and the animation had its own card.
+- Fix: moved the border, radius, surface, and shadow to the shared layout; added responsive internal dividers; moved Skills before section 01.
+- Post-fix evidence: desktop, mobile, light, dark, no-overflow, and console checks passed in the in-app browser.
+
+final result: passed
 ---
 
 # 2026-08-25 首页星火集气泡 Design QA

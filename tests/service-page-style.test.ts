@@ -48,10 +48,10 @@ describe('WorkBuddy product service styles', () => {
     expect(baseRule(styles, '.wbx-service-flow,\n.wbx-service-files')).toMatch(/border-radius:\s*12px/)
     expect(baseRule(styles, '.wbx-service-model')).toMatch(/border-radius:\s*12px/)
     expect(baseRule(styles, '.wbx-service-model')).toMatch(/box-shadow:\s*var\(--wbx-shadow-soft\)/)
-    expect(baseRule(styles, '.wbx-service-swarm')).toMatch(/border:\s*1px solid var\(--wb-ref-line\)/)
-    expect(baseRule(styles, '.wbx-service-swarm')).toMatch(/border-radius:\s*20px/)
-    expect(baseRule(styles, '.wbx-service-swarm')).toMatch(/box-shadow:\s*var\(--wbx-shadow-soft\)/)
-    expect(baseRule(styles, '.wbx-service-swarm')).not.toMatch(/2px solid var\(--wbx-ink\)/)
+    expect(baseRule(styles, '.wbx-service-swarm-layout')).toMatch(/border:\s*1px solid var\(--wb-ref-line\)/)
+    expect(baseRule(styles, '.wbx-service-swarm-layout')).toMatch(/border-radius:\s*20px/)
+    expect(baseRule(styles, '.wbx-service-swarm-layout')).toMatch(/box-shadow:\s*var\(--wbx-shadow-soft\)/)
+    expect(baseRule(styles, '.wbx-service-swarm-layout')).not.toMatch(/2px solid var\(--wbx-ink\)/)
   })
 
   it('softens the remote-control devices without removing their motion states', () => {
@@ -94,9 +94,23 @@ describe('WorkBuddy product service styles', () => {
   })
 
   it('adapts the main diagrams and capability rows across tablet and mobile widths', () => {
+    expect(baseRule(styles, '.wbx-service-swarm-layout')).toMatch(/display:\s*grid/)
+    expect(baseRule(styles, '.wbx-service-swarm-layout')).toMatch(/grid-template-columns:\s*minmax\(260px, \.42fr\) minmax\(0, 1fr\)/)
+    expect(baseRule(styles, '.wbx-service-swarm-layout')).toMatch(/overflow:\s*hidden/)
+    expect(baseRule(styles, '.wbx-service-swarm-layout')).toMatch(/border:\s*1px solid var\(--wb-ref-line\)/)
+    expect(baseRule(styles, '.wbx-service-swarm-layout')).toMatch(/border-radius:\s*20px/)
+    expect(baseRule(styles, '.wbx-service-swarm-layout')).toMatch(/box-shadow:\s*var\(--wbx-shadow-soft\)/)
+    expect(baseRule(styles, '#swarm > .wbx-service-heading')).toMatch(/max-width:\s*820px/)
+    expect(baseRule(styles, '.wbx-service-swarm')).not.toMatch(/(?:^|\s)border:/)
+    expect(baseRule(styles, '.wbx-service-swarm')).not.toMatch(/border-radius:/)
+    expect(baseRule(styles, '.wbx-service-swarm')).not.toMatch(/box-shadow:/)
+    expect(baseRule(styles, '.wbx-service-swarm__stats')).toMatch(/border-right:\s*1px solid var\(--wbx-line\)/)
+    expect(baseRule(styles, '.wbx-service-swarm__stats > div')).toMatch(/grid-template-columns:\s*72px minmax\(0, 1fr\)/)
     expect(styles).toMatch(/\.wbx-service-compare\s*\{[^}]*grid-template-columns:\s*1fr 56px 1fr/s)
     expect(styles).toMatch(/\.wbx-service-capability\s*\{[^}]*grid-template-columns:[^}]*minmax\(0, 1fr\)[^}]*minmax\(0, 1fr\)/s)
     expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service-compare[^{]*\{[^}]*grid-template-columns:\s*1fr/s)
+    expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service-swarm-layout\s*\{[^}]*grid-template-columns:\s*1fr/s)
+    expect(styles).toMatch(/@media \(max-width:\s*900px\)[\s\S]*?\.wbx-service-swarm__stats\s*\{[^}]*border-right:\s*0[^}]*border-bottom:\s*1px solid var\(--wbx-line\)/s)
     expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-service-hero__actions[^{]*\{[^}]*align-items:\s*stretch/s)
   })
 

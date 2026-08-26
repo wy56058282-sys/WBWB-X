@@ -6,22 +6,44 @@
 .wbx-tools { color: var(--wbx-text-body); }
 .wbx-tools :where(h1, h2, p) { margin-top: 0; }
 .wbx-tools__header { width: min(var(--wbx-content-wide), 100%); margin: 0 auto; }
-.wbx-tools__tabs { display: flex; width: min(var(--wbx-content-wide), 100%); gap: 8px; margin: 0 auto 24px; padding: 8px; border: 0; border-radius: var(--wbx-radius-xl); overflow: hidden; background: var(--wbx-section-soft); box-shadow: none; }
-.wbx-tools__tabs button { flex: 1 0 max-content; min-height: var(--wbx-control-height); border: 1px solid transparent; border-radius: var(--wbx-radius-md); padding: 0 28px; color: var(--wbx-text-muted); background: transparent; cursor: pointer; font: var(--wbx-weight-semibold) var(--wbx-type-control-size)/var(--wbx-leading-control) var(--wbx-body); transition: color var(--wbx-motion-fast) var(--wbx-ease-standard), border-color var(--wbx-motion-fast) var(--wbx-ease-standard), background var(--wbx-motion-fast) var(--wbx-ease-standard), box-shadow var(--wbx-motion-fast) var(--wbx-ease-standard); }
+.wbx-tools__tabs { display: flex; width: min(760px, calc(100% - 32px)); gap: 6px; margin: 0 auto; padding: 6px; border: 0; border-radius: var(--wbx-radius-lg); overflow: hidden; background: var(--wbx-section-soft); box-shadow: none; }
+.wbx-tools__tabs button { flex: 1 0 max-content; min-height: 44px; border: 1px solid transparent; border-radius: var(--wbx-radius-md); padding: 0 24px; color: var(--wbx-text-muted); background: transparent; cursor: pointer; font: var(--wbx-weight-semibold) var(--wbx-type-control-size)/var(--wbx-leading-control) var(--wbx-body); transition: color var(--wbx-motion-fast) var(--wbx-ease-standard), border-color var(--wbx-motion-fast) var(--wbx-ease-standard), background var(--wbx-motion-fast) var(--wbx-ease-standard), box-shadow var(--wbx-motion-fast) var(--wbx-ease-standard); }
 .wbx-tools__tabs button[aria-selected="true"] { border-color: var(--wbx-line); color: var(--wbx-text-strong); background: var(--wbx-surface); box-shadow: var(--wbx-shadow-soft); font-weight: 600; }
 .wbx-tools__tabs button:not([aria-selected="true"]):hover { color: var(--wbx-ink); background: var(--wbx-hover-surface); }
 .wbx-tools__tabs button:focus-visible,
 .wbx-tools__panel:focus-visible { outline: var(--wbx-focus); outline-offset: 3px; }
 .wbx-tools__panel { min-width: 0; }
-.wbx-tools__panel .wbx-service-hero { padding-top: 48px; }
+.wbx-tools__panel .wbx-service { max-width: var(--wbx-content-wide); }
+.wbx-tools__panel .wbx-service-hero { display: grid; grid-template-columns: minmax(0, .82fr) minmax(540px, 1.18fr); align-items: center; gap: 48px; padding: 40px 32px 48px; }
+.wbx-tools__panel .wbx-service-hero__copy { max-width: 440px; margin: 0; text-align: left; }
+.wbx-tools__panel .wbx-service-hero__summary { margin: 24px 0 0; }
+.wbx-tools__panel .wbx-service-hero__actions,
+.wbx-tools__panel .wbx-service-live { justify-content: flex-start; }
+.wbx-tools__panel .wbx-service-hero__actions { margin-top: 28px; }
+.wbx-tools__panel .wbx-service-live { margin-top: 24px; text-align: left; }
+.wbx-tools__panel .wbx-service-console { width: 100%; max-width: none; margin: 0; }
+.wbx-tools__panel .wbx-service-section { padding: 48px 32px; }
+.wbx-tools__panel .wbx-service-download { padding: 64px 32px; }
 .wbx-tools__placeholder { display: grid; width: min(var(--wbx-content-wide), 100%); min-height: 240px; place-content: center; margin: 0 auto 80px; border: 1px solid var(--wbx-line); border-radius: var(--wbx-radius-xl); text-align: center; background: var(--wbx-section-soft); box-shadow: none; }
 .wbx-tools__placeholder .wbx-pixel-label { margin-bottom: 14px; color: var(--vp-c-brand-1); }
 .wbx-tools__placeholder h2 { margin-bottom: 10px; border: 0; padding: 0; color: var(--wbx-text-strong); font-size: var(--wbx-type-section-size); font-weight: var(--wbx-weight-bold); line-height: var(--wbx-leading-section); }
 .wbx-tools__placeholder > p:last-child { margin-bottom: 0; color: var(--wbx-text-body); font-size: var(--wbx-type-body-size); line-height: var(--wbx-leading-body); }
 
+@media (max-width: 1024px) {
+  .wbx-tools__panel .wbx-service-hero { grid-template-columns: 1fr; gap: 40px; padding: 40px 32px 48px; }
+  .wbx-tools__panel .wbx-service-hero__copy { max-width: 720px; margin: 0 auto; text-align: center; }
+  .wbx-tools__panel .wbx-service-hero__summary { margin-right: auto; margin-left: auto; }
+  .wbx-tools__panel .wbx-service-hero__actions,
+  .wbx-tools__panel .wbx-service-live { justify-content: center; }
+  .wbx-tools__panel .wbx-service-live { text-align: center; }
+  .wbx-tools__panel .wbx-service-console { width: min(930px, 100%); margin: 0 auto; }
+}
+
 @media (max-width: 640px) {
-  .wbx-tools__tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-bottom: 24px; }
+  .wbx-tools__tabs { display: grid; width: 100%; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: var(--wbx-radius-md); }
   .wbx-tools__tabs button { min-width: 0; padding: 0 8px; font-size: var(--wbx-type-control-size); }
-  .wbx-tools__panel .wbx-service-hero { padding-top: 28px; }
+  .wbx-tools__panel .wbx-service-hero { gap: 32px; padding: 32px 20px 36px; }
+  .wbx-tools__panel .wbx-service-section { padding: 36px 20px; }
+  .wbx-tools__panel .wbx-service-download { padding: 48px 20px; }
   .wbx-tools__placeholder { min-height: 200px; margin-bottom: 56px; }
 }

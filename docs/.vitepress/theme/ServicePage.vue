@@ -519,6 +519,17 @@ onBeforeUnmount(() => {
       </div>
     </header>
 
+    <section id="skills" class="wbx-service-section wbx-service-skills" aria-labelledby="skills-title">
+      <div class="wbx-service-heading" data-reveal>
+        <p class="wbx-service-tag">SKILLS · 工作场景</p>
+        <h2 id="skills-title">覆盖更多常见工作场景</h2>
+      </div>
+      <div class="wbx-service-skills__marquee" data-reveal>
+        <div><span v-for="skill in [...skills, ...skills]" :key="`a-${skill}`">{{ skill }}</span></div>
+        <div><span v-for="skill in [...skills].reverse().concat([...skills].reverse())" :key="`b-${skill}`">{{ skill }}</span></div>
+      </div>
+    </section>
+
     <section id="shift" class="wbx-service-section" aria-labelledby="shift-title">
       <div class="wbx-service-heading" data-reveal>
         <p class="wbx-service-tag">01 · MINDSET</p>
@@ -557,8 +568,10 @@ onBeforeUnmount(() => {
         <h2 id="swarm-title">一个指令，多个 <em>Agent</em> 协同执行</h2>
         <p>指挥官接收指令后，动态派发给文档、数据、设计等专职 Agent。它们同时开工，再把结果汇总回你面前。</p>
       </div>
-      <div class="wbx-service-swarm" :data-motion-state="swarmMotionState" data-reveal>
-        <svg class="wbx-service-swarm__map" viewBox="0 0 900 560" role="img" aria-label="指挥官动态派发任务给七个专职 Agent 的协作网络">
+      <div class="wbx-service-swarm-layout">
+        <dl class="wbx-service-swarm__stats" data-reveal><div><dt>7+</dt><dd>专职 Agent 随叫随到</dd></div><div><dt>并行</dt><dd>多任务同时推进</dd></div><div><dt>&lt;1s</dt><dd>任务拆解与派发</dd></div></dl>
+        <div class="wbx-service-swarm" :data-motion-state="swarmMotionState" data-reveal>
+          <svg class="wbx-service-swarm__map" viewBox="0 0 900 560" role="img" aria-label="指挥官动态派发任务给七个专职 Agent 的协作网络">
           <g class="wbx-service-swarm__grid" aria-hidden="true">
             <circle v-for="radius in [95, 180, 262]" :key="radius" :cx="swarmCenter.x" :cy="swarmCenter.y" :r="radius" />
             <line :x1="swarmCenter.x - 262" :y1="swarmCenter.y" :x2="swarmCenter.x + 262" :y2="swarmCenter.y" />
@@ -607,8 +620,8 @@ onBeforeUnmount(() => {
               <text class="wbx-service-swarm__core-subtitle" y="93">ORCHESTRATOR</text>
             </g>
           </g>
-        </svg>
-        <dl><div><dt>7+</dt><dd>专职 Agent 随叫随到</dd></div><div><dt>并行</dt><dd>多任务同时推进</dd></div><div><dt>&lt;1s</dt><dd>任务拆解与派发</dd></div></dl>
+          </svg>
+        </div>
       </div>
     </section>
 
@@ -668,17 +681,6 @@ onBeforeUnmount(() => {
           <strong class="wbx-service-remote__state">{{ remoteStage === 'complete' ? '已交付 · 3 个文件' : remoteStage === 'running' ? '执行中 · 3 个 Agent' : remoteStage === 'received' ? '已接收 · 排队执行' : '等待执行' }}</strong>
           <button class="wbx-service-remote__run" type="button" @click="runRemoteDemo">{{ remoteComplete ? '重新演示' : '运行演示' }}</button>
         </div>
-      </div>
-    </section>
-
-    <section id="skills" class="wbx-service-section wbx-service-skills" aria-labelledby="skills-title">
-      <div class="wbx-service-heading" data-reveal>
-        <p class="wbx-service-tag">05 · SKILLS</p>
-        <h2 id="skills-title">覆盖更多常见工作场景</h2>
-      </div>
-      <div class="wbx-service-skills__marquee" data-reveal>
-        <div><span v-for="skill in [...skills, ...skills]" :key="`a-${skill}`">{{ skill }}</span></div>
-        <div><span v-for="skill in [...skills].reverse().concat([...skills].reverse())" :key="`b-${skill}`">{{ skill }}</span></div>
       </div>
     </section>
 

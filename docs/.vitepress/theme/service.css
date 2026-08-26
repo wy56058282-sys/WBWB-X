@@ -683,13 +683,23 @@
   font-size: 28px;
 }
 
-.wbx-service-swarm {
-  overflow-x: auto;
-  overflow-y: hidden;
+.wbx-service-swarm-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, .42fr) minmax(0, 1fr);
+  overflow: hidden;
   border: 1px solid var(--wb-ref-line);
   border-radius: 20px;
   background: var(--wbx-surface);
   box-shadow: var(--wbx-shadow-soft);
+}
+
+#swarm > .wbx-service-heading {
+  max-width: 820px;
+}
+
+.wbx-service-swarm {
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .wbx-service-swarm__map {
@@ -810,31 +820,33 @@
   letter-spacing: .3em;
 }
 
-.wbx-service-swarm dl {
+.wbx-service-swarm__stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  align-content: center;
+  align-self: stretch;
   margin: 0;
-  border-top: 1px solid var(--wbx-line);
-}
-
-.wbx-service-swarm dl > div {
-  padding: 22px;
+  padding: 28px 32px;
   border-right: 1px solid var(--wbx-line);
-  text-align: center;
 }
 
-.wbx-service-swarm dl > div:last-child {
-  border-right: 0;
+.wbx-service-swarm__stats > div {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--wbx-line);
+  text-align: left;
 }
 
-.wbx-service-swarm dt {
+.wbx-service-swarm__stats dt {
   color: color-mix(in srgb, var(--wbx-accent) 60%, var(--wbx-ink));
   font-family: var(--wbx-pixel);
   font-size: 22px;
 }
 
-.wbx-service-swarm dd {
-  margin: 6px 0 0;
+.wbx-service-swarm__stats dd {
+  margin: 0;
   color: var(--wbx-muted);
   font-size: 13px;
 }
@@ -1372,6 +1384,15 @@
     padding-left: 32px;
   }
 
+  .wbx-service-swarm-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .wbx-service-swarm__stats {
+    border-right: 0;
+    border-bottom: 1px solid var(--wbx-line);
+  }
+
   .wbx-service-compare {
     grid-template-columns: 1fr;
     gap: 18px;
@@ -1496,19 +1517,6 @@
   .wbx-service-swarm__map {
     width: 760px;
     max-width: none;
-  }
-
-  .wbx-service-swarm dl {
-    grid-template-columns: 1fr;
-  }
-
-  .wbx-service-swarm dl > div {
-    border-right: 0;
-    border-bottom: 1px solid var(--wbx-line);
-  }
-
-  .wbx-service-swarm dl > div:last-child {
-    border-bottom: 0;
   }
 
   .wbx-service-capability {

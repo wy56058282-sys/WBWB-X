@@ -44,11 +44,11 @@ describe('WorkBuddy product service page', () => {
 
     expect(Array.from(document.querySelectorAll<HTMLElement>('.wbx-service > :is(header, section)')).map((section) => section.id)).toEqual([
       'top',
+      'skills',
       'shift',
       'swarm',
       'capabilities',
       'remote',
-      'skills',
       'download',
     ])
     expect(document.querySelector('#top h2')?.textContent).toContain('一句话，让 AI 替你上班。')
@@ -56,11 +56,11 @@ describe('WorkBuddy product service page', () => {
     expect(document.querySelectorAll('.wbx-service-capability')).toHaveLength(4)
     expect(Array.from(document.querySelectorAll('.wbx-service-tag')).map((tag) => tag.textContent?.trim())).toEqual([
       'AI-NATIVE DESKTOP AGENT · 桌面智能体工作台',
+      'SKILLS · 工作场景',
       '01 · MINDSET',
       '02 · AGENT SWARM',
       '03 · CAPABILITIES',
       '04 · REMOTE CONTROL',
-      '05 · SKILLS',
       '06 · GET STARTED',
     ])
   })
@@ -117,6 +117,21 @@ describe('WorkBuddy product service page', () => {
     expect(document.querySelector('#remote .remote-stage')).toBeNull()
     expect(document.querySelectorAll('#skills .wbx-service-skills__marquee > div')).toHaveLength(2)
     expect(document.querySelector('#skills .mq')).toBeNull()
+  })
+
+  it('keeps the swarm explanation above one shared metrics and animation card', () => {
+    mountServicePage()
+
+    const layout = document.querySelector('#swarm > .wbx-service-swarm-layout')
+    const heading = document.querySelector('#swarm > .wbx-service-heading')
+    const stats = layout?.querySelector(':scope > .wbx-service-swarm__stats')
+    const animation = layout?.querySelector(':scope > .wbx-service-swarm')
+
+    expect(heading?.querySelector('#swarm-title')).not.toBeNull()
+    expect(stats?.querySelectorAll(':scope > div')).toHaveLength(3)
+    expect(animation?.querySelector('.wbx-service-swarm__map')).not.toBeNull()
+    expect(animation?.querySelector('dl')).toBeNull()
+    expect(stats?.parentElement).toBe(animation?.parentElement)
   })
 
   it('uses the approved download, case, and guide destinations', () => {

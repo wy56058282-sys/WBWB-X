@@ -10,7 +10,7 @@
 }
 
 .wbx-reading-layout .VPSidebar {
-  border-right: 1px solid var(--wbx-line);
+  border-right: 0;
   background: var(--vp-sidebar-bg-color);
 }
 

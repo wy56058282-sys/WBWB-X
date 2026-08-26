@@ -229,7 +229,7 @@ describe('product page computed styles', () => {
     const selected = getComputedStyle(document.querySelector('.wbx-tools__tabs button')!)
     const placeholder = getComputedStyle(document.querySelector('.wbx-tools__placeholder')!)
 
-    expect(tabs.borderRadius).toBe('20px')
+    expect(tabs.borderRadius).toBe('16px')
     expect(tabs.backgroundColor).toBe(theme.sectionSoftRgb)
     expect(selected.backgroundColor).toBe(theme.surface === '#ffffff' ? 'rgb(255, 255, 255)' : 'rgb(24, 27, 21)')
     expect(placeholder.borderRadius).toBe('20px')

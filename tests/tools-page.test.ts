@@ -47,14 +47,32 @@ describe('tools page', () => {
     )
   })
 
-  it('uses a soft track with a raised white selected tab instead of a filled brand tab', () => {
+  it('uses a compact soft track with a raised white selected tab instead of a filled brand tab', () => {
     const styles = readFileSync('docs/.vitepress/theme/tools.css', 'utf8')
 
-    expect(styles).toMatch(/\.wbx-tools__tabs\s*{[^}]*display:\s*flex[^}]*gap:\s*8px[^}]*padding:\s*8px[^}]*border-radius:\s*var\(--wbx-radius-xl\)[^}]*background:\s*var\(--wbx-section-soft\)/s)
-    expect(styles).toMatch(/\.wbx-tools__tabs button\s*{[^}]*border:\s*1px solid transparent[^}]*border-radius:\s*var\(--wbx-radius-md\)/s)
+    expect(styles).toMatch(/\.wbx-tools__tabs\s*{[^}]*display:\s*flex[^}]*width:\s*min\(760px, calc\(100% - 32px\)\)[^}]*gap:\s*6px[^}]*margin:\s*0 auto[^}]*padding:\s*6px[^}]*border-radius:\s*var\(--wbx-radius-lg\)[^}]*background:\s*var\(--wbx-section-soft\)/s)
+    expect(styles).toMatch(/\.wbx-tools__tabs button\s*{[^}]*min-height:\s*44px[^}]*border:\s*1px solid transparent[^}]*border-radius:\s*var\(--wbx-radius-md\)/s)
     expect(styles).toMatch(/\.wbx-tools__tabs button\[aria-selected="true"\]\s*{[^}]*border-color:\s*var\(--wbx-line\)[^}]*background:\s*var\(--wbx-surface\)[^}]*box-shadow:\s*var\(--wbx-shadow-soft\)/s)
     expect(styles).not.toMatch(/\.wbx-tools__tabs button\[aria-selected="true"\]\s*{[^}]*background:\s*var\(--wbx-accent\)/s)
     expect(styles).toMatch(/@media\s*\(max-width:\s*640px\)[\s\S]*?\.wbx-tools__tabs\s*{[^}]*display:\s*grid[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/s)
+  })
+
+  it('places product copy and the live demonstration side by side on desktop and stacks them on tablets', () => {
+    const styles = readFileSync('docs/.vitepress/theme/tools.css', 'utf8')
+
+    expect(styles).toMatch(/\.wbx-tools__panel \.wbx-service-hero\s*{[^}]*display:\s*grid[^}]*grid-template-columns:\s*minmax\(0, \.82fr\) minmax\(540px, 1\.18fr\)[^}]*align-items:\s*center[^}]*gap:\s*48px[^}]*padding:\s*40px 32px 48px/s)
+    expect(styles).toMatch(/\.wbx-tools__panel \.wbx-service-hero__copy\s*{[^}]*max-width:\s*440px[^}]*margin:\s*0[^}]*text-align:\s*left/s)
+    expect(styles).toMatch(/\.wbx-tools__panel \.wbx-service-console\s*{[^}]*width:\s*100%[^}]*max-width:\s*none[^}]*margin:\s*0/s)
+    expect(styles).toMatch(/@media \(max-width:\s*1024px\)[\s\S]*?\.wbx-tools__panel \.wbx-service-hero\s*{[^}]*grid-template-columns:\s*1fr[^}]*gap:\s*40px[^}]*padding:\s*40px 32px 48px/s)
+  })
+
+  it('widens the product canvas and tightens the spacing between its sections', () => {
+    const styles = readFileSync('docs/.vitepress/theme/tools.css', 'utf8')
+
+    expect(styles).toMatch(/\.wbx-tools__panel \.wbx-service\s*{[^}]*max-width:\s*var\(--wbx-content-wide\)/s)
+    expect(styles).toMatch(/\.wbx-tools__panel \.wbx-service-section\s*{[^}]*padding:\s*48px 32px/s)
+    expect(styles).toMatch(/\.wbx-tools__panel \.wbx-service-download\s*{[^}]*padding:\s*64px 32px/s)
+    expect(styles).toMatch(/@media \(max-width:\s*640px\)[\s\S]*?\.wbx-tools__panel \.wbx-service-hero\s*{[^}]*padding:\s*32px 20px 36px[^}]*}[\s\S]*?\.wbx-tools__panel \.wbx-service-section\s*{[^}]*padding:\s*36px 20px[^}]*}[\s\S]*?\.wbx-tools__panel \.wbx-service-download\s*{[^}]*padding:\s*48px 20px/s)
   })
 
   it('shows WorkBuddy by default and exposes three accessible product tabs', () => {
