@@ -39,7 +39,7 @@ describe('WorkBuddy product service styles', () => {
     expect(baseRule(styles, '.wbx-service-button')).toMatch(/border-radius:\s*var\(--wbx-radius-md\)/)
     expect(baseRule(styles, '.wbx-service-section')).toMatch(/border-bottom:\s*0/)
     expect(baseRule(styles, '.wbx-service-section')).toMatch(/background:\s*var\(--wbx-paper\)/)
-    expect(baseRule(styles, '.wbx-service-heading')).toMatch(/margin-bottom:\s*48px/)
+    expect(baseRule(styles, '.wbx-service-heading')).toMatch(/margin-bottom:\s*var\(--wbx-heading-content-gap\)/)
     expect(baseRule(styles, '.wbx-service-compare__card')).toMatch(/border:\s*1px solid var\(--wbx-line\)/)
     expect(baseRule(styles, '.wbx-service-compare__card')).toMatch(/border-radius:\s*var\(--wbx-radius-lg\)/)
     expect(baseRule(styles, '.wbx-service-compare__card')).toMatch(/box-shadow:\s*var\(--wbx-shadow-soft\)/)

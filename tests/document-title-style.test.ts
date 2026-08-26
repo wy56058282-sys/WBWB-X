@@ -16,10 +16,10 @@ describe('documentation title typography', () => {
     const title = document.querySelector('h1') as HTMLElement
     const style = getComputedStyle(title)
 
-    expect(style.fontSize).toBe('51.2px')
-    expect(style.fontWeight).toBe('700')
-    expect(style.lineHeight).toBe('58.88px')
-    expect(style.letterSpacing).toBe('-2.816px')
+    expect(style.fontSize).toBe('var(--wbx-type-page-size)')
+    expect(style.fontWeight).toBe('var(--wbx-weight-bold)')
+    expect(style.lineHeight).toBe('var(--wbx-leading-page)')
+    expect(style.letterSpacing).toBe('-0.03em')
     expect(style.marginBottom).toBe('34px')
   })
 
@@ -28,8 +28,8 @@ describe('documentation title typography', () => {
     const titles = Array.from(document.querySelectorAll('h1')) as HTMLElement[]
 
     for (const title of titles) {
-      expect(getComputedStyle(title).fontSize).not.toBe('51.2px')
-      expect(getComputedStyle(title).fontWeight).not.toBe('700')
+      expect(getComputedStyle(title).fontSize).not.toBe('var(--wbx-type-page-size)')
+      expect(getComputedStyle(title).fontWeight).not.toBe('var(--wbx-weight-bold)')
     }
   })
 })

@@ -64,7 +64,11 @@
 
 .wbx-cases-tools-stack {
   display: grid;
-  gap: 36px;
+  gap: 24px;
+  border: 1px solid var(--wbx-line);
+  border-radius: var(--wbx-radius-xl);
+  padding: 18px;
+  background: var(--wbx-section-soft);
 }
 
 .wbx-cases-tools-stack.is-sticky {
@@ -92,8 +96,9 @@
   margin: 0 0 10px;
   color: var(--vp-c-brand-1);
   font-family: var(--wbx-pixel);
-  font-size: 12px;
-  font-weight: 700;
+  font-size: var(--wbx-type-eyebrow-size);
+  font-weight: var(--wbx-weight-medium);
+  line-height: var(--wbx-leading-eyebrow);
   letter-spacing: 0.08em;
 }
 
@@ -108,9 +113,9 @@
   border: 0;
   padding: 0;
   color: var(--wbx-text-strong);
-  font-size: 40px;
-  font-weight: 700;
-  line-height: 1.25;
+  font-size: var(--wbx-type-section-size);
+  font-weight: var(--wbx-weight-bold);
+  line-height: var(--wbx-leading-section);
   letter-spacing: -0.035em;
 }
 
@@ -118,8 +123,8 @@
   max-width: 620px;
   margin-bottom: 0;
   color: var(--wbx-muted);
-  font-size: 16px;
-  line-height: 1.75;
+  font-size: var(--wbx-type-body-size);
+  line-height: var(--wbx-leading-body);
 }
 
 .wbx-cases-main-column > .wbx-cases-categories {
@@ -145,7 +150,9 @@
   color: var(--wbx-ink);
   background: var(--wbx-surface);
   font: inherit;
-  font-weight: 600;
+  font-size: var(--wbx-type-control-size);
+  font-weight: var(--wbx-weight-semibold);
+  line-height: var(--wbx-leading-control);
   cursor: pointer;
   transition: color var(--wbx-motion-fast) var(--wbx-ease-standard), border-color var(--wbx-motion-fast) var(--wbx-ease-standard), background var(--wbx-motion-fast) var(--wbx-ease-standard), box-shadow var(--wbx-motion-fast) var(--wbx-ease-standard);
 }
@@ -160,7 +167,7 @@
 
 .wbx-cases-primary-tabs button[aria-selected="true"] {
   border-color: var(--wbx-accent);
-  background: var(--wbx-accent);
+  background: var(--wbx-accent-soft);
 }
 
 .wbx-cases-primary-tabs button:hover,
@@ -199,7 +206,7 @@
 
 .wbx-enterprise-filter-group button[aria-pressed="true"] {
   border-color: var(--wbx-accent);
-  background: var(--wbx-accent);
+  background: var(--wbx-accent-soft);
 }
 
 .wbx-enterprise-filter-group button:hover,
@@ -279,8 +286,9 @@
   color: var(--wbx-ink);
   background: var(--wbx-surface);
   font: inherit;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: var(--wbx-type-control-size);
+  font-weight: var(--wbx-weight-semibold);
+  line-height: var(--wbx-leading-control);
   white-space: nowrap;
   cursor: pointer;
   transition: color var(--wbx-motion-fast) var(--wbx-ease-standard), border-color var(--wbx-motion-fast) var(--wbx-ease-standard), background var(--wbx-motion-fast) var(--wbx-ease-standard), box-shadow var(--wbx-motion-fast) var(--wbx-ease-standard);
@@ -298,9 +306,9 @@
 .wbx-enterprise-kind-tabs button:hover,
 .wbx-enterprise-kind-tabs button[aria-selected="true"],
 .wbx-cases-empty button:hover {
-  border-color: var(--wbx-ink);
-  color: #0d100d;
-  background: var(--wbx-accent);
+  border-color: var(--wbx-accent);
+  color: var(--wbx-ink);
+  background: var(--wbx-accent-soft);
 }
 
 .wbx-cases-categories button:hover,
@@ -315,7 +323,7 @@
 .wbx-cases-gallery-results .wbx-cases-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
+  gap: var(--wbx-grid-gap);
 }
 
 .wbx-cases .wbx-cases-grid {
@@ -335,9 +343,9 @@
   align-content: start;
   min-height: 250px;
   border: 1px solid var(--wbx-line);
-  border-radius: var(--wbx-radius-lg);
+  border-radius: var(--wbx-radius-xl);
   padding: 18px;
-  background: var(--wbx-surface);
+  background: var(--wbx-section-soft);
 }
 
 .wbx-enterprise-case-card__number,
@@ -386,9 +394,9 @@
   height: 100%;
   overflow: hidden;
   border: 1px solid var(--wbx-line);
-  border-radius: var(--wbx-radius-lg);
+  border-radius: var(--wbx-radius-xl);
   color: var(--wbx-ink);
-  background: var(--wbx-surface);
+  background: var(--wbx-section-soft);
   text-decoration: none;
   transition: border-color var(--wbx-motion-fast) var(--wbx-ease-standard), box-shadow var(--wbx-motion-base) var(--wbx-ease-standard), transform var(--wbx-motion-base) var(--wbx-ease-standard);
 }
@@ -446,9 +454,9 @@
   min-height: 2.7em;
   overflow: hidden;
   color: var(--wbx-text-strong);
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1.35;
+  font-size: var(--wbx-type-card-size);
+  font-weight: var(--wbx-weight-bold);
+  line-height: var(--wbx-leading-card);
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
@@ -544,8 +552,9 @@
   padding: 0 16px;
   color: var(--wbx-ink);
   background: var(--wbx-surface);
-  font-size: 14px;
-  font-weight: 700;
+  font-size: var(--wbx-type-control-size);
+  font-weight: var(--wbx-weight-semibold);
+  line-height: var(--wbx-leading-control);
   text-decoration: none;
   transition: background var(--wbx-motion-fast) ease, box-shadow var(--wbx-motion-fast) ease, transform var(--wbx-motion-fast) ease;
 }
@@ -670,14 +679,6 @@
 }
 
 @media (max-width: 640px) {
-  .wbx-cases h2 {
-    font-size: 30px;
-  }
-
-  .wbx-case-card__title {
-    font-size: 20px;
-  }
-
   .wbx-cases-submit,
   .wbx-case-service-cta {
     align-items: stretch;
@@ -695,6 +696,16 @@
   .wbx-cases-primary-tabs,
   .wbx-enterprise-kind-tabs {
     margin-bottom: 18px;
+  }
+
+  .wbx-cases-primary-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .wbx-cases-primary-tabs button {
+    min-width: 0;
   }
 
   .wbx-cases-submit__actions {

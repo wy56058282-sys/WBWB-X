@@ -22,6 +22,7 @@ describe('calm soft product design system', () => {
     expect(root).toMatch(/--wbx-radius-sm:\s*6px/)
     expect(root).toMatch(/--wbx-radius-md:\s*10px/)
     expect(root).toMatch(/--wbx-radius-lg:\s*16px/)
+    expect(root).toMatch(/--wbx-radius-xl:\s*20px/)
     expect(root).toMatch(/--wbx-surface-soft:/)
     expect(root).toMatch(
       /--wbx-shadow-soft:\s*0 8px 24px rgb\(13 16 13 \/ 6%\)/,
@@ -58,7 +59,7 @@ describe('calm soft product design system', () => {
   it('uses the shared soft radius on representative product surfaces', () => {
     expect(baseRule(home, '.wbx-reading-card')).toMatch(/border-radius:\s*var\(--wbx-radius-lg\)/)
     expect(baseRule(workshop, '.wbx-workshop__poster-frame')).toMatch(/border-radius:\s*var\(--wbx-radius-lg\)/)
-    expect(baseRule(cases, '.wbx-case-card__link')).toMatch(/border-radius:\s*var\(--wbx-radius-lg\)/)
+    expect(baseRule(cases, '.wbx-case-card__link')).toMatch(/border-radius:\s*var\(--wbx-radius-xl\)/)
     expect(baseRule(reading, '.wbx-reading-layout .vp-doc :is(table, .custom-block)')).toMatch(/border-radius:\s*var\(--wbx-radius-md\)/)
     expect(baseRule(about, '.wbx-about-member')).toMatch(/border-radius:\s*var\(--wbx-radius-lg\)/)
   })

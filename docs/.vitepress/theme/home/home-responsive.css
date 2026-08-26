@@ -27,7 +27,7 @@
   }
 
   .wbx-hero__copy h1 {
-    font-size: 52px;
+    font-size: var(--wbx-type-hero-size);
   }
 
   .wbx-hero__art {
@@ -90,12 +90,12 @@
 
   .wbx-hero__copy h1 {
     margin-top: 18px;
-    font-size: 40px;
-    line-height: 1.04;
+    font-size: var(--wbx-type-hero-size);
+    line-height: var(--wbx-leading-hero);
   }
 
   .wbx-hero__summary {
-    font-size: 17px;
+    font-size: var(--wbx-type-lead-size);
   }
 
   .wbx-hero__actions {
@@ -175,7 +175,7 @@
   }
 
   .wbx-section {
-    padding: 48px 4px 0;
+    padding: var(--wbx-section-space) 4px 0;
   }
 
   .wbx-section__heading {
@@ -186,19 +186,19 @@
 
   .wbx-section__heading h2,
   .wbx-system h2 {
-    font-size: 30px;
+    font-size: var(--wbx-type-section-size);
   }
 
   .wbx-section__heading > p {
-    font-size: 16px;
+    font-size: var(--wbx-type-body-size);
   }
 
   .wbx-reading-card__content strong {
-    font-size: 20px;
+    font-size: var(--wbx-type-card-size);
   }
 
   .wbx-reading-card__content > span {
-    font-size: 16px;
+    font-size: var(--wbx-type-body-size);
   }
 
   .wbx-reading-grid,
@@ -232,8 +232,8 @@
 
   .wbx-system {
     gap: 36px;
-    margin: 52px 0 0;
-    padding: 36px 24px;
+    margin: var(--wbx-section-space) 0 0;
+    padding: var(--wbx-section-space-compact) 24px;
   }
 
   .wbx-system__steps {
@@ -259,7 +259,7 @@
 @media (max-width: 640px) {
   .wbx-section__heading h2,
   .wbx-system h2 {
-    font-size: 30px;
+    font-size: var(--wbx-type-section-size);
   }
 
   .wbx-home-analytics {

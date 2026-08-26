@@ -4,6 +4,11 @@
   --wbx-reading-section-gap: 48px;
 }
 
+.wbx-reading-layout .vp-doc {
+  font-size: 16px;
+  line-height: 1.75;
+}
+
 .wbx-reading-layout .VPSidebar {
   border-right: 1px solid var(--wbx-line);
   background: var(--vp-sidebar-bg-color);
@@ -100,7 +105,7 @@
   width: 50px;
   height: 50px;
   color: var(--wbx-accent);
-  background: var(--wbx-ink);
+  background: #0d100d;
 }
 
 .wbx-reading-layout
@@ -118,9 +123,12 @@
 }
 
 .wbx-reading-layout .vp-doc h2 {
-  margin-top: var(--wbx-reading-section-gap);
+  margin-top: 48px;
   padding-top: 24px;
   border-top: 1px solid var(--wbx-line);
+  font-size: 24px;
+  font-weight: var(--wbx-weight-semibold);
+  line-height: 1.35;
 }
 
 .wbx-reading-layout .vp-doc div[class*="language-"],

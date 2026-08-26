@@ -147,4 +147,10 @@ describe('small-book reading index', () => {
       /\.wbx-reading-layout\s+\.wbx-book-index__entry--appendix\s+\+ \.wbx-book-index__entry--appendix\s*{[^}]*margin-top:\s*-4px/,
     )
   })
+
+  it('keeps index numbers on a dark tile in both color schemes', () => {
+    expect(readingCss).toMatch(
+      /\.wbx-reading-layout \.wbx-book-index__number\s*\{[^}]*color:\s*var\(--wbx-accent\);[^}]*background:\s*#0d100d;/s,
+    )
+  })
 })

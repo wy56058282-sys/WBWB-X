@@ -101,30 +101,30 @@
 .wbx-service-tag {
   color: color-mix(in srgb, var(--wbx-accent) 50%, var(--wbx-ink));
   font-family: var(--wbx-pixel);
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1.6;
+  font-size: var(--wbx-type-eyebrow-size);
+  font-weight: var(--wbx-weight-medium);
+  line-height: var(--wbx-leading-eyebrow);
   letter-spacing: .1em;
 }
 
 .wbx-service .wbx-service-hero__title {
   margin-top: 25px;
-  font-size: 58px;
-  font-weight: 700;
-  line-height: 1.18;
+  font-size: var(--wbx-type-hero-size);
+  font-weight: var(--wbx-weight-bold);
+  line-height: var(--wbx-leading-hero);
   letter-spacing: -.04em;
 }
 
 .wbx-service h2 {
-  font-size: 40px;
-  font-weight: 700;
-  line-height: 1.25;
+  font-size: var(--wbx-type-section-size);
+  font-weight: var(--wbx-weight-bold);
+  line-height: var(--wbx-leading-section);
 }
 
 .wbx-service h3 {
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1.35;
+  font-size: var(--wbx-type-card-size);
+  font-weight: var(--wbx-weight-bold);
+  line-height: var(--wbx-leading-card);
 }
 
 .wbx-service :where(h1, h2) em {
@@ -143,9 +143,9 @@
   padding: 0 26px;
   color: var(--wbx-ink) !important;
   background: var(--wbx-surface);
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.5;
+  font-size: var(--wbx-type-control-size);
+  font-weight: var(--wbx-weight-semibold);
+  line-height: var(--wbx-leading-control);
   text-decoration: none !important;
   transition: background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
@@ -165,7 +165,7 @@
 
 .wbx-service-hero {
   position: relative;
-  padding: 76px 52px 96px;
+  padding: var(--wbx-section-space) 52px var(--wbx-section-space-hero);
   overflow: hidden;
 }
 
@@ -184,9 +184,9 @@
   max-width: 720px;
   margin: 28px auto 0;
   color: var(--wbx-text-body);
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 1.6;
+  font-size: var(--wbx-type-lead-size);
+  font-weight: var(--wbx-weight-regular);
+  line-height: var(--wbx-leading-lead);
 }
 
 .wbx-service-hero__actions,
@@ -478,14 +478,14 @@
 
 .wbx-service-section {
   min-width: 0;
-  padding: 96px 52px;
+  padding: var(--wbx-section-space) 52px;
   border-bottom: 0;
   background: var(--wbx-paper);
 }
 
 .wbx-service-heading {
   max-width: 820px;
-  margin-bottom: 48px;
+  margin-bottom: var(--wbx-heading-content-gap);
 }
 
 .wbx-service-heading .wbx-service-tag {
@@ -503,9 +503,9 @@
   max-width: 680px;
   margin-top: 20px;
   color: var(--wbx-text-body);
-  font-size: 17px;
-  font-weight: 400;
-  line-height: 1.65;
+  font-size: var(--wbx-type-body-size);
+  font-weight: var(--wbx-weight-regular);
+  line-height: var(--wbx-leading-body);
 }
 
 .wbx-service-compare {
@@ -854,6 +854,10 @@
   color: var(--wbx-line);
   font-family: var(--wbx-pixel);
   font-size: 58px;
+}
+
+.dark .wbx-service-capability__number {
+  color: var(--wbx-muted);
 }
 
 .wbx-service-capability__copy p {
@@ -1268,7 +1272,7 @@
 
 .wbx-service-download {
   border: 0;
-  padding: 120px 52px;
+  padding: var(--wbx-section-space-hero) 52px;
   background: transparent;
   text-align: center;
 }
@@ -1277,15 +1281,16 @@
   margin-top: 12px;
   border-top: 0;
   padding-top: 0;
-  font-size: clamp(42px, 5.8vw, 72px);
+  font-size: var(--wbx-type-hero-size);
+  line-height: var(--wbx-leading-hero);
 }
 
 .wbx-service-download > div > p:not(.wbx-service-tag) {
   max-width: 680px;
   margin: 24px auto 0;
   color: var(--wbx-muted);
-  font-size: 17px;
-  line-height: 1.8;
+  font-size: var(--wbx-type-body-size);
+  line-height: var(--wbx-leading-body);
 }
 
 .wbx-service-download > div > small {
@@ -1410,25 +1415,25 @@
   }
 
   .wbx-service-hero {
-    padding: 52px 20px 64px;
+    padding: var(--wbx-section-space-compact) 20px var(--wbx-section-space-hero);
   }
 
   .wbx-service .wbx-service-hero__title {
-    font-size: 40px;
+    font-size: var(--wbx-type-hero-size);
   }
 
   .wbx-service h2 {
-    font-size: 30px;
+    font-size: var(--wbx-type-section-size);
   }
 
   .wbx-service h3 {
-    font-size: 20px;
+    font-size: var(--wbx-type-card-size);
   }
 
   .wbx-service-hero__summary,
   .wbx-service-heading > p:last-child,
   .wbx-service-download > div > p:not(.wbx-service-tag) {
-    font-size: 16px;
+    font-size: var(--wbx-type-body-size);
   }
 
   .wbx-service-hero__actions,
@@ -1471,11 +1476,11 @@
   }
 
   .wbx-service-section {
-    padding: 82px 20px;
+    padding: var(--wbx-section-space) 20px;
   }
 
   .wbx-service-heading {
-    margin-bottom: 42px;
+    margin-bottom: var(--wbx-heading-content-gap);
   }
 
   .wbx-service-compare__card {
@@ -1540,7 +1545,7 @@
   }
 
   .wbx-service-download {
-    padding: 90px 20px;
+    padding: var(--wbx-section-space-hero) 20px;
   }
 }
 

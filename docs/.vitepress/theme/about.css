@@ -7,8 +7,8 @@
 .wbx-about__header { max-width: 740px; min-height: 220px; padding: 10px 0 48px; }
 .wbx-about__header .wbx-pixel-label,
 .wbx-about__heading .wbx-pixel-label { margin-bottom: 12px; color: var(--vp-c-brand-1); }
-.wbx-about h1 { margin-bottom: 16px; font-size: 51.2px; font-weight: 850; line-height: 58.88px; }
-.wbx-about h2 { margin-bottom: 0; font-size: 28px; font-weight: 700; line-height: 1.32; }
+.wbx-about h1 { margin-bottom: 16px; font-size: var(--wbx-type-page-size); font-weight: var(--wbx-weight-bold); line-height: var(--wbx-leading-page); }
+.wbx-about h2 { margin-bottom: 0; font-size: var(--wbx-type-section-size); font-weight: var(--wbx-weight-bold); line-height: var(--wbx-leading-section); }
 .wbx-about__heading > p { margin-bottom: 0; color: var(--wbx-muted); font-size: 15px; line-height: 1.7; }
 .wbx-about__team { display: grid; gap: 30px; padding: var(--wbx-section-space) 40px; border: 1px solid var(--wbx-line); border-radius: var(--wbx-radius-lg); background: var(--wbx-surface-soft); box-shadow: var(--wbx-shadow-soft); }
 .wbx-about__heading { display: flex; align-items: end; justify-content: space-between; gap: 40px; }
@@ -46,7 +46,7 @@
 
 @media (max-width: 640px) {
   .wbx-about { padding-top: 0; }
-  .wbx-about h1 { font-size: 36px; line-height: 43.2px; }
+  .wbx-about h1 { font-size: var(--wbx-type-page-size); line-height: var(--wbx-leading-page); }
   .wbx-about__team { padding: 40px 20px; }
   .wbx-about-members { grid-template-columns: 1fr; }
   .wbx-about-join { display: grid; }

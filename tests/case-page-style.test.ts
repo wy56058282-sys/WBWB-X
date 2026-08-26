@@ -108,8 +108,8 @@ describe('case collection page styles', () => {
   it('renders personal and enterprise case cards with the shared soft corners', () => {
     const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
 
-    expect(source).toMatch(/\.wbx-case-card__link\s*\{[^}]*border-radius:\s*var\(--wbx-radius-lg\);/s)
-    expect(source).toMatch(/\.wbx-enterprise-case-card\s*\{[^}]*border-radius:\s*var\(--wbx-radius-lg\);/s)
+    expect(source).toMatch(/\.wbx-case-card__link\s*\{[^}]*border-radius:\s*var\(--wbx-radius-xl\);/s)
+    expect(source).toMatch(/\.wbx-enterprise-case-card\s*\{[^}]*border-radius:\s*var\(--wbx-radius-xl\);/s)
   })
 
   it('displays the personal and enterprise audience tabs as separate controls', () => {
@@ -123,14 +123,14 @@ describe('case collection page styles', () => {
     const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
 
     expect(source).toMatch(/\.wbx-enterprise-kind-tabs\s*\{[^}]*display:\s*flex;[^}]*gap:\s*8px;[^}]*flex-wrap:\s*wrap;[^}]*border:\s*0;/s)
-    expect(source).toMatch(/\.wbx-cases-categories button,\s*\.wbx-enterprise-kind-tabs button,\s*\.wbx-cases-empty button\s*\{[^}]*flex:\s*0 0 auto;[^}]*min-height:\s*36px;[^}]*padding:\s*0 12px;[^}]*font-size:\s*14px;[^}]*font-weight:\s*700;/s)
+    expect(source).toMatch(/\.wbx-cases-categories button,\s*\.wbx-enterprise-kind-tabs button,\s*\.wbx-cases-empty button\s*\{[^}]*flex:\s*0 0 auto;[^}]*min-height:\s*36px;[^}]*padding:\s*0 12px;[^}]*font-size:\s*var\(--wbx-type-control-size\);[^}]*font-weight:\s*var\(--wbx-weight-semibold\);/s)
   })
 
   it('uses the shared soft control treatment for enterprise filters', () => {
     const source = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
 
     expect(source).toMatch(/\.wbx-enterprise-filter-group button,\s*\.wbx-enterprise-results-bar button\s*\{[^}]*min-height:\s*32px[^}]*border:\s*1px solid var\(--wbx-line\)[^}]*border-radius:\s*var\(--wbx-radius-md\)/s)
-    expect(source).toMatch(/\.wbx-enterprise-filter-group button\[aria-pressed="true"\]\s*\{[^}]*border-color:\s*var\(--wbx-accent\)[^}]*background:\s*var\(--wbx-accent\)/s)
+    expect(source).toMatch(/\.wbx-enterprise-filter-group button\[aria-pressed="true"\]\s*\{[^}]*border-color:\s*var\(--wbx-accent\)[^}]*background:\s*var\(--wbx-accent-soft\)/s)
   })
 
   it('uses the personal category hover treatment for enterprise content tabs', () => {
@@ -221,7 +221,7 @@ describe('case collection page styles', () => {
     expect(source).not.toMatch(/\.wbx-cases-layout \.VPDoc[^{]*\{[^}]*padding(?:-inline|-left|-right):/s)
     expect(source).not.toMatch(/\.wbx-cases h1\s*\{/)
     expect(source).toMatch(/\.wbx-cases-categories button,\s*\.wbx-enterprise-kind-tabs button,\s*\.wbx-cases-empty button\s*\{[^}]*border:\s*1px solid var\(--wbx-line\)[^}]*border-radius:\s*var\(--wbx-radius-md\)/s)
-    expect(source).toMatch(/\.wbx-cases-categories button:hover,\s*\.wbx-cases-categories button\[aria-pressed="true"\],\s*\.wbx-enterprise-kind-tabs button:hover,\s*\.wbx-enterprise-kind-tabs button\[aria-selected="true"\],\s*\.wbx-cases-empty button:hover\s*\{[^}]*color:\s*#0d100d[^}]*background:\s*var\(--wbx-accent\)/s)
+    expect(source).toMatch(/\.wbx-cases-categories button:hover,\s*\.wbx-cases-categories button\[aria-pressed="true"\],\s*\.wbx-enterprise-kind-tabs button:hover,\s*\.wbx-enterprise-kind-tabs button\[aria-selected="true"\],\s*\.wbx-cases-empty button:hover\s*\{[^}]*color:\s*var\(--wbx-ink\)[^}]*background:\s*var\(--wbx-accent-soft\)/s)
     expect(source).toMatch(/\.wbx-cases \.wbx-cases-action:hover,\s*\.wbx-cases \.wbx-cases-action:focus-visible\s*\{[^}]*color:\s*#0d100d[^}]*background:\s*var\(--wbx-accent\)/s)
     expect(source).toMatch(/\.wbx-cases-categories button:focus-visible,\s*\.wbx-case-card__link:focus-visible,\s*\.wbx-cases-action:focus-visible,\s*\.wbx-cases-empty button:focus-visible\s*\{[^}]*outline:\s*2px solid var\(--wbx-accent\)/s)
     expect(source).toMatch(/\.wbx-cases \.wbx-cases-action,\s*\.wbx-case-service-cta \.wbx-cases-action\s*\{[^}]*border:\s*1px solid var\(--wbx-line\)[^}]*border-radius:\s*var\(--wbx-radius-md\)/s)
@@ -492,6 +492,36 @@ describe('case collection page styles', () => {
     try {
       const searchStyles = getComputedStyle(fixture.querySelector('.wbx-cases-search')!)
       expect(px(searchStyles.marginBottom)).toBeGreaterThanOrEqual(16)
+    } finally {
+      fixture.remove()
+      appliedStyles.remove()
+    }
+  })
+
+  it('uses the full mobile width and stable equal audience tabs', () => {
+    const casesStyles = readFileSync('docs/.vitepress/theme/cases.css', 'utf8')
+    const appliedStyles = document.createElement('style')
+    appliedStyles.textContent = flattenStylesAtViewport(casesStyles, 390)
+    document.head.append(appliedStyles)
+
+    const fixture = document.createElement('section')
+    fixture.className = 'wbx-cases'
+    fixture.innerHTML = `
+      <div class="wbx-cases-primary-tabs">
+        <button type="button">个人</button><button type="button">企业</button>
+      </div>
+    `
+    document.body.append(fixture)
+
+    try {
+      const page = getComputedStyle(fixture)
+      const tabs = getComputedStyle(fixture.querySelector('.wbx-cases-primary-tabs')!)
+      const button = getComputedStyle(fixture.querySelector('button')!)
+
+      expect(page.display).toBe('flex')
+      expect(tabs.display).toBe('grid')
+      expect(tabs.gridTemplateColumns).toBe('repeat(2, minmax(0, 1fr))')
+      expect(button.minWidth).toBe('0')
     } finally {
       fixture.remove()
       appliedStyles.remove()

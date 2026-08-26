@@ -44,7 +44,7 @@
 }
 
 .wbx-section {
-  padding: 64px 52px 0;
+  padding: var(--wbx-section-space) 52px 0;
 }
 
 .wbx-section__heading {
@@ -52,7 +52,7 @@
   align-items: end;
   justify-content: space-between;
   gap: 40px;
-  margin-bottom: 26px;
+  margin-bottom: var(--wbx-heading-content-gap);
 }
 
 .wbx-section__heading .wbx-pixel-label {
@@ -65,9 +65,9 @@
   margin: 0;
   border: 0;
   color: var(--wbx-text-strong);
-  font-size: 40px;
-  font-weight: 700;
-  line-height: 1.25;
+  font-size: var(--wbx-type-section-size);
+  font-weight: var(--wbx-weight-bold);
+  line-height: var(--wbx-leading-section);
   letter-spacing: -0.035em;
 }
 
@@ -75,15 +75,15 @@
   max-width: 540px;
   margin: 0 0 4px;
   color: var(--wbx-text-muted);
-  font-size: 17px;
-  font-weight: 400;
-  line-height: 1.65;
+  font-size: var(--wbx-type-body-size);
+  font-weight: var(--wbx-weight-regular);
+  line-height: var(--wbx-leading-body);
 }
 
 .wbx-reading-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 22px 28px;
+  gap: var(--wbx-grid-gap);
 }
 
 .wbx-reading-card {
@@ -154,16 +154,16 @@
 
 .wbx-reading-card__content strong {
   margin-bottom: 7px;
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1.35;
+  font-size: var(--wbx-type-card-size);
+  font-weight: var(--wbx-weight-bold);
+  line-height: var(--wbx-leading-card);
 }
 
 .wbx-reading-card__content > span {
   overflow: hidden;
   color: var(--wbx-text-body);
-  font-size: 17px;
-  line-height: 1.65;
+  font-size: var(--wbx-type-body-size);
+  line-height: var(--wbx-leading-body);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -261,12 +261,11 @@
   display: grid;
   grid-template-columns: 0.86fr 1.14fr;
   gap: 60px;
-  margin: 72px 0 0;
-  padding: 56px 52px;
+  margin: var(--wbx-section-space) 0 0;
+  padding: var(--wbx-section-space-compact) 52px;
   border: 1px solid var(--wbx-line);
   border-radius: var(--wbx-radius-lg);
-  --wbx-ink: #0d100d;
-  color: #0d100d;
+  color: var(--wbx-ink);
   background: var(--wbx-section-soft);
   box-shadow: var(--wbx-shadow-soft);
 }
@@ -279,7 +278,7 @@
 .wbx-system__description {
   max-width: 540px;
   margin: 20px 0 0;
-  color: #0d100d;
+  color: var(--wbx-text-body);
   line-height: 1.8;
 }
 
@@ -351,7 +350,7 @@
 
 .wbx-system__steps span {
   display: block;
-  color: #0d100d;
+  color: var(--wbx-text-body);
   font-size: 14px;
 }
 

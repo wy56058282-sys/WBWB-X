@@ -19,7 +19,7 @@ describe('home hero icon navigation', () => {
     expect(home).toMatch(/--wbx-radius-lg:\s*20px;/)
     expect(readingCard).not.toMatch(/box-shadow:/)
     expect(taskGrid).not.toMatch(/box-shadow:/)
-    expect(workshop).toMatch(/padding:\s*var\(--wbx-section-space\) 0 64px;/)
+    expect(workshop).toMatch(/padding:\s*var\(--wbx-section-space\) 0;/)
     expect(workshop).not.toMatch(/border:/)
     expect(workshop).not.toMatch(/border-radius:/)
     expect(workshop).not.toMatch(/box-shadow:/)
@@ -183,11 +183,11 @@ describe('home hero icon navigation', () => {
     const system = baseRule(css, '.wbx-system')
     const mobile = css.slice(css.indexOf('@media (max-width: 760px)'))
 
-    expect(system).toMatch(/margin:\s*72px 0 0;/)
-    expect(system).toMatch(/padding:\s*56px 52px;/)
+    expect(system).toMatch(/margin:\s*var\(--wbx-section-space\) 0 0;/)
+    expect(system).toMatch(/padding:\s*var\(--wbx-section-space-compact\) 52px;/)
     expect(system).toMatch(/border-radius:\s*var\(--wbx-radius-lg\);/)
     expect(mobile).toMatch(
-      /\.wbx-system\s*\{[^}]*margin:\s*52px 0 0;[^}]*padding:\s*36px 24px;/s,
+      /\.wbx-system\s*\{[^}]*margin:\s*var\(--wbx-section-space\) 0 0;[^}]*padding:\s*var\(--wbx-section-space-compact\) 24px;/s,
     )
   })
 
@@ -202,13 +202,13 @@ describe('home hero icon navigation', () => {
     const title = baseRule(css, '.wbx-system__steps strong')
     const copy = baseRule(css, '.wbx-system__steps span')
 
-    expect(system).toMatch(/color:\s*#0d100d;/)
-    expect(system).toMatch(/--wbx-ink:\s*#0d100d;/)
+    expect(system).toMatch(/color:\s*var\(--wbx-ink\);/)
+    expect(system).not.toMatch(/--wbx-ink:/)
     expect(system).toMatch(/background:\s*var\(--wbx-section-soft\);/)
     expect(introLabel).toMatch(
       /color:\s*color-mix\(in srgb, var\(--wbx-accent\) 50%, var\(--wbx-ink\)\);/,
     )
-    expect(introCopy).toMatch(/color:\s*#0d100d;/)
+    expect(introCopy).toMatch(/color:\s*var\(--wbx-text-body\);/)
     expect(steps).toMatch(/background:\s*var\(--wbx-line\);/)
     expect(step).toMatch(/background:\s*var\(--wbx-surface\);/)
     expect(number).toMatch(
@@ -217,7 +217,15 @@ describe('home hero icon navigation', () => {
     expect(title).toMatch(
       /color:\s*color-mix\(in srgb, var\(--wbx-accent\) 50%, var\(--wbx-ink\)\);/,
     )
-    expect(copy).toMatch(/color:\s*#0d100d;/)
+    expect(copy).toMatch(/color:\s*var\(--wbx-text-body\);/)
+  })
+
+  it('keeps workshop controls readable on the mint surface in dark mode', () => {
+    const page = baseRule(workshopCss, '.wbx-workshop__poster-page')
+    const control = baseRule(workshopCss, '.wbx-workshop__poster-control')
+
+    expect(page).toMatch(/color:\s*#0d100d;/)
+    expect(control).toMatch(/color:\s*#0d100d;/)
   })
 
   it('uses the approved system heading without the retired materials callout', () => {

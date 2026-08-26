@@ -50,11 +50,11 @@ describe('tools page', () => {
   it('uses a soft track with a raised white selected tab instead of a filled brand tab', () => {
     const styles = readFileSync('docs/.vitepress/theme/tools.css', 'utf8')
 
-    expect(styles).toMatch(/\.wbx-tools__tabs\s*{[^}]*display:\s*flex[^}]*gap:\s*8px[^}]*padding:\s*8px[^}]*border-radius:\s*16px[^}]*background:\s*var\(--wbx-section-soft\)/s)
+    expect(styles).toMatch(/\.wbx-tools__tabs\s*{[^}]*display:\s*flex[^}]*gap:\s*8px[^}]*padding:\s*8px[^}]*border-radius:\s*var\(--wbx-radius-xl\)[^}]*background:\s*var\(--wbx-section-soft\)/s)
     expect(styles).toMatch(/\.wbx-tools__tabs button\s*{[^}]*border:\s*1px solid transparent[^}]*border-radius:\s*var\(--wbx-radius-md\)/s)
     expect(styles).toMatch(/\.wbx-tools__tabs button\[aria-selected="true"\]\s*{[^}]*border-color:\s*var\(--wbx-line\)[^}]*background:\s*var\(--wbx-surface\)[^}]*box-shadow:\s*var\(--wbx-shadow-soft\)/s)
     expect(styles).not.toMatch(/\.wbx-tools__tabs button\[aria-selected="true"\]\s*{[^}]*background:\s*var\(--wbx-accent\)/s)
-    expect(styles).toMatch(/@media\s*\(max-width:\s*640px\)[\s\S]*?\.wbx-tools__tabs\s*{[^}]*overflow-x:\s*auto/s)
+    expect(styles).toMatch(/@media\s*\(max-width:\s*640px\)[\s\S]*?\.wbx-tools__tabs\s*{[^}]*display:\s*grid[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/s)
   })
 
   it('shows WorkBuddy by default and exposes three accessible product tabs', () => {
@@ -72,7 +72,7 @@ describe('tools page', () => {
   it('uses a compact, quiet placeholder for unreleased products', () => {
     const styles = readFileSync('docs/.vitepress/theme/tools.css', 'utf8')
 
-    expect(styles).toMatch(/\.wbx-tools__placeholder\s*{[^}]*min-height:\s*240px[^}]*border-radius:\s*var\(--wbx-radius-lg\)[^}]*background:\s*var\(--wbx-section-soft\)[^}]*box-shadow:\s*none/s)
+    expect(styles).toMatch(/\.wbx-tools__placeholder\s*{[^}]*min-height:\s*240px[^}]*border-radius:\s*var\(--wbx-radius-xl\)[^}]*background:\s*var\(--wbx-section-soft\)[^}]*box-shadow:\s*none/s)
     expect(styles).toMatch(/@media\s*\(max-width:\s*640px\)[\s\S]*?\.wbx-tools__placeholder\s*{[^}]*min-height:\s*200px/s)
   })
 

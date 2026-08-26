@@ -13,6 +13,8 @@ if (!vpDocLinkRule) {
 
 const pageStyles = {
   cases: readFileSync('docs/.vitepress/theme/cases.css', 'utf8'),
+  tools: readFileSync('docs/.vitepress/theme/tools.css', 'utf8'),
+  enterprise: readFileSync('docs/.vitepress/theme/enterprise-services.css', 'utf8'),
   service: readFileSync('docs/.vitepress/theme/service.css', 'utf8'),
   workshop: readFileSync('docs/.vitepress/theme/workshop.css', 'utf8'),
 }
@@ -22,8 +24,12 @@ const themes = {
   light: {
     accent: '#32e6b9',
     ink: '#0d100d',
+    muted: '#656b60',
     surface: '#ffffff',
     sectionSoft: '#f7f9f8',
+    sectionSoftRgb: 'rgb(247, 249, 248)',
+    accentSoft: '#dafaf2',
+    accentSoftRgb: 'rgb(218, 250, 242)',
     line: '#e3e7e4',
     shadowSoft: '0 8px 24px rgb(13 16 13 / 6%)',
     hoverSurface: '#eceee9',
@@ -32,8 +38,12 @@ const themes = {
   dark: {
     accent: '#32e6b9',
     ink: '#f3f5ed',
+    muted: '#aeb4a7',
     surface: '#181b15',
     sectionSoft: '#151812',
+    sectionSoftRgb: 'rgb(21, 24, 18)',
+    accentSoft: '#1d3a31',
+    accentSoftRgb: 'rgb(29, 58, 49)',
     line: '#343a2f',
     shadowSoft: '0 10px 30px rgb(0 0 0 / 24%)',
     hoverSurface: '#252922',
@@ -41,19 +51,52 @@ const themes = {
   },
 } as const
 
-function resolveThemeTokens(css: string, theme: (typeof themes)[keyof typeof themes]) {
+function resolveThemeTokens(
+  css: string,
+  theme: (typeof themes)[keyof typeof themes],
+  viewportWidth = 1440,
+) {
+  const type = viewportWidth <= 640
+    ? { hero: '40px', page: '38px', section: '30px', card: '20px', lead: '17px', body: '16px', aux: '13px', control: '14px', eyebrow: '10px' }
+    : { hero: '58px', page: '52px', section: '40px', card: '22px', lead: '20px', body: '17px', aux: '14px', control: '15px', eyebrow: '11px' }
+
   return css
     .replaceAll('var(--wbx-accent)', theme.accent)
     .replaceAll('var(--wbx-ink)', theme.ink)
+    .replaceAll('var(--wbx-muted)', theme.muted)
     .replaceAll('var(--wbx-surface)', theme.surface)
     .replaceAll('var(--wbx-section-soft)', theme.sectionSoft)
+    .replaceAll('var(--wbx-accent-soft)', theme.accentSoft)
     .replaceAll('var(--wbx-line)', theme.line)
     .replaceAll('var(--wbx-shadow-soft)', theme.shadowSoft)
     .replaceAll('var(--wbx-radius-lg)', '16px')
+    .replaceAll('var(--wbx-radius-xl)', '20px')
     .replaceAll('var(--wbx-radius-md)', '10px')
     .replaceAll('var(--wbx-hover-surface)', theme.hoverSurface)
     .replaceAll('var(--vp-c-brand-1)', theme.vpBrand)
     .replaceAll('var(--wbx-pixel)', 'Silkscreen')
+    .replaceAll('var(--wbx-type-hero-size)', type.hero)
+    .replaceAll('var(--wbx-type-page-size)', type.page)
+    .replaceAll('var(--wbx-type-section-size)', type.section)
+    .replaceAll('var(--wbx-type-card-size)', type.card)
+    .replaceAll('var(--wbx-type-lead-size)', type.lead)
+    .replaceAll('var(--wbx-type-body-size)', type.body)
+    .replaceAll('var(--wbx-type-aux-size)', type.aux)
+    .replaceAll('var(--wbx-type-control-size)', type.control)
+    .replaceAll('var(--wbx-type-eyebrow-size)', type.eyebrow)
+    .replaceAll('var(--wbx-leading-hero)', '1.18')
+    .replaceAll('var(--wbx-leading-page)', '1.2')
+    .replaceAll('var(--wbx-leading-section)', '1.25')
+    .replaceAll('var(--wbx-leading-card)', '1.35')
+    .replaceAll('var(--wbx-leading-lead)', '1.6')
+    .replaceAll('var(--wbx-leading-body)', '1.65')
+    .replaceAll('var(--wbx-leading-aux)', '1.5')
+    .replaceAll('var(--wbx-leading-control)', '1.5')
+    .replaceAll('var(--wbx-leading-eyebrow)', '1.6')
+    .replaceAll('var(--wbx-weight-regular)', '400')
+    .replaceAll('var(--wbx-weight-medium)', '500')
+    .replaceAll('var(--wbx-weight-semibold)', '600')
+    .replaceAll('var(--wbx-weight-bold)', '700')
 }
 
 function mediaMatches(media: string, viewportWidth: number) {
@@ -104,6 +147,7 @@ function installStyles(
   style.textContent = resolveThemeTokens(
     flattenStylesAtViewport(`${vpDocLinkRule}\n${sharedStyles}\n${css}`, viewportWidth),
     theme,
+    viewportWidth,
   )
   document.head.append(style)
 }
@@ -114,16 +158,16 @@ function assertCompactSurfaces(doc: Document, viewportWidth: number) {
   }
 
   if (doc.querySelector('.wbx-cases')) {
-    size('.gallery-eyebrow', '12px')
-    size('.submit-eyebrow', '12px')
-    size('.cta-eyebrow', '12px')
-    size('.wbx-cases-categories button', '14px')
+    size('.gallery-eyebrow', viewportWidth <= 640 ? '10px' : '11px')
+    size('.submit-eyebrow', viewportWidth <= 640 ? '10px' : '11px')
+    size('.cta-eyebrow', viewportWidth <= 640 ? '10px' : '11px')
+    size('.wbx-cases-categories button', viewportWidth <= 640 ? '14px' : '15px')
     size('.wbx-case-card__meta', '12px')
     size('.wbx-case-card__title', viewportWidth <= 640 ? '20px' : '22px')
     size('.wbx-case-card__outcome', '14px')
     size('.wbx-case-card__product', '11px')
-    size('.wbx-cases-submit .wbx-cases-action', '14px')
-    size('.wbx-case-service-cta .wbx-cases-action', '14px')
+    size('.wbx-cases-submit .wbx-cases-action', viewportWidth <= 640 ? '14px' : '15px')
+    size('.wbx-case-service-cta .wbx-cases-action', viewportWidth <= 640 ? '14px' : '15px')
   }
 
 }
@@ -135,6 +179,113 @@ afterEach(() => {
 })
 
 describe('product page computed styles', () => {
+  it.each([
+    { label: 'light', theme: themes.light },
+    { label: 'dark', theme: themes.dark },
+  ])('uses consistent enterprise service surfaces in $label mode', ({ theme }) => {
+    installStyles(pageStyles.enterprise, theme, 1440)
+    document.body.innerHTML = `
+      <div class="wbx-enterprise">
+        <article class="wbx-enterprise-service"><a>沟通培训需求</a></article>
+        <article class="wbx-enterprise-service is-recommended"><span class="wbx-enterprise-service__meta"><span>推荐起点</span></span><a>预约需求诊断</a></article>
+      </div>
+    `
+
+    const cards = [...document.querySelectorAll('.wbx-enterprise-service')]
+      .map((element) => getComputedStyle(element))
+
+    expect(cards.every((style) => style.borderRadius === '20px')).toBe(true)
+    expect(cards.every((style) => style.backgroundColor === theme.sectionSoftRgb)).toBe(true)
+  })
+
+  it('stacks enterprise services and stretches their actions on mobile', () => {
+    installStyles(pageStyles.enterprise, themes.light, 390)
+    document.body.innerHTML = `
+      <div class="wbx-enterprise">
+        <div class="wbx-enterprise__grid"><article class="wbx-enterprise-service"><a>预约需求诊断</a></article></div>
+      </div>
+    `
+
+    const grid = getComputedStyle(document.querySelector('.wbx-enterprise__grid')!)
+    const action = getComputedStyle(document.querySelector('.wbx-enterprise-service > a')!)
+
+    expect(grid.gridTemplateColumns).toBe('1fr')
+    expect(action.alignSelf).toBe('stretch')
+  })
+
+  it.each([
+    { label: 'light', theme: themes.light },
+    { label: 'dark', theme: themes.dark },
+  ])('keeps tool navigation and placeholders calm in $label mode', ({ theme }) => {
+    installStyles(pageStyles.tools, theme, 1440)
+    document.body.innerHTML = `
+      <div class="wbx-tools">
+        <div class="wbx-tools__tabs"><button aria-selected="true">WorkBuddy</button></div>
+        <section class="wbx-tools__placeholder">产品介绍筹备中</section>
+      </div>
+    `
+
+    const tabs = getComputedStyle(document.querySelector('.wbx-tools__tabs')!)
+    const selected = getComputedStyle(document.querySelector('.wbx-tools__tabs button')!)
+    const placeholder = getComputedStyle(document.querySelector('.wbx-tools__placeholder')!)
+
+    expect(tabs.borderRadius).toBe('20px')
+    expect(tabs.backgroundColor).toBe(theme.sectionSoftRgb)
+    expect(selected.backgroundColor).toBe(theme.surface === '#ffffff' ? 'rgb(255, 255, 255)' : 'rgb(24, 27, 21)')
+    expect(placeholder.borderRadius).toBe('20px')
+    expect(placeholder.backgroundColor).toBe(theme.sectionSoftRgb)
+  })
+
+  it('fits all product tabs within the mobile viewport without a horizontal scroller', () => {
+    installStyles(pageStyles.tools, themes.light, 390)
+    document.body.innerHTML = `
+      <div class="wbx-tools__tabs">
+        <button>WorkBuddy</button><button>SparkX</button><button>SunFun</button>
+      </div>
+    `
+
+    const tabs = getComputedStyle(document.querySelector('.wbx-tools__tabs')!)
+    const button = getComputedStyle(document.querySelector('.wbx-tools__tabs button')!)
+
+    expect(tabs.display).toBe('grid')
+    expect(tabs.gridTemplateColumns).toBe('repeat(3, minmax(0, 1fr))')
+    expect(tabs.overflowX).not.toBe('auto')
+    expect(button.minWidth).toBe('0')
+  })
+
+  it.each([
+    { label: 'light', theme: themes.light },
+    { label: 'dark', theme: themes.dark },
+  ])('uses calm catalog surfaces and compact selected filters in $label mode', ({ theme }) => {
+    installStyles(pageStyles.cases, theme, 1440)
+    document.body.innerHTML = `
+      <section class="wbx-cases">
+        <div class="wbx-cases-primary-tabs"><button aria-selected="true">个人</button></div>
+        <div class="wbx-cases-categories"><button aria-pressed="true">全部</button></div>
+        <div class="wbx-cases-tools-stack"><label class="wbx-cases-search"><input></label></div>
+        <ul class="wbx-cases-grid">
+          <li class="wbx-case-card"><a class="wbx-case-card__link">案例</a></li>
+          <li class="wbx-enterprise-case-card">企业案例</li>
+        </ul>
+      </section>
+    `
+
+    const personalCard = getComputedStyle(document.querySelector('.wbx-case-card__link')!)
+    const enterpriseCard = getComputedStyle(document.querySelector('.wbx-enterprise-case-card')!)
+    const tools = getComputedStyle(document.querySelector('.wbx-cases-tools-stack')!)
+    const audienceTab = getComputedStyle(document.querySelector('.wbx-cases-primary-tabs button')!)
+    const category = getComputedStyle(document.querySelector('.wbx-cases-categories button')!)
+
+    expect(personalCard.borderRadius).toBe('20px')
+    expect(enterpriseCard.borderRadius).toBe('20px')
+    expect(personalCard.backgroundColor).toBe(theme.sectionSoftRgb)
+    expect(enterpriseCard.backgroundColor).toBe(theme.sectionSoftRgb)
+    expect(tools.borderRadius).toBe('20px')
+    expect(tools.backgroundColor).toBe(theme.sectionSoftRgb)
+    expect(audienceTab.backgroundColor).toBe(theme.accentSoftRgb)
+    expect(category.backgroundColor).toBe(theme.accentSoftRgb)
+  })
+
   it.each([
     { label: 'desktop', viewportWidth: 1440, fontSize: '52px', lineHeight: '1.2' },
     { label: 'desktop boundary', viewportWidth: 960, fontSize: '52px', lineHeight: '1.2' },
@@ -179,10 +330,10 @@ describe('product page computed styles', () => {
           bodyFontSize: viewportWidth <= 640 ? '16px' : '17px',
           bodyLineHeight: '1.65',
           compact: {
-            '.gallery-eyebrow': '12px',
-            '.submit-eyebrow': '12px',
-            '.cta-eyebrow': '12px',
-            '.wbx-cases-categories button': '14px',
+            '.gallery-eyebrow': viewportWidth <= 640 ? '10px' : '11px',
+            '.submit-eyebrow': viewportWidth <= 640 ? '10px' : '11px',
+            '.cta-eyebrow': viewportWidth <= 640 ? '10px' : '11px',
+            '.wbx-cases-categories button': viewportWidth <= 640 ? '14px' : '15px',
             '.wbx-case-card__meta': '12px',
             '.wbx-case-card__title': viewportWidth <= 640 ? '20px' : '22px',
             '.wbx-case-card__outcome': '14px',
@@ -229,14 +380,14 @@ describe('product page computed styles', () => {
           expect(getComputedStyle(document.querySelector('.gallery-eyebrow')!).position).not.toBe('absolute')
           expect(getComputedStyle(document.querySelector('.submit-eyebrow')!).position).not.toBe('absolute')
           expect(getComputedStyle(document.querySelector('.cta-eyebrow')!).position).not.toBe('absolute')
-          expect(getComputedStyle(document.querySelector('.submit-copy')!).fontSize).toBe('16px')
-          expect(getComputedStyle(document.querySelector('.wbx-cases-action')!).fontSize).toBe('14px')
+          expect(getComputedStyle(document.querySelector('.submit-copy')!).fontSize).toBe(viewportWidth <= 640 ? '16px' : '17px')
+          expect(getComputedStyle(document.querySelector('.wbx-cases-action')!).fontSize).toBe(viewportWidth <= 640 ? '14px' : '15px')
         }
 
         const eyebrowStyle = getComputedStyle(document.querySelector('.submit-eyebrow')!)
         expect(eyebrowStyle.color).toBe('rgb(23, 107, 85)')
         expect(eyebrowStyle.fontFamily).toContain('Silkscreen')
-        expect(eyebrowStyle.fontWeight).toBe('700')
+        expect(eyebrowStyle.fontWeight).toBe('500')
 
         document.head.querySelectorAll('style').forEach((style) => style.remove())
       }
@@ -255,7 +406,7 @@ describe('product page computed styles', () => {
 
     const expectCompactEyebrows = () => {
       for (const selector of ['.gallery-eyebrow', '.submit-eyebrow', '.cta-eyebrow']) {
-        expect(getComputedStyle(document.querySelector(selector)!).fontSize).toBe('12px')
+        expect(getComputedStyle(document.querySelector(selector)!).fontSize).toBe('11px')
       }
     }
 
@@ -290,7 +441,7 @@ describe('product page computed styles', () => {
 
         expect(computed.color).toBe('rgb(13, 16, 13)')
         expect(computed.backgroundColor).toBe('rgb(50, 230, 185)')
-        expect(computed.fontWeight).toBe('700')
+        expect(computed.fontWeight).toBe('600')
         expect(computed.textDecoration).toBe('none')
         expect(computed.transition).toContain('background var(--wbx-motion-fast) ease')
 
@@ -371,6 +522,21 @@ describe('product page computed styles', () => {
     expect(getComputedStyle(document.querySelector('.wbx-service-deliverables')!).gridTemplateColumns).toBe('1fr')
   })
 
+  it('keeps service capability numbers legible in dark mode', () => {
+    installStyles(pageStyles.service, themes.dark)
+    document.documentElement.classList.add('dark')
+    document.body.innerHTML = `
+      <article class="wbx-service">
+        <div class="wbx-service-capability">
+          <span class="wbx-service-capability__number">01</span>
+        </div>
+      </article>
+    `
+
+    expect(getComputedStyle(document.querySelector('.wbx-service-capability__number')!).color)
+      .toBe('rgb(174, 180, 167)')
+  })
+
   it.each([
     { viewportWidth: 1440, panelColumns: 'minmax(0, 570px) minmax(320px, 486px)', sectionWidth: '100%', titleInset: '0px' },
     { viewportWidth: 900, panelColumns: '1fr', sectionWidth: '100%', titleInset: '0px' },
@@ -403,10 +569,10 @@ describe('product page computed styles', () => {
       expect(getComputedStyle(facts).borderBottomColor).toBe('rgb(227, 231, 228)')
       if (viewportWidth === 1440) expect(panel.justifyContent).toBe('space-between')
       const workshopTitle = getComputedStyle(document.querySelector('#workshop-title')!)
-      expect(workshopTitle.fontSize).toBe('clamp(30px, 3vw, 43px)')
-      expect(workshopTitle.fontWeight).toBe('820')
-      expect(workshopTitle.lineHeight).toBe('1.2')
-      expect(workshopTitle.letterSpacing).toBe('-0.045em')
+      expect(workshopTitle.fontSize).toBe(viewportWidth === 390 ? '30px' : '40px')
+      expect(workshopTitle.fontWeight).toBe('700')
+      expect(workshopTitle.lineHeight).toBe('1.25')
+      expect(workshopTitle.letterSpacing).toBe('-0.035em')
 
       const left = getComputedStyle(document.querySelector('.wbx-workshop__left')!)
       const media = getComputedStyle(document.querySelector('.wbx-workshop__media')!)

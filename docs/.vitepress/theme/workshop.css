@@ -3,23 +3,23 @@
   grid-template-columns: 1fr;
   width: 100%;
   margin: 0;
-  padding: var(--wbx-section-space) 0 64px;
+  padding: var(--wbx-section-space) 0;
   color: var(--wbx-ink);
   scroll-margin-top: 96px;
 }
 
 .wbx-workshop :where(h2, p, dl, dd, figure) { margin-top: 0; }
-.wbx-workshop h2 { margin-bottom: 0; border: 0; padding: 0; font-size: clamp(30px, 3vw, 43px); font-weight: 820; line-height: 1.2; letter-spacing: -0.045em; }
+.wbx-workshop h2 { margin-bottom: 0; border: 0; padding: 0; font-size: var(--wbx-type-section-size); font-weight: var(--wbx-weight-bold); line-height: var(--wbx-leading-section); letter-spacing: -0.035em; }
 .wbx-workshop__heading { display: block; min-width: 0; margin-bottom: 36px; }
 .wbx-workshop__heading h2 { margin: 0; }
-.wbx-workshop__eyebrow { margin-bottom: 12px; color: var(--vp-c-brand-1); font-family: var(--wbx-pixel); font-size: 12px; font-weight: 700; letter-spacing: .09em; }
-.wbx-workshop__title-edition { margin-left: 12px; color: var(--vp-c-brand-1); font-family: var(--wbx-pixel); font-size: 16px; font-weight: 800; letter-spacing: .09em; white-space: nowrap; }
+.wbx-workshop__eyebrow { margin-bottom: 12px; color: var(--vp-c-brand-1); font-family: var(--wbx-pixel); font-size: var(--wbx-type-eyebrow-size); font-weight: var(--wbx-weight-medium); line-height: var(--wbx-leading-eyebrow); letter-spacing: .09em; }
+.wbx-workshop__title-edition { margin-left: 12px; color: var(--vp-c-brand-1); font-family: var(--wbx-pixel); font-size: var(--wbx-type-aux-size); font-weight: var(--wbx-weight-semibold); letter-spacing: .09em; white-space: nowrap; }
 .wbx-workshop__summary { max-width: 540px; margin: 12px 0 0; color: var(--wbx-muted); font-size: 15px; line-height: 1.7; text-align: left; }
 .wbx-workshop__panel { display: grid; grid-template-areas: 'left media' '. navigation'; grid-template-columns: minmax(0, 570px) minmax(320px, 486px); order: 1; justify-content: space-between; column-gap: 48px; row-gap: 16px; align-items: start; margin-bottom: 30px; }
 .wbx-workshop__left { display: flex; grid-area: left; min-width: 0; align-self: stretch; flex-direction: column; }
 .wbx-workshop__copy { min-width: 0; }
-.wbx-workshop .wbx-workshop__promise { max-width: 640px; margin-bottom: 10px; font-size: 36px; font-weight: 850; line-height: 1.28; }
-.wbx-workshop__tagline { margin-bottom: 8px; font-size: 20px; font-weight: 800; line-height: 1.4; }
+.wbx-workshop .wbx-workshop__promise { max-width: 640px; margin-bottom: 10px; font-size: var(--wbx-type-section-size); font-weight: var(--wbx-weight-bold); line-height: var(--wbx-leading-section); }
+.wbx-workshop__tagline { margin-bottom: 8px; font-size: var(--wbx-type-card-size); font-weight: var(--wbx-weight-bold); line-height: var(--wbx-leading-card); }
 .wbx-workshop__audience { max-width: 680px; margin-bottom: 24px; color: var(--wbx-muted); font-size: 15px; line-height: 1.7; }
 
 .wbx-workshop__media { position: relative; grid-area: media; min-width: 0; margin-bottom: 0; }
@@ -35,16 +35,16 @@
 .wbx-workshop__poster-placeholder { display: block; width: 100%; aspect-ratio: 3 / 4; background: var(--wbx-section-soft); }
 .wbx-workshop__poster-navigation { display: flex; grid-area: navigation; min-height: 48px; align-items: center; justify-content: space-between; margin-top: 0; }
 .wbx-workshop__poster-actions { display: flex; gap: 12px; }
-.wbx-workshop__poster-control { position: static; display: grid; width: 48px; height: 48px; place-items: center; border: 1px solid color-mix(in srgb, var(--wbx-accent) 65%, var(--wbx-ink)); border-radius: 50%; color: var(--wbx-ink); background: var(--wbx-accent); cursor: pointer; font-size: 24px; font-weight: 850; line-height: 1; transition: box-shadow var(--wbx-motion-fast) ease, transform var(--wbx-motion-fast) ease; }
+.wbx-workshop__poster-control { position: static; display: grid; width: 48px; height: 48px; place-items: center; border: 1px solid color-mix(in srgb, var(--wbx-accent) 65%, var(--wbx-ink)); border-radius: 50%; color: #0d100d; background: var(--wbx-accent); cursor: pointer; font-size: 24px; font-weight: var(--wbx-weight-bold); line-height: 1; transition: box-shadow var(--wbx-motion-fast) ease, transform var(--wbx-motion-fast) ease; }
 .wbx-workshop__poster-control:hover,
 .wbx-workshop__poster-control:focus-visible { outline: none; box-shadow: var(--wbx-shadow-soft); transform: translateY(-1px); }
-.wbx-workshop__poster-page { position: static; border: 1px solid color-mix(in srgb, var(--wbx-accent) 65%, var(--wbx-ink)); border-radius: var(--wbx-radius-sm); padding: 4px 9px; color: var(--wbx-ink); background: var(--wbx-accent); font-size: 12px; font-weight: 800; line-height: 1; }
+.wbx-workshop__poster-page { position: static; border: 1px solid color-mix(in srgb, var(--wbx-accent) 65%, var(--wbx-ink)); border-radius: var(--wbx-radius-sm); padding: 4px 9px; color: #0d100d; background: var(--wbx-accent); font-size: 12px; font-weight: var(--wbx-weight-bold); line-height: 1; }
 
 .wbx-workshop__facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0 0 28px; border-top: 1px solid var(--wbx-line); border-bottom: 1px solid var(--wbx-line); }
 .wbx-workshop__facts > div { min-width: 0; padding: 14px 16px 14px 0; }
 .wbx-workshop__facts > div + div { border: 0; padding-left: 16px; }
 .wbx-workshop__facts dt { color: var(--wbx-muted); font-size: 12px; font-weight: 700; }
-.wbx-workshop__facts dd { margin: 4px 0 0; font-size: 14px; font-weight: 750; line-height: 1.5; }
+.wbx-workshop__facts dd { margin: 4px 0 0; font-size: var(--wbx-type-aux-size); font-weight: var(--wbx-weight-bold); line-height: var(--wbx-leading-aux); }
 .wbx-workshop__facts dd > span { display: block; }
 .wbx-workshop__actions { display: flex; flex-wrap: wrap; gap: 12px; }
 .wbx-workshop__reminder { display: inline-flex; gap: 8px; align-items: center; margin: 14px 0 0; color: var(--wbx-muted); font-size: 13px; font-weight: 700; line-height: 1.4; }
@@ -83,10 +83,10 @@
 }
 
 @media (max-width: 640px) {
-  .wbx-workshop { min-width: 0; gap: 0; padding: 48px 0 44px; }
+  .wbx-workshop { min-width: 0; gap: 0; padding: var(--wbx-section-space) 0; }
   .wbx-workshop__heading { min-width: 0; }
-  .wbx-workshop__title-edition { font-size: 14px; }
-  .wbx-workshop .wbx-workshop__promise { font-size: 32px; }
+  .wbx-workshop__title-edition { font-size: var(--wbx-type-aux-size); }
+  .wbx-workshop .wbx-workshop__promise { font-size: var(--wbx-type-section-size); }
   .wbx-workshop__facts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .wbx-workshop__facts > div + div { padding-left: 8px; }
   .wbx-workshop__actions { display: grid; }

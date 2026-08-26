@@ -130,9 +130,9 @@
   max-width: 720px;
   margin: 12px 0 18px;
   color: var(--wbx-text-strong);
-  font-size: 58px;
-  font-weight: 700;
-  line-height: 1.04;
+  font-size: var(--wbx-type-hero-size);
+  font-weight: var(--wbx-weight-bold);
+  line-height: var(--wbx-leading-hero);
   letter-spacing: -0.04em;
 }
 
@@ -179,9 +179,9 @@
   max-width: 680px;
   margin: 0;
   color: var(--wbx-text-body);
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 1.6;
+  font-size: var(--wbx-type-lead-size);
+  font-weight: var(--wbx-weight-regular);
+  line-height: var(--wbx-leading-lead);
   overflow-wrap: anywhere;
 }
 
@@ -203,9 +203,9 @@
   border: 1px solid var(--wbx-ink);
   border-radius: var(--wbx-radius-md);
   color: var(--wbx-ink) !important;
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.5;
+  font-size: var(--wbx-type-control-size);
+  font-weight: var(--wbx-weight-semibold);
+  line-height: var(--wbx-leading-control);
   text-decoration: none !important;
   transition: background var(--wbx-motion-fast) ease, box-shadow var(--wbx-motion-fast) ease, transform var(--wbx-motion-fast) var(--wbx-ease-standard);
 }

@@ -25,9 +25,32 @@
   --wbx-pixel: "Silkscreen", "SFMono-Regular", Consolas, monospace;
   --wbx-body: "Avenir Next", Avenir, "PingFang SC", "Hiragino Sans GB",
     "Microsoft YaHei", sans-serif;
+  --wbx-type-hero-size: 58px;
+  --wbx-type-page-size: 52px;
+  --wbx-type-section-size: 40px;
+  --wbx-type-card-size: 22px;
+  --wbx-type-lead-size: 20px;
+  --wbx-type-body-size: 17px;
+  --wbx-type-aux-size: 14px;
+  --wbx-type-control-size: 15px;
+  --wbx-type-eyebrow-size: 11px;
+  --wbx-leading-hero: 1.18;
+  --wbx-leading-page: 1.2;
+  --wbx-leading-section: 1.25;
+  --wbx-leading-card: 1.35;
+  --wbx-leading-lead: 1.6;
+  --wbx-leading-body: 1.65;
+  --wbx-leading-aux: 1.5;
+  --wbx-leading-control: 1.5;
+  --wbx-leading-eyebrow: 1.6;
+  --wbx-weight-regular: 400;
+  --wbx-weight-medium: 500;
+  --wbx-weight-semibold: 600;
+  --wbx-weight-bold: 700;
   --wbx-radius-sm: 6px;
   --wbx-radius-md: 10px;
   --wbx-radius-lg: 16px;
+  --wbx-radius-xl: 20px;
   --wbx-shadow-soft: 0 8px 24px rgb(13 16 13 / 6%);
   --wbx-shadow-hover: 0 12px 32px rgb(13 16 13 / 10%);
   --wbx-shadow: var(--wbx-shadow-soft);
@@ -37,7 +60,11 @@
   --wbx-ease-standard: cubic-bezier(.22, 1, .36, 1);
   --wbx-content-width: 1104px;
   --wbx-content-wide: 1400px;
-  --wbx-section-space: 64px;
+  --wbx-section-space: 72px;
+  --wbx-section-space-compact: 48px;
+  --wbx-section-space-hero: 96px;
+  --wbx-heading-content-gap: 32px;
+  --wbx-grid-gap: 24px;
   --wbx-control-height: 48px;
   --wbx-mobile-fab-safe-space: 58px;
   --wbx-focus: 2px solid var(--wbx-accent);
@@ -137,9 +164,9 @@ body {
 }
 
 .wbx-pixel-label {
-  font-size: 11px;
-  font-weight: 500;
-  line-height: 1.6;
+  font-size: var(--wbx-type-eyebrow-size);
+  font-weight: var(--wbx-weight-medium);
+  line-height: var(--wbx-leading-eyebrow);
 }
 
 .wbx-marketing-reveal {
@@ -198,9 +225,9 @@ body {
   border: 0;
   padding: 0;
   color: var(--wbx-text-strong);
-  font-size: 52px;
-  font-weight: 700;
-  line-height: 1.2;
+  font-size: var(--wbx-type-page-size);
+  font-weight: var(--wbx-weight-bold);
+  line-height: var(--wbx-leading-page);
   letter-spacing: -0.03em;
 }
 
@@ -209,54 +236,46 @@ body {
   max-width: 720px;
   margin: 0;
   color: var(--wbx-text-body);
-  font-size: 17px;
-  font-weight: 400;
-  line-height: 1.65;
+  font-size: var(--wbx-type-body-size);
+  font-weight: var(--wbx-weight-regular);
+  line-height: var(--wbx-leading-body);
 }
 
 @media (max-width: 640px) {
-  .wbx-page-header > h1,
-  .wbx-page-header > :first-child > h1 {
-    font-size: 38px;
-  }
-
-  .wbx-page-header > p:last-child,
-  .wbx-page-header > :first-child > p:last-child {
-    font-size: 16px;
-  }
-
-  .wbx-pixel-label {
-    font-size: 10px;
+  :root {
+    --wbx-type-hero-size: 40px;
+    --wbx-type-page-size: 38px;
+    --wbx-type-section-size: 30px;
+    --wbx-type-card-size: 20px;
+    --wbx-type-lead-size: 17px;
+    --wbx-type-body-size: 16px;
+    --wbx-type-aux-size: 13px;
+    --wbx-type-control-size: 14px;
+    --wbx-type-eyebrow-size: 10px;
+    --wbx-section-space: 48px;
+    --wbx-section-space-compact: 36px;
+    --wbx-section-space-hero: 64px;
+    --wbx-heading-content-gap: 24px;
+    --wbx-grid-gap: 16px;
   }
 }
 
 .VPDoc .vp-doc > div > h1 {
   margin: 0 0 34px;
   font-family: var(--wbx-body);
-  font-size: 51.2px;
-  font-weight: 700;
-  line-height: 58.88px;
-  letter-spacing: -2.816px;
+  font-size: var(--wbx-type-page-size);
+  font-weight: var(--wbx-weight-bold);
+  line-height: var(--wbx-leading-page);
+  letter-spacing: -0.03em;
 }
 
 .wbx-book-index-heading > span {
   display: block;
 }
 
-@media (max-width: 959px) {
-  .VPDoc .vp-doc > div > h1 {
-    font-size: 44px;
-    line-height: 52.8px;
-    letter-spacing: -2.2px;
-  }
-}
-
 @media (max-width: 640px) {
   .VPDoc .vp-doc > div > h1 {
     margin-bottom: 26px;
-    font-size: 36px;
-    line-height: 43.2px;
-    letter-spacing: -1.44px;
   }
 }
 
