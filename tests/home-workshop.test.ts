@@ -17,7 +17,7 @@ function mountWorkshop(editions: readonly WorkshopEdition[]) {
 
 function edition(overrides: Partial<WorkshopEdition>): WorkshopEdition {
   return {
-    id: 'test', title: '场景实战工作坊', edition: '测试期', date: '08.15', fullDate: '2026 年 8 月 15 日', startsAt: '2026-08-15T14:00:00+08:00', endsAt: '2026-08-15T18:00:00+08:00', time: '14:00–18:00', capacity: '15–25 人', venue: '星辉 OPC', area: '人工智能产业园', coverPath: '/cover.png', posterPaths: ['/cover.png'], activityDetailUrl: '', registrationQrPath: '/qr.png', ...overrides,
+    id: 'test', title: '场景实战工作坊', edition: '测试期', date: '08.15', fullDate: '2026 年 8 月 15 日', startsAt: '2026-08-15T14:00:00+08:00', endsAt: '2026-08-15T18:00:00+08:00', time: '14:00–18:00', capacity: '15–25 人', venue: '星辉 OPC', area: '人工智能产业园', floor: 'A 座 4 楼', coverPath: '/cover.png', posterPaths: ['/cover.png'], activityDetailUrl: '', registrationQrPath: '/qr.png', ...overrides,
   }
 }
 
@@ -91,6 +91,26 @@ describe('homepage workshop card', () => {
     expect(sections.indexOf(workshop!)).toBe(sections.indexOf(document.querySelector('.wbx-system')!) - 1)
   })
 
+  it('shows the floor after the location in the workshop facts', () => {
+    mountWorkshop([edition({})])
+    const facts = Array.from(document.querySelectorAll<HTMLElement>('.wbx-workshop__facts > div'))
+
+    expect(facts.map((fact) => fact.querySelector('dt')?.textContent)).toEqual(['时间', '规模', '地点', '楼层'])
+    expect(facts[3]?.querySelector('dd')?.textContent).toBe('A 座 4 楼')
+  })
+
+  it('places the active registration status below the title edition', () => {
+    mountWorkshop([edition({
+      edition: '第二期',
+      startsAt: '2026-08-29T14:00:00+08:00',
+      endsAt: '2026-08-29T18:00:00+08:00',
+    })])
+    const titleMeta = document.querySelector('.wbx-workshop__title-meta')
+
+    expect(titleMeta?.querySelector('.wbx-workshop__title-edition')?.textContent).toBe('第二期')
+    expect(titleMeta?.querySelector('.wbx-workshop__title-status')?.textContent).toBe('报名中')
+  })
+
   it('omits the repeated workshop promise and tagline from the activity details', () => {
     harness.mountHomePage()
     const workshop = document.querySelector('.wbx-home-workshop')
@@ -127,17 +147,30 @@ describe('homepage workshop card', () => {
     mountWorkshop([edition({})])
     await nextTick()
 
-    const statusFact = () => document.querySelector<HTMLElement>('.wbx-workshop__fact--status')
-    expect(statusFact()?.querySelector('dt')?.textContent).toBe('状态')
-    expect(statusFact()?.querySelector('dd')?.textContent).toBe('报名中')
+    const titleStatus = () => document.querySelector<HTMLElement>('.wbx-workshop__title-status')
+    expect(titleStatus()?.textContent).toBe('报名中')
     expect(document.querySelector('.wbx-home-workshop__registration-trigger')).not.toBeNull()
 
     await vi.advanceTimersByTimeAsync(1_001)
     await nextTick()
 
-    expect(statusFact()?.querySelector('dd')?.textContent).toBe('已结束')
+    expect(titleStatus()?.textContent).toBe('已结束')
     expect(document.querySelector('.wbx-home-workshop__registration-trigger')).toBeNull()
     expect(document.querySelector('.wbx-home-workshop__recap')).not.toBeNull()
+  })
+
+  it('shows the floor configured for each workshop edition', async () => {
+    harness.mountHomePage()
+    const editions = Array.from(document.querySelectorAll<HTMLButtonElement>('.wbx-workshop__edition'))
+    const floor = () => document.querySelectorAll('.wbx-workshop__facts dd')[3]?.textContent
+
+    expect(floor()).toBe('A 座 4 楼')
+    editions[0]?.click()
+    await nextTick()
+    expect(floor()).toBe('B2 栋 9 楼')
+    editions[2]?.click()
+    await nextTick()
+    expect(floor()).toBe('B2 栋 9 楼')
   })
 
   it.each([0, 1, 8, 9])('shows a stable attendee row for %i uploaded avatars', (count) => {

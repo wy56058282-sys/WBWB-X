@@ -160,7 +160,13 @@ onBeforeUnmount(() => {
         <div class="wbx-workshop__copy">
           <div class="wbx-workshop__heading">
             <p class="wbx-workshop__eyebrow">WORKBUDDY X WORKSHOP</p>
-            <h2 id="workshop-title">WorkBuddy X 工作坊 <span class="wbx-workshop__title-edition">{{ selectedWorkshop.edition }}</span></h2>
+            <h2 id="workshop-title">
+              WorkBuddy X 工作坊
+              <span class="wbx-workshop__title-meta">
+                <span class="wbx-workshop__title-edition">{{ selectedWorkshop.edition }}</span>
+                <span class="wbx-workshop__title-status">{{ selectedStatus === 'past' ? '已结束' : '报名中' }}</span>
+              </span>
+            </h2>
             <p class="wbx-workshop__summary">先用一场工作坊，找到值得定制的真问题</p>
           </div>
           <p class="wbx-workshop__audience">面向人群：创业者、管理者、设计师、超级个体、一人公司（OPC）</p>
@@ -168,7 +174,7 @@ onBeforeUnmount(() => {
             <div><dt>时间</dt><dd><span>{{ selectedWorkshop.fullDate }}</span><span>{{ selectedWorkshop.time }}</span></dd></div>
             <div><dt>规模</dt><dd>{{ selectedWorkshop.capacity }}</dd></div>
             <div><dt>地点</dt><dd><span>{{ selectedWorkshop.venue }}</span><span>{{ selectedWorkshop.area }}</span></dd></div>
-            <div class="wbx-workshop__fact--status" :class="{ 'is-ended': selectedStatus === 'past' }"><dt>状态</dt><dd>{{ selectedStatus === 'past' ? '已结束' : '报名中' }}</dd></div>
+            <div><dt>楼层</dt><dd>{{ selectedWorkshop.floor }}</dd></div>
           </dl>
           <div class="wbx-workshop__actions">
             <div v-if="selectedStatus !== 'past'" ref="registration" class="wbx-home-workshop__registration">

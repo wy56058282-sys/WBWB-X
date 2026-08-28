@@ -14,6 +14,7 @@ export interface WorkshopEdition {
   capacity: string
   venue: string
   area: string
+  floor: string
   coverPath: string
   thumbnailPath?: string
   posterPaths: readonly string[]
@@ -58,6 +59,7 @@ export const workshopEditions: readonly WorkshopEdition[] = [
     capacity: serviceConfig.workshop.capacity,
     venue,
     area,
+    floor: 'B2 栋 9 楼',
     coverPath: '/article-assets/service/workshop-815.png',
     thumbnailPath: '/article-assets/service/workshop-815-thumb.webp',
     posterPaths: ['/article-assets/service/workshop-815.png', '/article-assets/service/workshop-815-agenda.png', '/article-assets/service/workshop-815-benefits.png'],
@@ -77,6 +79,7 @@ export const workshopEditions: readonly WorkshopEdition[] = [
     capacity: serviceConfig.workshop.capacity,
     venue,
     area,
+    floor: 'A 座 4 楼',
     coverPath: serviceConfig.workshop.coverPath,
     thumbnailPath: '/article-assets/service/workshop-cover-thumb.webp',
     posterPaths: [serviceConfig.workshop.coverPath, '/article-assets/service/workshop-829-agenda.png', '/article-assets/service/workshop-829-benefits.png'],
@@ -96,6 +99,7 @@ export const workshopEditions: readonly WorkshopEdition[] = [
     capacity: serviceConfig.workshop.capacity,
     venue,
     area,
+    floor: 'B2 栋 9 楼',
     coverPath: '/article-assets/service/workshop-912.png',
     thumbnailPath: '/article-assets/service/workshop-912-thumb.webp',
     posterPaths: ['/article-assets/service/workshop-912.png'],

@@ -13,7 +13,9 @@
 .wbx-workshop__heading { display: block; min-width: 0; margin-bottom: 36px; }
 .wbx-workshop__heading h2 { margin: 0; }
 .wbx-workshop__eyebrow { margin-bottom: 12px; color: var(--vp-c-brand-1); font-family: var(--wbx-pixel); font-size: var(--wbx-type-eyebrow-size); font-weight: var(--wbx-weight-medium); line-height: var(--wbx-leading-eyebrow); letter-spacing: .09em; }
-.wbx-workshop__title-edition { margin-left: 12px; color: var(--vp-c-brand-1); font-family: var(--wbx-pixel); font-size: var(--wbx-type-aux-size); font-weight: var(--wbx-weight-semibold); letter-spacing: .09em; white-space: nowrap; }
+.wbx-workshop__title-meta { display: inline-flex; flex-direction: column; align-items: flex-start; margin-left: 12px; vertical-align: middle; }
+.wbx-workshop__title-edition { color: var(--vp-c-brand-1); font-family: var(--wbx-pixel); font-size: var(--wbx-type-aux-size); font-weight: var(--wbx-weight-semibold); line-height: 1.15; letter-spacing: .09em; white-space: nowrap; }
+.wbx-workshop__title-status { color: var(--vp-c-brand-1); font-size: 12px; font-weight: var(--wbx-weight-bold); line-height: 1.15; white-space: nowrap; }
 .wbx-workshop__summary { max-width: 540px; margin: 12px 0 0; color: var(--wbx-muted); font-size: 15px; line-height: 1.7; text-align: left; }
 .wbx-workshop__panel { display: grid; grid-template-areas: 'left media' '. navigation'; grid-template-columns: minmax(0, 570px) minmax(320px, 486px); order: 1; justify-content: space-between; column-gap: 48px; row-gap: 16px; align-items: start; margin-bottom: 30px; }
 .wbx-workshop__left { display: flex; grid-area: left; min-width: 0; align-self: stretch; flex-direction: column; }
@@ -46,8 +48,6 @@
 .wbx-workshop__facts dt { color: var(--wbx-muted); font-size: 12px; font-weight: 700; }
 .wbx-workshop__facts dd { margin: 4px 0 0; font-size: var(--wbx-type-aux-size); font-weight: var(--wbx-weight-bold); line-height: var(--wbx-leading-aux); }
 .wbx-workshop__facts dd > span { display: block; }
-.wbx-workshop__fact--status dd { color: color-mix(in srgb, var(--wbx-accent) 58%, var(--wbx-ink)); }
-.wbx-workshop__fact--status.is-ended dd { color: var(--wbx-muted); }
 .wbx-workshop__actions { display: flex; flex-wrap: wrap; gap: 12px; }
 .wbx-workshop__reminder { display: inline-flex; gap: 8px; align-items: center; margin: 0; color: var(--wbx-muted); font-size: 13px; font-weight: 700; line-height: 1.4; }
 .wbx-workshop__reminder .hn { color: var(--vp-c-brand-1); font-size: 24px; line-height: 1; }
