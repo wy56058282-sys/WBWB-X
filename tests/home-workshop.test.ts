@@ -164,7 +164,7 @@ describe('homepage workshop card', () => {
     const editions = Array.from(document.querySelectorAll<HTMLButtonElement>('.wbx-workshop__edition'))
     const floor = () => document.querySelectorAll('.wbx-workshop__facts dd')[3]?.textContent
 
-    expect(floor()).toBe('A 座 4 楼')
+    expect(floor()).toBe('A1 座 4 楼')
     editions[0]?.click()
     await nextTick()
     expect(floor()).toBe('B2 栋 9 楼')

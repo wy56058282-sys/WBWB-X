@@ -79,7 +79,7 @@ export const workshopEditions: readonly WorkshopEdition[] = [
     capacity: serviceConfig.workshop.capacity,
     venue,
     area,
-    floor: 'A 座 4 楼',
+    floor: 'A1 座 4 楼',
     coverPath: serviceConfig.workshop.coverPath,
     thumbnailPath: '/article-assets/service/workshop-cover-thumb.webp',
     posterPaths: [serviceConfig.workshop.coverPath, '/article-assets/service/workshop-829-agenda.png', '/article-assets/service/workshop-829-benefits.png'],
