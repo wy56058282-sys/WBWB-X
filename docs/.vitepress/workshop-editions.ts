@@ -12,6 +12,7 @@ export interface WorkshopEdition {
   endsAt: string
   time: string
   capacity: string
+  city?: string
   venue: string
   area: string
   floor: string
@@ -97,15 +98,16 @@ export const workshopEditions: readonly WorkshopEdition[] = [
     endsAt: '2026-09-12T18:00:00+08:00',
     time: serviceConfig.workshop.time,
     capacity: serviceConfig.workshop.capacity,
-    venue,
-    area,
-    floor: 'B2 栋 9 楼',
+    city: '合肥',
+    venue: '高新区菖蒲路 668 号',
+    area: '人工智能产业园一期',
+    floor: 'A1 栋 4 楼',
     coverPath: '/article-assets/service/workshop-912.png',
     thumbnailPath: '/article-assets/service/workshop-912-thumb.webp',
-    posterPaths: ['/article-assets/service/workshop-912.png'],
-    displayPosterPaths: ['/article-assets/service/workshop-912-display.webp'],
+    posterPaths: ['/article-assets/service/workshop-912.png', '/article-assets/service/workshop-912-agenda.png', '/article-assets/service/workshop-912-benefits.png'],
+    displayPosterPaths: ['/article-assets/service/workshop-912-display.webp', '/article-assets/service/workshop-912-agenda-display.webp', '/article-assets/service/workshop-912-benefits-display.webp'],
     activityDetailUrl: '',
-    registrationQrPath: serviceConfig.workshop.registrationQrPath,
+    registrationQrPath: '/article-assets/service/workshop-912-registration-qr.png',
   },
 ]
 

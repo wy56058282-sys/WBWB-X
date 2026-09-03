@@ -159,7 +159,7 @@ describe('homepage workshop card', () => {
     expect(document.querySelector('.wbx-home-workshop__recap')).not.toBeNull()
   })
 
-  it('shows the floor configured for each workshop edition', async () => {
+  it('shows the configured location and floor for each workshop edition', async () => {
     harness.mountHomePage()
     const editions = Array.from(document.querySelectorAll<HTMLButtonElement>('.wbx-workshop__edition'))
     const floor = () => document.querySelectorAll('.wbx-workshop__facts dd')[3]?.textContent
@@ -170,7 +170,13 @@ describe('homepage workshop card', () => {
     expect(floor()).toBe('B2 栋 9 楼')
     editions[2]?.click()
     await nextTick()
-    expect(floor()).toBe('B2 栋 9 楼')
+    const thirdEditionFacts = Array.from(document.querySelectorAll<HTMLElement>('.wbx-workshop__facts > div'))
+    expect(thirdEditionFacts.map((fact) => fact.querySelector('dt')?.textContent))
+      .toEqual(['时间', '规模', '城市', '地点', '楼层'])
+    expect(thirdEditionFacts[2]?.querySelector('dd')?.textContent).toBe('合肥')
+    expect(Array.from(thirdEditionFacts[3]?.querySelectorAll('dd span') ?? []).map((part) => part.textContent))
+      .toEqual(['高新区菖蒲路 668 号', '人工智能产业园一期'])
+    expect(thirdEditionFacts[4]?.querySelector('dd')?.textContent).toBe('A1 栋 4 楼')
   })
 
   it.each([0, 1, 8, 9])('shows a stable attendee row for %i uploaded avatars', (count) => {
@@ -264,7 +270,6 @@ describe('homepage workshop card', () => {
     await nextTick()
     expect(editions[2].getAttribute('aria-selected')).toBe('true')
     expect(document.activeElement).toBe(editions[2])
-    expect(next()).toBeNull()
 
     editions[2].dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }))
     await nextTick()
@@ -289,6 +294,31 @@ describe('homepage workshop card', () => {
     previous()?.click()
     await nextTick()
     expect(posterSource()).toContain('workshop-829-benefits.png')
+  })
+
+  it('shows the three September posters and its dedicated registration QR', async () => {
+    harness.mountHomePage()
+    const workshop = document.querySelector('.wbx-home-workshop')
+    const thirdEdition = workshop?.querySelectorAll<HTMLButtonElement>('.wbx-workshop__edition')[2]
+    const posterSource = () => workshop?.querySelector<HTMLImageElement>('.wbx-workshop__poster')?.getAttribute('src')
+    const next = () => workshop?.querySelector<HTMLButtonElement>('.wbx-workshop__poster-control--next')
+
+    thirdEdition?.click()
+    await nextTick()
+
+    expect(posterSource()).toContain('workshop-912.png')
+    expect(workshop?.querySelector('.wbx-workshop__poster-page')?.textContent?.trim()).toBe('1 / 3')
+    next()?.click()
+    await nextTick()
+    expect(posterSource()).toContain('workshop-912-agenda.png')
+    next()?.click()
+    await nextTick()
+    expect(posterSource()).toContain('workshop-912-benefits.png')
+
+    workshop?.querySelector<HTMLButtonElement>('.wbx-home-workshop__registration-trigger')?.click()
+    await nextTick()
+    expect(workshop?.querySelector<HTMLImageElement>('.wbx-home-workshop__registration-popover img')?.getAttribute('src'))
+      .toContain('workshop-912-registration-qr.png')
   })
 
   it('does not steal focus when an open QR is closed by another workshop control', async () => {

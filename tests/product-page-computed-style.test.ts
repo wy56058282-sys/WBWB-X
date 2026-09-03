@@ -548,7 +548,7 @@ describe('product page computed styles', () => {
       document.body.innerHTML = `
         <section class="wbx-home-workshop wbx-workshop">
           <div class="wbx-workshop__panel">
-            <div class="wbx-workshop__left"><div class="wbx-workshop__copy"><div class="wbx-workshop__heading"><p class="wbx-workshop__eyebrow">WORKSHOP</p><h2 id="workshop-title">WorkBuddy X 工作坊 <span class="wbx-workshop__title-edition">第二期</span></h2></div><div class="wbx-workshop__actions"><div class="wbx-home-workshop__registration"><button class="wbx-workshop__action wbx-workshop__action--primary">报名</button></div></div></div><div class="wbx-workshop__editions-row"><div class="wbx-workshop__editions"><button class="wbx-workshop__edition" aria-selected="true">第二期</button></div></div></div>
+            <div class="wbx-workshop__left"><div class="wbx-workshop__copy"><div class="wbx-workshop__heading"><p class="wbx-workshop__eyebrow">WORKSHOP</p><h2 id="workshop-title">WorkBuddy X 工作坊 <span class="wbx-workshop__title-edition">第二期</span></h2></div><div class="wbx-workshop__actions"><div class="wbx-home-workshop__registration"><button class="wbx-workshop__action wbx-workshop__action--primary">报名</button><div class="wbx-home-workshop__registration-popover is-open"><img src="/qr.png" alt="报名二维码"></div></div></div></div><div class="wbx-workshop__editions-row"><div class="wbx-workshop__editions"><button class="wbx-workshop__edition" aria-selected="true">第二期</button></div></div></div>
             <figure class="wbx-workshop__media"><a class="wbx-workshop__poster-link"><img class="wbx-workshop__poster"></a></figure>
             <div class="wbx-workshop__poster-navigation">海报导航</div>
           </div>
@@ -563,10 +563,17 @@ describe('product page computed styles', () => {
       expect(workshop.width).toBe(sectionWidth)
       expect(workshop.marginLeft).toBe(titleInset)
       const facts = document.createElement('dl')
-      facts.className = 'wbx-workshop__facts'
+      facts.className = 'wbx-workshop__facts has-city'
       document.querySelector('.wbx-workshop__copy')!.append(facts)
       expect(getComputedStyle(facts).borderTopColor).toBe('rgb(227, 231, 228)')
       expect(getComputedStyle(facts).borderBottomColor).toBe('rgb(227, 231, 228)')
+      expect(getComputedStyle(facts).gridTemplateColumns).toBe(viewportWidth === 390
+        ? 'repeat(2, minmax(0, 1fr))'
+        : 'minmax(0, 1.4fr) minmax(0, 0.8fr) minmax(0, 0.65fr) minmax(0, 1.55fr) minmax(0, 0.8fr)')
+      const registrationQr = getComputedStyle(document.querySelector('.wbx-home-workshop__registration-popover img')!)
+      expect(registrationQr.marginTop).toBe('12px')
+      expect(registrationQr.marginLeft).toBe('12px')
+      expect(registrationQr.marginRight).toBe('12px')
       if (viewportWidth === 1440) expect(panel.justifyContent).toBe('space-between')
       const workshopTitle = getComputedStyle(document.querySelector('#workshop-title')!)
       expect(workshopTitle.fontSize).toBe(viewportWidth === 390 ? '30px' : '40px')

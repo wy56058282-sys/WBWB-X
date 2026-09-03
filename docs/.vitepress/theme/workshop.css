@@ -43,6 +43,7 @@
 .wbx-workshop__poster-page { position: static; border: 1px solid var(--wbx-line); border-radius: var(--wbx-radius-sm); padding: 4px 9px; color: var(--wbx-ink); background: var(--wbx-surface); font-size: 12px; font-weight: var(--wbx-weight-bold); line-height: 1; }
 
 .wbx-workshop__facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0 0 28px; border-top: 1px solid var(--wbx-line); border-bottom: 1px solid var(--wbx-line); }
+.wbx-workshop__facts.has-city { grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.8fr) minmax(0, 0.65fr) minmax(0, 1.55fr) minmax(0, 0.8fr); }
 .wbx-workshop__facts > div { min-width: 0; padding: 14px 16px 14px 0; }
 .wbx-workshop__facts > div + div { border: 0; padding-left: 16px; }
 .wbx-workshop__facts dt { color: var(--wbx-muted); font-size: 12px; font-weight: 700; }
@@ -68,7 +69,7 @@
 .wbx-home-workshop__registration { position: relative; }
 .wbx-home-workshop__registration-popover { position: absolute; z-index: 20; bottom: calc(100% + 14px); left: 0; display: none; width: min(240px, calc(100vw - 28px)); overflow: hidden; border: 1px solid var(--wbx-line); border-radius: var(--wbx-radius-lg); background: var(--wbx-surface); box-shadow: var(--wbx-shadow-hover); }
 .wbx-home-workshop__registration-popover.is-open { display: block; }
-.wbx-home-workshop__registration-popover img { display: block; width: 100%; height: auto; aspect-ratio: 1; }
+.wbx-home-workshop__registration-popover img { display: block; width: calc(100% - 24px); height: auto; margin: 12px 12px 0; aspect-ratio: 1; }
 .wbx-home-workshop__registration-popover strong { display: block; padding: 10px 12px; font-size: 13px; text-align: center; }
 
 .wbx-workshop__editions-row { display: flex; width: 574px; max-width: 100%; gap: 12px; align-items: flex-start; margin-top: auto; }
@@ -100,6 +101,7 @@
   .wbx-workshop__title-edition { font-size: var(--wbx-type-aux-size); }
   .wbx-workshop .wbx-workshop__promise { font-size: var(--wbx-type-section-size); }
   .wbx-workshop__facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wbx-workshop__facts.has-city { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .wbx-workshop__facts > div + div { padding-left: 8px; }
   .wbx-workshop__actions { display: grid; }
   .wbx-workshop__action,

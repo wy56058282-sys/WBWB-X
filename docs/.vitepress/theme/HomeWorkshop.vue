@@ -170,9 +170,10 @@ onBeforeUnmount(() => {
             <p class="wbx-workshop__summary">先用一场工作坊，找到值得定制的真问题</p>
           </div>
           <p class="wbx-workshop__audience">面向人群：创业者、管理者、设计师、超级个体、一人公司（OPC）</p>
-          <dl class="wbx-workshop__facts" :aria-label="`${selectedWorkshop.edition}工作坊信息`">
+          <dl class="wbx-workshop__facts" :class="{ 'has-city': selectedWorkshop.city }" :aria-label="`${selectedWorkshop.edition}工作坊信息`">
             <div><dt>时间</dt><dd><span>{{ selectedWorkshop.fullDate }}</span><span>{{ selectedWorkshop.time }}</span></dd></div>
             <div><dt>规模</dt><dd>{{ selectedWorkshop.capacity }}</dd></div>
+            <div v-if="selectedWorkshop.city"><dt>城市</dt><dd>{{ selectedWorkshop.city }}</dd></div>
             <div><dt>地点</dt><dd><span>{{ selectedWorkshop.venue }}</span><span>{{ selectedWorkshop.area }}</span></dd></div>
             <div><dt>楼层</dt><dd>{{ selectedWorkshop.floor }}</dd></div>
           </dl>

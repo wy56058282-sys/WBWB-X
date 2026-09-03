@@ -14,6 +14,8 @@ POSTERS = (
     'workshop-829-benefits.png',
     'workshop-829-reminder.png',
     'workshop-912.png',
+    'workshop-912-agenda.png',
+    'workshop-912-benefits.png',
 )
 COVERS = {'workshop-815.png', 'workshop-cover.png', 'workshop-912.png'}
 
