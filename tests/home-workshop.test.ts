@@ -75,6 +75,7 @@ describe('homepage workshop card', () => {
     harness.mountHomePage()
     const sections = Array.from(document.querySelectorAll<HTMLElement>('.wbx-home > section'))
     const workshop = document.querySelector<HTMLElement>('.wbx-home-workshop')
+    expect(workshop?.querySelector('#workshop-title')?.textContent?.trim()).toMatch(/^X 造物工坊/)
     expect(workshop?.textContent).toContain('第二期')
     expect(workshop?.textContent).toContain('2026 年 8 月 29 日')
     expect(workshop?.id).toBe('workshop-registration')
@@ -162,11 +163,21 @@ describe('homepage workshop card', () => {
   it('shows the configured location and floor for each workshop edition', async () => {
     harness.mountHomePage()
     const editions = Array.from(document.querySelectorAll<HTMLButtonElement>('.wbx-workshop__edition'))
-    const floor = () => document.querySelectorAll('.wbx-workshop__facts dd')[3]?.textContent
+    const facts = () => Array.from(document.querySelectorAll<HTMLElement>('.wbx-workshop__facts > div'))
+    const labels = () => facts().map((fact) => fact.querySelector('dt')?.textContent)
+    const city = () => facts()[2]?.querySelector('dd')?.textContent
+    const locationParts = () => Array.from(facts()[3]?.querySelectorAll('dd span') ?? []).map((part) => part.textContent)
+    const floor = () => facts().at(-1)?.querySelector('dd')?.textContent
 
+    expect(labels()).toEqual(['时间', '规模', '城市', '地点', '楼层'])
+    expect(city()).toBe('合肥')
+    expect(locationParts()).toEqual(['人工智能产业园', '星辉 OPC'])
     expect(floor()).toBe('A1 座 4 楼')
     editions[0]?.click()
     await nextTick()
+    expect(labels()).toEqual(['时间', '规模', '城市', '地点', '楼层'])
+    expect(city()).toBe('合肥')
+    expect(locationParts()).toEqual(['人工智能产业园', '星辉 OPC'])
     expect(floor()).toBe('B2 栋 9 楼')
     editions[2]?.click()
     await nextTick()
@@ -175,7 +186,7 @@ describe('homepage workshop card', () => {
       .toEqual(['时间', '规模', '城市', '地点', '楼层'])
     expect(thirdEditionFacts[2]?.querySelector('dd')?.textContent).toBe('合肥')
     expect(Array.from(thirdEditionFacts[3]?.querySelectorAll('dd span') ?? []).map((part) => part.textContent))
-      .toEqual(['高新区菖蒲路 668 号', '人工智能产业园一期'])
+      .toEqual(['人工智能产业园一期', '高新区菖蒲路 668 号'])
     expect(thirdEditionFacts[4]?.querySelector('dd')?.textContent).toBe('A1 栋 4 楼')
   })
 

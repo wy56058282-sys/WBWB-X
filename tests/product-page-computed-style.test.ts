@@ -538,7 +538,7 @@ describe('product page computed styles', () => {
   })
 
   it.each([
-    { viewportWidth: 1440, panelColumns: 'minmax(0, 570px) minmax(320px, 486px)', sectionWidth: '100%', titleInset: '0px' },
+    { viewportWidth: 1440, panelColumns: 'minmax(0, 650px) minmax(320px, 486px)', sectionWidth: '100%', titleInset: '0px' },
     { viewportWidth: 900, panelColumns: '1fr', sectionWidth: '100%', titleInset: '0px' },
     { viewportWidth: 390, panelColumns: '1fr', sectionWidth: '100%', titleInset: '0px' },
   ])(
@@ -564,12 +564,24 @@ describe('product page computed styles', () => {
       expect(workshop.marginLeft).toBe(titleInset)
       const facts = document.createElement('dl')
       facts.className = 'wbx-workshop__facts has-city'
+      facts.innerHTML = `
+        <div><dt>时间</dt><dd>2026 年 9 月 12 日</dd></div>
+        <div><dt>规模</dt><dd>15–25 人</dd></div>
+        <div><dt>城市</dt><dd>合肥</dd></div>
+        <div class="wbx-workshop__fact--location"><dt>地点</dt><dd><span>高新区菖蒲路 668 号</span><span>人工智能产业园一期</span></dd></div>
+        <div><dt>楼层</dt><dd>A1 栋 4 楼</dd></div>
+      `
       document.querySelector('.wbx-workshop__copy')!.append(facts)
       expect(getComputedStyle(facts).borderTopColor).toBe('rgb(227, 231, 228)')
       expect(getComputedStyle(facts).borderBottomColor).toBe('rgb(227, 231, 228)')
       expect(getComputedStyle(facts).gridTemplateColumns).toBe(viewportWidth === 390
         ? 'repeat(2, minmax(0, 1fr))'
-        : 'minmax(0, 1.4fr) minmax(0, 0.8fr) minmax(0, 0.65fr) minmax(0, 1.55fr) minmax(0, 0.8fr)')
+        : 'minmax(0, 1.3fr) minmax(82px, 0.9fr) minmax(0, 0.6fr) minmax(0, 1.35fr) minmax(96px, 1.1fr)')
+      expect(getComputedStyle(facts.children[1]!.querySelector('dd')!).whiteSpace).toBe('nowrap')
+      const locationLines = facts.children[3]!.querySelectorAll('span')
+      expect(getComputedStyle(locationLines[0]!).whiteSpace).toBe(viewportWidth === 390 ? 'normal' : 'nowrap')
+      expect(getComputedStyle(locationLines[1]!).whiteSpace).toBe(viewportWidth === 390 ? 'normal' : 'nowrap')
+      expect(getComputedStyle(facts.children[4]!.querySelector('dd')!).whiteSpace).toBe('nowrap')
       const registrationQr = getComputedStyle(document.querySelector('.wbx-home-workshop__registration-popover img')!)
       expect(registrationQr.marginTop).toBe('12px')
       expect(registrationQr.marginLeft).toBe('12px')

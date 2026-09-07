@@ -161,7 +161,7 @@ onBeforeUnmount(() => {
           <div class="wbx-workshop__heading">
             <p class="wbx-workshop__eyebrow">WORKBUDDY X WORKSHOP</p>
             <h2 id="workshop-title">
-              WorkBuddy X 工作坊
+              X 造物工坊
               <span class="wbx-workshop__title-meta">
                 <span class="wbx-workshop__title-edition">{{ selectedWorkshop.edition }}</span>
                 <span class="wbx-workshop__title-status">{{ selectedStatus === 'past' ? '已结束' : '报名中' }}</span>
@@ -174,7 +174,7 @@ onBeforeUnmount(() => {
             <div><dt>时间</dt><dd><span>{{ selectedWorkshop.fullDate }}</span><span>{{ selectedWorkshop.time }}</span></dd></div>
             <div><dt>规模</dt><dd>{{ selectedWorkshop.capacity }}</dd></div>
             <div v-if="selectedWorkshop.city"><dt>城市</dt><dd>{{ selectedWorkshop.city }}</dd></div>
-            <div><dt>地点</dt><dd><span>{{ selectedWorkshop.venue }}</span><span>{{ selectedWorkshop.area }}</span></dd></div>
+            <div class="wbx-workshop__fact--location"><dt>地点</dt><dd><span>{{ selectedWorkshop.area }}</span><span>{{ selectedWorkshop.venue }}</span></dd></div>
             <div><dt>楼层</dt><dd>{{ selectedWorkshop.floor }}</dd></div>
           </dl>
           <div class="wbx-workshop__actions">
