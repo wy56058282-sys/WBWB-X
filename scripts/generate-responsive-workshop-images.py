@@ -16,8 +16,10 @@ POSTERS = (
     'workshop-912.png',
     'workshop-912-agenda.png',
     'workshop-912-benefits.png',
+    'workshop-1017.png',
+    'workshop-1017-agenda.png',
 )
-COVERS = {'workshop-815.png', 'workshop-cover.png', 'workshop-912.png'}
+COVERS = {'workshop-815.png', 'workshop-cover.png', 'workshop-912.png', 'workshop-1017.png'}
 
 
 def write_derivative(source: Path, suffix: str, width: int, quality: int) -> None:

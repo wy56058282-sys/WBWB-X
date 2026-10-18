@@ -1,6 +1,6 @@
 # WorkBuddy WB-X 网站内容资产与更新手册
 
-> 盘点日期：2026-08-18
+> 盘点日期：2026-10-18
 >
 > 线上地址：<https://wbx.sparkx.zone/>
 >
@@ -186,6 +186,10 @@ docs/public/brand/partners/
 - 社区实战读本说明。
 - HackerNoon Pixel Icons 署名。
 - WorkBuddy WB-X Contributors 版权信息。
+
+### 4.7 X 工坊活动
+
+首页活动数据位于 `docs/.vitepress/workshop-editions.ts`，保留四期期次。第四期为 2026 年 10 月 17 日 14:00–18:00（合肥），主海报与议程位于 `docs/public/article-assets/service/workshop-1017*.png`，配套 WebP 展示图和缩略图。第四期海报未提供具体地址、楼层、规模及回顾链接，对应信息留空，不沿用往期内容。活动结束后首页自动显示第四期已结束。
 
 ## 5. 白皮书完整目录
 

@@ -111,6 +111,27 @@ export const workshopEditions: readonly WorkshopEdition[] = [
     activityDetailUrl: '',
     registrationQrPath: '/article-assets/service/workshop-912-registration-qr.png',
   },
+  {
+    id: '1017',
+    title: '场景实战工作坊',
+    edition: '第四期',
+    date: '10.17',
+    fullDate: '2026 年 10 月 17 日',
+    startsAt: '2026-10-17T14:00:00+08:00',
+    endsAt: '2026-10-17T18:00:00+08:00',
+    time: '14:00–18:00',
+    capacity: '',
+    city: '合肥',
+    venue: '',
+    area: '',
+    floor: '',
+    coverPath: '/article-assets/service/workshop-1017.png',
+    thumbnailPath: '/article-assets/service/workshop-1017-thumb.webp',
+    posterPaths: ['/article-assets/service/workshop-1017.png', '/article-assets/service/workshop-1017-agenda.png'],
+    displayPosterPaths: ['/article-assets/service/workshop-1017-display.webp', '/article-assets/service/workshop-1017-agenda-display.webp'],
+    activityDetailUrl: '',
+    registrationQrPath: '',
+  },
 ]
 
 function dateValue(value: string) {

@@ -172,10 +172,10 @@ onBeforeUnmount(() => {
           <p class="wbx-workshop__audience">面向人群：创业者、管理者、设计师、超级个体、一人公司（OPC）</p>
           <dl class="wbx-workshop__facts" :class="{ 'has-city': selectedWorkshop.city }" :aria-label="`${selectedWorkshop.edition}工作坊信息`">
             <div><dt>时间</dt><dd><span>{{ selectedWorkshop.fullDate }}</span><span>{{ selectedWorkshop.time }}</span></dd></div>
-            <div><dt>规模</dt><dd>{{ selectedWorkshop.capacity }}</dd></div>
+            <div v-if="selectedWorkshop.capacity"><dt>规模</dt><dd>{{ selectedWorkshop.capacity }}</dd></div>
             <div v-if="selectedWorkshop.city"><dt>城市</dt><dd>{{ selectedWorkshop.city }}</dd></div>
-            <div class="wbx-workshop__fact--location"><dt>地点</dt><dd><span>{{ selectedWorkshop.area }}</span><span>{{ selectedWorkshop.venue }}</span></dd></div>
-            <div><dt>楼层</dt><dd>{{ selectedWorkshop.floor }}</dd></div>
+            <div v-if="selectedWorkshop.area || selectedWorkshop.venue" class="wbx-workshop__fact--location"><dt>地点</dt><dd><span>{{ selectedWorkshop.area }}</span><span>{{ selectedWorkshop.venue }}</span></dd></div>
+            <div v-if="selectedWorkshop.floor"><dt>楼层</dt><dd>{{ selectedWorkshop.floor }}</dd></div>
           </dl>
           <div class="wbx-workshop__actions">
             <div v-if="selectedStatus !== 'past'" ref="registration" class="wbx-home-workshop__registration">

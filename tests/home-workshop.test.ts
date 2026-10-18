@@ -32,6 +32,24 @@ describe('homepage workshop card', () => {
     vi.useRealTimers()
   })
 
+  it('shows the fourth edition as ended with both supplied posters and no unconfirmed facts', async () => {
+    vi.setSystemTime(new Date('2026-10-18T12:00:00+08:00'))
+    harness.mountHomePage()
+    await nextTick()
+    const section = document.querySelector('.wbx-home-workshop')!
+    expect(section.querySelector('#workshop-title')?.textContent).toContain('第四期')
+    expect(section.querySelector('.wbx-workshop__title-status')?.textContent).toBe('已结束')
+    expect(section.textContent).toContain('2026 年 10 月 17 日')
+    expect(section.textContent).toContain('合肥')
+    expect(section.querySelector('.wbx-workshop__poster')?.getAttribute('src')).toContain('workshop-1017.png')
+    expect(section.querySelector('.wbx-workshop__poster-page')?.textContent?.trim()).toBe('1 / 2')
+    expect(section.querySelector('.wbx-workshop__facts')?.textContent).not.toMatch(/规模|地点|楼层/)
+    expect(section.querySelector('.wbx-home-workshop__registration-trigger')).toBeNull()
+    section.querySelector<HTMLButtonElement>('.wbx-workshop__poster-control--next')?.click()
+    await nextTick()
+    expect(section.querySelector('.wbx-workshop__poster')?.getAttribute('src')).toContain('workshop-1017-agenda.png')
+  })
+
   it('defers workshop images until the section approaches the viewport', async () => {
     let reveal: IntersectionObserverCallback | undefined
     vi.stubGlobal('IntersectionObserver', class {
@@ -56,7 +74,7 @@ describe('homepage workshop card', () => {
     await nextTick()
 
     expect(workshop?.querySelector('.wbx-workshop__poster')).not.toBeNull()
-    expect(workshop?.querySelectorAll('.wbx-workshop__edition img')).toHaveLength(3)
+    expect(workshop?.querySelectorAll('.wbx-workshop__edition img')).toHaveLength(4)
   })
 
   it('uses responsive WebP derivatives with the original posters as fallbacks', () => {
@@ -85,7 +103,7 @@ describe('homepage workshop card', () => {
     expect(workshop?.querySelector('.wbx-workshop__left .wbx-workshop__editions')).not.toBeNull()
     expect(workshop?.querySelector('.wbx-workshop__media .wbx-workshop__poster-navigation')).toBeNull()
     expect(workshop?.querySelector('.wbx-workshop__panel > .wbx-workshop__poster-navigation')).not.toBeNull()
-    expect(workshop?.querySelectorAll('.wbx-workshop__edition')).toHaveLength(3)
+    expect(workshop?.querySelectorAll('.wbx-workshop__edition')).toHaveLength(4)
     expect(workshop?.querySelector('.wbx-workshop__poster-navigation')).not.toBeNull()
     expect(workshop?.querySelector('.wbx-home-workshop__all')).toBeNull()
     expect(sections.indexOf(workshop!)).toBe(sections.indexOf(document.querySelector('.wbx-tasks')!) + 1)
@@ -128,7 +146,7 @@ describe('homepage workshop card', () => {
     expect(workshop?.querySelector('a[href="/help/#enterprise-custom"]')).toBeNull()
     expect(workshop?.querySelector('.wbx-home-workshop__registration-trigger')).not.toBeNull()
     expect(workshop?.querySelector('.wbx-workshop__poster')).not.toBeNull()
-    expect(workshop?.querySelectorAll('.wbx-workshop__edition')).toHaveLength(3)
+    expect(workshop?.querySelectorAll('.wbx-workshop__edition')).toHaveLength(4)
   })
 
   it('shows the computer reminder immediately to the right of the workshop action', () => {
@@ -218,7 +236,7 @@ describe('homepage workshop card', () => {
     const editions = Array.from(workshop?.querySelectorAll<HTMLButtonElement>('.wbx-workshop__edition') ?? [])
     const posterSource = () => workshop?.querySelector<HTMLImageElement>('.wbx-workshop__poster')?.getAttribute('src')
 
-    expect(editions.map((edition) => edition.getAttribute('aria-selected'))).toEqual(['false', 'true', 'false'])
+    expect(editions.map((edition) => edition.getAttribute('aria-selected'))).toEqual(['false', 'true', 'false', 'false'])
     expect(workshop?.textContent).not.toContain('当前')
     expect(workshop?.querySelectorAll('.wbx-workshop__edition-status')).toHaveLength(1)
     expect(editions[1]?.querySelector('.wbx-workshop__edition-status')).not.toBeNull()
@@ -229,7 +247,7 @@ describe('homepage workshop card', () => {
 
     editions[0]?.click()
     await nextTick()
-    expect(editions.map((edition) => edition.getAttribute('aria-selected'))).toEqual(['true', 'false', 'false'])
+    expect(editions.map((edition) => edition.getAttribute('aria-selected'))).toEqual(['true', 'false', 'false', 'false'])
     expect(editions[0]?.querySelector('.wbx-workshop__edition-status')).not.toBeNull()
     expect(editions[1]?.querySelector('.wbx-workshop__edition-status')).toBeNull()
     expect(posterSource()).toContain('workshop-815.png')
@@ -287,13 +305,13 @@ describe('homepage workshop card', () => {
     expect(editions[0].getAttribute('aria-selected')).toBe('true')
     editions[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }))
     await nextTick()
-    expect(editions[2].getAttribute('aria-selected')).toBe('true')
+    expect(editions[3].getAttribute('aria-selected')).toBe('true')
     editions[0].click()
     await nextTick()
     editions[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }))
     await nextTick()
-    expect(editions[2].getAttribute('aria-selected')).toBe('true')
-    expect(document.activeElement).toBe(editions[2])
+    expect(editions[3].getAttribute('aria-selected')).toBe('true')
+    expect(document.activeElement).toBe(editions[3])
 
     editions[1].click()
     await nextTick()
