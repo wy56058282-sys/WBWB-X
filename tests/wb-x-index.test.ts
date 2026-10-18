@@ -28,8 +28,8 @@ describe('small-book reading index', () => {
   it('shows the latest official WorkBuddy release versions', () => {
     const text = document.body.textContent
 
-    expect(text).toContain('WorkBuddy 中国版｜更新日志｜v5.6.2')
-    expect(text).toContain('WorkBuddy 国际版｜更新日志｜v5.2.7')
+    expect(text).toContain('WorkBuddy 中国版｜更新日志｜v5.8.2')
+    expect(text).toContain('WorkBuddy 国际版｜更新日志｜v5.8.4')
   })
 
   it('renders the four reading parts and three appendices as a semantic book index', () => {
